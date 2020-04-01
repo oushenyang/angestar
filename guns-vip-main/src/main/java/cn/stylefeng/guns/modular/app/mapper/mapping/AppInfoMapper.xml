@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.app.mapper.AppInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.app.entity.AppInfo">
+        <id column="app_id" property="appId" />
+        <result column="app_num" property="appNum" />
+        <result column="user_id" property="userId" />
+        <result column="app_name" property="appName" />
+        <result column="cydia_flag" property="cydiaFlag" />
+        <result column="app_notice" property="appNotice" />
+        <result column="custom_data1" property="customData1" />
+        <result column="custom_data2" property="customData2" />
+        <result column="custom_data3" property="customData3" />
+        <result column="code_bind_type" property="codeBindType" />
+        <result column="code_bind_option" property="codeBindOption" />
+        <result column="code_bind_num" property="codeBindNum" />
+        <result column="code_bind_time" property="codeBindTime" />
+        <result column="account_bind_type" property="accountBindType" />
+        <result column="account_bind_option" property="accountBindOption" />
+        <result column="account_bind_num" property="accountBindNum" />
+        <result column="account_bind_time" property="accountBindTime" />
+        <result column="code_open_range" property="codeOpenRange" />
+        <result column="code_sign_type" property="codeSignType" />
+        <result column="code_open_num" property="codeOpenNum" />
+        <result column="account_open_range" property="accountOpenRange" />
+        <result column="account_sign_type" property="accountSignType" />
+        <result column="account_open_num" property="accountOpenNum" />
+        <result column="code_try_type" property="codeTryType" />
+        <result column="code_try_time" property="codeTryTime" />
+        <result column="account_register_switch" property="accountRegisterSwitch" />
+        <result column="account_register_limit" property="accountRegisterLimit" />
+        <result column="account_register_num" property="accountRegisterNum" />
+        <result column="account_register_time" property="accountRegisterTime" />
+        <result column="web_algorithm_type" property="webAlgorithmType" />
+        <result column="web_key" property="webKey" />
+        <result column="web_salt" property="webSalt" />
+        <result column="version_num" property="versionNum" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        app_id AS "appId", app_num AS "appNum", user_id AS "userId", app_name AS "appName", cydia_flag AS "cydiaFlag", app_notice AS "appNotice", custom_data1 AS "customData1", custom_data2 AS "customData2", custom_data3 AS "customData3", code_bind_type AS "codeBindType", code_bind_option AS "codeBindOption", code_bind_num AS "codeBindNum", code_bind_time AS "codeBindTime", account_bind_type AS "accountBindType", account_bind_option AS "accountBindOption", account_bind_num AS "accountBindNum", account_bind_time AS "accountBindTime", code_open_range AS "codeOpenRange", code_sign_type AS "codeSignType", code_open_num AS "codeOpenNum", account_open_range AS "accountOpenRange", account_sign_type AS "accountSignType", account_open_num AS "accountOpenNum", code_try_type AS "codeTryType", code_try_time AS "codeTryTime", account_register_switch AS "accountRegisterSwitch", account_register_limit AS "accountRegisterLimit", account_register_num AS "accountRegisterNum", account_register_time AS "accountRegisterTime", web_algorithm_type AS "webAlgorithmType", web_key AS "webKey", web_salt AS "webSalt", version_num AS "versionNum", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>
