@@ -1,9 +1,10 @@
-layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown'], function () {
+layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], function () {
     var $ = layui.$;
     var table = layui.table;
     var dataGrid = layui.dataGrid;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var func = layui.func;
 
     /**
      * 软件表管理
@@ -73,12 +74,13 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown'], function ()
      */
     AppInfo.openAddDlg = function () {
         admin.putTempData('formOk', false);
-        top.layui.admin.open({
+        func.open({
             type: 2,
+            area: '700px',
             title: '添加软件表',
             content: Feng.ctxPath + '/appInfo/add',
-            end: function () {
-                admin.getTempData('formOk') && table.reload(AppInfo.tableId);
+            endCallback: function () {
+                AppInfo.loadAppInfo();
             }
         });
     };
@@ -100,14 +102,15 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown'], function ()
      *
      * @param data 点击按钮时候的行数据
      */
-    AppInfo.openEditDlg = function (data) {
+    AppInfo.openEditDlg = function (data,title,event) {
         admin.putTempData('formOk', false);
-        top.layui.admin.open({
+        func.open({
             type: 2,
-            title: '修改软件表',
-            content: Feng.ctxPath + '/appInfo/edit?appId=' + data.appId,
-            end: function () {
-                admin.getTempData('formOk') && table.reload(AppInfo.tableId);
+            area: '700px',
+            title: title,
+            content: Feng.ctxPath + '/appInfo/edit?appId=' + data.appId+'&event='+event,
+            endCallback: function () {
+                AppInfo.loadAppInfo();
             }
         });
     };
@@ -121,7 +124,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown'], function ()
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/appInfo/delete", function (data) {
                 Feng.success("删除成功!");
-                table.reload(AppInfo.tableId);
+                AppInfo.loadAppInfo();
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
@@ -131,72 +134,43 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown'], function ()
         Feng.confirm("是否删除?", operation);
     };
 
-    // 渲染表格
-    // var tableResult = table.render({
-    //     elem: '#' + AppInfo.tableId,
-    //     url: Feng.ctxPath + '/appInfo/list',
-    //     page: true,
-    //     height: "full-158",
-    //     cellMinWidth: 100,
-    //     cols: AppInfo.initColumn()
-    // });
-
-    var tableResult = dataGrid.render({
-        elem: '#demoGrid1',  // 容器
-        templet: '#demoGridItem3',  // 模板
-        data: Feng.ctxPath + '/appInfo/list', // url
-        page: true,  // 开启分页
-        height: "full-98",
-        cellMinWidth: 100,
-        done:function(data,curr,count){
-            data.appName = gen_text_img(data.appName);
-            console.log('--------------------');
-            console.log(gen_text_img(data.appName));
-            console.log(curr);
-            console.log(count);
-        },
-        onItemClick: function (obj) {  // item事件
-            var index = obj.index + 1;
-            layer.msg('点击了第' + index + '个', {icon: 1});
-        },
-        onToolBarClick: function (obj) {  // toolBar事件
-            var event = obj.event;
-            var data = obj.data;
-            data.appNameUrl = gen_text_img(data.appName);
-            obj.update(data);
-            if (event == 'download') {
-                layer.msg('点击了下载', {icon: 1});
-            } else if (event == 'edit') {
-                layer.msg('编辑', {icon: 1});
-            } else if (event == 'share') {
-                layer.msg('点击了分享', {icon: 1});
-            } else if (event == 'item1') {
-                layer.msg('点击了1st menu item', {icon: 1});
-            } else if (event == 'item2') {
-                layer.msg('点击了2nd menu item', {icon: 1});
-            } else if (event == 'item3') {
-                layer.msg('点击了3rd menu item', {icon: 1});
+    AppInfo.loadAppInfo = function () {
+        dataGrid.render({
+            elem: '#demoGrid1',  // 容器
+            templet: '#demoGridItem3',  // 模板
+            data: Feng.ctxPath + '/appInfo/list', // url
+            page: {limit: 8, limits: [8, 16, 24, 32, 40]},
+            done:function(data,curr,count){
+            },
+            onItemClick: function (obj) {  // item事件
+                var index = obj.index + 1;
+                layer.msg('点击了第' + index + '个', {icon: 1});
+            },
+            onToolBarClick: function (obj) {  // toolBar事件
+                var event = obj.event;
+                var data = obj.data;
+                if (event == 'download') {
+                    layer.msg('点击了下载', {icon: 1});
+                } else if (event == 'edit') {
+                    AppInfo.openEditDlg(data,'基本信息',event);
+                } else if (event == 'share') {
+                    layer.msg('点击了分享', {icon: 1});
+                } else if (event == 'bind') {
+                    AppInfo.openEditDlg(data,'绑机配置',event);
+                } else if (event == 'open') {
+                    AppInfo.openEditDlg(data,'多开配置',event);
+                } else if (event == 'trial') {
+                    AppInfo.openEditDlg(data,'试用注册',event);
+                } else if (event == 'password') {
+                    AppInfo.openEditDlg(data,'密匙配置',event);
+                } else if (event == 'delete') {
+                    AppInfo.onDeleteItem(data);
+                }
             }
-        }
-    });
-    function gen_text_img(s) {
-        var size = 30;
-        let colors = [
-            "rgb(239,150,26)", 'rgb(255,58,201)', "rgb(111,75,255)", "rgb(36,174,34)", "rgb(80,80,80)"
-        ];
-        let cvs = document.createElement("canvas");
-        cvs.setAttribute('width', size[0]);
-        cvs.setAttribute('height', size[1]);
-        let ctx = cvs.getContext("2d");
-        ctx.fillStyle = colors[Math.floor(Math.random()*(colors.length))];
-        ctx.fillRect(0, 0, size[0], size[1]);
-        ctx.fillStyle = 'rgb(255,255,255)';
-        ctx.font = size[0]*0.6+"px Arial";
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        ctx.fillText(s,size[0]/2,size[1]/2);
-        return  cvs.toDataURL('image/jpeg', 1);
-    }
+        });
+    };
+    //渲染应用列表
+    AppInfo.loadAppInfo();
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         AppInfo.search();

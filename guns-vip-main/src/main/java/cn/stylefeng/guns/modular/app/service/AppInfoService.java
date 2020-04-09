@@ -6,6 +6,7 @@ import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public interface AppInfoService extends IService<AppInfo> {
      * @author shenyang.ou
      * @Date 2020-04-01
      */
-    void add(AppInfoParam param);
+    void add(AppInfoParam param) throws IOException;
 
     /**
      * 删除

@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.app.entity.AppInfo">
         <id column="app_id" property="appId" />
         <result column="app_num" property="appNum" />
+        <result column="app_head" property="appHead" />
         <result column="user_id" property="userId" />
         <result column="app_name" property="appName" />
         <result column="cydia_flag" property="cydiaFlag" />

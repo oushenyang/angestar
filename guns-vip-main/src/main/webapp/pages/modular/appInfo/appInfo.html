@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{js:["/assets/modular/appInfo/appInfo.js"]}){
+@layout("/common/_container.html",{plugins:["animate"],js:["/assets/modular/appInfo/appInfo.js"]}){
 <style>
     /** 应用列表样式 */
     .application-list-item {
@@ -37,7 +37,7 @@
 
     .application-list-item .application-list-item-body .text-num-item {
         display: inline-block;
-        width: 50%;
+        width: 33%;
         font-size: 26px;
         color: #666;
     }
@@ -63,7 +63,7 @@
 
     .application-list-item .application-list-item-tool .application-list-item-tool-item {
         display: inline-block;
-        width: 25%;
+        width: 33%;
         font-size: 18px;
         text-align: center;
         color: #999;
@@ -93,11 +93,11 @@
                                 <input id="condition" class="layui-input" type="text" placeholder="名称"/>
                             </div>
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                                <button id="btnSearch" class="layui-btn icon-btn animated fadeInRightBig"><i class="layui-icon">&#xe615;</i>搜索
                                 </button>
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
+                                <button id="btnAdd" class="layui-btn icon-btn animated fadeInRightBig"><i class="layui-icon">&#xe654;</i>添加
                                 </button>
-                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
+                                <button id="btnExp" class="layui-btn icon-btn animated fadeInRightBig"><i class="layui-icon">&#xe67d;</i>导出
                                 </button>
                             </div>
                         </div>
@@ -127,28 +127,31 @@
     <div class="layui-col-md3">
         <div class="application-list-item">
             <div class="application-list-item-header">
-                <img class="head" src="{{d.appNameUrl}}"/>
+                <img class="head" src="{{d.appHead}}"/>
                 <h2>{{d.appName}}</h2>
             </div>
             <div class="application-list-item-body">
                 <div class="text-num-item">
-                    <div class="text-num-item-title">活跃用户</div>
-                    <div class="text-num-item-text">
-                        <!--                        {{d.activeNum}}-->
-                        20
-                        <small>万</small>
-                    </div>
+                    <div class="text-num-item-title">注册用户</div>
+                    <!--                        {{d.activeNum}}-->
+                    20
+<!--                    <small>万</small>-->
                 </div>
                 <div class="text-num-item">
-                    <div class="text-num-item-title">新增用户</div>
+                    <div class="text-num-item-title">单码用户</div>
                     <!--                    <div class="text-num-item-text">{{d.newNum}}</div>-->
                     <div class="text-num-item-text">60</div>
                 </div>
+                <div class="text-num-item">
+                    <div class="text-num-item-title">最新版本</div>
+                    <!--                    <div class="text-num-item-text">{{d.newNum}}</div>-->
+                    <div class="text-num-item-text">1.0</div>
+                </div>
             </div>
             <div class="application-list-item-tool">
-                <span class="application-list-item-tool-item" lay-event="download">
-                    <i class="layui-icon layui-icon-download-circle" lay-tips="下载" lay-offset="0,-8px"></i>
-                </span>
+<!--                <span class="application-list-item-tool-item" lay-event="download">-->
+<!--                    <i class="layui-icon layui-icon-download-circle" lay-tips="下载" lay-offset="0,-8px"></i>-->
+<!--                </span>-->
                 <span class="application-list-item-tool-item" lay-event="edit">
                     <i class="layui-icon layui-icon-edit" lay-tips="编辑" lay-offset="0,-8px"></i>
                 </span>
@@ -157,11 +160,13 @@
                 </span>
                 <span class="application-list-item-tool-item">
                     <div class="dropdown-menu dropdown-hover">
-                        <i class="layui-icon layui-icon-more"></i>
+                        <i class="layui-icon layui-icon-more" lay-tips="更多"></i>
                         <ul class="dropdown-menu-nav dropdown-bottom-center">
-                            <li><a lay-event="item1">1st menu item</a></li>
-                            <li><a lay-event="item2">2nd menu item</a></li>
-                            <li><a lay-event="item3">3rd menu item</a></li>
+                            <li><a lay-event="bind">绑机配置</a></li>
+                            <li><a lay-event="open">多开配置</a></li>
+                            <li><a lay-event="trial">试用注册</a></li>
+                            <li><a lay-event="password">密匙配置</a></li>
+                            <li><a lay-event="delete" style="color: red">删除应用</a></li>
                         </ul>
                     </div>
                 </span>

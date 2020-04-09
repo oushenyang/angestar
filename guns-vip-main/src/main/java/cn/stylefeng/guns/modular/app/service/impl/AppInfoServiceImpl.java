@@ -7,6 +7,7 @@ import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,8 +31,10 @@ import java.util.List;
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
 
     @Override
-    public void add(AppInfoParam param){
+    public void add(AppInfoParam param) throws IOException {
         AppInfo entity = getEntity(param);
+        //生成应用头像
+        entity.setAppHead(CreateNamePicture.generateImg(entity.getAppName()));
         this.save(entity);
     }
 

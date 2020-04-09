@@ -34,6 +34,12 @@ public class AppInfo implements Serializable {
     private String appNum;
 
     /**
+     * 应用头像
+     */
+    @TableField("app_head")
+    private String appHead;
+
+    /**
      * 开发者用户id
      */
     @TableField("user_id")
@@ -258,6 +264,14 @@ public class AppInfo implements Serializable {
 
     public void setAppNum(String appNum) {
         this.appNum = appNum;
+    }
+
+    public String getAppHead() {
+        return appHead;
+    }
+
+    public void setAppHead(String appHead) {
+        this.appHead = appHead;
     }
 
     public Long getUserId() {
@@ -547,6 +561,7 @@ public class AppInfo implements Serializable {
         ", appNum=" + appNum +
         ", userId=" + userId +
         ", appName=" + appName +
+        ", appHead=" + appHead +
         ", cydiaFlag=" + cydiaFlag +
         ", appNotice=" + appNotice +
         ", customData1=" + customData1 +

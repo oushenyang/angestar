@@ -49,7 +49,6 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
         });
         ajax.set(data.field);
         ajax.start();
-
         //添加 return false 可成功跳转页面
         return false;
     });

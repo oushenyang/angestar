@@ -30,6 +30,11 @@ public class AppInfoResult implements Serializable {
     private String appNum;
 
     /**
+     * 应用头像
+     */
+    private String appHead;
+
+    /**
      * 开发者用户id
      */
     private Long userId;

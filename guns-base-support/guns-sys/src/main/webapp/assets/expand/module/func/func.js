@@ -61,6 +61,9 @@ layui.define(['jquery', 'layer', 'admin', 'table', 'ax', 'form'], function (expo
             if (param.width) {
                 width = param.width;
             }
+            if (param.area) {
+                width = param.area;
+            }
 
             //计算高度
             var clientHeight = func.getClientHeight();

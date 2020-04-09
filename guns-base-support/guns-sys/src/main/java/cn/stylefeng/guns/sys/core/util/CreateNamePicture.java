@@ -29,7 +29,7 @@ public class CreateNamePicture {
      **/
     public static void main(String[] args) throws IOException {
         String name = "考勤大师";
-        generateImg(name, "D:/Android", name);
+        generateImg(name);
     }
 
 
@@ -38,11 +38,9 @@ public class CreateNamePicture {
      * 如果是英文名，只显示首字母大写
      * 如果是中文名，只显示最后两个字
      * @param name
-     * @param outputPath
-     * @param outputName
      * @throws IOException
      */
-    public static void generateImg(String name, String outputPath, String outputName)
+    public static String generateImg(String name)
             throws IOException {
         int width = 100;
         int height = 100;
@@ -62,9 +60,6 @@ public class CreateNamePicture {
                 nameWritten = name.substring(0, 2).toUpperCase();
             }
         }
-
-        String filename = outputPath + File.separator + outputName + ".jpg";
-        File file = new File(filename);
         //Font font = new Font("微软雅黑", Font.PLAIN, 30);
 
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -128,7 +123,7 @@ public class CreateNamePicture {
         BASE64Encoder encoder = new BASE64Encoder();
         String png_base64 = encoder.encodeBuffer(bytes).trim();//转换成base64串
         png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");//删除 \r\n
-        System.out.println("值为："+"data:image/jpg;base64,"+png_base64);
+        return "data:image/jpg;base64,"+png_base64;
 //        ImageIO.write(rounded, "png", file);
     }
 

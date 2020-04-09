@@ -41,7 +41,15 @@ var AppInfoInfoDlg = {
         updateTime: ""
     }
 };
+//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+layui.use('element', function(){
+    var element = layui.element;
 
+    //一些事件监听
+    element.on('tab(demo)', function(data){
+        console.log(data);
+    });
+});
 layui.use(['form', 'admin', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
@@ -71,5 +79,7 @@ layui.use(['form', 'admin', 'ax'], function () {
         });
         ajax.set(data.field);
         ajax.start();
+        //添加 return false 可成功跳转页面
+        return false;
     });
 });

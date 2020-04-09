@@ -1,15 +1,24 @@
 package cn.stylefeng.guns.modular.app.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.log.BussinessLog;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.dictmap.AppInfoMap;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.sys.core.constant.dictmap.NoticeMap;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.util.Date;
 
 
 /**
@@ -56,8 +65,9 @@ public class AppInfoController extends BaseController {
      * @Date 2020-04-01
      */
     @RequestMapping("/edit")
-    public String edit() {
-        return PREFIX + "/appInfo_edit.html";
+    public String edit(@RequestParam("event") String event, Model model) {
+        model.addAttribute("event", event);
+        return PREFIX + "/appInfo_edit_new.html";
     }
 
     /**
@@ -68,8 +78,16 @@ public class AppInfoController extends BaseController {
      */
     @RequestMapping("/addItem")
     @ResponseBody
+    @BussinessLog(value = "新增应用", key = "appName", dict = AppInfoMap.class)
     public ResponseData addItem(AppInfoParam appInfoParam) {
-        this.appInfoService.add(appInfoParam);
+        try {
+            appInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+            appInfoParam.setCreateTime(new Date());
+            this.appInfoService.add(appInfoParam);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseData.error("生成头像失败");
+        }
         return ResponseData.success();
     }
 

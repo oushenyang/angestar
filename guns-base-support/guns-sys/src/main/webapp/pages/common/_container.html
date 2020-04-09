@@ -26,6 +26,9 @@
         @if(array.contain(plugins,"ztree")){
         <link href="${ctxPath}/assets/expand/plugins/ztree/zTreeStyle.css?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
         @}
+        @if(array.contain(plugins,"animate")){
+        <link href="${ctxPath}/assets/expand/plugins/animate/animate.css?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
+        @}
     @}
 
     @/* 其他业务用的css */

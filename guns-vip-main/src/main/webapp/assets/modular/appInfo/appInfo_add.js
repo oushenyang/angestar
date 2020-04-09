@@ -41,8 +41,33 @@ var AppInfoInfoDlg = {
         updateTime: ""
     }
 };
+//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+layui.use('element', function(){
+    var element = layui.element;
+
+    //一些事件监听
+    element.on('tab(demo)', function(data){
+        console.log(data);
+    });
+});
 
 layui.use(['form', 'admin', 'ax'], function () {
+    //表单初始赋值
+    layui.form.val('appInfoForm', {
+        "codeBindNum": 1,
+        "codeBindTime": 0,
+        "accountBindNum": 1,
+        "accountBindTime": 0,
+        "codeOpenNum": 1,
+        "accountOpenNum": 1,
+        "codeTryTime": 0,
+        "accountRegisterNum": 1,
+        "accountRegisterTime": 0,
+        "webKey": _getRandomString(10),
+        "webSalt": _getRandomString(10),
+        "easyKey": _getRandomString(15),
+        "easySalt": _getRandomString(15)
+    });
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
@@ -66,5 +91,19 @@ layui.use(['form', 'admin', 'ax'], function () {
         });
         ajax.set(data.field);
         ajax.start();
+        //添加 return false 可成功跳转页面
+        return false;
     });
 });
+
+//生成随机字符串
+function _getRandomString(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
