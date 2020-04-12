@@ -48,5 +48,7 @@
     <sql id="Base_Column_List">
         app_id AS "appId", app_num AS "appNum", user_id AS "userId", app_name AS "appName", cydia_flag AS "cydiaFlag", app_notice AS "appNotice", custom_data1 AS "customData1", custom_data2 AS "customData2", custom_data3 AS "customData3", code_bind_type AS "codeBindType", code_bind_option AS "codeBindOption", code_bind_num AS "codeBindNum", code_bind_time AS "codeBindTime", account_bind_type AS "accountBindType", account_bind_option AS "accountBindOption", account_bind_num AS "accountBindNum", account_bind_time AS "accountBindTime", code_open_range AS "codeOpenRange", code_sign_type AS "codeSignType", code_open_num AS "codeOpenNum", account_open_range AS "accountOpenRange", account_sign_type AS "accountSignType", account_open_num AS "accountOpenNum", code_try_type AS "codeTryType", code_try_time AS "codeTryTime", account_register_switch AS "accountRegisterSwitch", account_register_limit AS "accountRegisterLimit", account_register_num AS "accountRegisterNum", account_register_time AS "accountRegisterTime", web_algorithm_type AS "webAlgorithmType", web_key AS "webKey", web_salt AS "webSalt", version_num AS "versionNum", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
-
+    <select id="findAppInfoList" resultType="cn.stylefeng.guns.modular.app.model.params.AppInfoParam">
+        select app_name, app_id from ag_app_info WHERE user_id = #{userId}
+    </select>
 </mapper>

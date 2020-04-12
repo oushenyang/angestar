@@ -1,0 +1,65 @@
+@layout("/common/_container.html",{js:["/assets/modular/appEdition/appEdition.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">版本表管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="appId" id="appId" lay-search="" lay-verify="required" required>
+                                    <option value="">所属软件</option>
+                                    @for(appInfo in appInfoParams) {
+                                    <option value="${appInfo.appId}"
+                                            @if(appId== appInfo.appId) {
+                                            selected="selected"
+                                            @}
+                                    >${appInfo.appName}
+                                    </option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="editionName" class="layui-input" type="text" placeholder="版本名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
+                                </button>
+                                <!--<button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="appEditionTable" lay-filter="appEditionTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+
+<script type="text/html" id="laytpl_emp_editionStatus">
+    {{# if(d.editionStatus == 0){ }}
+    <div><span class="label label-success">启用</span></div>
+    {{# } else if(d.editionStatus == 1){ }}
+    <div><span class="label label-danger">关闭</span></div>
+    {{# } else{ }}
+    <div><span class="label label-warning">测试</span></div>
+    {{# } }}
+</script>
+
+<script type="text/html" id="needUpdateTpl">
+    <input type="checkbox" lay-filter="needUpdate" value="{{d.editionId}}" lay-skin="switch" lay-text="开启|关闭"
+           {{d.needUpdate==1?'checked':''}}/>
+</script>
+@}

@@ -87,4 +87,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         return entity;
     }
 
+    @Override
+    public List<AppInfoParam> getAppInfoList(Long userId) {
+        return baseMapper.findAppInfoList(userId);
+    }
 }

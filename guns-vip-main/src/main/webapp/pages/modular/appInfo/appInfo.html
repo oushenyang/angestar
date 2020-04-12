@@ -4,13 +4,20 @@
     .application-list-item {
         background-color: #fff;
         border: 1px solid #e8e8e8;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
         transition: all .2s;
     }
 
     .application-list-item:hover {
         box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+        border-left-width: 3px!important;
+        border-left-color: #1E9FF2;
+        color: #1E9FF2!important;
+
+    }
+    .application-list-item .text-num-item-text:hover {
+        color: #1E9FF2!important;
     }
 
     .application-list-item .application-list-item-header {
@@ -137,6 +144,52 @@
         border-right: 3px solid #229053;
         border-top: 3px solid #229053
     }
+
+
+
+    .ribbon {
+        position: relative;
+        clear: both;
+        padding: 5px 12px;
+        margin-bottom: 15px;
+        box-shadow: 2px 5px 10px rgba(65, 77, 95, .15);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600
+    }
+
+    .ribbon:before {
+        content: " ";
+        border-style: solid;
+        border-width: 10px;
+        display: block;
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        margin-bottom: -10px;
+        z-index: -1
+    }
+
+    .ribbon-warning {
+        background: #229053
+    }
+
+    .ribbon-warning:before {
+        border-color: #229053 transparent transparent
+    }
+    .ribbon-warning:after {
+        border-color: #229053 transparent transparent
+    }
+
+    .float-right {
+        float: right!important;
+        margin-right: -10px;
+        border-radius: 3px 0 0 3px
+    }
+
+    .float-right:before {
+        right: 0
+    }
 </style>
 <div class="layui-body-header">
     <span class="layui-body-header-title">软件表管理</span>
@@ -185,17 +238,18 @@
 <!-- 应用模板 -->
 <script type="text/html" id="demoGridItem3">
     <div class="layui-col-md3">
-        <div class="ribbon-two ribbon-two-success"><span>Dark</span></div>
+<!--        <div class="ribbon-two ribbon-two-success"><span>100012</span></div>-->
+<!--        <div class="ribbon ribbon-warning float-right">编号：00012</div>-->
         <div class="application-list-item">
             <div class="application-list-item-header">
                 <img class="head" src="{{d.appHead}}"/>
-                <h2>{{d.appName}}</h2>
+                <h2><div class="text-num-item-text">{{d.appName}}</div></h2>
             </div>
             <div class="application-list-item-body">
                 <div class="text-num-item">
                     <div class="text-num-item-title">注册用户</div>
                     <!--                        {{d.activeNum}}-->
-                    20
+                    <div class="text-num-item-text">20</div>
 <!--                    <small>万</small>-->
                 </div>
                 <div class="text-num-item">

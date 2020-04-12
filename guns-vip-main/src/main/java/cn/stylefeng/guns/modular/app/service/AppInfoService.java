@@ -67,4 +67,13 @@ public interface AppInfoService extends IService<AppInfo> {
      */
      LayuiPageInfo findPageBySpec(AppInfoParam param);
 
+    /**
+     * 查找当前用户所有软件列表
+     *
+     * @param userId 用户id
+     * @author angedata
+     * @Date 2019-07-24
+     */
+    List<AppInfoParam> getAppInfoList(Long userId);
+
 }

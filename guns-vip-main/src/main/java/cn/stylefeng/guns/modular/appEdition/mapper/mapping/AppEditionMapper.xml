@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.appEdition.mapper.AppEditionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.appEdition.entity.AppEdition">
+        <id column="edition_id" property="editionId" />
+        <result column="edition_serial" property="editionSerial" />
+        <result column="app_id" property="appId" />
+        <result column="edition_name" property="editionName" />
+        <result column="edition_num" property="editionNum" />
+        <result column="edition_status" property="editionStatus" />
+        <result column="need_update" property="needUpdate" />
+        <result column="edition_md5" property="editionMd5" />
+        <result column="update_url" property="updateUrl" />
+        <result column="update_describe" property="updateDescribe" />
+        <result column="remark" property="remark" />
+        <result column="revision" property="revision" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ai.app_name AS "appName",ae.edition_id AS "editionId", ae.edition_serial AS "editionSerial", ae.app_id AS "appId", ae.edition_name AS "editionName", ae.edition_num AS "editionNum", ae.edition_status AS "editionStatus", ae.need_update AS "needUpdate", ae.edition_md5 AS "editionMd5", ae.update_url AS "updateUrl", ae.update_describe AS "updateDescribe", ae.remark AS "remark", ae.revision AS "revision", ae.create_user AS "createUser", ae.create_time AS "createTime", ae.update_user AS "updateUser", ae.update_time AS "updateTime"
+    </sql>
+    <select id="findAppEditions" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_app_edition ae
+        LEFT JOIN ag_app_info ai ON ai.app_id = ae.app_id
+        where ae.create_user = #{userId}
+        <if test="appId != null and appId !=''">
+            and ae.app_id = #{appId}
+        </if>
+        <if test="editionName != null and editionName !=''">
+            and ae.edition_name like CONCAT('%',#{editionName},'%')
+        </if>
+    </select>
+</mapper>

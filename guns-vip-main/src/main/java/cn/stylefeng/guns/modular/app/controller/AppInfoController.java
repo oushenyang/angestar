@@ -81,6 +81,7 @@ public class AppInfoController extends BaseController {
     @BussinessLog(value = "新增应用", key = "appName", dict = AppInfoMap.class)
     public ResponseData addItem(AppInfoParam appInfoParam) {
         try {
+            appInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
             appInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
             appInfoParam.setCreateTime(new Date());
             this.appInfoService.add(appInfoParam);
@@ -100,6 +101,8 @@ public class AppInfoController extends BaseController {
     @RequestMapping("/editItem")
     @ResponseBody
     public ResponseData editItem(AppInfoParam appInfoParam) {
+        appInfoParam.setUpdateUser(LoginContextHolder.getContext().getUserId());
+        appInfoParam.setUpdateTime(new Date());
         this.appInfoService.update(appInfoParam);
         return ResponseData.success();
     }
