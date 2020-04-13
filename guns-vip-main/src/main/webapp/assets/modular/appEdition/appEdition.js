@@ -1,9 +1,11 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var form = layui.form;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var notice = layui.notice;
+    var pearOper = layui.pearOper;
 
 
     /**
@@ -18,16 +20,16 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppEdition.initColumn = function () {
         return [[
-            {align: 'center',field: 'editionId',type: 'checkbox'},
-            {align: 'center',field: 'appName', sort: true, title: '所属软件'},
-            {align: 'center',field: 'editionSerial', sort: true, title: '版本编号'},
-            {align: 'center',field: 'editionName', sort: true, title: '版本名称'},
-            {align: 'center',field: 'editionNum', sort: true, title: '版本号'},
-            {align: 'center',field: 'editionStatus', sort: true, title: '状态',templet: '#laytpl_emp_editionStatus'},
-            {align: 'center',field: 'needUpdate', sort: true, title: '强制更新', templet: '#needUpdateTpl'},
-            {align: 'center',field: 'createTime', sort: true, title: '创建时间'},
-            {align: 'center',field: 'remark', sort: true, title: '备注'},
-            {align: 'center', toolbar: '#tableBar', title: '操作'}
+            {align: 'center', field: 'editionId', fixed: 'left', type: 'checkbox'},
+            {align: 'center', field: 'appName', fixed: 'left', title: '所属软件'},
+            // {align: 'center',field: 'editionSerial', sort: true, title: '版本编号'},
+            {align: 'center', field: 'editionName', sort: true, title: '版本名称'},
+            {align: 'center', field: 'editionNum', sort: true, title: '版本号'},
+            {align: 'center', field: 'editionStatus', sort: true, title: '状态', templet: '#laytpl_emp_editionStatus'},
+            {align: 'center', field: 'needUpdate', sort: true, title: '强制更新', templet: '#needUpdateTpl'},
+            {align: 'center', field: 'createTime', sort: true, title: '创建时间'},
+            // {align: 'center', field: 'remark', sort: true, title: '备注'},
+            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -104,6 +106,46 @@ layui.use(['table', 'admin', 'ax'], function () {
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
+
+        // pearOper.confirm({
+        //     title: "删除数据",
+        //     message: "确定要删除这些数据?",
+        //     success: function () {
+        //         console.log("确认")
+        //     },
+        //     cancle: function () {
+        //         console.log("取消");
+        //     }
+        // })
+    };
+
+    /**
+     * 批量删除
+     *
+     * @param obj 选择的行数据
+     */
+    AppEdition.batchRemove = function(obj){
+        let data = table.checkStatus(obj.config.id).data;
+        if(data.length === 0){
+            Feng.error("未选中数据!" );
+            return false;
+        }
+        let ids = "";
+        for(let i = 0;i<data.length;i++){
+            ids += data[i].editionId+",";
+        }
+        ids = ids.substr(0,ids.length-1);
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/appEdition/batchRemove", function (data) {
+                Feng.success("删除成功!");
+                table.reload(AppEdition.tableId);
+            }, function (data) {
+                Feng.error("删除失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("ids", ids);
+            ajax.start();
+        };
+        Feng.confirm("确定要删除这些数据?", operation);
     };
 
     /**
@@ -140,6 +182,12 @@ layui.use(['table', 'admin', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + AppEdition.tableId,
         url: Feng.ctxPath + '/appEdition/list',
+        toolbar: '#appEdition-toolbar',
+        defaultToolbar: [{
+            title:'刷新',
+            layEvent: 'refresh',
+            icon: 'layui-icon-refresh',
+        }, 'filter', 'print'],
         page: true,
         height: "full-158",
         cellMinWidth: 100,
@@ -157,14 +205,20 @@ layui.use(['table', 'admin', 'ax'], function () {
         AppEdition.search();
     });
 
-    // 添加按钮点击事件
-    $('#btnAdd').click(function () {
-        AppEdition.openAddDlg();
-    });
-
     // 导出excel
     $('#btnExp').click(function () {
         AppEdition.exportExcel();
+    });
+
+    table.on('toolbar(' + AppEdition.tableId + ')', function(obj){
+        //添加
+        if(obj.event === 'btnAdd'){
+            AppEdition.openAddDlg();
+        } else if(obj.event === 'refresh'){
+            table.reload(AppEdition.tableId);
+        } else if(obj.event === 'batchRemove'){
+            AppEdition.batchRemove(obj)
+        }
     });
 
     // 工具条点击事件

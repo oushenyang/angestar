@@ -126,6 +126,19 @@ public class AppEditionController extends BaseController {
     }
 
     /**
+     * 批量删除接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @RequestMapping("/batchRemove")
+    @ResponseBody
+    public ResponseData batchRemove(String ids) {
+        this.appEditionService.batchRemove(ids);
+        return ResponseData.success();
+    }
+
+    /**
      * 强制更新开关
      *
      * @author angedata

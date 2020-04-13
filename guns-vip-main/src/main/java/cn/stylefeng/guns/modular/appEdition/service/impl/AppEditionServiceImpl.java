@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,12 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     @Override
     public void delete(AppEditionParam param){
         this.removeById(getKey(param));
+    }
+
+    @Override
+    public void batchRemove(String ids){
+        List<String> idList = Arrays.asList(ids.split(","));
+        this.removeByIds(idList);
     }
 
     @Override

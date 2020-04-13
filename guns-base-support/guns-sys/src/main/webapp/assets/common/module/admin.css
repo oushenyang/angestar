@@ -5006,8 +5006,8 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 .theme-colorful .layui-select,
 .theme-colorful .layui-textarea,
 .theme-colorful xm-select {
-    height: 36px;
-    border-radius: 4px;
+    height: 38px;
+    border-radius: 2px;
 }
 
 .theme-colorful .layui-input:focus,

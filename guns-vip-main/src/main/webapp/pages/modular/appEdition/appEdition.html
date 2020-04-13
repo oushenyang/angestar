@@ -28,14 +28,17 @@
                                 <input id="editionName" class="layui-input" type="text" placeholder="版本名称"/>
                             </div>
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="btnClearSearch" class="layui-btn icon-btn layui-btn-primary">
+                                    <i class="layui-icon">&#x1006;</i>重置
                                 </button>
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
-                                </button>
-                                <!--<button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-body">
                     <table class="layui-table" id="appEditionTable" lay-filter="appEditionTable"></table>
                 </div>
             </div>
@@ -44,8 +47,8 @@
 </div>
 
 <script type="text/html" id="tableBar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+<a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+<a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
 </script>
 
 <script type="text/html" id="laytpl_emp_editionStatus">
@@ -56,6 +59,17 @@
     {{# } else{ }}
     <div><span class="label label-warning">测试</span></div>
     {{# } }}
+</script>
+
+<script type="text/html" id="appEdition-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </button>
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+        <i class="layui-icon layui-icon-delete"></i>
+        删除
+    </button>
 </script>
 
 <script type="text/html" id="needUpdateTpl">

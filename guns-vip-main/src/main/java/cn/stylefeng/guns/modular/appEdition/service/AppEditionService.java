@@ -37,6 +37,14 @@ public interface AppEditionService extends IService<AppEdition> {
     void delete(AppEditionParam param);
 
     /**
+     * 批量删除
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    void batchRemove(String ids);
+
+    /**
      * 更新
      *
      * @author shenyang.ou

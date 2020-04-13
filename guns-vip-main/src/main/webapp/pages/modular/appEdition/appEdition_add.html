@@ -6,7 +6,7 @@
         margin-right: 10px;
     }
 </style>
-<form id="appEditionForm" lay-filter="appEditionForm" class="layui-form layui-form-pane layui-row">
+<form id="appEditionForm" lay-filter="appEditionForm" class="layui-form layui-form-pane">
     <div class="layui-fluid" style="padding-bottom: 75px;">
         <input name="editionId" type="hidden"/>
         <div class="layui-form-item">
@@ -23,7 +23,7 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">版本名称<span style="color: red;">*</span></label>
-                <div class="layui-input-inline">
+                <div class="layui-input-block">
                     <input id="editionName" name="editionName" placeholder="请输入版本名称" type="text" class="layui-input"
                            lay-verify="required" required/>
                 </div>
@@ -36,13 +36,14 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="margin-top: 0px">
             <div class="layui-inline">
                 <label class="layui-form-label">版本状态<span style="color: red;">*</span></label>
-                <div class="layui-input-inline layui-input-inline-plus" style="width:auto">
+                <div class="layui-input-block layui-input-inline-plus"
+                     style="border: 1px solid #e6e6e6;width:auto;height: 36px;">
                     <input type="radio" class="layui-input" name="editionStatus" value="0" title="启用" checked="">
                     <input type="radio" class="layui-input" name="editionStatus" value="1" title="关闭">
-<!--                    <input type="radio" class="layui-input" name="editionStatus" value="2" title="测试">-->
+                    <input type="radio" class="layui-input" name="editionStatus" value="2" title="测试">
                 </div>
             </div>
             <div class="layui-inline">
@@ -53,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="margin-top: 0px">
             <label class="layui-form-label">更新URL</label>
             <div class="layui-input-block">
                 <input id="updateUrl" name="updateUrl" placeholder="请输入更新URL" type="text" class="layui-input"/>
@@ -62,15 +63,16 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">更新描述</label>
             <div class="layui-input-block">
-                <textarea id="updateDescribe" name="updateDescribe" placeholder="请输入更新描述" class="layui-textarea"></textarea>
+                <textarea id="updateDescribe" name="updateDescribe" placeholder="请输入更新描述"
+                          class="layui-textarea"></textarea>
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <textarea id="remark" name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>
-            </div>
-        </div>
+        <!--        <div class="layui-form-item layui-form-text">-->
+        <!--            <label class="layui-form-label">备注</label>-->
+        <!--            <div class="layui-input-block">-->
+        <!--                <textarea id="remark" name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
     <div class="form-group-bottom text-right">
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
