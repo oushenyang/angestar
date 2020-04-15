@@ -4,10 +4,13 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -25,7 +28,7 @@ public interface AppInfoService extends IService<AppInfo> {
      * @author shenyang.ou
      * @Date 2020-04-01
      */
-    void add(AppInfoParam param) throws IOException;
+    void add(AppInfoParam param);
 
     /**
      * 删除
@@ -57,7 +60,7 @@ public interface AppInfoService extends IService<AppInfo> {
      * @author shenyang.ou
      * @Date 2020-04-01
      */
-    List<AppInfoResult> findListBySpec(AppInfoParam param);
+    List<Map<String, Object>> findListBySpec(Page page,AppInfoParam param);
 
     /**
      * 查询分页数据，Specification模式

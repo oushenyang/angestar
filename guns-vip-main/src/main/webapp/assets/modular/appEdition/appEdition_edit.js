@@ -35,6 +35,14 @@ layui.use(['form', 'admin', 'ax'], function () {
     var result = ajax.start();
     form.val('appEditionForm', result.data);
 
+    form.verify({
+        digital: function (editionNum) {
+            if (editIsAlreadyAppEdition(editionNum)){
+                return '该版本号已存在';
+            }
+        }
+    });
+
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/appEdition/editItem", function (data) {
@@ -51,4 +59,16 @@ layui.use(['form', 'admin', 'ax'], function () {
         ajax.set(data.field);
         ajax.start();
     });
+
+    function editIsAlreadyAppEdition(editionNum) {
+        var result;
+        var ajax = new $ax(Feng.ctxPath + "/appEdition/editIsAlreadyAppEdition", function (data) {
+            result = data.data;
+        });
+        ajax.set("appId", $('#appId option:selected').val());
+        ajax.set("editionId", $('#editionId').val());
+        ajax.set("editionNum", editionNum);
+        ajax.start();
+        return result;
+    }
 });

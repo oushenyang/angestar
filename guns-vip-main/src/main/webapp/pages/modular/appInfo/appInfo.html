@@ -248,19 +248,20 @@
             <div class="application-list-item-body">
                 <div class="text-num-item">
                     <div class="text-num-item-title">注册用户</div>
-                    <!--                        {{d.activeNum}}-->
                     <div class="text-num-item-text">20</div>
 <!--                    <small>万</small>-->
                 </div>
                 <div class="text-num-item">
                     <div class="text-num-item-title">单码用户</div>
-                    <!--                    <div class="text-num-item-text">{{d.newNum}}</div>-->
                     <div class="text-num-item-text">60</div>
                 </div>
                 <div class="text-num-item">
                     <div class="text-num-item-title">最新版本</div>
-                    <!--                    <div class="text-num-item-text">{{d.newNum}}</div>-->
-                    <div class="text-num-item-text">1.0</div>
+                    {{# if(d.editionNum == null){ }}
+                    <div class="text-num-item-text">无</div>
+                    {{# } else{ }}
+                    <div class="text-num-item-text">{{d.editionNum}}</div>
+                    {{# } }}
                 </div>
             </div>
             <div class="application-list-item-tool">

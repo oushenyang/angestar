@@ -51,4 +51,18 @@
     <select id="findAppInfoList" resultType="cn.stylefeng.guns.modular.app.model.params.AppInfoParam">
         select app_name, app_id from ag_app_info WHERE user_id = #{userId}
     </select>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        ai.app_name AS appName,
+        ai.app_head AS appHead,
+        ae.edition_num AS editionNum,
+        ai.app_id AS appId
+        from ag_app_info ai
+        left join ag_app_edition ae on ae.edition_id = ai.version_num
+        <where>
+            <if test="param.userId != null and param.userId != ''">
+                ai.user_id = #{param.userId}
+            </if>
+        </where>
+    </select>
 </mapper>

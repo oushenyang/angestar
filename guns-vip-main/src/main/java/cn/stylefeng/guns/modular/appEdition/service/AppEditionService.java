@@ -29,6 +29,25 @@ public interface AppEditionService extends IService<AppEdition> {
     void add(AppEditionParam param);
 
     /**
+     * 新增判断版本号是否存在
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    boolean addIsAlreadyAppEdition(Long appId, String editionNum);
+
+    /**
+     * 编辑判断版本号是否存在
+     *
+     * @param appId 应用id
+     * @param editionId 版本id
+     * @param editionNum 版本号
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    boolean editIsAlreadyAppEdition(Long appId, Long editionId, String editionNum);
+
+    /**
      * 删除
      *
      * @author shenyang.ou
@@ -86,5 +105,4 @@ public interface AppEditionService extends IService<AppEdition> {
      * @return 版本列表
      */
     List<Map<String, Object>> getAppEditions(Page page, Long appId, String editionName, Long userId);
-
 }

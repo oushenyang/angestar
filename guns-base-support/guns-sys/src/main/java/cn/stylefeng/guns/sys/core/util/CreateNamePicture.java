@@ -13,6 +13,10 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /**
  * <p></p>
@@ -32,6 +36,28 @@ public class CreateNamePicture {
         generateImg(name);
     }
 
+    public static void aa(){
+        String regular="function regular(args1,args2,args3){return args1}";
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+        try {
+            engine.eval(regular);
+            if (engine instanceof Invocable) {
+                Invocable invoke = (Invocable) engine;
+                String result = (String) invoke.invokeFunction(
+                        "regular",
+                        1,
+                        1,
+                        1);
+                System.out.println(result);
+            } else {
+                System.out.println("error");
+            }
+        } catch (ScriptException | NoSuchMethodException e) {
+            System.out.println(e.getMessage());
+        }
+
+}
+
 
     /**
      * 绘制字体头像
@@ -44,6 +70,7 @@ public class CreateNamePicture {
             throws IOException {
         int width = 100;
         int height = 100;
+        name = name.substring(0, 1);
         int nameLen = name.length();
         String nameWritten;
         // 如果用户输入的姓名少于等于2个字符，不用截取
@@ -77,28 +104,28 @@ public class CreateNamePicture {
 
         Font font = null;
         // 两个字及以上
-        if(nameWritten.length() >= 2) {
-            font = new Font("微软雅黑", Font.PLAIN, 30);
-            g2.setFont(font);
-
-            String firstWritten = nameWritten.substring(0, 1);
-            String secondWritten = nameWritten.substring(1, 2);
-
-            // 两个中文 如 张三
-            if (isChinese(firstWritten) && isChinese(secondWritten)) {
-                g2.drawString(nameWritten, 20, 60);
-            }
-            // 首中次英 如 张S
-            else if (isChinese(firstWritten) && !isChinese(secondWritten)) {
-                g2.drawString(nameWritten, 27, 60);
-
-            }
-            // 首英,如 ZS
-            else {
-                nameWritten = nameWritten.substring(0,1);
-            }
-
-        }
+//        if(nameWritten.length() >= 2) {
+//            font = new Font("微软雅黑", Font.PLAIN, 30);
+//            g2.setFont(font);
+//
+//            String firstWritten = nameWritten.substring(0, 1);
+//            String secondWritten = nameWritten.substring(1, 2);
+//
+//            // 两个中文 如 张三
+//            if (isChinese(firstWritten) && isChinese(secondWritten)) {
+//                g2.drawString(nameWritten, 20, 60);
+//            }
+//            // 首中次英 如 张S
+//            else if (isChinese(firstWritten) && !isChinese(secondWritten)) {
+//                g2.drawString(nameWritten, 27, 60);
+//
+//            }
+//            // 首英,如 ZS
+//            else {
+//                nameWritten = nameWritten.substring(0,1);
+//            }
+//
+//        }
         // 一个字
         if(nameWritten.length() ==1) {
             // 中文

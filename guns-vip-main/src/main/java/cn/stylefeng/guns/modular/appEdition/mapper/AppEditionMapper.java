@@ -28,4 +28,14 @@ public interface AppEditionMapper extends BaseMapper<AppEdition> {
      */
     List<Map<String, Object>> findAppEditions(@Param("page")Page page, @Param("appId")Long appId, @Param("editionName")String editionName, @Param("userId")Long userId);
 
+    /**
+     * 编辑判断版本号是否存在
+     *
+     * @param appId 应用id
+     * @param editionId 版本id
+     * @param editionNum 版本号
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    List<AppEdition> editIsAlreadyAppEdition(@Param("appId")Long appId, @Param("editionId")Long editionId, @Param("editionNum")String editionNum);
 }

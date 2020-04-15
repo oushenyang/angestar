@@ -100,6 +100,19 @@ public class AppEditionController extends BaseController {
     }
 
     /**
+     * 新增判断版本号是否存在接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @RequestMapping("/addIsAlreadyAppEdition")
+    @ResponseBody
+    public ResponseData addIsAlreadyAppEdition(Long appId,String editionNum) {
+        boolean isAlready = this.appEditionService.addIsAlreadyAppEdition(appId,editionNum);
+        return ResponseData.success(isAlready);
+    }
+
+    /**
      * 编辑接口
      *
      * @author shenyang.ou
@@ -110,6 +123,19 @@ public class AppEditionController extends BaseController {
     public ResponseData editItem(AppEditionParam appEditionParam) {
         this.appEditionService.update(appEditionParam);
         return ResponseData.success();
+    }
+
+    /**
+     * 编辑判断版本号是否存在接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @RequestMapping("/editIsAlreadyAppEdition")
+    @ResponseBody
+    public ResponseData editIsAlreadyAppEdition(Long appId,Long editionId,String editionNum) {
+        boolean isAlready = this.appEditionService.editIsAlreadyAppEdition(appId,editionId,editionNum);
+        return ResponseData.success(isAlready);
     }
 
     /**
@@ -180,12 +206,9 @@ public class AppEditionController extends BaseController {
     public LayuiPageInfo list(AppEditionParam appEditionParam) {
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
-
         //根据条件查询操作日志
         List<Map<String, Object>> result = appEditionService.getAppEditions(page, appEditionParam.getAppId(), appEditionParam.getEditionName(),LoginContextHolder.getContext().getUserId());
-
         page.setRecords(result);
-
         return LayuiPageFactory.createPageInfo(page);
     }
 

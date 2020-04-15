@@ -110,7 +110,18 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     /**
      * 租户相关的异常
      */
-    NO_TENANT_ERROR(1901, "没有相关租户");
+    NO_TENANT_ERROR(1901, "没有相关租户"),
+
+    /**
+     * 应用相关的异常
+     */
+    ADD_HEAD_ERROR(400, "生成应用头像失败"),
+
+    /**
+     * 应用版本相关的异常
+     */
+    ALREADY_APPEDITION_ERROR(400, "已经存在该版本号"),
+    UPDATE_APPEDITION_ERROR(400, "应用更新版本号失败");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;

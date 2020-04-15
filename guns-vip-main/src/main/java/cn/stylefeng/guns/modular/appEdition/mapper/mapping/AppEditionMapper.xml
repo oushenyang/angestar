@@ -39,4 +39,12 @@
             and ae.edition_name like CONCAT('%',#{editionName},'%')
         </if>
     </select>
+    <select id="editIsAlreadyAppEdition" resultType="cn.stylefeng.guns.modular.appEdition.entity.AppEdition">
+        select
+        ae.*
+        from ag_app_edition ae
+        where ae.app_id = #{appId}
+        and ae.edition_num = #{editionNum}
+        and ae.edition_id != #{editionId}
+    </select>
 </mapper>

@@ -9,15 +9,21 @@ import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HEAD_ERROR;
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
 
 /**
  * <p>
@@ -31,11 +37,17 @@ import java.util.List;
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
 
     @Override
-    public void add(AppInfoParam param) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public void add(AppInfoParam param){
         AppInfo entity = getEntity(param);
         //生成应用头像
-        entity.setAppHead(CreateNamePicture.generateImg(entity.getAppName()));
+        try {
+            entity.setAppHead(CreateNamePicture.generateImg(entity.getAppName()));
+        } catch (IOException e) {
+            throw new ServiceException(ADD_HEAD_ERROR);
+        }
         this.save(entity);
+        param.setAppId(entity.getAppId());
     }
 
     @Override
@@ -57,8 +69,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
-    public List<AppInfoResult> findListBySpec(AppInfoParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page,AppInfoParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

@@ -2,22 +2,31 @@ package cn.stylefeng.guns.modular.appEdition.service.impl;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
+import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.appEdition.entity.AppEdition;
 import cn.stylefeng.guns.modular.appEdition.mapper.AppEditionMapper;
 import cn.stylefeng.guns.modular.appEdition.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.appEdition.model.result.AppEditionResult;
 import  cn.stylefeng.guns.modular.appEdition.service.AppEditionService;
+import cn.stylefeng.guns.sys.modular.consts.entity.SysConfig;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
 
 /**
  * <p>
@@ -29,11 +38,80 @@ import java.util.Map;
  */
 @Service
 public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdition> implements AppEditionService {
+    @Autowired
+    private AppInfoService appInfoService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void add(AppEditionParam param){
         AppEdition entity = getEntity(param);
         this.save(entity);
+        //更新应用最新版本id
+        if (!updateAppEditionId(param.getAppId())){
+            throw new ServiceException(UPDATE_APPEDITION_ERROR);
+        }
+    }
+
+    /**
+     * 判断版本号是否存在
+     *
+     * @param appId
+     * @param editionNum
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @Override
+    public boolean addIsAlreadyAppEdition(Long appId, String editionNum) {
+        AppEdition appEdition = new AppEdition();
+        appEdition.setEditionNum(editionNum);
+        appEdition.setAppId(appId);
+        List<AppEdition> list = this.list(new QueryWrapper<>(appEdition));
+        if (list != null && list.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 编辑判断版本号是否存在
+     *
+     * @param appId 应用id
+     * @param editionId 版本id
+     * @param editionNum 版本号
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @Override
+    public boolean editIsAlreadyAppEdition(Long appId, Long editionId, String editionNum) {
+        List<AppEdition> appEditions = baseMapper.editIsAlreadyAppEdition(appId,editionId,editionNum);
+        if (appEditions != null && appEditions.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 更新软件版本号为最新
+     * @param appId
+     * @return
+     */
+    public boolean updateAppEditionId(Long appId){
+        AppEdition appEdition = new AppEdition();
+        appEdition.setAppId(appId);
+        appEdition.setEditionStatus(0);
+        List<AppEdition> list = this.list(new QueryWrapper<>(appEdition));
+        float num = 0;
+        Long editionId = 0l;
+        for (AppEdition appEdition1 : list){
+            if (Float.parseFloat(appEdition1.getEditionNum())>num){
+                num = Float.parseFloat(appEdition1.getEditionNum());
+                editionId = appEdition1.getEditionId();
+            }
+        }
+        AppInfo appInfo = new AppInfo();
+        appInfo.setAppId(appId);
+        appInfo.setVersionNum(editionId);
+        return appInfoService.updateById(appInfo);
     }
 
     @Override
@@ -53,6 +131,10 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         AppEdition newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
+        //更新应用最新版本id
+        if (!updateAppEditionId(param.getAppId())){
+            throw new ServiceException(UPDATE_APPEDITION_ERROR);
+        }
     }
 
     @Override
