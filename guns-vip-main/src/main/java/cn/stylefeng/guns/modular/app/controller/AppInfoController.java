@@ -14,6 +14,7 @@ import cn.stylefeng.guns.modular.appEdition.service.AppEditionService;
 import cn.stylefeng.guns.sys.core.constant.dictmap.NoticeMap;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -129,6 +130,9 @@ public class AppInfoController extends BaseController {
     @ResponseBody
     public ResponseData delete(AppInfoParam appInfoParam) {
         this.appInfoService.delete(appInfoParam);
+        AppEdition appEdition = new AppEdition();
+        appEdition.setAppId(appInfoParam.getAppId());
+        appEditionService.remove(new QueryWrapper<>(appEdition));
         return ResponseData.success();
     }
 
