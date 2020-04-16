@@ -1,13 +1,13 @@
-package cn.stylefeng.guns.modular.appEdition.controller;
+package cn.stylefeng.guns.modular.app.controller;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.appEdition.entity.AppEdition;
-import cn.stylefeng.guns.modular.appEdition.model.params.AppEditionParam;
-import cn.stylefeng.guns.modular.appEdition.service.AppEditionService;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
+import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
+import cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -16,6 +16,7 @@ import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -159,6 +160,7 @@ public class AppEditionController extends BaseController {
      */
     @RequestMapping("/batchRemove")
     @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
     public ResponseData batchRemove(String ids) {
         this.appEditionService.batchRemove(ids);
         return ResponseData.success();

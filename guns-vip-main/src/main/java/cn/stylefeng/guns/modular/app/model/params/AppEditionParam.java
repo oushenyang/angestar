@@ -1,9 +1,9 @@
-package cn.stylefeng.guns.modular.appEdition.model.result;
+package cn.stylefeng.guns.modular.app.model.params;
 
 import lombok.Data;
+import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @since 2020-04-12
  */
 @Data
-public class AppEditionResult implements Serializable {
+public class AppEditionParam implements Serializable, BaseValidatingParam {
 
     private static final long serialVersionUID = 1L;
 
@@ -98,5 +98,10 @@ public class AppEditionResult implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    @Override
+    public String checkParam() {
+        return null;
+    }
 
 }

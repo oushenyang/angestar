@@ -1,16 +1,14 @@
-package cn.stylefeng.guns.modular.appEdition.service.impl;
+package cn.stylefeng.guns.modular.app.service.impl;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
-import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.appEdition.entity.AppEdition;
-import cn.stylefeng.guns.modular.appEdition.mapper.AppEditionMapper;
-import cn.stylefeng.guns.modular.appEdition.model.params.AppEditionParam;
-import cn.stylefeng.guns.modular.appEdition.model.result.AppEditionResult;
-import  cn.stylefeng.guns.modular.appEdition.service.AppEditionService;
-import cn.stylefeng.guns.sys.modular.consts.entity.SysConfig;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
+import cn.stylefeng.guns.modular.app.mapper.AppEditionMapper;
+import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
+import cn.stylefeng.guns.modular.app.model.result.AppEditionResult;
+import  cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -115,8 +113,13 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(AppEditionParam param){
         this.removeById(getKey(param));
+        //更新应用最新版本id
+        if (!updateAppEditionId(param.getAppId())){
+            throw new ServiceException(UPDATE_APPEDITION_ERROR);
+        }
     }
 
     @Override

@@ -103,6 +103,7 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("editionId", data.editionId);
+            ajax.set("appId", data.appId);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);

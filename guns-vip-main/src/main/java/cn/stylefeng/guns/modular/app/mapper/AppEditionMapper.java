@@ -1,6 +1,6 @@
-package cn.stylefeng.guns.modular.appEdition.mapper;
+package cn.stylefeng.guns.modular.app.mapper;
 
-import cn.stylefeng.guns.modular.appEdition.entity.AppEdition;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;

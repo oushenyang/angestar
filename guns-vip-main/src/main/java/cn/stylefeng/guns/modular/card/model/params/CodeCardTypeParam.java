@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.modular.appEdition.model.params;
+package cn.stylefeng.guns.modular.card.model.params;
 
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
@@ -8,72 +8,67 @@ import java.math.BigDecimal;
 
 /**
  * <p>
- * 应用版本表 
+ * 单码卡类列表 
  * </p>
  *
  * @author shenyang.ou
- * @since 2020-04-12
+ * @since 2020-04-16
  */
 @Data
-public class AppEditionParam implements Serializable, BaseValidatingParam {
+public class CodeCardTypeParam implements Serializable, BaseValidatingParam {
 
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * 版本id
+     * 卡类Id
      */
-    private Long editionId;
+    private Long cardTypeId;
 
     /**
-     * 版本编号
-     */
-    private String editionSerial;
-
-    /**
-     * 软件id
+     * 所属软件
      */
     private Long appId;
 
     /**
-     * 版本名称
+     * 卡类名称
      */
-    private String editionName;
+    private String cardTypeName;
 
     /**
-     * 版本号
+     * 卡类时间类型
      */
-    private String editionNum;
+    private Integer cardTimeType;
 
     /**
-     * 版本状态 0-启用；1-关闭；2-测试；
+     * 卡值
      */
-    private Integer editionStatus;
+    private Integer cardTypeData;
 
     /**
-     * 强制更新 0-否；1-是；
+     * 卡密前缀
      */
-    private Boolean needUpdate;
+    private String cardTypePrefix;
 
     /**
-     * 版本MD5
+     * 卡密规则 0-字母+数字；1-字母；2-数字
      */
-    private String editionMd5;
+    private String cardTypeRule;
 
     /**
-     * 更新地址
+     * 卡密长度 0-32位；1-16位；2-8位；
      */
-    private String updateUrl;
+    private String cardTypeLength;
 
     /**
-     * 更新描述
+     * 售价
      */
-    private String updateDescribe;
+    private BigDecimal cardTypePrice;
 
     /**
-     * 备注
+     * 代理售价
      */
-    private String remark;
+    private BigDecimal cardTypeAgentPrice;
 
     /**
      * 乐观锁

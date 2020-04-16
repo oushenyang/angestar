@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.stylefeng.guns.modular.appEdition.mapper.AppEditionMapper">
+<mapper namespace="cn.stylefeng.guns.modular.app.mapper.AppEditionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.appEdition.entity.AppEdition">
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.app.entity.AppEdition">
         <id column="edition_id" property="editionId" />
         <result column="edition_serial" property="editionSerial" />
         <result column="app_id" property="appId" />
@@ -39,7 +39,7 @@
             and ae.edition_name like CONCAT('%',#{editionName},'%')
         </if>
     </select>
-    <select id="editIsAlreadyAppEdition" resultType="cn.stylefeng.guns.modular.appEdition.entity.AppEdition">
+    <select id="editIsAlreadyAppEdition" resultType="cn.stylefeng.guns.modular.app.entity.AppEdition">
         select
         ae.*
         from ag_app_edition ae

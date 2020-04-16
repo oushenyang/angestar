@@ -1,9 +1,9 @@
-package cn.stylefeng.guns.modular.appEdition.service;
+package cn.stylefeng.guns.modular.app.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.appEdition.entity.AppEdition;
-import cn.stylefeng.guns.modular.appEdition.model.params.AppEditionParam;
-import cn.stylefeng.guns.modular.appEdition.model.result.AppEditionResult;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
+import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
+import cn.stylefeng.guns.modular.app.model.result.AppEditionResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 

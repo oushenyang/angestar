@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.modular.appEdition.entity;
+package cn.stylefeng.guns.modular.app.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
