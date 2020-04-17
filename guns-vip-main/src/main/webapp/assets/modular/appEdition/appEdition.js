@@ -21,11 +21,11 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
     AppEdition.initColumn = function () {
         return [[
             {align: 'center', field: 'editionId', fixed: 'left', type: 'checkbox'},
-            {align: 'center', field: 'appName', fixed: 'left', title: '所属软件'},
+            {align: 'center', field: 'appName', fixed: 'left', title: '所属应用'},
             // {align: 'center',field: 'editionSerial', sort: true, title: '版本编号'},
             {align: 'center', field: 'editionNum', sort: true, title: '版本号'},
             {align: 'center', field: 'editionName', sort: true, title: '版本名称'},
-            {align: 'center', field: 'editionStatus', sort: true, title: '状态', templet: '#laytpl_emp_editionStatus'},
+            {align: 'center', field: 'editionStatus', sort: true, title: '状态', templet: '#editionStatusTpl'},
             {align: 'center', field: 'needUpdate', sort: true, title: '强制更新', templet: '#needUpdateTpl'},
             {align: 'center', field: 'createTime', sort: true, title: '创建时间'},
             // {align: 'center', field: 'remark', sort: true, title: '备注'},
@@ -192,6 +192,7 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         page: true,
         height: "full-158",
         cellMinWidth: 100,
+        skin: 'line',
         cols: AppEdition.initColumn()
     });
 

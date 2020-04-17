@@ -23,7 +23,39 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        card_type_id AS "cardTypeId", app_id AS "appId", card_type_name AS "cardTypeName", card_time_type AS "cardTimeType", card_type_data AS "cardTypeData", card_type_prefix AS "cardTypePrefix", card_type_rule AS "cardTypeRule", card_type_length AS "cardTypeLength", card_type_price AS "cardTypePrice", card_type_agent_price AS "cardTypeAgentPrice", revision AS "revision", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS appName,
+        cct.card_type_id AS "cardTypeId",
+        cct.app_id AS "appId",
+        cct.card_type_name AS "cardTypeName",
+        cct.card_time_type AS "cardTimeType",
+        cct.card_type_data AS "cardTypeData",
+        cct.card_type_prefix AS "cardTypePrefix",
+        cct.card_type_rule AS "cardTypeRule",
+        cct.card_type_length AS "cardTypeLength",
+        cct.card_type_price AS "cardTypePrice",
+        cct.card_type_agent_price AS "cardTypeAgentPrice",
+        cct.revision AS "revision",
+        cct.create_user AS "createUser",
+        cct.create_time AS "createTime",
+        cct.update_user AS "updateUser",
+        cct.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_code_card_type cct
+        left join ag_app_info ai on ai.app_id = cct.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and cct.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and cct.app_id = #{param.appId}
+            </if>
+            <if test="param.cardTypeName != null and param.cardTypeName !=''">
+                and cct.card_type_name like CONCAT('%',#{param.cardTypeName},'%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -15,7 +15,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -40,6 +42,12 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     @Override
+    public void batchRemove(String ids){
+        List<String> idList = Arrays.asList(ids.split(","));
+        this.removeByIds(idList);
+    }
+
+    @Override
     public void update(CodeCardTypeParam param){
         CodeCardType oldEntity = getOldEntity(param);
         CodeCardType newEntity = getEntity(param);
@@ -53,8 +61,8 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     @Override
-    public List<CodeCardTypeResult> findListBySpec(CodeCardTypeParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page,CodeCardTypeParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

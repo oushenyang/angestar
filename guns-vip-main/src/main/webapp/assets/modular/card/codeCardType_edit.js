@@ -20,7 +20,7 @@ var CodeCardTypeInfoDlg = {
     }
 };
 
-layui.use(['form', 'admin', 'ax'], function () {
+layui.use(['form','formX','admin', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;

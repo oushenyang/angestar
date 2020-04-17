@@ -41,7 +41,7 @@ public class CodeCardType implements Serializable {
     private String cardTypeName;
 
     /**
-     * 卡类时间类型
+     * 卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-季；6-年
      */
     @TableField("card_time_type")
     private Integer cardTimeType;
@@ -59,16 +59,16 @@ public class CodeCardType implements Serializable {
     private String cardTypePrefix;
 
     /**
-     * 卡密规则 0-字母+数字；1-字母；2-数字
+     * 卡密规则 0-大写字母+数字；1-小写字母+数字；2-全大写字母；3-全小写字母；4-全数字；
      */
     @TableField("card_type_rule")
-    private String cardTypeRule;
+    private Integer cardTypeRule;
 
     /**
      * 卡密长度 0-32位；1-16位；2-8位；
      */
     @TableField("card_type_length")
-    private String cardTypeLength;
+    private Integer cardTypeLength;
 
     /**
      * 售价
@@ -161,19 +161,19 @@ public class CodeCardType implements Serializable {
         this.cardTypePrefix = cardTypePrefix;
     }
 
-    public String getCardTypeRule() {
+    public Integer getCardTypeRule() {
         return cardTypeRule;
     }
 
-    public void setCardTypeRule(String cardTypeRule) {
+    public void setCardTypeRule(Integer cardTypeRule) {
         this.cardTypeRule = cardTypeRule;
     }
 
-    public String getCardTypeLength() {
+    public Integer getCardTypeLength() {
         return cardTypeLength;
     }
 
-    public void setCardTypeLength(String cardTypeLength) {
+    public void setCardTypeLength(Integer cardTypeLength) {
         this.cardTypeLength = cardTypeLength;
     }
 

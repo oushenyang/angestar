@@ -50,14 +50,14 @@ public class CodeCardTypeResult implements Serializable {
     private String cardTypePrefix;
 
     /**
-     * 卡密规则 0-字母+数字；1-字母；2-数字
+     * 卡密规则 0-大写字母+数字；1-小写字母+数字；2-全大写字母；3-全小写字母；4-全数字；
      */
-    private String cardTypeRule;
+    private Integer cardTypeRule;
 
     /**
-     * 卡密长度 0-32位；1-16位；2-8位；
+     * 卡密长度
      */
-    private String cardTypeLength;
+    private Integer cardTypeLength;
 
     /**
      * 售价

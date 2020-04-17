@@ -13,7 +13,7 @@
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <select name="appId" id="appId" lay-search="" lay-verify="required" required>
-                                    <option value="">所属软件</option>
+                                    <option value="">所属应用</option>
                                     @for(appInfo in appInfoParams) {
                                     <option value="${appInfo.appId}"
                                             @if(appId== appInfo.appId) {
@@ -29,7 +29,7 @@
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-                                <button id="btnClearSearch" class="layui-btn icon-btn layui-btn-primary">
+                                <button id="btnRetSet" type="reset" class="layui-btn icon-btn layui-btn-primary">
                                     <i class="layui-icon">&#x1006;</i>重置
                                 </button>
                             </div>
@@ -51,7 +51,7 @@
 <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
 </script>
 
-<script type="text/html" id="laytpl_emp_editionStatus">
+<script type="text/html" id="editionStatusTpl">
     {{# if(d.editionStatus == 0){ }}
     <div><span class="label label-success">启用</span></div>
     {{# } else if(d.editionStatus == 1){ }}

@@ -1,7 +1,13 @@
 package cn.stylefeng.guns.modular.card.mapper;
 
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
+import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +19,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
 
+    List<Map<String, Object>> findListBySpec(@Param("page")Page page, @Param("param")CodeCardTypeParam param);
 }
