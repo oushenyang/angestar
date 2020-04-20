@@ -9,14 +9,19 @@ import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.modular.system.entity.Sql;
+import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,6 +45,9 @@ public class CardInfoController extends BaseController {
 
     @Autowired
     private CodeCardTypeService codeCardTypeService;
+
+    @Autowired
+    private SqlService SqlService;
 
     /**
      * 跳转到主页面
@@ -172,7 +180,8 @@ public class CardInfoController extends BaseController {
     @RequestMapping("/addCardTypeByAppId")
     @ResponseBody
     public ResponseData addCardTypeByAppId(Long appId) {
-        List<CodeCardType> codeCardTypes = codeCardTypeService.addCardTypeByAppId(appId,LoginContextHolder.getContext().getUserId());
+        List<Sql> sqls = SqlService.listSqlsByCode("CARD_TYPE");
+        List<CodeCardType> codeCardTypes = codeCardTypeService.addCardTypeBySql(sqls,appId);
         return ResponseData.success(codeCardTypes);
     }
 

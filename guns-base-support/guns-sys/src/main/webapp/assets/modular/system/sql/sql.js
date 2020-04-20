@@ -51,7 +51,7 @@ layui.use(['ax', 'treeTable', 'func'], function () {
      */
     Sql.openAddDlg = function () {
         func.open({
-            height: 650,
+            area: '700px',
             title: '添加sql',
             content: Feng.ctxPath + '/sql/add?sqlTypeId=' + $("#sqlTypeId").val(),
             tableId: Sql.tableId,
@@ -68,7 +68,7 @@ layui.use(['ax', 'treeTable', 'func'], function () {
      */
     Sql.openEditDlg = function (data) {
         func.open({
-            height: 650,
+            area: '700px',
             title: '修改sql',
             content: Feng.ctxPath + '/sql/edit?sqlId=' + data.sqlId,
             tableId: Sql.tableId,

@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
+import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -86,9 +87,8 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
 
     /**
      * 根据应用id创建卡类信息
-     * @param appId 应用id
-     * @param userId 用户id
+     * @param sqls sql
      * @return 卡类信息
      */
-    List<CodeCardType> addCardTypeByAppId(Long appId, Long userId);
+    List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId);
 }

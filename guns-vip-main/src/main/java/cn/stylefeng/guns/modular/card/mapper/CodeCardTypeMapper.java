@@ -28,4 +28,6 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
      * @return 卡类信息
      */
     List<CodeCardType> findCardTypeByAppId(@Param("appId")Long appId,@Param("userId")Long userId);
+
+    void addCardTypeBySql(@Param("sqlStr") String sqlStr);
 }

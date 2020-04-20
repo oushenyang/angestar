@@ -64,7 +64,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
                     }, function (data) {
                         Feng.error("创建失败!" + data.responseJSON.message + "!");
                     });
-                    ajax.set("ids", ids);
+                    ajax.set('appId',appId);
                     ajax.start();
                 };
                 Feng.confirm("该应用下还未创建卡密类型，是否初始化卡密类型数据?", operation);

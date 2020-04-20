@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
@@ -7,17 +8,21 @@ import cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
 import  cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
 
 /**
  * <p>
@@ -106,13 +111,29 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     /**
      * 根据应用id创建卡类信息
      *
-     * @param appId  应用id
-     * @param userId 用户id
+     * @param sqls  sql
      * @return 卡类信息
      */
     @Override
-    public List<CodeCardType> addCardTypeByAppId(Long appId, Long userId) {
-        return null;
+    public List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId) {
+        List<CodeCardType> codeCardTypes = new ArrayList<>();
+        for (Sql sql : sqls){
+            Long cardTypeId = IdWorker.getId();
+            String sqlStr = StringUtils.replace(sql.getDescription(),"#{cardTypeId}","'"+ cardTypeId +"'");
+            sqlStr = StringUtils.replace(sqlStr,"#{appId}","'"+appId+"'");
+            sqlStr = StringUtils.replace(sqlStr,"#{createUser}","'"+ LoginContextHolder.getContext().getUserId()+"'");
+            sqlStr = StringUtils.replace(sqlStr,"#{createTime}","'"+ new Date() +"'");
+            try{
+                baseMapper.addCardTypeBySql(sqlStr);
+                CodeCardType codeCardType = new CodeCardType();
+                codeCardType.setCardTypeId(cardTypeId);
+                codeCardType.setCardTypeName(sql.getName());
+                codeCardTypes.add(codeCardType);
+            }catch (Exception e){
+                throw new ServiceException(UPDATE_APPEDITION_ERROR);
+            }
+        }
+        return codeCardTypes;
     }
 
 }

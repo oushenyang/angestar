@@ -40,7 +40,7 @@ public class SqlTypeResult implements Serializable {
     private String name;
 
     /**
-     * sql描述
+     * sql语句
      */
     private String description;
 

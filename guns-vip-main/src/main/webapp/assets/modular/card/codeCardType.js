@@ -186,6 +186,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         }, 'filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
+        skin: 'line',
         cols: CodeCardType.initColumn()
     });
 

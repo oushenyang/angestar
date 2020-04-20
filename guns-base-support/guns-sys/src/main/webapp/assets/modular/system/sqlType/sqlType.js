@@ -1,4 +1,4 @@
-layui.use(['table', 'ax', 'func'], function () {
+layui.use(['table','ax', 'func'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
@@ -39,7 +39,7 @@ layui.use(['table', 'ax', 'func'], function () {
                     }
                 }
             },
-            {field: 'description', align: "center", sort: true, title: 'sql描述'},
+            {field: 'description', align: "center", sort: true, title: 'sql语句'},
             {
                 field: 'status', sort: true, align: "center", title: '状态', templet: function (d) {
                     if (d.status === 'ENABLE') {
@@ -143,6 +143,8 @@ layui.use(['table', 'ax', 'func'], function () {
     table.on('tool(' + SqlType.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
+        console.log(obj)
+        console.log(data)
 
         if (layEvent === 'edit') {
             SqlType.openEditDlg(data);

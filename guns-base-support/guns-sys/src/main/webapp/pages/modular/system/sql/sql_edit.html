@@ -1,4 +1,4 @@
-@layout("/common/_form.html",{js:["/assets/modular/system/sql/sql_edit.js"]}){
+@layout("/common/_form.html",{plugins:["codemirror"],js:["/assets/modular/system/sql/sql_edit.js"]}){
 
 <form class="layui-form" id="sqlForm" lay-filter="sqlForm">
     <div class="layui-fluid" style="padding-bottom: 75px;">
@@ -40,9 +40,9 @@
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md12">
-                        <label class="layui-form-label">sql描述</label>
+                        <label class="layui-form-label">sql语句</label>
                         <div class="layui-input-block">
-                            <textarea id="description" name="description" placeholder="请输入sql描述" class="layui-textarea"></textarea>
+                            <textarea id="description" name="description" placeholder="请输入sql语句" class="layui-textarea"></textarea>
                         </div>
                     </div>
                 </div>

@@ -68,4 +68,8 @@
         cct.app_id = #{appId}
     </select>
 
+    <insert id="addCardTypeBySql">
+       ${sqlStr}
+    </insert>
+
 </mapper>

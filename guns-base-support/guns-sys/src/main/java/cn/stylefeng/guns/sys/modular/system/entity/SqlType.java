@@ -89,7 +89,7 @@ public class SqlType implements Serializable {
         return sqlTypeId;
     }
 
-    public void setSqlTypeId(Long dictTypeId) {
+    public void setSqlTypeId(Long sqlTypeId) {
         this.sqlTypeId = sqlTypeId;
     }
 

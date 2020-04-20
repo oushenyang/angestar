@@ -53,11 +53,11 @@
 
 <script type="text/html" id="editionStatusTpl">
     {{# if(d.editionStatus == 0){ }}
-    <div><span class="badge badge-pill badge-success">启用</span></div>
+    <span class="badge badge-pill badge-success">启用</span>
     {{# } else if(d.editionStatus == 1){ }}
-    <div><span class="label label-danger">关闭</span></div>
+    <span class="badge badge-pill badge-secondary">关闭</span>
     {{# } else{ }}
-    <div><span class="label label-warning">测试</span></div>
+    <span class="badge badge-pill badge-info">测试</span>
     {{# } }}
 </script>
 
