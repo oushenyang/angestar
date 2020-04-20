@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.card.mapper.CardInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.card.entity.CardInfo">
+        <id column="card_id" property="cardId" />
+        <result column="app_id" property="appId" />
+        <result column="card_type_id" property="cardTypeId" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="is_universal" property="isUniversal" />
+        <result column="card_code" property="cardCode" />
+        <result column="is_custom_time" property="isCustomTime" />
+        <result column="custom_time_num" property="customTimeNum" />
+        <result column="card_stutas" property="cardStutas" />
+        <result column="card_mac" property="cardMac" />
+        <result column="card_ip" property="cardIp" />
+        <result column="card_token" property="cardToken" />
+        <result column="active_time" property="activeTime" />
+        <result column="expire_time" property="expireTime" />
+        <result column="card_bind_type" property="cardBindType" />
+        <result column="card_open_range" property="cardOpenRange" />
+        <result column="card_open_num" property="cardOpenNum" />
+        <result column="card_remark" property="cardRemark" />
+        <result column="prohibit_remark" property="prohibitRemark" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        card_id AS "cardId", app_id AS "appId", card_type_id AS "cardTypeId", user_id AS "userId", user_name AS "userName", is_universal AS "isUniversal", card_code AS "cardCode", is_custom_time AS "isCustomTime", custom_time_num AS "customTimeNum", card_stutas AS "cardStutas", card_mac AS "cardMac", card_ip AS "cardIp", card_token AS "cardToken", active_time AS "activeTime", expire_time AS "expireTime", card_bind_type AS "cardBindType", card_open_range AS "cardOpenRange", card_open_num AS "cardOpenNum", card_remark AS "cardRemark", prohibit_remark AS "prohibitRemark", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>

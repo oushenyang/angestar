@@ -57,5 +57,15 @@
             </if>
         </where>
     </select>
+    <select id="findCardTypeByAppId" resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
+        select
+        cct.*
+        from ag_code_card_type cct
+        left join ag_app_info ai on ai.app_id = cct.app_id
+        where
+        cct.create_user = #{userId}
+        and
+        cct.app_id = #{appId}
+    </select>
 
 </mapper>

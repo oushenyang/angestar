@@ -1,0 +1,66 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_add.js"]}){
+<style>
+    .layui-form-select dl dd:nth-child(2) {
+        background-color: aliceblue;
+    }
+</style>
+<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form  model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="cardId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择应用<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" lay-search="" lay-verify="required" lay-filter="appId" lay-verType="tips" required>
+                    <option value="">请选择软件</option>
+                    <option value="0">通用卡密（对所有应用生效）</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="cardTypeId" lay-search="" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
+                    <option value="">请选择卡密类型</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义头</label>
+            <div class="layui-input-block">
+                <input id="isCustomTime1" name="isCustomTime1" placeholder="请输入自定义头" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="isCustomTime12" name="isCustomTime12" placeholder="请输入新增数量" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="isCustomTime" name="isCustomTime" placeholder="请输入是否自定义时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">时间值(天)<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="customTimeNum" name="customTimeNum" placeholder="请输入自定义时间值(天)" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">卡密备注</label>
+            <div class="layui-input-block">
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

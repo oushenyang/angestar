@@ -54,8 +54,10 @@ layui.use('element', function(){
 layui.use(['form', 'admin', 'ax'], function () {
     //表单初始赋值
     layui.form.val('appInfoForm', {
+        "codeBindOption":1,
         "codeBindNum": 1,
         "codeBindTime": 0,
+        "accountBindOption":1,
         "accountBindNum": 1,
         "accountBindTime": 0,
         "codeOpenNum": 1,

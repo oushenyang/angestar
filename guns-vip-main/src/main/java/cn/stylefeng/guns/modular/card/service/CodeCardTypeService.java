@@ -76,4 +76,19 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      */
      LayuiPageInfo findPageBySpec(CodeCardTypeParam param);
 
+    /**
+     * 根据应用id获取卡类信息
+     * @param appId 应用id
+     * @param userId 用户id
+     * @return 卡类信息
+     */
+    List<CodeCardType> getCardTypeByAppId(Long appId,Long userId);
+
+    /**
+     * 根据应用id创建卡类信息
+     * @param appId 应用id
+     * @param userId 用户id
+     * @return 卡类信息
+     */
+    List<CodeCardType> addCardTypeByAppId(Long appId, Long userId);
 }

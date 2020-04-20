@@ -1,0 +1,160 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_edit.js"]}){
+<style>
+    .layui-form-select dl dd:nth-child(2) {
+        background-color: aliceblue;
+    }
+</style>
+<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="cardId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择应用<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
+                    <option value="">请选择应用</option>
+                    <option value="0">通用卡密（对所有应用生效）</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡类ID<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardTypeId" name="cardTypeId" placeholder="请输入卡类ID" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请人ID<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="userId" name="userId" placeholder="请输入申请人ID" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请人名称<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="userName" name="userName" placeholder="请输入申请人名称" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否通用 0-否；1-是<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="isUniversal" name="isUniversal" placeholder="请输入是否通用 0-否；1-是" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardCode" name="cardCode" placeholder="请输入卡密" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否自定义时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="isCustomTime" name="isCustomTime" placeholder="请输入是否自定义时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义时间值(天)<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="customTimeNum" name="customTimeNum" placeholder="请输入自定义时间值(天)" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardStutas" name="cardStutas" placeholder="请输入状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">绑定mac<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardMac" name="cardMac" placeholder="请输入绑定mac" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">绑定ip<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardIp" name="cardIp" placeholder="请输入绑定ip" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密token<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardToken" name="cardToken" placeholder="请输入卡密token" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">激活时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="activeTime" name="activeTime" placeholder="请输入激活时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">过期时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="expireTime" name="expireTime" placeholder="请输入过期时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardBindType" name="cardBindType" placeholder="请输入绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">多开开关 0-默认；1-关闭；2-开启<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardOpenRange" name="cardOpenRange" placeholder="请输入多开开关 0-默认；1-关闭；2-开启" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardOpenNum" name="cardOpenNum" placeholder="请输入多开数量" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密备注<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">禁用备注<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="prohibitRemark" name="prohibitRemark" placeholder="请输入禁用备注" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createUser" name="createUser" placeholder="请输入创建人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createTime" name="createTime" placeholder="请输入创建时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateUser" name="updateUser" placeholder="请输入更新人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateTime" name="updateTime" placeholder="请输入更新时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

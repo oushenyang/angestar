@@ -1,4 +1,9 @@
 @layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/codeCardType_edit.js"]}){
+<style>
+    .layui-form-select dl dd:nth-child(2) {
+        background-color: aliceblue;
+    }
+</style>
 <form id="codeCardTypeForm" lay-filter="codeCardTypeForm" class="layui-form model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;">
         <input name="cardTypeId" type="hidden"/>
@@ -7,6 +12,7 @@
             <div class="layui-input-block">
                 <select name="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
                     <option value="">请选择软件</option>
+                    <option value="0">通用卡类（对所有应用生效）</option>
                     @for(appInfo in appInfoParams) {
                     <option value="${appInfo.appId}">${appInfo.appName}</option>
                     @}
