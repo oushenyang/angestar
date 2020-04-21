@@ -67,7 +67,7 @@ public class CardInfoResult implements Serializable {
     /**
      * 状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除
      */
-    private Integer cardStutas;
+    private Integer cardStatus;
 
     /**
      * 绑定mac

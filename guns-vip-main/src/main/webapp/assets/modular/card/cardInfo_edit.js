@@ -11,7 +11,7 @@ var CardInfoInfoDlg = {
         cardCode: "",
         isCustomTime: "",
         customTimeNum: "",
-        cardStutas: "",
+        cardStatus: "",
         cardMac: "",
         cardIp: "",
         cardToken: "",

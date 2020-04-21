@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.controller;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -14,6 +15,7 @@ import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -155,7 +158,13 @@ public class CardInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(CardInfoParam cardInfoParam) {
-        return this.cardInfoService.findPageBySpec(cardInfoParam);
+        //获取分页参数
+        Page page = LayuiPageFactory.defaultPage();
+        cardInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<Map<String, Object>> result = cardInfoService.findListBySpec(page, cardInfoParam);
+        page.setRecords(result);
+        return LayuiPageFactory.createPageInfo(page);
     }
 
     /**

@@ -34,6 +34,10 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    //表单初始赋值
+    layui.form.val('cardInfoForm', {
+        "addNum":1
+    });
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
@@ -67,7 +71,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
                     ajax.set('appId',appId);
                     ajax.start();
                 };
-                Feng.confirm("该应用下还未创建卡密类型，是否初始化卡密类型数据?", operation);
+                Feng.confirm("还未创建卡密类型，是否初始化卡密类型数据?", operation);
             }
         }, function (data) {
             Feng.error("获取卡类信息失败！" + data.responseJSON.message)
@@ -76,6 +80,21 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         ajax.start();
     });
 
+    // 是否自定义时间
+    form.on('switch(isCustomTime)', function (obj) {
+        var checked = obj.elem.checked ? true : false;
+        if(checked){
+            $("#customTimeNumDisplay").show();
+            $("#customTimeNumDisplay").attr("lay-verify","required|numberX|h5");
+            $("#customTimeNumDisplay").attr("lay-verType","tips");
+            form.render('input');
+        }else {
+            $("#customTimeNumDisplay").hide();
+            $("#customTimeNumDisplay").removeAttr("lay-verify");
+            $("#customTimeNumDisplay").removeAttr("lay-verType");
+            form.render('input');
+        }
+    });
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {

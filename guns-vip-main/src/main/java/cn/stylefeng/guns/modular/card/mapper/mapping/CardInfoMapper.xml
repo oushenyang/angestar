@@ -13,7 +13,7 @@
         <result column="card_code" property="cardCode" />
         <result column="is_custom_time" property="isCustomTime" />
         <result column="custom_time_num" property="customTimeNum" />
-        <result column="card_stutas" property="cardStutas" />
+        <result column="card_status" property="cardStatus" />
         <result column="card_mac" property="cardMac" />
         <result column="card_ip" property="cardIp" />
         <result column="card_token" property="cardToken" />
@@ -32,7 +32,50 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        card_id AS "cardId", app_id AS "appId", card_type_id AS "cardTypeId", user_id AS "userId", user_name AS "userName", is_universal AS "isUniversal", card_code AS "cardCode", is_custom_time AS "isCustomTime", custom_time_num AS "customTimeNum", card_stutas AS "cardStutas", card_mac AS "cardMac", card_ip AS "cardIp", card_token AS "cardToken", active_time AS "activeTime", expire_time AS "expireTime", card_bind_type AS "cardBindType", card_open_range AS "cardOpenRange", card_open_num AS "cardOpenNum", card_remark AS "cardRemark", prohibit_remark AS "prohibitRemark", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS appName,
+        cct.card_type_name AS cardTypeName,
+        cci.card_id AS "cardId",
+        cci.app_id AS "appId",
+        cci.card_type_id AS "cardTypeId",
+        cci.user_id AS "userId",
+        cci.user_name AS "userName",
+        cci.is_universal AS "isUniversal",
+        cci.card_code AS "cardCode",
+        cci.is_custom_time AS "isCustomTime",
+        cci.custom_time_num AS "customTimeNum",
+        cci.card_status AS "cardStatus",
+        cci.card_mac AS "cardMac",
+        cci.card_ip AS "cardIp",
+        cci.card_token AS "cardToken",
+        cci.active_time AS "activeTime",
+        cci.expire_time AS "expireTime",
+        cci.card_bind_type AS "cardBindType",
+        cci.card_open_range AS "cardOpenRange",
+        cci.card_open_num AS "cardOpenNum",
+        cci.card_remark AS "cardRemark",
+        cci.prohibit_remark AS "prohibitRemark",
+        cci.create_user AS "createUser",
+        cci.create_time AS "createTime",
+        cci.update_user AS "updateUser",
+        cci.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_card_info cci
+        left join ag_app_info ai on ai.app_id = cci.app_id
+        left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and cci.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and cci.app_id = #{param.appId}
+            </if>
+            <if test="param.cardCode != null and param.cardCode !=''">
+                and cci.card_code like CONCAT('%',#{param.cardCode},'%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

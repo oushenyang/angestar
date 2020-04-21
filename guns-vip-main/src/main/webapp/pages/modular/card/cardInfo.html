@@ -32,6 +32,20 @@
     </div>
 </div>
 
+<script type="text/html" id="cardStatusTpl">
+    {{# if(d.cardStatus == 0){ }}
+    <span class="badge badge-pill badge-secondary">未激活</span>
+    {{# } else if(d.cardStatus == 1){ }}
+    <span class="badge badge-pill badge-success">已激活</span>
+    {{# } else if(d.cardStatus == 2){ }}
+    <span class="badge badge-pill badge-warning">已过期</span>
+    {{# } else if(d.cardStatus == 3){ }}
+    <span class="badge badge-pill badge-danger">已禁用</span>
+    {{# } else if(d.cardStatus == 4){ }}
+    <span class="badge badge-pill badge-secondary">已删除</span>
+    {{# } }}
+</script>
+
 <script type="text/html" id="tableBar">
     <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
     <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>

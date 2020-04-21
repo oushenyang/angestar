@@ -121,7 +121,12 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 应用版本相关的异常
      */
     ALREADY_APPEDITION_ERROR(400, "已经存在该版本号"),
-    UPDATE_APPEDITION_ERROR(400, "应用更新版本号失败");
+    UPDATE_APPEDITION_ERROR(400, "应用更新版本号失败"),
+
+    /**
+     * 动态执行sql的异常
+     */
+    SQL_ERROR(400, "sql执行失败");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;

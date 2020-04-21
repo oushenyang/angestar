@@ -65,11 +65,11 @@
         where
         cct.create_user = #{userId}
         and
-        cct.app_id = #{appId}
+        cct.app_id = #{appId} or cct.app_id = 0
     </select>
 
-    <insert id="addCardTypeBySql">
+    <select id="addCardTypeBySql" resultType="java.lang.Void">
        ${sqlStr}
-    </insert>
+    </select >
 
 </mapper>

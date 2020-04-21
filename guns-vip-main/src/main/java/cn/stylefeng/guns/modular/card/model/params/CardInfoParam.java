@@ -56,6 +56,21 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     private String cardCode;
 
     /**
+     * 卡密前缀
+     */
+    private String cardTypePrefix;
+
+    /**
+     * 新增数量
+     */
+    private Integer addNum;
+
+    /**
+     * 是否生成后激活
+     */
+    private Boolean isActivation;
+
+    /**
      * 是否自定义时间
      */
     private Boolean isCustomTime;
@@ -68,7 +83,7 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     /**
      * 状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除
      */
-    private Integer cardStutas;
+    private Integer cardStatus;
 
     /**
      * 绑定mac

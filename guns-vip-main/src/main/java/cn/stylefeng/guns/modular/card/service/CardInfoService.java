@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -64,7 +66,7 @@ public interface CardInfoService extends IService<CardInfo> {
      * @author shenyang.ou
      * @Date 2020-04-20
      */
-    List<CardInfoResult> findListBySpec(CardInfoParam param);
+    List<Map<String, Object>> findListBySpec(Page page, CardInfoParam param);
 
     /**
      * 查询分页数据，Specification模式

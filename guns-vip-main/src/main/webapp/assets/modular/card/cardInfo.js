@@ -17,31 +17,35 @@ layui.use(['table', 'admin', 'ax'], function () {
     CardInfo.initColumn = function () {
         return [[
             // {type: 'checkbox'},
-            {align: 'center',field: 'cardId', fixed: 'left',type: 'checkbox'},
-            {align: 'center',field: 'appId', sort: true, title: '应用ID'},
-            {align: 'center',field: 'cardTypeId', sort: true, title: '卡类ID'},
+            {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
+            {
+                align: 'center', field: 'appName', fixed: 'left', title: '所属应用', templet: function (d) {
+                    if (!d.appName) {
+                        return '通用卡密';
+                    } else {
+                        return d.appName;
+                    }
+                }
+            },
+            {align: 'center', field: 'cardCode', fixed: 'left', title: '卡密'},
+            {align: 'center', field: 'cardTypeName', sort: true, title: '卡类'},
             // {align: 'center',field: 'userId', sort: true, title: '申请人ID'},
-            {align: 'center',field: 'userName', sort: true, title: '申请人名称'},
-            {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
-            {align: 'center',field: 'cardCode', sort: true, title: '卡密'},
+            {align: 'center', field: 'userName', title: '申请人名称'},
+            // {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
             // {align: 'center',field: 'isCustomTime', sort: true, title: '是否自定义时间'},
             // {align: 'center',field: 'customTimeNum', sort: true, title: '自定义时间值(天)'},
-            {align: 'center',field: 'cardStutas', sort: true, title: '状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除'},
+            {align: 'center', field: 'cardStatus', sort: true, title: '状态', templet: '#cardStatusTpl'},
             // {align: 'center',field: 'cardMac', sort: true, title: '绑定mac'},
             // {align: 'center',field: 'cardIp', sort: true, title: '绑定ip'},
             // {align: 'center',field: 'cardToken', sort: true, title: '卡密token'},
-            {align: 'center',field: 'activeTime', sort: true, title: '激活时间'},
-            {align: 'center',field: 'expireTime', sort: true, title: '过期时间'},
+            {align: 'center', field: 'activeTime', sort: true, title: '激活时间'},
+            {align: 'center', field: 'expireTime', sort: true, title: '过期时间'},
             // {align: 'center',field: 'cardBindType', sort: true, title: '绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；'},
             // {align: 'center',field: 'cardOpenRange', sort: true, title: '多开开关 0-默认；1-关闭；2-开启'},
             // {align: 'center',field: 'cardOpenNum', sort: true, title: '多开数量'},
-            {align: 'center',field: 'cardRemark', sort: true, title: '备注'},
+            {align: 'center', field: 'cardRemark', title: '备注'},
             // {align: 'center',field: 'prohibitRemark', sort: true, title: '禁用备注'},
-            {align: 'center',field: 'createUser', sort: true, title: '创建人'},
-            {align: 'center',field: 'createTime', sort: true, title: '创建时间'},
-            // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
-            // {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-            {align: 'center',align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -124,17 +128,17 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param obj 选择的行数据
      */
-    CardInfo.batchRemove = function(obj){
+    CardInfo.batchRemove = function (obj) {
         let data = table.checkStatus(obj.config.id).data;
-        if(data.length === 0){
-            Feng.error("未选中数据!" );
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
             return false;
         }
         let ids = "";
-        for(let i = 0;i<data.length;i++){
-            ids += data[i].cardId+",";
+        for (let i = 0; i < data.length; i++) {
+            ids += data[i].cardId + ",";
         }
-        ids = ids.substr(0,ids.length-1);
+        ids = ids.substr(0, ids.length - 1);
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/batchRemove", function (data) {
                 Feng.success("删除成功!");
@@ -154,11 +158,11 @@ layui.use(['table', 'admin', 'ax'], function () {
         url: Feng.ctxPath + '/cardInfo/list',
         page: true,
         toolbar: '#' + CardInfo.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
+        defaultToolbar: [{
+            title: '刷新',
+            layEvent: 'refresh',
+            icon: 'layui-icon-refresh',
+        }, 'filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
         cols: CardInfo.initColumn()
@@ -180,13 +184,13 @@ layui.use(['table', 'admin', 'ax'], function () {
     });
 
     // 表头工具条点击事件
-    table.on('toolbar(' + CardInfo.tableId + ')', function(obj){
+    table.on('toolbar(' + CardInfo.tableId + ')', function (obj) {
         //添加
-        if(obj.event === 'btnAdd'){
+        if (obj.event === 'btnAdd') {
             CardInfo.openAddDlg();
-        } else if(obj.event === 'refresh'){
+        } else if (obj.event === 'refresh') {
             table.reload(CardInfo.tableId);
-        } else if(obj.event === 'batchRemove'){
+        } else if (obj.event === 'batchRemove') {
             CardInfo.batchRemove(obj)
         }
     });

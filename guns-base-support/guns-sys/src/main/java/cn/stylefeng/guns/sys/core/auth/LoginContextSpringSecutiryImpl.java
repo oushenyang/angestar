@@ -58,6 +58,11 @@ public class LoginContextSpringSecutiryImpl implements LoginContext {
     }
 
     @Override
+    public String getUserName() {
+        return getUser().getName();
+    }
+
+    @Override
     public boolean hasRole(String roleName) {
         return getUser().getRoleTips().contains(roleName);
     }

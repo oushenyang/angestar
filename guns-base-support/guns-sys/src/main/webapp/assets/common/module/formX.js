@@ -22,7 +22,8 @@ layui.define(['form'], function (exports) {
         minlength: '最少输入{minlength}个字符',
         maxlength: '最多输入{maxlength}个字符',
         min: '值不能小于{min}',
-        max: '值不能大于{max}'
+        max: '值不能大于{max}',
+        china: '不能输入中文'
     };
 
     /** 扩展验证规则 */
@@ -114,6 +115,13 @@ layui.define(['form'], function (exports) {
             var reg = /^-[1-9]\d*|0/;
             if (value && !reg.test(value)) {
                 return verifyText.digitsNZ;
+            }
+        },
+        /* 非中文 */
+        noChina: function (value, item) {
+            var reg = /[\u4e00-\u9fa5]/g;
+            if (value && reg.test(value)) {
+                return verifyText.china;
             }
         },
         /* h5 */

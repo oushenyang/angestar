@@ -1,22 +1,31 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CardInfoMapper;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,11 +37,33 @@ import java.util.List;
  */
 @Service
 public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> implements CardInfoService {
+    @Autowired
+    public CodeCardTypeService codeCardTypeService;
 
     @Override
     public void add(CardInfoParam param){
-        CardInfo entity = getEntity(param);
-        this.save(entity);
+        //通用应用
+        if (param.getAppId()==0){
+            param.setIsUniversal(true);
+        }
+        param.setUserId(LoginContextHolder.getContext().getUserId());
+        param.setUserName(LoginContextHolder.getContext().getUserName());
+        param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+//        if (param.getIsCustomTime()){
+//            param.setCardTypeId(0L);
+//        }
+        List<CardInfo> cardInfos = new ArrayList<>();
+        CodeCardType codeCardType = codeCardTypeService.getById(param.getCardTypeId());
+        if (StringUtils.isNotEmpty(param.getCardTypePrefix())){
+            codeCardType.setCardTypePrefix(param.getCardTypePrefix());
+        }
+        for (int i=0; i<param.getAddNum(); i++){
+            String card = CardStringRandom.create(codeCardType.getCardTypePrefix(),codeCardType.getCardTypeRule(),codeCardType.getCardTypeLength());
+            param.setCardCode(card);
+            CardInfo entity = getEntity(param);
+            cardInfos.add(entity);
+        }
+        this.saveBatch(cardInfos);
     }
 
     @Override
@@ -60,8 +91,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     }
 
     @Override
-    public List<CardInfoResult> findListBySpec(CardInfoParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page, CardInfoParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

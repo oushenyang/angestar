@@ -78,8 +78,8 @@ public class CardInfo implements Serializable {
     /**
      * 状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除
      */
-    @TableField("card_stutas")
-    private Integer cardStutas;
+    @TableField("card_Status")
+    private Integer cardStatus;
 
     /**
      * 绑定mac
@@ -238,12 +238,12 @@ public class CardInfo implements Serializable {
         this.customTimeNum = customTimeNum;
     }
 
-    public Integer getCardStutas() {
-        return cardStutas;
+    public Integer getCardStatus() {
+        return cardStatus;
     }
 
-    public void setCardStutas(Integer cardStutas) {
-        this.cardStutas = cardStutas;
+    public void setCardStatus(Integer cardStatus) {
+        this.cardStatus = cardStatus;
     }
 
     public String getCardMac() {
@@ -370,7 +370,7 @@ public class CardInfo implements Serializable {
         ", cardCode=" + cardCode +
         ", isCustomTime=" + isCustomTime +
         ", customTimeNum=" + customTimeNum +
-        ", cardStutas=" + cardStutas +
+        ", cardStatus=" + cardStatus +
         ", cardMac=" + cardMac +
         ", cardIp=" + cardIp +
         ", cardToken=" + cardToken +

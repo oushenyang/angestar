@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.node.MenuNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
@@ -19,9 +20,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.*;
 
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.SQL_ERROR;
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
 
 /**
@@ -114,23 +117,26 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
      * @param sqls  sql
      * @return 卡类信息
      */
+    @Transactional
     @Override
     public List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId) {
         List<CodeCardType> codeCardTypes = new ArrayList<>();
         for (Sql sql : sqls){
             Long cardTypeId = IdWorker.getId();
-            String sqlStr = StringUtils.replace(sql.getDescription(),"#{cardTypeId}","'"+ cardTypeId +"'");
-            sqlStr = StringUtils.replace(sqlStr,"#{appId}","'"+appId+"'");
-            sqlStr = StringUtils.replace(sqlStr,"#{createUser}","'"+ LoginContextHolder.getContext().getUserId()+"'");
-            sqlStr = StringUtils.replace(sqlStr,"#{createTime}","'"+ new Date() +"'");
+            Map<String, Object> map = new HashMap<>();
+            map.put("sqlStr",sql.getDescription());
+            map.put("cardTypeId",cardTypeId);
+            map.put("appId",0L);
+            map.put("createUser",LoginContextHolder.getContext().getUserId());
+            map.put("createTime",new Date());
             try{
-                baseMapper.addCardTypeBySql(sqlStr);
+                baseMapper.addCardTypeBySql(map);
                 CodeCardType codeCardType = new CodeCardType();
                 codeCardType.setCardTypeId(cardTypeId);
                 codeCardType.setCardTypeName(sql.getName());
                 codeCardTypes.add(codeCardType);
             }catch (Exception e){
-                throw new ServiceException(UPDATE_APPEDITION_ERROR);
+                throw new ServiceException(SQL_ERROR);
             }
         }
         return codeCardTypes;

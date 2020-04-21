@@ -17,7 +17,15 @@ layui.use(['table', 'admin', 'ax'], function () {
     CodeCardType.initColumn = function () {
         return [[
             {field: 'cardTypeId', type: 'checkbox', fixed: 'left'},
-            {field: 'appName', fixed: 'left', title: '所属应用'},
+            {
+                field: 'appName', fixed: 'left', title: '所属应用', templet: function (d) {
+                    if (!d.appName){
+                        return '通用卡类';
+                    }else {
+                        return d.appName;
+                    }
+                }
+            },
             {field: 'cardTypeName', sort: true, title: '卡类名称'},
             {
                 field: 'cardTimeType', sort: true, title: '时间类型', templet: function (d) {

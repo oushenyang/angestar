@@ -4,7 +4,7 @@
         background-color: aliceblue;
     }
 </style>
-<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form  model-form">
+<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;">
         <input name="cardId" type="hidden"/>
         <div class="layui-form-item">
@@ -30,31 +30,39 @@
         <div class="layui-form-item">
             <label class="layui-form-label">自定义头</label>
             <div class="layui-input-block">
-                <input id="isCustomTime1" name="isCustomTime1" placeholder="请输入自定义头" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                <input id="cardTypePrefix" name="cardTypePrefix" placeholder="请输入自定义头" maxlength="5" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
             <div class="layui-input-block">
-                <input id="isCustomTime12" name="isCustomTime12" placeholder="请输入新增数量" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                <input id="addNum" name="addNum" placeholder="请输入新增数量" type="number" class="layui-input" min="1" max="200" lay-verify="required|numberX|h5" oninput="if(value>200)value=200;if(value<1)value=1" lay-verType="tips" required/>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">自定义时间<span style="color: red;">*</span></label>
-            <div class="layui-input-block">
-                <input id="isCustomTime" name="isCustomTime" placeholder="请输入是否自定义时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            <div class="layui-inline">
+                <label class="layui-form-label">自定义时间</label>
+                <div class="layui-input-inline" >
+                    <input id="isCustomTime" name="isCustomTime" type="checkbox"  lay-filter="isCustomTime" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline" id="customTimeNumDisplay" style="display: none">
+                <label class="layui-form-label">时间值(天)<span style="color: red;">*</span></label>
+                <div class="layui-input-inline">
+                    <input id="customTimeNum" name="customTimeNum" placeholder="请输入自定义时间值(天)" type="text" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">时间值(天)<span style="color: red;">*</span></label>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <label class="layui-form-label">生成后激活</label>
             <div class="layui-input-block">
-                <input id="customTimeNum" name="customTimeNum" placeholder="请输入自定义时间值(天)" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                <input id="isActivation" name="isActivation" type="checkbox"  lay-filter="isActivation" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
+        <div class="layui-form-item layui-form-text" >
             <label class="layui-form-label">卡密备注</label>
             <div class="layui-input-block">
-                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" class="layui-textarea"></textarea>
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128" class="layui-textarea"></textarea>
             </div>
         </div>
     </div>

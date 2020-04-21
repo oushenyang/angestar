@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,6 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
      */
     List<CodeCardType> findCardTypeByAppId(@Param("appId")Long appId,@Param("userId")Long userId);
 
-    void addCardTypeBySql(@Param("sqlStr") String sqlStr);
+    @Transactional
+    void addCardTypeBySql(Map map);
 }
