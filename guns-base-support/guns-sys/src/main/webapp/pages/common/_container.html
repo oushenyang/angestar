@@ -75,6 +75,9 @@ ${layoutContent}
     <script src="${ctxPath}/assets/expand/plugins/jquery/jquery-3.2.1.min.js?v=${constants.getReleaseVersion()}"></script>
     <script src="${ctxPath}/assets/expand/plugins/ztree/jquery.ztree.all.min.js?v=${constants.getReleaseVersion()}"></script>
     @}
+    @if(array.contain(plugins,"clipboard")){
+    <script src="${ctxPath}/assets/expand/plugins/jquery/clipboard.min.js"></script>
+    @}
 @}
 
 @if(isNotEmpty(js)){

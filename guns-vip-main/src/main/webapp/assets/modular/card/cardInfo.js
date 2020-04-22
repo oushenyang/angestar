@@ -1,10 +1,10 @@
-layui.use(['table', 'dropdown','admin', 'ax'], function () {
+layui.use(['table', 'dropdown','admin','ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var dropdown = layui.dropdown;
-
+    // var clipboard = layui.clipboard;
     /**
      * 卡密表管理
      */
@@ -12,6 +12,34 @@ layui.use(['table', 'dropdown','admin', 'ax'], function () {
         tableId: "cardInfoTable"
     };
 
+    // var clipboard = new ClipboardJS('.copyBtn');
+    // clipboard.on('success', function (e) {
+    //     alert('复制成功');
+    // });
+    // clipboard.on('error', function (e) {
+    //     alert('复制失败');
+    // });
+    CardInfo.copy = function (data) {
+        var cla = '.cardCode'+data.cardId;
+        // $(cla).attr('data-clipboard-text', data.cardCode);
+        // $('#copy').val(data.cardCode);
+        console.log(data.cardCode);
+        var clipboard = new ClipboardJS(cla,{
+            text:function () {
+                return data.cardCode;
+            }
+        });
+        clipboard.on('success', function (e) {
+            e.clearSelection();
+            Feng.success("已复制到粘贴板");
+            return false;
+        });
+        clipboard.on('error', function (e) {
+            e.clearSelection();
+            Feng.error("复制失败");
+            return false;
+        });
+    };
     /**
      * 初始化表格的列
      */
@@ -28,23 +56,23 @@ layui.use(['table', 'dropdown','admin', 'ax'], function () {
                     }
                 }
             },
-            {align: 'center', field: 'cardCode', fixed: 'left', title: '卡密'},
-            {align: 'center', field: 'cardTypeName', width: 100,sort: true, title: '卡类'},
+            {align: 'center', field: 'cardCode', width: 300, title: '卡密', templet:'#cardCodeTpl'},
+            {align: 'center', field: 'cardTypeName', sort: true, title: '卡类'},
             // {align: 'center',field: 'userId', sort: true, title: '申请人ID'},
             {align: 'center', field: 'userName', title: '申请人名称'},
             // {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
             // {align: 'center',field: 'isCustomTime', sort: true, title: '是否自定义时间'},
             // {align: 'center',field: 'customTimeNum', sort: true, title: '自定义时间值(天)'},
-            {align: 'center', field: 'cardStatus', width: 90, sort: true, title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus',  sort: true, title: '状态', templet: '#cardStatusTpl'},
             // {align: 'center',field: 'cardMac', sort: true, title: '绑定mac'},
             // {align: 'center',field: 'cardIp', sort: true, title: '绑定ip'},
             // {align: 'center',field: 'cardToken', sort: true, title: '卡密token'},
-            {align: 'center', field: 'activeTime', width: 170,sort: true, title: '激活时间'},
-            {align: 'center', field: 'expireTime', width: 170,sort: true, title: '过期时间'},
+            {align: 'center', field: 'activeTime', sort: true, title: '激活时间'},
+            {align: 'center', field: 'expireTime', sort: true, title: '过期时间'},
             // {align: 'center',field: 'cardBindType', sort: true, title: '绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；'},
             // {align: 'center',field: 'cardOpenRange', sort: true, title: '多开开关 0-默认；1-关闭；2-开启'},
             // {align: 'center',field: 'cardOpenNum', sort: true, title: '多开数量'},
-            {align: 'center', field: 'cardRemark',width: 90, title: '备注'},
+            {align: 'center', field: 'cardRemark',title: '备注'},
             // {align: 'center',field: 'prohibitRemark', sort: true, title: '禁用备注'},
             {align: 'center', toolbar: '#tableBar', width: 125, fixed: 'right', title: '操作'}
         ]];
@@ -204,6 +232,9 @@ layui.use(['table', 'dropdown','admin', 'ax'], function () {
             CardInfo.openEditDlg(data);
         } else if (layEvent === 'delete') {
             CardInfo.onDeleteItem(data);
+        }else if (layEvent === 'copy') {
+            console.log(obj)
+            CardInfo.copy(data)
         }
     });
 });

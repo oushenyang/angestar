@@ -1,10 +1,11 @@
-@layout("/common/_container.html",{js:["/assets/modular/card/cardInfo.js"]}){
+@layout("/common/_container.html",{plugins:["clipboard"],js:["/assets/modular/card/cardInfo.js"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">卡密表管理</span>
 </div>
 
 <div class="layui-fluid">
+    <button class="copy"></button>
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
             <div class="layui-card">
@@ -32,6 +33,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/html" id="cardCodeTpl">
+    <button class="cardCode{{d.cardId}}" style="border: 0;outline: none; background-color: transparent; color: blue; font-size: 13px!important;" lay-event="copy">{{d.cardCode}}</button>
+</script>
 
 <script type="text/html" id="cardStatusTpl">
     {{# if(d.cardStatus == 0){ }}
