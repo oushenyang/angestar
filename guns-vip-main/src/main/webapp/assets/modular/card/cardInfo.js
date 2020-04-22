@@ -20,7 +20,7 @@ layui.use(['table', 'dropdown','admin', 'ax'], function () {
             // {type: 'checkbox'},
             {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
             {
-                align: 'center', field: 'appName', fixed: 'left', title: '所属应用', templet: function (d) {
+                align: 'center', field: 'appName', fixed: 'left', width: 100,title: '所属应用', templet: function (d) {
                     if (!d.appName) {
                         return '通用卡密';
                     } else {
@@ -29,22 +29,22 @@ layui.use(['table', 'dropdown','admin', 'ax'], function () {
                 }
             },
             {align: 'center', field: 'cardCode', fixed: 'left', title: '卡密'},
-            {align: 'center', field: 'cardTypeName', sort: true, title: '卡类'},
+            {align: 'center', field: 'cardTypeName', width: 100,sort: true, title: '卡类'},
             // {align: 'center',field: 'userId', sort: true, title: '申请人ID'},
             {align: 'center', field: 'userName', title: '申请人名称'},
             // {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
             // {align: 'center',field: 'isCustomTime', sort: true, title: '是否自定义时间'},
             // {align: 'center',field: 'customTimeNum', sort: true, title: '自定义时间值(天)'},
-            {align: 'center', field: 'cardStatus', sort: true, title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus', width: 90, sort: true, title: '状态', templet: '#cardStatusTpl'},
             // {align: 'center',field: 'cardMac', sort: true, title: '绑定mac'},
             // {align: 'center',field: 'cardIp', sort: true, title: '绑定ip'},
             // {align: 'center',field: 'cardToken', sort: true, title: '卡密token'},
-            {align: 'center', field: 'activeTime', sort: true, title: '激活时间'},
-            {align: 'center', field: 'expireTime', sort: true, title: '过期时间'},
+            {align: 'center', field: 'activeTime', width: 170,sort: true, title: '激活时间'},
+            {align: 'center', field: 'expireTime', width: 170,sort: true, title: '过期时间'},
             // {align: 'center',field: 'cardBindType', sort: true, title: '绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；'},
             // {align: 'center',field: 'cardOpenRange', sort: true, title: '多开开关 0-默认；1-关闭；2-开启'},
             // {align: 'center',field: 'cardOpenNum', sort: true, title: '多开数量'},
-            {align: 'center', field: 'cardRemark', title: '备注'},
+            {align: 'center', field: 'cardRemark',width: 90, title: '备注'},
             // {align: 'center',field: 'prohibitRemark', sort: true, title: '禁用备注'},
             {align: 'center', toolbar: '#tableBar', width: 125, fixed: 'right', title: '操作'}
         ]];
