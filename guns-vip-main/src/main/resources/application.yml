@@ -19,6 +19,7 @@ spring:
     atomikos:
       properties:
         max-actives: -1
+        enable-logging: false
 
 mybatis-plus:
   mapper-locations: classpath*:cn/stylefeng/**/mapping/*.xml
