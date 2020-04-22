@@ -1,7 +1,7 @@
 /** Buttom 默认*/
 .pear-btn {
 	display: inline-block;
-	line-height: 30px;
+	line-height: 33px;
 	white-space: nowrap;
 	cursor: pointer;
 	background-color: #fff;
@@ -13,9 +13,17 @@
 	transition: 0.1s;
 	font-weight: 500;
 	padding: 0 18px;
-	height: 30px;
+	height: 33px;
 	font-size: 14px;
 	border-radius: 4px;
+}
+
+.fa-right {
+	margin-right: 5px;
+}
+
+.fa-left {
+	margin-left: 5px;
 }
 
 .pear-btn:hover {

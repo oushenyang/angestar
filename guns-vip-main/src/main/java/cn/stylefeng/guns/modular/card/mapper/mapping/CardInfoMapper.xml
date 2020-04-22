@@ -59,6 +59,50 @@
         cci.update_user AS "updateUser",
         cci.update_time AS "updateTime"
     </sql>
+    <insert id="saveCardBatch">
+        INSERT INTO `ag_card_info` (
+        `card_id`,
+        `app_id`,
+        `card_type_id`,
+        `user_id`,
+        `user_name`,
+        `is_universal`,
+        `card_code`,
+        `is_custom_time`,
+        `custom_time_num`,
+        `card_status`,
+        `active_time`,
+        `expire_time`,
+        `card_bind_type`,
+        `card_open_range`,
+        `card_open_num`,
+        `card_remark`,
+        `create_user`,
+        `create_time`
+        )
+        VALUES
+        <foreach collection ="cardInfos" item="cardInfo" separator =",">
+            (#{cardInfo.cardId},
+            #{cardInfo.appId},
+            #{cardInfo.cardTypeId},
+            #{cardInfo.userId},
+            #{cardInfo.userName},
+            #{cardInfo.isUniversal},
+            #{cardInfo.cardCode},
+            #{cardInfo.isCustomTime},
+            #{cardInfo.customTimeNum},
+            #{cardInfo.cardStatus},
+            #{cardInfo.activeTime},
+            #{cardInfo.expireTime},
+            #{cardInfo.cardBindType},
+            #{cardInfo.cardOpenRange},
+            #{cardInfo.cardOpenNum},
+            #{cardInfo.cardRemark},
+            #{cardInfo.createUser},
+            #{cardInfo.createTime}
+            )
+        </foreach >
+    </insert>
     <select id="findListBySpec" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>

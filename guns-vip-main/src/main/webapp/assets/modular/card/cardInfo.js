@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'dropdown','admin', 'ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var dropdown = layui.dropdown;
 
     /**
      * 卡密表管理
@@ -45,7 +46,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             // {align: 'center',field: 'cardOpenNum', sort: true, title: '多开数量'},
             {align: 'center', field: 'cardRemark', title: '备注'},
             // {align: 'center',field: 'prohibitRemark', sort: true, title: '禁用备注'},
-            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 125, fixed: 'right', title: '操作'}
         ]];
     };
 

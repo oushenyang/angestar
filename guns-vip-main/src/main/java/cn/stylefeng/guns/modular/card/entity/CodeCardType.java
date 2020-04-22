@@ -41,7 +41,7 @@ public class CodeCardType implements Serializable {
     private String cardTypeName;
 
     /**
-     * 卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-季；6-年
+     * 卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-年
      */
     @TableField("card_time_type")
     private Integer cardTimeType;

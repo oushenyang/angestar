@@ -20,4 +20,6 @@ import java.util.Map;
 public interface CardInfoMapper extends BaseMapper<CardInfo> {
 
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param")CardInfoParam param);
+
+    void saveCardBatch(@Param("cardInfos") List<CardInfo> cardInfos);
 }

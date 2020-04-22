@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -133,6 +134,20 @@ public class CardInfoController extends BaseController {
     @ResponseBody
     public ResponseData delete(CardInfoParam cardInfoParam) {
         this.cardInfoService.delete(cardInfoParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 批量删除接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/batchRemove")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseData batchRemove(String ids) {
+        this.cardInfoService.batchRemove(ids);
         return ResponseData.success();
     }
 

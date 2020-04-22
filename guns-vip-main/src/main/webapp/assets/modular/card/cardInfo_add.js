@@ -85,19 +85,22 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         var checked = obj.elem.checked ? true : false;
         if(checked){
             $("#customTimeNumDisplay").show();
-            $("#customTimeNumDisplay").attr("lay-verify","required|numberX|h5");
-            $("#customTimeNumDisplay").attr("lay-verType","tips");
-            form.render('input');
+            $("#customTimeNum").attr("lay-verify","required|numberX|h5");
+            $("#customTimeNum").attr("lay-verType","tips");
+            // form.render('customTimeNum');
         }else {
             $("#customTimeNumDisplay").hide();
-            $("#customTimeNumDisplay").removeAttr("lay-verify");
-            $("#customTimeNumDisplay").removeAttr("lay-verType");
-            form.render('input');
+            $("#customTimeNum").removeAttr("lay-verify");
+            $("#customTimeNum").removeAttr("lay-verType");
+            // form.render('customTimeNum');
         }
     });
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        data.field.hasOwnProperty('isCustomTime')?'': data.field.isCustomTime = 'off'; //true 值为on,false 值给赋off
+        data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off'; //true 值为on,false 值给赋off
+        console.log(data.field);
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (data) {
             Feng.success("添加成功！");
 
