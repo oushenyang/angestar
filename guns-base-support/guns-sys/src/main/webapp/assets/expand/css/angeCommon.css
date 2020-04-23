@@ -4,7 +4,7 @@
 /*.layui-input{height: 34px!important;line-height: 34px!important;border-radius: 3px!important;}*/
 .layui-form-label{width: 60px!important;padding-left: 0px!important;}
 .layui-table-tool-panel{margin-top:10px!important;}
-.layui-table-tool{background-color: white!important;border-bottom: none!important;padding-bottom: 10px!important;}
+.layui-table-tool{background-color: white!important;border-bottom: none!important;padding-bottom: 10px!important;padding-left:0px!important;padding-top:10px!important;}
 .layui-table-header, .layui-table-header th{background-color: white!important;border-bottom: 2px solid #dee2e6;border-top: 1px solid #dee2e6;font-size: 15px;font-weight: 800;}
 .layui-table-view{border: none!important;}
 .layui-table-cell{height: 34px!important;line-height: 34px!important;}
@@ -17,3 +17,4 @@
 .layui-table-page{height: 45px!important;padding-top: 10px!important;}
 .layui-table-tool .layui-inline{border-radius: 3px!important;width: 30px!important;height: 30px!important;line-height: 20px!important;}
 .layui-table-view .layui-table[lay-skin=line]{border: none!important;}
+.layui-table-tool-temp {padding-right: 40px!important;}

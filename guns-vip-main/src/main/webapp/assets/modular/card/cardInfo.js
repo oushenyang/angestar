@@ -187,11 +187,7 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
         url: Feng.ctxPath + '/cardInfo/list',
         page: true,
         toolbar: '#' + CardInfo.tableId + '-toolbar',
-        defaultToolbar: [{
-            title: '刷新',
-            layEvent: 'refresh',
-            icon: 'layui-icon-refresh',
-        }, 'filter', 'print'],
+        defaultToolbar: ['filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
         cols: CardInfo.initColumn()
