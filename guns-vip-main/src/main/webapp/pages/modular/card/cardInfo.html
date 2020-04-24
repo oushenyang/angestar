@@ -71,23 +71,24 @@
 <script type="text/html" id="cardInfoTable-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>新增
     </button>
-    <button class="pear-btn pear-btn-success pear-btn-md" lay-event="btnAdd"><i
+    <button class="pear-btn pear-btn-success pear-btn-md" lay-event="export"><i
             class="fa fa-right fa-share-square-o"></i>导出
     </button>
-    <button class="pear-btn pear-btn-success pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-download"></i>导入
+    <button class="pear-btn pear-btn-success pear-btn-md" lay-event="import"><i class="fa fa-right fa-download"></i>导入
     </button>
     <button class="pear-btn pear-btn-success pear-btn-md" data-dropdown="#dropUser" no-shade="true">
         批量操作<i class="fa fa-left fa-caret-down"></i></button>
     <!-- 下拉菜单 -->
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser">
         <div class="dropdown-anchor"></div>
-        <li><a lay-event="edit2"><i class="fa fa-right fa-ban fa-fw"></i>批量封禁</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-check-circle fa-fw"></i>批量解封</a></li>
-        <li><a lay-event="print2"><i class="fa fa-right fa-clock-o fa-fw"></i>批量加时</a></li>
-        <li><a lay-event="print2"><i class="fa fa-right fa-unlock fa-fw"></i>批量解绑</a></li>
-        <li><a lay-event="print2"><i class="fa fa-right fa-tag fa-fw"></i>修改备注</a></li>
+        <li><a lay-event="prohibition"><i class="fa fa-right fa-ban fa-fw"></i>批量封禁</a></li>
+        <li><a lay-event="unsealing"><i class="fa fa-right fa-check-circle fa-fw"></i>批量解封</a></li>
+        <li><a lay-event="overtime"><i class="fa fa-right fa-clock-o fa-fw"></i>批量加时</a></li>
+        <li><a lay-event="untying"><i class="fa fa-right fa-unlock fa-fw"></i>批量解绑</a></li>
+        <li><a lay-event="editRemark"><i class="fa fa-right fa-tag fa-fw"></i>修改备注</a></li>
+        <li><a lay-event="batchRemove" style="color: red"><i class="fa fa-right fa-trash-o fa-fw"></i>批量删除</a></li>
     </ul>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除
+<!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除-->
     </button>
 </script>
 @}

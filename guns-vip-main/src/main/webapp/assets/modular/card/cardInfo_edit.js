@@ -29,14 +29,23 @@ var CardInfoInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form','laydate','formX','admin', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var laydate = layui.laydate;
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
+
+    /* 渲染laydate */
+    laydate.render({
+        elem: '#formAdvDateSel1',
+        theme: 'grid',
+        position: 'fixed',
+        range: true
+    });
 
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/cardInfo/detail?cardId=" + Feng.getUrlParam("cardId"));

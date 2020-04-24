@@ -11,18 +11,8 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
     var CardInfo = {
         tableId: "cardInfoTable"
     };
-
-    // var clipboard = new ClipboardJS('.copyBtn');
-    // clipboard.on('success', function (e) {
-    //     alert('复制成功');
-    // });
-    // clipboard.on('error', function (e) {
-    //     alert('复制失败');
-    // });
     CardInfo.copy = function (data) {
         var cla = '.cardCode'+data.cardId;
-        // $(cla).attr('data-clipboard-text', data.cardCode);
-        // $('#copy').val(data.cardCode);
         console.log(data.cardCode);
         var clipboard = new ClipboardJS(cla,{
             text:function () {
