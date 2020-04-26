@@ -34,14 +34,15 @@ layui.use(['form','admin', 'ax'], function () {
     //         Feng.error("添加失败！" + data.responseJSON.message)
     //     });
     //     ajax.set("cards",Feng.getUrlParam("cards"));
-    //     ajax.start();
+    //     ajax.start();server
     //     return false;
     // });
 
     form.on('submit(exportSubmit)', function (data) {
         console.log(4444)
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/addExport?cards=" + Feng.getUrlParam("cards"));
-        ajax.start();
+        window.location.href=Feng.ctxPath + "/cardInfo/addExport?cards=" + Feng.getUrlParam("cards");
+        // var ajax = new $ax(Feng.ctxPath + "/cardInfo/addExport?cards=" + Feng.getUrlParam("cards"));
+        // ajax.start();
         return false;
     });
 });

@@ -1,6 +1,6 @@
 server:
   port: 8888
-  max-http-header-size: 10240
+  max-http-header-size: 102400
 
 beetl:
   resource-auto-check: true         #热加载beetl模板，开发时候用
