@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.card.controller;
 
+import cn.hutool.core.date.DateUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
@@ -10,9 +11,11 @@ import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,6 +27,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +89,31 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 新增结果导出页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/addResult")
+    public String addResult(Model model,String cards) {
+        List<String> cardList = Arrays.asList(cards.split(","));
+        model.addAttribute("cards", cardList);
+        return PREFIX + "/cardInfo_add_result.html";
+    }
+
+    /**
+     * 新增结果导出txt
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/addExport")
+    public void addExport(HttpServletResponse response,String cards) {
+        List<String> cardList = Arrays.asList(cards.split(","));
+        ExportTextUtil.writeToTxt(response,cardList, String.valueOf(DateUtil.date()));
+    }
+
+    /**
      * 编辑页面
      *
      * @author shenyang.ou
@@ -107,8 +137,8 @@ public class CardInfoController extends BaseController {
     @RequestMapping("/addItem")
     @ResponseBody
     public ResponseData addItem(CardInfoParam cardInfoParam) {
-        this.cardInfoService.add(cardInfoParam);
-        return ResponseData.success();
+        List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
+        return ResponseData.success(cardInfos);
     }
 
     /**

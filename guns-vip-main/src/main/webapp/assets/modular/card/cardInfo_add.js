@@ -100,15 +100,36 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     form.on('submit(btnSubmit)', function (data) {
         data.field.hasOwnProperty('isCustomTime')?'': data.field.isCustomTime = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off'; //true 值为on,false 值给赋off
-        console.log(data.field);
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (data) {
             Feng.success("添加成功！");
-
+            console.log(JSON.stringify(data.data));
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
-
             //关掉对话框
             admin.closeThisDialog();
+            // var html = '';
+            // top.layui.admin.open({
+            //     type: 1,
+            //     title: '卡密信息',
+            //     area: '500px',
+            //     content: $("#cardAddResultBar").html(),
+            //     success: function (layero, dIndex) {
+            //         var $content = $(layero).children('.layui-layer-content');
+            //         // $content.css('overflow', 'visible');
+            //         // admin.showLoading($content);
+            //     }
+            // });
+            let cards = "";
+            for (let i = 0; i < data.data.length; i++) {
+                cards += data.data[i] + ",";
+            }
+            top.layui.admin.open({
+                type: 2,
+                title: '结果导出',
+                area: '600px',
+                content: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards
+            });
+            return false;
         }, function (data) {
             Feng.error("添加失败！" + data.responseJSON.message)
         });

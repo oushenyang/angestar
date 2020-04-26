@@ -26,7 +26,7 @@ public interface CardInfoService extends IService<CardInfo> {
      * @author shenyang.ou
      * @Date 2020-04-20
      */
-    void add(CardInfoParam param);
+    List<String> add(CardInfoParam param);
 
     /**
      * 删除

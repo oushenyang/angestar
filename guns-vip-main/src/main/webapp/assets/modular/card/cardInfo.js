@@ -1,4 +1,4 @@
-layui.use(['table', 'dropdown','admin','ax'], function () {
+layui.use(['table', 'dropdown', 'admin', 'ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
@@ -12,10 +12,10 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
         tableId: "cardInfoTable"
     };
     CardInfo.copy = function (data) {
-        var cla = '.cardCode'+data.cardId;
+        var cla = '.cardCode' + data.cardId;
         console.log(data.cardCode);
-        var clipboard = new ClipboardJS(cla,{
-            text:function () {
+        var clipboard = new ClipboardJS(cla, {
+            text: function () {
                 return data.cardCode;
             }
         });
@@ -38,7 +38,7 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
             // {type: 'checkbox'},
             {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
             {
-                align: 'center', field: 'appName', fixed: 'left', width: 100,title: '所属应用', templet: function (d) {
+                align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用', templet: function (d) {
                     if (!d.appName) {
                         return '通用卡密';
                     } else {
@@ -46,14 +46,22 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
                     }
                 }
             },
-            {align: 'center', field: 'cardCode', width: 300, title: '卡密', templet:'#cardCodeTpl'},
-            {align: 'center', field: 'cardTypeName', sort: true, title: '卡类'},
+            {align: 'center', field: 'cardCode', width: 300, title: '卡密', templet: '#cardCodeTpl'},
+            {
+                align: 'center', field: 'cardTypeName', sort: true, title: '卡类', templet: function (d) {
+                    if (!d.cardTypeName) {
+                        return '自定义';
+                    } else {
+                        return d.cardTypeName;
+                    }
+                }
+            },
             // {align: 'center',field: 'userId', sort: true, title: '申请人ID'},
             {align: 'center', field: 'userName', title: '申请人名称'},
             // {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
             // {align: 'center',field: 'isCustomTime', sort: true, title: '是否自定义时间'},
             // {align: 'center',field: 'customTimeNum', sort: true, title: '自定义时间值(天)'},
-            {align: 'center', field: 'cardStatus',  sort: true, title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus', sort: true, title: '状态', templet: '#cardStatusTpl'},
             // {align: 'center',field: 'cardMac', sort: true, title: '绑定mac'},
             // {align: 'center',field: 'cardIp', sort: true, title: '绑定ip'},
             // {align: 'center',field: 'cardToken', sort: true, title: '卡密token'},
@@ -62,7 +70,7 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
             // {align: 'center',field: 'cardBindType', sort: true, title: '绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；'},
             // {align: 'center',field: 'cardOpenRange', sort: true, title: '多开开关 0-默认；1-关闭；2-开启'},
             // {align: 'center',field: 'cardOpenNum', sort: true, title: '多开数量'},
-            {align: 'center', field: 'cardRemark',title: '备注'},
+            {align: 'center', field: 'cardRemark', title: '备注'},
             // {align: 'center',field: 'prohibitRemark', sort: true, title: '禁用备注'},
             {align: 'center', toolbar: '#tableBar', width: 125, fixed: 'right', title: '操作'}
         ]];
@@ -218,7 +226,7 @@ layui.use(['table', 'dropdown','admin','ax'], function () {
             CardInfo.openEditDlg(data);
         } else if (layEvent === 'delete') {
             CardInfo.onDeleteItem(data);
-        }else if (layEvent === 'copy') {
+        } else if (layEvent === 'copy') {
             console.log(obj)
             CardInfo.copy(data)
         }

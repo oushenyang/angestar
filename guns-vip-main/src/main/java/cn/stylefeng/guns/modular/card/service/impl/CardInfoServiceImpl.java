@@ -44,7 +44,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     public CodeCardTypeService codeCardTypeService;
 
     @Override
-    public void add(CardInfoParam param){
+    public  List<String> add(CardInfoParam param){
         //通用应用
         if (param.getAppId()==0){
             param.setIsUniversal(true);
@@ -57,6 +57,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
         List<CardInfo> cardInfos = new ArrayList<>();
+        List<String> cards = new ArrayList<>();
         //获取卡类信息
         CodeCardType codeCardType = codeCardTypeService.getById(param.getCardTypeId());
         //自定义时间
@@ -88,9 +89,11 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             param.setCardCode(card);
             CardInfo entity = getEntity(param);
             cardInfos.add(entity);
+            cards.add(card);
         }
 //        this.saveBatch(cardInfos);
         baseMapper.saveCardBatch(cardInfos);
+        return cards;
     }
 
     @Override
