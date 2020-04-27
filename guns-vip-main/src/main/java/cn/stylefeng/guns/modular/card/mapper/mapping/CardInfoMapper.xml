@@ -116,6 +116,9 @@
             <if test="param.appId != null and param.appId !=''">
                 and cci.app_id = #{param.appId}
             </if>
+            <if test="param.cardTypeId != null and param.cardTypeId !=''">
+                and cci.card_type_id = #{param.cardTypeId}
+            </if>
             <if test="param.cardCode != null and param.cardCode !=''">
                 and cci.card_code like CONCAT('%',#{param.cardCode},'%')
             </if>

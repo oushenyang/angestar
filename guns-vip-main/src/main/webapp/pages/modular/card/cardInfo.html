@@ -3,7 +3,6 @@
 <div class="layui-body-header">
     <span class="layui-body-header-title">卡密表管理</span>
 </div>
-
 <div class="layui-fluid">
     <button class="copy"></button>
     <div class="layui-row layui-col-space15">
@@ -13,7 +12,29 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                                <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                    <option value="">所属应用</option>
+                                    <option value="0">通用卡密（对所有应用生效）</option>
+                                    @for(appInfo in appInfoParams) {
+                                    <option value="${appInfo.appId}"
+                                            @if(appId== appInfo.appId) {
+                                            selected="selected"
+                                            @}
+                                    >${appInfo.appName}
+                                    </option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
+                                    <option value="">卡密类型</option>
+                                    @for(codeCardType in codeCardTypes) {
+                                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="cardCode" class="layui-input" type="text" placeholder="卡密"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
@@ -33,9 +54,11 @@
         </div>
     </div>
 </div>
-
 <script type="text/html" id="cardCodeTpl">
-    <button class="cardCode{{d.cardId}}" style="border: 0;outline: none; background-color: transparent; color: blue; font-size: 13px!important;" lay-event="copy">{{d.cardCode}}</button>
+    <button class="cardCode{{d.cardId}}"
+            style="border: 0;outline: none; background-color: transparent; color: blue; font-size: 13px!important;"
+            lay-event="copy">{{d.cardCode}}
+    </button>
 </script>
 
 <script type="text/html" id="cardStatusTpl">
@@ -88,7 +111,7 @@
         <li><a lay-event="editRemark"><i class="fa fa-right fa-tag fa-fw"></i>修改备注</a></li>
         <li><a lay-event="batchRemove" style="color: red"><i class="fa fa-right fa-trash-o fa-fw"></i>批量删除</a></li>
     </ul>
-<!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除-->
+    <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除-->
     </button>
 </script>
 @}

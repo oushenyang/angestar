@@ -35,6 +35,12 @@ public class CodeCardType implements Serializable {
     private Long appId;
 
     /**
+     * 软件名称
+     */
+    @TableField(exist = false)
+    private String appName;
+
+    /**
      * 卡类名称
      */
     @TableField("card_type_name")
@@ -127,6 +133,14 @@ public class CodeCardType implements Serializable {
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getCardTypeName() {
