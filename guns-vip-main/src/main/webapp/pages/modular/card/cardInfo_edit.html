@@ -1,67 +1,63 @@
-@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_edit.js"]}){
-<style>
-    .layui-laydate-range {
-        width: 240px!important;
-    }
-    .layui-layer-page .layui-layer-content {
-        overflow: visible !important;
-    }
-</style>
-<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form model-form">
+<form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;">
         <input name="cardId" type="hidden"/>
+        <div>SEX: {{d.sex}}</div>
         <div class="layui-form-item">
-            <label class="layui-form-label">操作范围</label>
+            <label class="layui-form-label layui-form-required">操作范围</label>
             <div class="layui-input-block">
                 <input type="radio" class="layui-input" name="cydiaFlag" value="0" title="选中" checked="">
-                <input type="radio" class="layui-input" name="cydiaFlag" value="1" title="全部">
+                <input type="radio" class="layui-input" name="cydiaFlag" value="1" title="自定义">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">操作应用</label>
             <div class="layui-input-block">
-                <select name="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
-                    <option value="1">全部</option>
-                    <option value="1">通用</option>
-                    <option value="2">未激活</option>
-                    <option value="3">已激活</option>
-                    <option value="4">已过期</option>
-                    <option value="5">已禁用</option>
+                <select name="organizationType" lay-verType="tips" lay-verify="required" required>
+                    <option value="">无限制</option>
+                    <option value="0">通用卡密（对所有应用生效）</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}"
+                            @if(appId== appInfo.appId) {
+                            selected="selected"
+                            @}
+                    >${appInfo.appName}
+                    </option>
+                    @}
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">操作卡类</label>
             <div class="layui-input-block">
-                <select name="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
+                <select name="cardTypeId" class="cardTypeId" lay-search="" lay-verify="required" lay-verType="tips" required>
+                    <option value="">无限制</option>
+                    @for(codeCardType in codeCardTypes) {
+                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardTypeId" class="cardTypeId" lay-search="" lay-verify="required" lay-verType="tips" required>
                     <option value="1">全部</option>
                     <option value="2">未激活</option>
                     <option value="3">已激活</option>
                     <option value="4">已过期</option>
                     <option value="5">已禁用</option>
-                    <option value="5">已禁用</option>
-                    <option value="5">已禁用</option>
-                    <option value="5">已禁用</option>
-                    <option value="5">已禁用</option>
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">时间范围</label>
-            <div class="layui-input-block">
-                <input id="formAdvDateSel1" name="sxTime" placeholder="请选择开始和结束日期" class="layui-input icon-date" autocomplete="off" lay-vertype="tips" lay-verify="required" required="" lay-key="1">
-            </div>
-        </div>
         <div class="layui-form-item layui-form-text" >
-            <label class="layui-form-label">封停备注</label>
+            <label class="layui-form-label layui-form-required">封停备注</label>
             <div class="layui-input-block">
                 <textarea id="cardRemark" name="cardRemark" placeholder="请输入封停备注" maxlength="128" class="layui-textarea"></textarea>
             </div>
         </div>
     </div>
-    <div class="form-group-bottom text-right">
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
     </div>
 </form>
-@}

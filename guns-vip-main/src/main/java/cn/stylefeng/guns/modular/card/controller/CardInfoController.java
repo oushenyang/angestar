@@ -134,6 +134,15 @@ public class CardInfoController extends BaseController {
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(-1L,LoginContextHolder.getContext().getUserId());
+        codeCardTypes.forEach(codeCardType->{
+            if (codeCardType.getAppId() == 0){
+                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---通用卡类");
+            }else {
+                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---"+codeCardType.getAppName());
+            }
+        });
+        model.addAttribute("codeCardTypes", codeCardTypes);
         return PREFIX + "/cardInfo_edit.html";
     }
 

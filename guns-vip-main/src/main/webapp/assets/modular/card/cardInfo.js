@@ -1,10 +1,12 @@
-layui.use(['table', 'form','dropdown', 'admin', 'ax'], function () {
+layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var dropdown = layui.dropdown;
     var form = layui.form;
+    var xmSelect = layui.xmSelect;
+    var laydate = layui.laydate;
     // var clipboard = layui.clipboard;
     /**
      * 卡密表管理
@@ -122,14 +124,61 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax'], function () {
      * @param data 点击按钮时候的行数据
      */
     CardInfo.openEditDlg = function (data) {
-        admin.putTempData('formOk', false);
-        top.layui.admin.open({
-            type: 2,
+        var url = Feng.ctxPath + '/cardInfo/edit';
+        // admin.putTempData('formOk', false);
+        admin.open({
+            // type: 1,
             title: '修改卡密表',
-            area: '700px',
-            content: Feng.ctxPath + '/cardInfo/edit?cardId=' + data.cardId,
-            end: function () {
-                admin.getTempData('formOk') && table.reload(CardInfo.tableId);
+            area: '600px',
+            url: url,
+            data: {
+                name: '妲己',
+                sex: '女'
+            },
+            tpl: true,
+            success: function (layero, dIndex) {
+                form.val('cardInfoForm', data);
+                //表单提交事件
+                form.on('submit(cardInfoForm)', function (data) {
+                    data.field.roleIds = insRoleSel.getValue('valueStr');
+                    var loadIndex = layer.load(2);
+                    $.get(mData ? '../../json/ok.json' : '../../json/ok.json', data.field, function (res) {  // 实际项目这里url可以是mData?'user/update':'user/add'
+                        layer.close(loadIndex);
+                        if (res.code === 200) {
+                            layer.close(dIndex);
+                            layer.msg(res.msg, {icon: 1});
+                            insTb.reload({page: {curr: 1}});
+                        } else {
+                            layer.msg(res.msg, {icon: 2});
+                        }
+                    }, 'json');
+                    return false;
+                });
+                // 渲染多选下拉框
+                // var insRoleSel = xmSelect.render({
+                //     el: '#appIdSelect',
+                //     name: 'appIdSelect',
+                //     layVerify: 'required',
+                //     layVerType: 'tips',
+                //     data: [{
+                //         name: '管理员',
+                //         value: 1
+                //     }, {
+                //         name: '普通用户',
+                //         value: 2
+                //     }, {
+                //         name: '游客',
+                //         value: 3
+                //     }]
+                // });
+                // 回显选中角色
+                // if (mData && mData.roles) {
+                //     insRoleSel.setValue(mData.roles.map(function (item) {
+                //         return item.roleId;
+                //     }));
+                // }
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
             }
         });
     };
