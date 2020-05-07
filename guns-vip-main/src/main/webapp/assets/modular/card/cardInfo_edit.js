@@ -47,6 +47,8 @@ layui.use(['form','laydate','formX','admin', 'ax'], function () {
         range: true
     });
 
+
+
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/cardInfo/detail?cardId=" + Feng.getUrlParam("cardId"));
     var result = ajax.start();

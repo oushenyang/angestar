@@ -123,60 +123,102 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
      *
      * @param data 点击按钮时候的行数据
      */
-    CardInfo.openEditDlg = function (data) {
+    CardInfo.openEditDlg = function (obj) {
         var url = Feng.ctxPath + '/cardInfo/edit';
-        // admin.putTempData('formOk', false);
+        admin.putTempData('formOk', false);
         admin.open({
             // type: 1,
-            title: '修改卡密表',
+            title: obj.name,
             area: '600px',
             url: url,
             data: {
-                name: '妲己',
-                sex: '女'
+                event: obj.event
             },
             tpl: true,
             success: function (layero, dIndex) {
-                form.val('cardInfoForm', data);
-                //表单提交事件
-                form.on('submit(cardInfoForm)', function (data) {
-                    data.field.roleIds = insRoleSel.getValue('valueStr');
-                    var loadIndex = layer.load(2);
-                    $.get(mData ? '../../json/ok.json' : '../../json/ok.json', data.field, function (res) {  // 实际项目这里url可以是mData?'user/update':'user/add'
-                        layer.close(loadIndex);
-                        if (res.code === 200) {
-                            layer.close(dIndex);
-                            layer.msg(res.msg, {icon: 1});
-                            insTb.reload({page: {curr: 1}});
-                        } else {
-                            layer.msg(res.msg, {icon: 2});
+                if (obj.event=='unsealing'){
+                    form.val('cardEditForm', {
+                        "organizationType":1,
+                        "cardType":1,
+                        "cardStatus":5
+                    });
+                }else if (obj.event=='overtime'){
+                    form.val('cardEditForm', {
+                        "organizationType":1,
+                        "cardType":1,
+                        "cardStatus":1
+                    });
+                    laydate.render({
+                        elem: '#specifyDate',
+                        position: 'fixed',
+                        showBottom: false
+                    });
+                }else {
+                    form.val('cardEditForm', {
+                        "organizationType":1,
+                        "cardType":1,
+                        "cardStatus":1
+                    });
+                }
+
+                // form.val('cardEditForm', data);
+                //单选框事件监听
+                form.on('radio(cydiaFlag)', function (data) {
+                    if (data.value==0){
+                        $("select[name=operateApp]").attr("disabled", "disabled");
+                        $("select[name=cardType]").attr("disabled", "disabled");
+                        $("select[name=cardStatus]").attr("disabled", "disabled");
+                        form.render('select');
+                    }else {
+                        $("select[name=operateApp]").attr("disabled", false);
+                        $("select[name=cardType]").attr("disabled", false);
+                        $("select[name=cardStatus]").attr("disabled", false);
+                        form.render('select');
+                    }
+                });
+                //应用选择下拉框事件监听
+                form.on('select(operateApp)', function (data) {
+                    $("select[name=cardType]").empty();
+                    form.render('select');
+                    var appId=$("select[name=operateApp]").val();
+                    var ajax = new $ax(Feng.ctxPath + "/cardInfo/getCardTypeByAppId", function (result) {
+                        var list = result.data;
+                        if (list.length>0){
+                            var html="<option value='1'>全部</option>";
+                            for(var key in list){
+                                 html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
+                            }
+                            $("select[name=cardType]").append(html);
+                            form.render('select');
+                        }else {
+                            var operation = function () {
+                                var ajax = new $ax(Feng.ctxPath + "/cardInfo/addCardTypeByAppId", function (result) {
+                                    Feng.success("创建成功!");
+                                    var list = result.data;
+                                    var html="<option value='1'>全部</option>";
+                                    for(var key in list){
+                                        html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
+                                    }
+                                    $("select[name=cardType]").append(html);
+                                    form.render('select');
+                                }, function (data) {
+                                    Feng.error("创建失败!" + data.responseJSON.message + "!");
+                                });
+                                ajax.set('appId',appId);
+                                ajax.start();
+                            };
+                            Feng.confirm("还未创建卡密类型，是否初始化卡密类型数据?", operation);
                         }
-                    }, 'json');
+                    }, function (data) {
+                        Feng.error("获取卡类信息失败！" + data.responseJSON.message)
+                    });
+                    ajax.set('appId',appId);
+                    ajax.start();
+                });
+                //表单提交事件
+                form.on('submit(cardEditForm)', function (data) {
                     return false;
                 });
-                // 渲染多选下拉框
-                // var insRoleSel = xmSelect.render({
-                //     el: '#appIdSelect',
-                //     name: 'appIdSelect',
-                //     layVerify: 'required',
-                //     layVerType: 'tips',
-                //     data: [{
-                //         name: '管理员',
-                //         value: 1
-                //     }, {
-                //         name: '普通用户',
-                //         value: 2
-                //     }, {
-                //         name: '游客',
-                //         value: 3
-                //     }]
-                // });
-                // 回显选中角色
-                // if (mData && mData.roles) {
-                //     insRoleSel.setValue(mData.roles.map(function (item) {
-                //         return item.roleId;
-                //     }));
-                // }
                 // 禁止弹窗出现滚动条
                 $(layero).children('.layui-layer-content').css('overflow', 'visible');
             }
@@ -304,6 +346,26 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
             table.reload(CardInfo.tableId);
         } else if (obj.event === 'batchRemove') {
             CardInfo.batchRemove(obj)
+            //批量封禁
+        }else if (obj.event === 'prohibition') {
+            obj.name = '批量封禁';
+            CardInfo.openEditDlg(obj);
+            //批量解封
+        }else if (obj.event === 'unsealing') {
+            obj.name = '批量解封';
+            CardInfo.openEditDlg(obj);
+            //批量加时
+        }else if (obj.event === 'overtime') {
+            obj.name = '批量加时';
+            CardInfo.openEditDlg(obj);
+            //批量解绑
+        }else if (obj.event === 'untying') {
+            obj.name = '批量解绑';
+            CardInfo.openEditDlg(obj);
+            //修改备注
+        }else if (obj.event === 'editRemark') {
+            obj.name = '修改备注';
+            CardInfo.openEditDlg(obj);
         }
     });
     // 行内工具条点击事件
