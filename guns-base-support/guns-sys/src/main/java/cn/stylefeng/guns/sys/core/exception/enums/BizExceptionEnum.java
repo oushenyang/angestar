@@ -126,7 +126,13 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     /**
      * 动态执行sql的异常
      */
-    SQL_ERROR(400, "sql执行失败");
+    SQL_ERROR(400, "sql执行失败"),
+
+    /**
+     * 卡密相关的异常
+     */
+    UN_SELECT_CARD(400, "未选择卡密"),
+    UN_FIND_CARD(400, "未找到相关卡密");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;

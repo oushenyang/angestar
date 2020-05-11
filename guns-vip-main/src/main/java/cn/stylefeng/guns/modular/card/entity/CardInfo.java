@@ -78,7 +78,7 @@ public class CardInfo implements Serializable {
     /**
      * 状态 0-未激活；1-已激活；2-已过期；3-已禁用；4-已删除
      */
-    @TableField("card_Status")
+    @TableField("card_status")
     private Integer cardStatus;
 
     /**
@@ -140,6 +140,36 @@ public class CardInfo implements Serializable {
      */
     @TableField("prohibit_remark")
     private String prohibitRemark;
+
+    /**
+     * 是否加时 0-否；1-是
+     */
+    @TableField("whether_add_time")
+    private Boolean whetherAddTime;
+
+    /**
+     * 加时天数
+     */
+    @TableField("add_day_num")
+    private Integer addDayNum;
+
+    /**
+     * 加时小时
+     */
+    @TableField("add_hour_num")
+    private Integer addHourNum;
+
+    /**
+     * 加时分钟
+     */
+    @TableField("add_minute_num")
+    private Integer addMinuteNum;
+
+    /**
+     * 加时时间
+     */
+    @TableField("add_time")
+    private Date addTime;
 
     /**
      * 创建人
@@ -326,6 +356,46 @@ public class CardInfo implements Serializable {
         this.prohibitRemark = prohibitRemark;
     }
 
+    public Boolean getWhetherAddTime() {
+        return whetherAddTime;
+    }
+
+    public void setWhetherAddTime(Boolean whetherAddTime) {
+        this.whetherAddTime = whetherAddTime;
+    }
+
+    public Integer getAddDayNum() {
+        return addDayNum;
+    }
+
+    public void setAddDayNum(Integer addDayNum) {
+        this.addDayNum = addDayNum;
+    }
+
+    public Integer getAddHourNum() {
+        return addHourNum;
+    }
+
+    public void setAddHourNum(Integer addHourNum) {
+        this.addHourNum = addHourNum;
+    }
+
+    public Integer getAddMinuteNum() {
+        return addMinuteNum;
+    }
+
+    public void setAddMinuteNum(Integer addMinuteNum) {
+        this.addMinuteNum = addMinuteNum;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
     public Long getCreateUser() {
         return createUser;
     }
@@ -381,6 +451,11 @@ public class CardInfo implements Serializable {
         ", cardOpenNum=" + cardOpenNum +
         ", cardRemark=" + cardRemark +
         ", prohibitRemark=" + prohibitRemark +
+        ", whetherAddTime=" + whetherAddTime +
+        ", addDayNum=" + addDayNum +
+        ", addHourNum=" + addHourNum +
+        ", addMinuteNum=" + addMinuteNum +
+        ", addTime=" + addTime +
         ", createUser=" + createUser +
         ", createTime=" + createTime +
         ", updateUser=" + updateUser +

@@ -96,25 +96,25 @@
         <div class="layui-form-item" >
             <label class="layui-form-label">指定日期</label>
             <div class="layui-input-block">
-                <input id="specifyDate" name="specifyDate" placeholder="请选择指定日期" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
+                <input id="addTime" name="addTime" placeholder="请选择指定日期" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
             </div>
         </div>
         <div class="layui-form-item" >
             <label class="layui-form-label">天数</label>
             <div class="layui-input-block">
-                <input id="days" name="days" lay-filter="days"  placeholder="请输入天数" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+                <input id="addDayNum" name="addDayNum" lay-filter="addDayNum"  placeholder="请输入天数" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
             </div>
         </div>
         <div class="layui-form-item" >
             <label class="layui-form-label">小时</label>
             <div class="layui-input-block">
-                <input id="hour" name="hour" lay-filter="hour"  placeholder="请输入小时" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+                <input id="addHourNum" name="addHourNum" lay-filter="addHourNum"  placeholder="请输入小时" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
             </div>
         </div>
         <div class="layui-form-item" >
             <label class="layui-form-label">分钟</label>
             <div class="layui-input-block">
-                <input id="minute" name="minute" lay-filter="minute"  placeholder="请输入分钟" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+                <input id="addMinuteNum" name="addMinuteNum" lay-filter="addMinuteNum"  placeholder="请输入分钟" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
             </div>
         </div>
         {{# } else if(d.event == 'editRemark'){ }}

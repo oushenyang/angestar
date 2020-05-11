@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.model.params;
 
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -63,6 +64,31 @@ public class BatchCardInfoParam implements Serializable, BaseValidatingParam {
      * 禁用备注
      */
     private String prohibitRemark;
+
+    /**
+     * 加时天数
+     */
+    private Integer addDayNum;
+
+    /**
+     * 加时小时
+     */
+    private Integer addHourNum;
+
+    /**
+     * 加时分钟
+     */
+    private Integer addMinuteNum;
+
+    /**
+     * 加时时间
+     */
+    private Date addTime;
+
+    /**
+     * 创建人
+     */
+    private Long createUser;
 
     @Override
     public String checkParam() {

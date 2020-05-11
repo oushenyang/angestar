@@ -47,4 +47,25 @@ public class CardDateUtil {
         return expireTime;
     }
 
+    /**
+     * 加时时间处理
+     * @param expireTime 到期时间
+     * @param addDayNum 天数
+     * @param addHourNum 小时
+     * @param addMinuteNum 分钟
+     * @return 处理的到期时间
+     */
+    public static DateTime getAddExpireTime(Date expireTime, Integer addDayNum, Integer addHourNum,Integer addMinuteNum){
+        if (addDayNum!=null){
+            expireTime = DateUtil.offsetDay(expireTime, addDayNum);
+        }
+        if (addHourNum!=null){
+            expireTime = DateUtil.offsetHour(expireTime, addHourNum);
+        }
+        if (addMinuteNum!=null){
+            expireTime = DateUtil.offsetMinute(expireTime, addMinuteNum);
+        }
+        return DateTime.of(expireTime);
+    }
+
 }

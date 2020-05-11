@@ -148,7 +148,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
                         "cardStatus":1
                     });
                     laydate.render({
-                        elem: '#specifyDate',
+                        elem: '#addTime',
                         position: 'fixed',
                         type: 'datetime'
                     });
@@ -231,9 +231,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
                     var loadIndex = layer.load(2);
                     var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                         layer.close(loadIndex);
+                        layer.close(dIndex);
                         layer.msg("更新成功！", {icon: 1});
-                        //传给上个页面，刷新table用
-                        admin.putTempData('formOk', true);
+                        table.reload(CardInfo.tableId);
                         //关掉对话框
                         admin.closeThisDialog();
                     }, function (data) {

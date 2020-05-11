@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
+import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
@@ -167,8 +168,8 @@ public class CardInfoController extends BaseController {
      */
     @RequestMapping("/editItem")
     @ResponseBody
-    public ResponseData editItem(CardInfoParam cardInfoParam) {
-        this.cardInfoService.update(cardInfoParam);
+    public ResponseData editItem(BatchCardInfoParam cardInfoParam) {
+        this.cardInfoService.BatchEdit(cardInfoParam);
         return ResponseData.success();
     }
 

@@ -103,6 +103,95 @@
             )
         </foreach >
     </insert>
+    <update id="BachUpdateCardInfo">
+        update ag_card_info
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="card_status =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.cardStatus !=null and item.cardStatus != -1">
+                        when card_id=#{item.cardId} then #{item.cardStatus}
+                    </if>
+                    <if test="item.cardStatus == null or item.cardStatus == -1">
+                        when card_id=#{item.cardId} then ag_card_info.card_Status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="prohibit_remark =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.prohibitRemark !=null">
+                        when card_id=#{item.cardId} then #{item.prohibitRemark}
+                    </if>
+                    <if test="item.prohibitRemark == null">
+                        when card_id=#{item.cardId} then ag_card_info.prohibit_remark
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="whether_add_time =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.whetherAddTime !=null">
+                        when card_id=#{item.cardId} then #{item.whetherAddTime}
+                    </if>
+                    <if test="item.whetherAddTime == null">
+                        when card_id=#{item.cardId} then ag_card_info.whether_add_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="add_day_num =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.addDayNum !=null">
+                        when card_id=#{item.cardId} then #{item.addDayNum}
+                    </if>
+                    <if test="item.addDayNum == null">
+                        when card_id=#{item.cardId} then ag_card_info.add_day_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="add_hour_num =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.addHourNum !=null">
+                        when card_id=#{item.cardId} then #{item.addHourNum}
+                    </if>
+                    <if test="item.addHourNum == null">
+                        when card_id=#{item.cardId} then ag_card_info.add_hour_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="add_minute_num =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.addMinuteNum !=null">
+                        when card_id=#{item.cardId} then #{item.addMinuteNum}
+                    </if>
+                    <if test="item.addMinuteNum == null">
+                        when card_id=#{item.cardId} then ag_card_info.add_minute_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="expire_time =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.expireTime !=null">
+                        when card_id=#{item.cardId} then #{item.expireTime}
+                    </if>
+                    <if test="item.expireTime == null">
+                        when card_id=#{item.cardId} then ag_card_info.expire_time
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="card_remark =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.cardRemark !=null">
+                        when card_id=#{item.cardId} then #{item.cardRemark}
+                    </if>
+                    <if test="item.cardRemark == null">
+                        when card_id=#{item.cardId} then ag_card_info.card_remark
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where card_id in
+        <foreach collection="cardInfos" index="index" item="item" separator="," open="(" close=")">
+            #{item.cardId,jdbcType=BIGINT}
+        </foreach>
+    </update>
     <select id="findListBySpec" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
@@ -121,6 +210,25 @@
             </if>
             <if test="param.cardCode != null and param.cardCode !=''">
                 and cci.card_code like CONCAT('%',#{param.cardCode},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByBatchCardInfo" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">
+        select
+        *
+        from ag_card_info cci
+        <where>
+            <if test="param.operateApp != null and param.operateApp !=1">
+                and app_id = #{param.operateApp}
+            </if>
+            <if test="param.cardType != null and param.cardType !=1">
+                and card_type_id = #{param.cardType}
+            </if>
+            <if test="param.cardStatus != null and param.cardStatus !=1">
+                and card_status = #{param.cardStatus}
+            </if>
+            <if test="param.createUser != null and param.createUser !=1">
+                and create_user = #{param.createUser}
             </if>
         </where>
     </select>

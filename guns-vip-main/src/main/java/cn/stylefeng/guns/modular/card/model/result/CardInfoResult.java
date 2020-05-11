@@ -120,6 +120,31 @@ public class CardInfoResult implements Serializable {
     private String prohibitRemark;
 
     /**
+     * 是否加时 0-否；1-是
+     */
+    private Boolean whetherAddTime;
+
+    /**
+     * 加时天数
+     */
+    private Integer addDayNum;
+
+    /**
+     * 加时小时
+     */
+    private Integer addHourNum;
+
+    /**
+     * 加时分钟
+     */
+    private Integer addMinuteNum;
+
+    /**
+     * 加时时间
+     */
+    private Date addTime;
+
+    /**
      * 创建人
      */
     private Long createUser;

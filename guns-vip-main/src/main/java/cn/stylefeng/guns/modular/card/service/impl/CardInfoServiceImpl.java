@@ -10,6 +10,7 @@ import cn.stylefeng.guns.core.constant.state.CardTypeRule;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CardInfoMapper;
+import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
@@ -17,18 +18,24 @@ import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.*;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_SELECT_CARD;
 
 /**
  * <p>
@@ -108,12 +115,132 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     }
 
     @Override
-    public void update(CardInfoParam param){
-        CardInfo oldEntity = getOldEntity(param);
-        CardInfo newEntity = getEntity(param);
-        ToolUtil.copyProperties(newEntity, oldEntity);
-        this.updateById(newEntity);
+    @Transactional(rollbackFor = Exception.class)
+    public void BatchEdit(BatchCardInfoParam param){
+        if (param.getOperateFlag()==0&&StringUtils.isEmpty(param.getIds())){
+            throw new ServiceException(UN_SELECT_CARD);
+        }
+        List<CardInfo> cardInfos = new ArrayList<>();
+        if (param.getOperateFlag()==0){
+            List<String> idList = Arrays.asList(param.getIds().split(","));
+            cardInfos = this.listByIds(idList);
+        } else {
+            param.setCreateUser(LoginContextHolder.getContext().getUserId());
+            cardInfos = baseMapper.selectByBatchCardInfo(param);
+        }
+        if (CollectionUtils.isEmpty(cardInfos)){
+            throw new ServiceException(UN_FIND_CARD);
+        }
+        cardInfos = editCardInfos(cardInfos,param);
+        baseMapper.BachUpdateCardInfo(cardInfos);
+//        this.updateById(newEntity);
     }
+    private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
+        cardInfos.forEach(cardInfo->{
+            switch (param.getEvent()){
+                case "prohibition":
+                    cardInfo.setProhibitRemark(param.getProhibitRemark());
+                    cardInfo.setCardStatus(CardStatus.DISABLED.getCode());
+                    return;
+                case "unsealing":
+                    if (cardInfo.getExpireTime()!=null){
+                        //过期
+                        if (cardInfo.getExpireTime().before(new Date())){
+                            cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                        }else {
+                            cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                        }
+                    }else {
+                        cardInfo.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+                    }
+                    return;
+                case "overtime":
+                    //如果未激活
+                    if (cardInfo.getCardStatus()==CardStatus.NOT_ACTIVE.getCode()){
+                        if (param.getAddTime()==null){
+                            cardInfo.setAddDayNum(param.getAddDayNum());
+                            cardInfo.setAddHourNum(param.getAddHourNum());
+                            cardInfo.setAddMinuteNum(param.getAddMinuteNum());
+                            cardInfo.setAddTime(null);
+                        }else {
+                            cardInfo.setAddDayNum(null);
+                            cardInfo.setAddHourNum(null);
+                            cardInfo.setAddMinuteNum(null);
+                            cardInfo.setAddTime(param.getAddTime());
+                        }
+                    }else if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()||cardInfo.getCardStatus()==CardStatus.EXPIRED.getCode()){
+                        if (param.getAddTime()==null){
+                            cardInfo.setAddDayNum(param.getAddDayNum());
+                            cardInfo.setAddHourNum(param.getAddHourNum());
+                            cardInfo.setAddMinuteNum(param.getAddMinuteNum());
+                            cardInfo.setAddTime(null);
+                            Date addExpireTime = CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(),param.getAddDayNum(),param.getAddHourNum(),param.getAddMinuteNum());
+                            cardInfo.setExpireTime(addExpireTime);
+                            //如果已激活，同时处理后的到期时间小于当前时间，则已过期
+                            if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()&&addExpireTime.before(new Date())){
+                                cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                                //如果已过期，同时处理后的到期时间大于当前时间，则已激活
+                            }else if (cardInfo.getCardStatus()==CardStatus.EXPIRED.getCode()&&!addExpireTime.before(new Date())){
+                                cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                            }
+                        }else {
+                            cardInfo.setAddDayNum(null);
+                            cardInfo.setAddHourNum(null);
+                            cardInfo.setAddMinuteNum(null);
+                            cardInfo.setAddTime(param.getAddTime());
+                            cardInfo.setExpireTime(param.getAddTime());
+                            //如果已激活，同时处理后的到期时间小于当前时间，则已过期
+                            if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()&&param.getAddTime().before(new Date())){
+                                cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                                //如果已过期，同时处理后的到期时间大于当前时间，则已激活
+                            }else if (cardInfo.getCardStatus()==CardStatus.EXPIRED.getCode()&&!param.getAddTime().before(new Date())){
+                                cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                            }
+                        }
+                    }else if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()){
+                        if (param.getAddTime()==null){
+                            if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()==null){
+                                cardInfo.setAddDayNum(param.getAddDayNum());
+                                cardInfo.setAddHourNum(param.getAddHourNum());
+                                cardInfo.setAddMinuteNum(param.getAddMinuteNum());
+                                cardInfo.setAddTime(null);
+                                cardInfo.setExpireTime(null);
+                            }else if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()!=null){
+                                cardInfo.setAddDayNum(param.getAddDayNum());
+                                cardInfo.setAddHourNum(param.getAddHourNum());
+                                cardInfo.setAddMinuteNum(param.getAddMinuteNum());
+                                cardInfo.setAddTime(null);
+                                cardInfo.setExpireTime(CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(),param.getAddDayNum(),param.getAddHourNum(),param.getAddMinuteNum()));
+                            }
+                        }else {
+                            if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()==null){
+                                cardInfo.setAddDayNum(null);
+                                cardInfo.setAddHourNum(null);
+                                cardInfo.setAddMinuteNum(null);
+                                cardInfo.setAddTime(param.getAddTime());
+                                cardInfo.setExpireTime(null);
+                            }else if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()!=null){
+                                cardInfo.setAddDayNum(null);
+                                cardInfo.setAddHourNum(null);
+                                cardInfo.setAddMinuteNum(null);
+                                cardInfo.setAddTime(param.getAddTime());
+                                cardInfo.setExpireTime(param.getAddTime());
+                            }
+                        }
+                    }
+                    return;
+                case "untying":
+                    return;
+                case "editRemark":
+                    cardInfo.setCardRemark(param.getCardRemark());
+                    return;
+                case "batchRemove":
+                    return;
+            }
+        });
+        return cardInfos;
+    }
+
 
     @Override
     public CardInfoResult findBySpec(CardInfoParam param){
@@ -146,6 +273,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     }
 
     private CardInfo getEntity(CardInfoParam param) {
+        CardInfo entity = new CardInfo();
+        ToolUtil.copyProperties(param, entity);
+        return entity;
+    }
+
+    private CardInfo getEntityByBatch(BatchCardInfoParam param) {
         CardInfo entity = new CardInfo();
         ToolUtil.copyProperties(param, entity);
         return entity;

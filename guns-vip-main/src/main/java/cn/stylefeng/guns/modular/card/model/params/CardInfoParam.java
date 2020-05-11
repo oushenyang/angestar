@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.card.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -134,6 +135,31 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
      * 禁用备注
      */
     private String prohibitRemark;
+
+    /**
+     * 是否加时 0-否；1-是
+     */
+    private Boolean whetherAddTime;
+
+    /**
+     * 加时天数
+     */
+    private Integer addDayNum;
+
+    /**
+     * 加时小时
+     */
+    private Integer addHourNum;
+
+    /**
+     * 加时分钟
+     */
+    private Integer addMinuteNum;
+
+    /**
+     * 加时时间
+     */
+    private Date addTime;
 
     /**
      * 创建人
