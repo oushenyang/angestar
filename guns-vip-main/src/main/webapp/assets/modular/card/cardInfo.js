@@ -301,7 +301,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + CardInfo.tableId,
-        url: Feng.ctxPath + '/cardInfo/list',
+        url: Feng.ctxPath + '/cardInfo/list?type='+$('#type').val(),
         page: true,
         toolbar: '#' + CardInfo.tableId + '-toolbar',
         defaultToolbar: ['filter', 'print'],
@@ -403,7 +403,6 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
         } else if (layEvent === 'delete') {
             CardInfo.onDeleteItem(data);
         } else if (layEvent === 'copy') {
-            console.log(obj)
             CardInfo.copy(data)
         }
     });

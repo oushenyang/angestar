@@ -205,6 +205,12 @@
             <if test="param.appId != null and param.appId !=''">
                 and cci.app_id = #{param.appId}
             </if>
+            <if test="param.type != null and param.type !=1">
+                and cci.app_id = 0
+            </if>
+            <if test="param.type != null and param.type !=0">
+                and cci.app_id != 0
+            </if>
             <if test="param.cardTypeId != null and param.cardTypeId !=''">
                 and cci.card_type_id = #{param.cardTypeId}
             </if>

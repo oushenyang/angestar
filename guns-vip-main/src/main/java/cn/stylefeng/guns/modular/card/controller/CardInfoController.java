@@ -66,7 +66,7 @@ public class CardInfoController extends BaseController {
      * @Date 2020-04-20
      */
     @RequestMapping("")
-    public String index(Model model) {
+    public String index(Model model,Integer type) {
         //获取当前用户应用列表
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
@@ -79,6 +79,7 @@ public class CardInfoController extends BaseController {
                 codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---"+codeCardType.getAppName());
             }
         });
+        model.addAttribute("type", type);
         model.addAttribute("codeCardTypes", codeCardTypes);
         return PREFIX + "/cardInfo.html";
     }
