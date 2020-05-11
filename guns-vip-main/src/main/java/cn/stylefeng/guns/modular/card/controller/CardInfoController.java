@@ -91,11 +91,12 @@ public class CardInfoController extends BaseController {
      * @Date 2020-04-20
      */
     @RequestMapping("/add")
-    public String add(Model model) {
+    public String add(Model model,Integer type) {
         //获取当前用户应用列表
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
+        model.addAttribute("type", type);
         return PREFIX + "/cardInfo_add.html";
     }
 
@@ -131,7 +132,7 @@ public class CardInfoController extends BaseController {
      * @Date 2020-04-20
      */
     @RequestMapping("/edit")
-    public String edit(Model model) {
+    public String edit(Model model,Integer type) {
         //获取当前用户应用列表
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
@@ -145,6 +146,7 @@ public class CardInfoController extends BaseController {
             }
         });
         model.addAttribute("codeCardTypes", codeCardTypes);
+        model.addAttribute("type", type);
         return PREFIX + "/cardInfo_edit.html";
     }
 

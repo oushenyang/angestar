@@ -99,7 +99,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
             type: 2,
             title: '添加卡密表',
             area: '700px',
-            content: Feng.ctxPath + '/cardInfo/add',
+            content: Feng.ctxPath + '/cardInfo/add?type='+$('#type').val(),
             end: function () {
                 admin.getTempData('formOk') && table.reload(CardInfo.tableId);
             }
@@ -124,7 +124,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
      * @param data 点击按钮时候的行数据
      */
     CardInfo.openEditDlg = function (obj) {
-        var url = Feng.ctxPath + '/cardInfo/edit';
+        var url = Feng.ctxPath + '/cardInfo/edit?type='+$('#type').val();
         admin.open({
             // type: 1,
             title: obj.name,

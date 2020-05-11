@@ -15,10 +15,12 @@
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
+                            @if(tool.isNotEmpty(type)){
+                            @if(type==1){
                             <div class="layui-inline">
-                                <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                <select name="appId"  lay-search="" lay-filter="appId">
                                     <option value="">所属应用</option>
-                                    <option value="0">通用卡密（对所有应用生效）</option>
+<!--                                    <option value="0">通用卡密（对所有应用生效）</option>-->
                                     @for(appInfo in appInfoParams) {
                                     <option value="${appInfo.appId}"
                                             @if(appId== appInfo.appId) {
@@ -29,6 +31,11 @@
                                     @}
                                 </select>
                             </div>
+                            @}
+                            @if(type==0){
+                                <input name="appId" value="0" type="hidden">
+                            @}
+                            @}
                             <div class="layui-inline">
                                 <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
                                     <option value="">卡密类型</option>
