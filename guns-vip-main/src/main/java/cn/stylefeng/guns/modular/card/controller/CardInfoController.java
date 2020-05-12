@@ -74,13 +74,15 @@ public class CardInfoController extends BaseController {
         List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(-1L,LoginContextHolder.getContext().getUserId());
         codeCardTypes.forEach(codeCardType->{
             if (codeCardType.getAppId() == 0){
-                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---通用卡类");
+                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---默认卡类");
             }else {
                 codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---"+codeCardType.getAppName());
             }
         });
         model.addAttribute("type", type);
         model.addAttribute("codeCardTypes", codeCardTypes);
+        List<CodeCardType> codeCardTypeList = codeCardTypeService.getCardTypeByAppId(0L,LoginContextHolder.getContext().getUserId());
+        model.addAttribute("codeCardTypeList", codeCardTypeList);
         return PREFIX + "/cardInfo.html";
     }
 
@@ -97,6 +99,8 @@ public class CardInfoController extends BaseController {
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
         model.addAttribute("type", type);
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(0L,LoginContextHolder.getContext().getUserId());
+        model.addAttribute("codeCardTypes", codeCardTypes);
         return PREFIX + "/cardInfo_add.html";
     }
 
@@ -137,14 +141,7 @@ public class CardInfoController extends BaseController {
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(-1L,LoginContextHolder.getContext().getUserId());
-        codeCardTypes.forEach(codeCardType->{
-            if (codeCardType.getAppId() == 0){
-                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---通用卡类");
-            }else {
-                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---"+codeCardType.getAppName());
-            }
-        });
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(0L,LoginContextHolder.getContext().getUserId());
         model.addAttribute("codeCardTypes", codeCardTypes);
         model.addAttribute("type", type);
         return PREFIX + "/cardInfo_edit.html";

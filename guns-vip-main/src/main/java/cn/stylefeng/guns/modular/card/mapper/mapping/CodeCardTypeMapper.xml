@@ -68,6 +68,9 @@
         <if test="appId != null and appId !=-1">
         and cct.app_id = #{appId} or cct.app_id = 0
         </if>
+        <if test="appId != null and appId ==0">
+        and cct.app_id = 0
+        </if>
     </select>
 
     <select id="addCardTypeBySql" resultType="java.lang.Void">

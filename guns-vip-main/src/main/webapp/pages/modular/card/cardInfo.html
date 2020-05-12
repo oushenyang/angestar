@@ -39,8 +39,17 @@
                             <div class="layui-inline">
                                 <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
                                     <option value="">卡密类型</option>
+                                    @if(tool.isNotEmpty(type)){
+                                    @if(type==0){
+                                    @for(codeCardType in codeCardTypeList) {
+                                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                                    @}
+                                    @}
+                                    @if(type==1){
                                     @for(codeCardType in codeCardTypes) {
                                     <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                                    @}
+                                    @}
                                     @}
                                 </select>
                             </div>

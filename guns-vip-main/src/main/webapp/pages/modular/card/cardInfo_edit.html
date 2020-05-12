@@ -9,12 +9,15 @@
                 <input type="radio" class="layui-input" name="operateFlag" value="1" lay-filter="operateFlag" title="自定义">
             </div>
         </div>
+
+        @if(tool.isNotEmpty(type)){
+        @if(type==1){
         <div class="layui-form-item">
             <label class="layui-form-label">操作应用</label>
             <div class="layui-input-block">
                 <select name="operateApp" lay-verType="tips" lay-filter="operateApp" disabled required>
                     <option value="1">全部</option>
-                    <option value="0">通用卡密（对所有应用生效）</option>
+<!--                    <option value="0">通用卡密（对所有应用生效）</option>-->
                     @for(appInfo in appInfoParams) {
                     <option value="${appInfo.appId}"
                             @if(appId== appInfo.appId) {
@@ -26,13 +29,22 @@
                 </select>
             </div>
         </div>
+        @}
+        @if(type==0){
+        <input name="operateApp" value="0" type="hidden">
+        @}
+        @}
         <div class="layui-form-item">
             <label class="layui-form-label">操作卡类</label>
             <div class="layui-input-block">
                 <select name="cardType" class="cardType" lay-search="" lay-filter="cardType" lay-verType="tips" disabled>
                     <option value="1">全部</option>
+                    @if(tool.isNotEmpty(type)){
+                    @if(type==0){
                     @for(codeCardType in codeCardTypes) {
                     <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                    @}
                     @}
                 </select>
             </div>
