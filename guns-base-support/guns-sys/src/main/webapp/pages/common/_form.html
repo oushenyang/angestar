@@ -73,6 +73,9 @@ ${layoutContent}
     @if(array.contain(plugins,"clipboard")){
     <script src="${ctxPath}/assets/expand/plugins/jquery/clipboard.min.js"></script>
     @}
+    @if(array.contain(plugins,"editEle")){
+    <link href="${ctxPath}/assets/expand/plugins/editEle/editEle.js?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
+    @}
 @}
 
 @if(isNotEmpty(js)){
