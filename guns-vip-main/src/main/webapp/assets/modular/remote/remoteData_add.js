@@ -33,6 +33,17 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         lastEditRange = selection.getRangeAt(0);
     };
 
+    editEle.onpaste=function(event){
+        var e = event || window.event
+        // 阻止默认粘贴
+        e.preventDefault();
+        // 粘贴事件有一个clipboardData的属性，提供了对剪贴板的访问
+        // clipboardData的getData(fomat) 从剪贴板获取指定格式的数据
+        var text =  (e.originalEvent || e).clipboardData.getData('text/plain');
+        // 插入
+        document.execCommand("insertText", false, text);
+    };
+
     // 编辑框按键弹起事件
     editEle.onkeyup = function() {
         // 获取选定对象
@@ -94,8 +105,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         var html = textM.replace(/<span\s*[^>]*>(.*?)<\/span>/g, function ($1, $2) {
             var el = document.createElement('div');
             $(el).html($1);
-            var emoji = $(el).children('span').attr('class').slice(30);
-            var num1 = parseInt(emoji, 16);
+            var emoji = $(el).children('span').attr('data-value');
             return '[[' + emoji + ']]';
         });
         console.log(html)
@@ -105,19 +115,29 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             .replace(/(<br>)?<\/div>$/, '');
         console.log('res--->', text);
         console.log(data.field);
-        // var ajax = new $ax(Feng.ctxPath + "/remoteData/addItem", function (data) {
-        //     Feng.success("添加成功！");
-        //
-        //     //传给上个页面，刷新table用
-        //     admin.putTempData('formOk', true);
-        //
-        //     //关掉对话框
-        //     admin.closeThisDialog();
-        // }, function (data) {
-        //     Feng.error("添加失败！" + data.responseJSON.message)
-        // });
-        // ajax.set(data.field);
-        // ajax.start();
+        data.field.dataValue = text;
+        data.field.dataValueText = HTMLEncode($('#edit').html());
+        var ajax = new $ax(Feng.ctxPath + "/remoteData/addItem", function (data) {
+            Feng.success("添加成功！");
+
+            //传给上个页面，刷新table用
+            admin.putTempData('formOk', true);
+
+            //关掉对话框
+            admin.closeThisDialog();
+        }, function (data) {
+            Feng.error("添加失败！" + data.responseJSON.message)
+        });
+        ajax.set(data.field);
+        ajax.start();
         return false;
     });
+
+    function HTMLEncode(html) {
+        var temp = document.createElement("div");
+        (temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
+        var output = temp.innerHTML;
+        temp = null;
+        return output;
+    }
 });

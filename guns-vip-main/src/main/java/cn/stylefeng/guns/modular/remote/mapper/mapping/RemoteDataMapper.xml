@@ -8,6 +8,7 @@
         <result column="app_id" property="appId" />
         <result column="data_code" property="dataCode" />
         <result column="data_value" property="dataValue" />
+        <result column="data_value_text" property="dataValueText" />
         <result column="create_type" property="createType" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
@@ -17,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        data_id AS "dataId", app_id AS "appId", data_code AS "dataCode", data_value AS "dataValue", create_type AS "createType", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        data_id AS "dataId", app_id AS "appId", data_code AS "dataCode", data_value AS "dataValue", data_value_text AS "dataValueText", create_type AS "createType", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
 
 </mapper>

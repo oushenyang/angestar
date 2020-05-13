@@ -64,6 +64,12 @@ public class RemoteData implements Serializable {
     private String dataValue;
 
     /**
+     * 数据值文本
+     */
+    @TableField("data_value_text")
+    private String dataValueText;
+
+    /**
      * 创建类型 0-手动添加；1-接口生成
      */
     @TableField("create_type")
@@ -148,6 +154,14 @@ public class RemoteData implements Serializable {
 
     public void setDataValue(String dataValue) {
         this.dataValue = dataValue;
+    }
+
+    public String getDataValueText() {
+        return dataValueText;
+    }
+
+    public void setDataValueText(String dataValueText) {
+        this.dataValueText = dataValueText;
     }
 
     public Integer getCreateType() {

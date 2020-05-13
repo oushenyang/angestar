@@ -56,6 +56,11 @@ public class RemoteDataParam implements Serializable, BaseValidatingParam {
     private String dataValue;
 
     /**
+     * 数据值文本
+     */
+    private String dataValueText;
+
+    /**
      * 创建类型 0-手动添加；1-接口生成
      */
     private Integer createType;

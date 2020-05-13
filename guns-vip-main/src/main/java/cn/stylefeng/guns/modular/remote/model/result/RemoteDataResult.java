@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.remote.model.result;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import java.util.Date;
 import java.io.Serializable;
@@ -53,6 +54,11 @@ public class RemoteDataResult implements Serializable {
      * 数据值
      */
     private String dataValue;
+
+    /**
+     * 数据值文本
+     */
+    private String dataValueText;
 
     /**
      * 创建类型 0-手动添加；1-接口生成
