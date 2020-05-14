@@ -16,11 +16,8 @@ import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
-import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,17 +43,20 @@ public class CardInfoController extends BaseController {
 
     private String PREFIX = "/modular/card";
 
-    @Autowired
-    private CardInfoService cardInfoService;
+    private final CardInfoService cardInfoService;
 
-    @Autowired
-    private AppInfoService appInfoService;
+    private final AppInfoService appInfoService;
 
-    @Autowired
-    private CodeCardTypeService codeCardTypeService;
+    private final CodeCardTypeService codeCardTypeService;
 
-    @Autowired
-    private SqlService SqlService;
+    private final SqlService SqlService;
+
+    public CardInfoController(CardInfoService cardInfoService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService) {
+        this.cardInfoService = cardInfoService;
+        this.appInfoService = appInfoService;
+        this.codeCardTypeService = codeCardTypeService;
+        this.SqlService = SqlService;
+    }
 
     /**
      * 跳转到主页面

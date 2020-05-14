@@ -9,7 +9,6 @@ import cn.stylefeng.guns.modular.remote.model.params.RemoteDataParam;
 import cn.stylefeng.guns.modular.remote.service.RemoteDataService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -31,11 +30,14 @@ public class RemoteDataController extends BaseController {
 
     private String PREFIX = "/modular/remote";
 
-    @Autowired
-    private RemoteDataService remoteDataService;
+    private final RemoteDataService remoteDataService;
 
-    @Autowired
-    private AppInfoService appInfoService;
+    private final AppInfoService appInfoService;
+
+    public RemoteDataController(RemoteDataService remoteDataService, AppInfoService appInfoService) {
+        this.remoteDataService = remoteDataService;
+        this.appInfoService = appInfoService;
+    }
 
     /**
      * 跳转到主页面

@@ -38,11 +38,14 @@ public class AppEditionController extends BaseController {
 
     private String PREFIX = "/modular/appEdition";
 
-    @Autowired
-    private AppEditionService appEditionService;
+    private final AppEditionService appEditionService;
 
-    @Autowired
-    private AppInfoService appInfoService;
+    private final AppInfoService appInfoService;
+
+    public AppEditionController(AppEditionService appEditionService, AppInfoService appInfoService) {
+        this.appEditionService = appEditionService;
+        this.appInfoService = appInfoService;
+    }
 
     /**
      * 跳转到主页面

@@ -40,10 +40,13 @@ public class AppInfoController extends BaseController {
 
     private String PREFIX = "/modular/appInfo";
 
-    @Autowired
-    private AppInfoService appInfoService;
-    @Autowired
-    private AppEditionService appEditionService;
+    private final AppInfoService appInfoService;
+    private final AppEditionService appEditionService;
+
+    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService) {
+        this.appInfoService = appInfoService;
+        this.appEditionService = appEditionService;
+    }
 
     /**
      * 跳转到主页面

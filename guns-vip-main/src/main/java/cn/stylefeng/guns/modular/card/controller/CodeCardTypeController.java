@@ -34,11 +34,14 @@ public class CodeCardTypeController extends BaseController {
 
     private String PREFIX = "/modular/card";
 
-    @Autowired
-    private CodeCardTypeService codeCardTypeService;
+    private final CodeCardTypeService codeCardTypeService;
 
-    @Autowired
-    private AppInfoService appInfoService;
+    private final AppInfoService appInfoService;
+
+    public CodeCardTypeController(CodeCardTypeService codeCardTypeService, AppInfoService appInfoService) {
+        this.codeCardTypeService = codeCardTypeService;
+        this.appInfoService = appInfoService;
+    }
 
     /**
      * 跳转到主页面
