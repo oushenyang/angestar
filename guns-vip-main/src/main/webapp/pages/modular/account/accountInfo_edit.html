@@ -1,0 +1,71 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/account/accountInfo_edit.js"]}){
+<form id="accountInfoForm" lay-filter="accountInfoForm" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="accountId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择应用<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" lay-search="" lay-verify="required" lay-filter="appId" lay-verType="tips" required>
+                    <option value="">请选择软件</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="account" name="account" placeholder="请输入账号" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="email" name="email" placeholder="请输入邮箱" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="phone" name="phone" placeholder="请输入手机号" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="password" name="password" placeholder="请输入密码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">到期时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="expireTime" name="expireTime" placeholder="请输入到期时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户点数<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="accountPoint" name="accountPoint" placeholder="请输入用户点数" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">推荐人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="referrer" name="referrer" placeholder="请输入推荐人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="remark" name="remark" placeholder="请输入备注" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}
