@@ -17,9 +17,9 @@ layui.use(['table', 'admin', 'ax'], function () {
     RemoteData.initColumn = function () {
         return [[
             {align: 'center', field: 'dataId', fixed: 'left', type: 'checkbox'},
-            {align: 'center', field: 'appId', sort: true, title: '应用ID'},
-            {align: 'center', field: 'dataCode', sort: true, title: '数据编码'},
-            {align: 'center', field: 'dataValue', sort: true, title: '数据值'},
+            {align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用'},
+            {align: 'center', field: 'dataCode',title: '数据编码'},
+            {align: 'center', field: 'dataValue', title: '数据值'},
             {
                 align: 'center', field: 'createType', sort: true, title: '创建类型', templet: function (d) {
                     if (d.createType==0) {
@@ -29,9 +29,7 @@ layui.use(['table', 'admin', 'ax'], function () {
                     }
                 }
             },
-            // {align: 'center',field: 'createUser', sort: true, title: '创建人'},
             {align: 'center', field: 'createTime', sort: true, title: '创建时间'},
-            // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
             {align: 'center', field: 'updateTime', sort: true, title: '更新时间'},
             {align: 'center', align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];

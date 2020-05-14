@@ -218,6 +218,7 @@
                 and cci.card_code like CONCAT('%',#{param.cardCode},'%')
             </if>
         </where>
+        order by cci.create_time DESC
     </select>
     <select id="selectByBatchCardInfo" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">
         select

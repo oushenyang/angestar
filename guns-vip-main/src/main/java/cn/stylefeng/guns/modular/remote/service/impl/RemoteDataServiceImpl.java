@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -60,8 +61,8 @@ public class RemoteDataServiceImpl extends ServiceImpl<RemoteDataMapper, RemoteD
     }
 
     @Override
-    public List<RemoteDataResult> findListBySpec(RemoteDataParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page, RemoteDataParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

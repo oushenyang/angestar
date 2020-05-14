@@ -56,6 +56,7 @@
                 and cct.card_type_name like CONCAT('%',#{param.cardTypeName},'%')
             </if>
         </where>
+        order by cct.create_time DESC
     </select>
     <select id="findCardTypeByAppId" resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
         select

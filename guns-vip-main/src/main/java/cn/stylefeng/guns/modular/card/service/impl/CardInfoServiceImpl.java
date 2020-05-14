@@ -7,6 +7,8 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CardInfoMapper;
@@ -47,14 +49,24 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_SEL
  */
 @Service
 public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> implements CardInfoService {
-    @Autowired
-    public CodeCardTypeService codeCardTypeService;
+    public final CodeCardTypeService codeCardTypeService;
+    public final AppInfoService appInfoService;
+
+    public CardInfoServiceImpl(CodeCardTypeService codeCardTypeService, AppInfoService appInfoService) {
+        this.codeCardTypeService = codeCardTypeService;
+        this.appInfoService = appInfoService;
+    }
 
     @Override
     public  List<String> add(CardInfoParam param){
         //通用应用
         if (param.getAppId()==0){
             param.setIsUniversal(true);
+        }else {
+            //获取应用信息
+            AppInfo appInfo = appInfoService.getById(param.getAppId());
+            appInfo.setCardNum(appInfo.getCardNum()+param.getAddNum());
+            appInfoService.updateById(appInfo);
         }
         //当前时间
         Date date = DateUtil.date();
@@ -111,6 +123,15 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     @Override
     public void batchRemove(String ids){
         List<String> idList = Arrays.asList(ids.split(","));
+        List<CardInfo> cardInfos = this.listByIds(idList);
+        cardInfos.forEach(cardInfo->{
+            if (cardInfo.getAppId()!=0){
+                //获取应用信息
+                AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
+                appInfo.setCardNum(appInfo.getCardNum()-1);
+                appInfoService.updateById(appInfo);
+            }
+        });
         this.removeByIds(idList);
     }
 

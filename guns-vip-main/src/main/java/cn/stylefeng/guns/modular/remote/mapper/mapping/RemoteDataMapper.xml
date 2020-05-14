@@ -18,7 +18,35 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        data_id AS "dataId", app_id AS "appId", data_code AS "dataCode", data_value AS "dataValue", data_value_text AS "dataValueText", create_type AS "createType", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS appName,
+        rd.data_id AS "dataId",
+        rd.app_id AS "appId",
+        rd.data_code AS "dataCode",
+        rd.data_value AS "dataValue",
+        rd.data_value_text AS "dataValueText",
+        rd.create_type AS "createType",
+        rd.create_user AS "createUser",
+        rd.create_time AS "createTime",
+        rd.update_user AS "updateUser",
+        rd.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_remote_data rd
+        left join ag_app_info ai on ai.app_id = rd.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and rd.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and rd.app_id = #{param.appId}
+            </if>
+            <if test="param.createType != null and param.createType !=''">
+                and rd.create_type = #{param.createType}
+            </if>
+        </where>
+        order by rd.create_time DESC
+    </select>
 
 </mapper>

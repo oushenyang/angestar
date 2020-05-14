@@ -11,6 +11,8 @@
         <result column="app_name" property="appName" />
         <result column="cydia_flag" property="cydiaFlag" />
         <result column="app_notice" property="appNotice" />
+        <result column="card_num" property="cardNum" />
+        <result column="account_num" property="accountMum" />
         <result column="custom_data1" property="customData1" />
         <result column="custom_data2" property="customData2" />
         <result column="custom_data3" property="customData3" />
@@ -55,6 +57,8 @@
         select
         ai.app_name AS appName,
         ai.app_head AS appHead,
+        ai.card_num AS cardNum,
+        ai.account_num AS accountNum,
         ae.edition_num AS editionNum,
         ai.app_id AS appId
         from ag_app_info ai

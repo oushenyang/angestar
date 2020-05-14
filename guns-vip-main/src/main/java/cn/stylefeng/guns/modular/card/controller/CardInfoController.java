@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -181,6 +182,13 @@ public class CardInfoController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public ResponseData delete(CardInfoParam cardInfoParam) {
+        //通用应用
+        if (cardInfoParam.getAppId()!=0){
+            //获取应用信息
+            AppInfo appInfo = appInfoService.getById(cardInfoParam.getAppId());
+            appInfo.setCardNum(appInfo.getCardNum()-1);
+            appInfoService.updateById(appInfo);
+        }
         this.cardInfoService.delete(cardInfoParam);
         return ResponseData.success();
     }

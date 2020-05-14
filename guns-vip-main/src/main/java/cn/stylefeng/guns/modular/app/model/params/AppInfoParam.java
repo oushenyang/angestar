@@ -56,6 +56,16 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private String appNotice;
 
     /**
+     * 卡密数量
+     */
+    private Integer cardNum;
+
+    /**
+     * 账号数量
+     */
+    private Integer accountNum;
+
+    /**
      * 应用自定义数据1
      */
     private String customData1;

@@ -40,6 +40,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
         return [[
             // {type: 'checkbox'},
             {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
+            {field: 'appId', hide: true},
             {
                 align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用', templet: function (d) {
                     if (!d.appName) {
@@ -264,6 +265,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("cardId", data.cardId);
+            ajax.set("appId", data.appId);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);

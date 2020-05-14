@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.remote.controller;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -9,13 +10,16 @@ import cn.stylefeng.guns.modular.remote.model.params.RemoteDataParam;
 import cn.stylefeng.guns.modular.remote.service.RemoteDataService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -103,6 +107,8 @@ public class RemoteDataController extends BaseController {
     @RequestMapping("/editItem")
     @ResponseBody
     public ResponseData editItem(RemoteDataParam remoteDataParam) {
+        remoteDataParam.setUpdateUser(LoginContextHolder.getContext().getUserId());
+        remoteDataParam.setUpdateTime(new Date());
         this.remoteDataService.update(remoteDataParam);
         return ResponseData.success();
     }
@@ -156,7 +162,13 @@ public class RemoteDataController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(RemoteDataParam remoteDataParam) {
-        return this.remoteDataService.findPageBySpec(remoteDataParam);
+        //获取分页参数
+        Page page = LayuiPageFactory.defaultPage();
+        remoteDataParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<Map<String, Object>> result = remoteDataService.findListBySpec(page, remoteDataParam);
+        page.setRecords(result);
+        return LayuiPageFactory.createPageInfo(page);
     }
 
 }

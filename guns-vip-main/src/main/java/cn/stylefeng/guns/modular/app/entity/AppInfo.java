@@ -64,6 +64,18 @@ public class AppInfo implements Serializable {
     private String appNotice;
 
     /**
+     * 卡密数量
+     */
+    @TableField("card_num")
+    private Integer cardNum;
+
+    /**
+     * 账号数量
+     */
+    @TableField("account_num")
+    private Integer accountNum;
+
+    /**
      * 应用自定义数据1
      */
     @TableField("custom_data1")
@@ -304,6 +316,22 @@ public class AppInfo implements Serializable {
 
     public void setAppNotice(String appNotice) {
         this.appNotice = appNotice;
+    }
+
+    public Integer getCardNum() {
+        return cardNum;
+    }
+
+    public void setCardNum(Integer cardNum) {
+        this.cardNum = cardNum;
+    }
+
+    public Integer getAccountNum() {
+        return accountNum;
+    }
+
+    public void setAccountNum(Integer accountNum) {
+        this.accountNum = accountNum;
     }
 
     public String getCustomData1() {
