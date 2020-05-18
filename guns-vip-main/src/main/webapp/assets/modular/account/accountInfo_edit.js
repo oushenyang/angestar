@@ -30,14 +30,21 @@ var AccountInfoInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form', 'formX','admin', 'ax','laydate'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var laydate = layui.laydate;
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
+
+    laydate.render({
+        elem: '#expireTime',
+        position: 'fixed',
+        type: 'datetime'
+    });
 
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/accountInfo/detail?accountId=" + Feng.getUrlParam("accountId"));

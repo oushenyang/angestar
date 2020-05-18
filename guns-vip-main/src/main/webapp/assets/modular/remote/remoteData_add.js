@@ -101,20 +101,16 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var textM = $('#edit').html();
-        console.log(textM);
         var html = textM.replace(/<span\s*[^>]*>(.*?)<\/span>/g, function ($1, $2) {
             var el = document.createElement('div');
             $(el).html($1);
             var emoji = $(el).children('span').attr('data-value');
             return '[[' + emoji + ']]';
         });
-        console.log(html)
-        var text = html.replace(/(<br>)?(<\/div>)?<div>/g, '\\n') // 空行 表情结尾行 表情行
-            .replace(/(<br>)|(<div>)/g, '\\n')
+        var text = html.replace(/(<br>)?(<\/div>)?<div>/g, '') // 空行 表情结尾行 表情行
+            .replace(/(<br>)|(<div>)/g, '')
             .replace(/&nbsp;/g, ' ')
             .replace(/(<br>)?<\/div>$/, '');
-        console.log('res--->', text);
-        console.log(data.field);
         data.field.dataValue = text;
         data.field.dataValueText = HTMLEncode($('#edit').html());
         var ajax = new $ax(Feng.ctxPath + "/remoteData/addItem", function (data) {
