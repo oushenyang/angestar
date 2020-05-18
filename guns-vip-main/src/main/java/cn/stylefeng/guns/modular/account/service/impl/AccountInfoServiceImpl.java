@@ -7,9 +7,12 @@ import cn.stylefeng.guns.modular.account.mapper.AccountInfoMapper;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
 import cn.stylefeng.guns.modular.account.model.result.AccountInfoResult;
 import  cn.stylefeng.guns.modular.account.service.AccountInfoService;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 
 /**
  * <p>
@@ -60,8 +66,8 @@ public class AccountInfoServiceImpl extends ServiceImpl<AccountInfoMapper, Accou
     }
 
     @Override
-    public List<AccountInfoResult> findListBySpec(AccountInfoParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page, AccountInfoParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override
@@ -70,6 +76,22 @@ public class AccountInfoServiceImpl extends ServiceImpl<AccountInfoMapper, Accou
         QueryWrapper<AccountInfo> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 新增判断账号是否存在
+     *
+     * @param appId   应用id
+     * @param account 账号
+     * @return 是否
+     */
+    @Override
+    public boolean addAccountWhetherAlready(Long appId, String account) {
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setAccount(account);
+        accountInfo.setAppId(appId);
+        List<AccountInfo> list = this.list(new QueryWrapper<>(accountInfo));
+        return CollectionUtils.isNotEmpty(list);
     }
 
     private Serializable getKey(AccountInfoParam param){

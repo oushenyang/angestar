@@ -66,7 +66,10 @@ public class NoneAuthedResources {
             "/tran/**",
 
             //获取租户列表的接口
-            "/tenantInfo/listTenants"
+            "/tenantInfo/listTenants",
+
+            //api接口
+            "/api/*"
 
     };
 

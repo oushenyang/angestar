@@ -13,6 +13,7 @@ import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +65,7 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         appEdition.setEditionNum(editionNum);
         appEdition.setAppId(appId);
         List<AppEdition> list = this.list(new QueryWrapper<>(appEdition));
-        if (list != null && list.size() > 0) {
-            return true;
-        }
-        return false;
+        return CollectionUtils.isNotEmpty(list);
     }
 
     /**

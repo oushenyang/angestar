@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.account.controller;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.account.entity.AccountInfo;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
@@ -9,14 +10,16 @@ import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -90,8 +93,24 @@ public class AccountInfoController extends BaseController {
     @RequestMapping("/addItem")
     @ResponseBody
     public ResponseData addItem(AccountInfoParam accountInfoParam) {
+        accountInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        accountInfoParam.setCreateTime(new Date());
+        accountInfoParam.setRegistrationTime(new Date());
         this.accountInfoService.add(accountInfoParam);
         return ResponseData.success();
+    }
+
+    /**
+     * 新增判断账号是否存在接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @RequestMapping("/addAccountWhetherAlready")
+    @ResponseBody
+    public ResponseData addAccountWhetherAlready(Long appId,String account) {
+        boolean isAlready = this.accountInfoService.addAccountWhetherAlready(appId,account);
+        return ResponseData.success(isAlready);
     }
 
     /**
@@ -156,7 +175,13 @@ public class AccountInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(AccountInfoParam accountInfoParam) {
-        return this.accountInfoService.findPageBySpec(accountInfoParam);
+        //获取分页参数
+        Page page = LayuiPageFactory.defaultPage();
+        accountInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<Map<String, Object>> result = accountInfoService.findListBySpec(page, accountInfoParam);
+        page.setRecords(result);
+        return LayuiPageFactory.createPageInfo(page);
     }
 
 }

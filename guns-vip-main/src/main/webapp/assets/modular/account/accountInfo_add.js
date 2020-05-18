@@ -30,14 +30,25 @@ var AccountInfoInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form', 'formX','admin', 'ax','laydate'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var laydate = layui.laydate;
+    //表单初始赋值
+    layui.form.val('accountInfoForm', {
+        "accountPoint":0,
+    });
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
+
+    laydate.render({
+        elem: '#expireTime',
+        position: 'fixed',
+        type: 'datetime'
+    });
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
@@ -56,4 +67,23 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         ajax.start();
         return false;
     });
+
+    form.verify({
+        digital: function (account) {
+            if (addAccountWhetherAlready(account)){
+                return '该账号已存在';
+            }
+        }
+    });
+
+    function addAccountWhetherAlready(account) {
+        var result;
+        var ajax = new $ax(Feng.ctxPath + "/accountInfo/addAccountWhetherAlready", function (data) {
+            result = data.data;
+        });
+        ajax.set("appId", $('#appId option:selected').val());
+        ajax.set("account", account);
+        ajax.start();
+        return result;
+    }
 });

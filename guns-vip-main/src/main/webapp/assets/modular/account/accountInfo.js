@@ -17,13 +17,13 @@ layui.use(['table', 'admin', 'ax'], function () {
     AccountInfo.initColumn = function () {
         return [[
             {align: 'center',field: 'accountId', fixed: 'left',type: 'checkbox'},
-            {align: 'center',field: 'appId',fixed: 'left', width: 100, title: '所属应用'},
+            {align: 'center',field: 'appName',fixed: 'left', width: 100, title: '所属应用'},
             {align: 'center',field: 'account', title: '账号'},
             {align: 'center',field: 'accountStatus', sort: true, title: '状态',templet: '#accountStatusTpl'},
             {align: 'center',field: 'registrationTime', sort: true, title: '注册时间'},
             {align: 'center',field: 'expireTime', sort: true, title: '到期时间'},
             {align: 'center',field: 'accountPoint', title: '用户点数'},
-            {align: 'center',field: 'surplusPoint', title: '剩余点数'},
+            // {align: 'center',field: 'surplusPoint', title: '剩余点数'},
             {align: 'center',field: 'referrer', title: '推荐人'},
             {align: 'center',field: 'referrerCode',title: '推荐码'},
             {align: 'center',field: 'remark', title: '备注'},

@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.account.entity.AccountInfo;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
 import cn.stylefeng.guns.modular.account.model.result.AccountInfoResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -64,7 +66,7 @@ public interface AccountInfoService extends IService<AccountInfo> {
      * @author shenyang.ou
      * @Date 2020-05-14
      */
-    List<AccountInfoResult> findListBySpec(AccountInfoParam param);
+    List<Map<String, Object>> findListBySpec(Page page, AccountInfoParam param);
 
     /**
      * 查询分页数据，Specification模式
@@ -74,4 +76,11 @@ public interface AccountInfoService extends IService<AccountInfo> {
      */
      LayuiPageInfo findPageBySpec(AccountInfoParam param);
 
+    /**
+     * 新增判断账号是否存在
+     * @param appId 应用id
+     * @param account 账号
+     * @return 是否
+     */
+    boolean addAccountWhetherAlready(Long appId, String account);
 }

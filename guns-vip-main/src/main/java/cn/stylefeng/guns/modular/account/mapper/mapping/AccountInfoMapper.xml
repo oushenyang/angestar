@@ -33,7 +33,47 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        account_id AS "accountId", app_id AS "appId", account AS "account", email AS "email", phone AS "phone", qq AS "qq", password AS "password", account_status AS "accountStatus", registration_time AS "registrationTime", expire_time AS "expireTime", account_point AS "accountPoint", surplus_point AS "surplusPoint", referrer AS "referrer", referrer_code AS "referrerCode", account_data AS "accountData", account_token AS "accountToken", account_bind_type AS "accountBindType", account_bind_num AS "accountBindNum", account_open_range AS "accountOpenRange", account_open_num AS "accountOpenNum", remark AS "remark", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS appName,
+        aci.account_id AS "accountId",
+        aci.app_id AS "appId",
+        aci.account AS "account",
+        aci.email AS "email",
+        aci.phone AS "phone",
+        aci.qq AS "qq",
+        aci.password AS "password",
+        aci.account_status AS "accountStatus",
+        aci.registration_time AS "registrationTime",
+        aci.expire_time AS "expireTime",
+        aci.account_point AS "accountPoint",
+        aci.surplus_point AS "surplusPoint",
+        aci.referrer AS "referrer",
+        aci.referrer_code AS "referrerCode",
+        aci.account_data AS "accountData",
+        aci.account_token AS "accountToken",
+        aci.account_bind_type AS "accountBindType",
+        aci.account_bind_num AS "accountBindNum",
+        aci.account_open_range AS "accountOpenRange",
+        aci.account_open_num AS "accountOpenNum",
+        aci.remark AS "remark",
+        aci.create_user AS "createUser",
+        aci.create_time AS "createTime",
+        aci.update_user AS "updateUser",
+        aci.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_account_info aci
+        left join ag_app_info ai on ai.app_id = aci.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and aci.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and aci.app_id = #{param.appId}
+            </if>
+        </where>
+        order by aci.create_time DESC
+    </select>
 
 </mapper>
