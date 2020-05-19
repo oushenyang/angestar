@@ -159,7 +159,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         XssFilter xssFilter = new XssFilter();
-        xssFilter.setUrlExclusion(Arrays.asList("/notice/add", "/notice/update", "/excelExportDeploy/editItem", "/excelExportDeploy/addItem", "/sql/addItem", "/sql/editItem"));
+        xssFilter.setUrlExclusion(Arrays.asList("/notice/add", "/notice/update", "/excelExportDeploy/editItem", "/excelExportDeploy/addItem", "/sql/addItem", "/sql/editItem", "/remoteCode/addItem", "/remoteCode/editItem"));
         FilterRegistrationBean registration = new FilterRegistrationBean(xssFilter);
         registration.addUrlPatterns("/*");
         return registration;

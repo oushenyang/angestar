@@ -24,13 +24,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     var form = layui.form;
     var admin = layui.admin;
 
-    var editor = ace.edit("code");//绑定dom对象
-    var theme = "monokai";//主题
-    var language = "javascript";//程序语言
-    editor.setTheme("ace/theme/" + theme);//设置主题
+    var editor = ace.edit("codeText");//绑定dom对象
+    editor.setTheme("ace/theme/monokai");//设置主题
     editor.getSession().setMode("ace/mode/javascript");//设置程序语言
-    editor.setFontSize(15);	//字体大小
-    document.getElementById("code").style.lineHeight="25px";//设置行高;
     editor.setReadOnly(false);//设置只读（true时只读，用于展示代码）
 //			editor.setOptions({
 //			    maxLines: "350px" //自适应高度
@@ -42,26 +38,26 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     //以下部分是设置输入代码提示的
     editor.setOptions({
         enableBasicAutocompletion: true,
-        enableSnippets: true,
+        // enableSnippets: true,
         enableLiveAutocompletion: true
     });
     editor.setHighlightActiveLine(true); //代码高亮
     editor.setShowPrintMargin(false);
-    //editor.setTheme(&#39;ace/theme/solarized_dark&#39;); //引入模板
-    editor.getSession().setUseWorker(false);
+    // editor.getSession().setUseWorker(false);
     editor.getSession().setUseWrapMode(true); //支持代码折叠
     //editor.getSession().setMode(&#39;ace/mode/javascript&#39;); //设置语言模式
-    editor.selection.getCursor(); //获取光标所在行或列
+    // editor.selection.getCursor(); //获取光标所在行或列
     //editor.gotoLine(lineNumber); //跳转到行
-    editor.session.getLength(); //获取总行数
+    // editor.session.getLength(); //获取总行数
     // editor.insert("Something cool");
-    editor.getSession().setUseSoftTabs(true);
+    // editor.getSession().setUseSoftTabs(true);
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        data.field.codeText=editor.getValue();
         var ajax = new $ax(Feng.ctxPath + "/remoteCode/addItem", function (data) {
             Feng.success("添加成功！");
 
