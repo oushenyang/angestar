@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * <p></p>
@@ -35,7 +38,7 @@ public class ApiTestController {
     @RequestMapping("/test")
     @ResponseBody
     public Object test() {
-        Enumeration<String> cookies = HttpContext.getRequest().getParameterNames();
+        Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
         System.out.println(cookies);
         RemoteData remoteData = remoteDataService.getById(1260547698754760706L);
         boolean isJson = true;

@@ -1,0 +1,83 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/remote/remoteCode_edit.js"]}){
+<form id="remoteCodeForm" lay-filter="remoteCodeForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="codeId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用ID<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appId" name="appId" placeholder="请输入应用ID" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代码编码<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="codeCode" name="codeCode" placeholder="请输入代码编码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数一名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="parameterOne" name="parameterOne" placeholder="请输入参数一名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数二名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="parameterTwo" name="parameterTwo" placeholder="请输入参数二名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数三名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="parameterThree" name="parameterThree" placeholder="请输入参数三名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数四名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="parameterFour" name="parameterFour" placeholder="请输入参数四名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代码值<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="codeValue" name="codeValue" placeholder="请输入代码值" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代码文本<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="codeText" name="codeText" placeholder="请输入代码文本" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createUser" name="createUser" placeholder="请输入创建人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createTime" name="createTime" placeholder="请输入创建时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateUser" name="updateUser" placeholder="请输入更新人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateTime" name="updateTime" placeholder="请输入更新时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

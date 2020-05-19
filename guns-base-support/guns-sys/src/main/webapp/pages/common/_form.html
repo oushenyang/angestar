@@ -26,6 +26,9 @@
         @if(array.contain(plugins,"ztree")){
         <link href="${ctxPath}/assets/expand/plugins/ztree/zTreeStyle.css?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
         @}
+        @if(array.contain(plugins,"codemirror")){
+        <link href="${ctxPath}/assets/expand/plugins/ueditor/third-party/codemirror/codemirror.css?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
+        @}
     @}
 
     @/* 其他业务用的css */
@@ -74,7 +77,18 @@ ${layoutContent}
     <script src="${ctxPath}/assets/expand/plugins/jquery/clipboard.min.js"></script>
     @}
     @if(array.contain(plugins,"editEle")){
-    <link href="${ctxPath}/assets/expand/plugins/editEle/editEle.js?v=${constants.getReleaseVersion()}" rel="stylesheet" type="text/css" />
+    <script src="${ctxPath}/assets/expand/plugins/editEle/editEle.js?v=${constants.getReleaseVersion()}"></script>
+    @}
+    @if(array.contain(plugins,"ace")){
+    <script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ace/ace.js"></script>
+    <script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ace/ext-language_tools.js"></script>
+    <script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ace/ext-old_ie.js"></script>
+    <script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ace/theme-monokai.js"></script>
+    <script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ace/mode-javascript.js"></script>
+    @}
+    @if(array.contain(plugins,"codemirror")){
+    <script src="${ctxPath}/assets/expand/plugins/ueditor/third-party/codemirror/codemirror.js?v=${constants.getReleaseVersion()}"></script>
+    <script src="${ctxPath}/assets/expand/plugins/ueditor/third-party/codemirror/javascript.js?v=${constants.getReleaseVersion()}"></script>
     @}
 @}
 
