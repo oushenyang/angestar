@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.remote.entity.RemoteCode;
 import cn.stylefeng.guns.modular.remote.model.params.RemoteCodeParam;
 import cn.stylefeng.guns.modular.remote.model.result.RemoteCodeResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -64,7 +66,7 @@ public interface RemoteCodeService extends IService<RemoteCode> {
      * @author shenyang.ou
      * @Date 2020-05-19
      */
-    List<RemoteCodeResult> findListBySpec(RemoteCodeParam param);
+    List<Map<String, Object>> findListBySpec(Page page,RemoteCodeParam param);
 
     /**
      * 查询分页数据，Specification模式

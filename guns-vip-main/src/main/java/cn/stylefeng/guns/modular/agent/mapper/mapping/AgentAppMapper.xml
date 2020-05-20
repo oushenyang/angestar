@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.agent.mapper.AgentAppMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentApp">
+        <id column="agent_app_id" property="agentAppId" />
+        <result column="app_id" property="appId" />
+        <result column="developer_user_id" property="developerUserId" />
+        <result column="agent_user_id" property="agentUserId" />
+        <result column="agent_user_name" property="agentUserName" />
+        <result column="agent_user_account" property="agentUserAccount" />
+        <result column="agent_grade" property="agentGrade" />
+        <result column="pid" property="pid" />
+        <result column="pids" property="pids" />
+        <result column="balance" property="balance" />
+        <result column="status" property="status" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ap.agent_power_id AS "agentPowerId",
+        aa.agent_app_id AS "agentAppId",
+        aa.app_id AS "appId",
+        aa.developer_user_id AS "developerUserId",
+        aa.agent_user_id AS "agentUserId",
+        aa.agent_user_name AS "agentUserName",
+        aa.agent_user_account AS "agentUserAccount",
+        aa.agent_grade AS "agentGrade", pid AS "pid",
+        aa.pids AS "pids",
+        aa.balance AS "balance",
+        aa.status AS "status",
+        aa.create_user AS "createUser",
+        aa.create_time AS "createTime",
+        aa.update_user AS "updateUser",
+        aa.update_time AS "updateTime"
+    </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_agent_app aa
+        left join ag_agent_power ap on ap.agent_app_id = aa.agent_app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and aa.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and aa.app_id = #{param.appId}
+            </if>
+        </where>
+        order by aa.create_time DESC
+    </select>
+
+</mapper>

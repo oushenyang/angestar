@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -60,8 +61,8 @@ public class RemoteCodeServiceImpl extends ServiceImpl<RemoteCodeMapper, RemoteC
     }
 
     @Override
-    public List<RemoteCodeResult> findListBySpec(RemoteCodeParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page, RemoteCodeParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

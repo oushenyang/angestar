@@ -17,12 +17,12 @@ layui.use(['table', 'admin', 'ax'], function () {
     RemoteCode.initColumn = function () {
         return [[
             {align: 'center',field: 'codeId', fixed: 'left',type: 'checkbox'},
-            {align: 'center',field: 'appId', fixed: 'left', width: 100,title: '应用ID'},
+            {align: 'center',field: 'appName', fixed: 'left', width: 100,title: '所属应用'},
             {align: 'center',field: 'codeCode', sort: true, title: '代码编码'},
             {align: 'center',field: 'codeValue', sort: true, title: '代码值'},
             {align: 'center',field: 'createTime', sort: true, title: '创建时间'},
             {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-            {align: 'center',align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 

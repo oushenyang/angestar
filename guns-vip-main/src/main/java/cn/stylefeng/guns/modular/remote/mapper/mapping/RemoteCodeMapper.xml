@@ -21,7 +21,35 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        code_id AS "codeId", app_id AS "appId", code_code AS "codeCode", parameter_one AS "parameterOne", parameter_two AS "parameterTwo", parameter_three AS "parameterThree", parameter_four AS "parameterFour", code_value AS "codeValue", code_text AS "codeText", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS appName,
+        rc.code_id AS "codeId",
+        rc.app_id AS "appId",
+        rc.code_code AS "codeCode",
+        rc.parameter_one AS "parameterOne",
+        rc.parameter_two AS "parameterTwo",
+        rc.parameter_three AS "parameterThree",
+        rc.parameter_four AS "parameterFour",
+        rc.code_value AS "codeValue",
+        rc.code_text AS "codeText",
+        rc.create_user AS "createUser",
+        rc.create_time AS "createTime",
+        rc.update_user AS "updateUser",
+        rc.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_remote_code rc
+        left join ag_app_info ai on ai.app_id = rc.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and rc.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and rc.app_id = #{param.appId}
+            </if>
+        </where>
+        order by rc.create_time DESC
+    </select>
 
 </mapper>

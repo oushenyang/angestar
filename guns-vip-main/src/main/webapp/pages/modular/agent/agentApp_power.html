@@ -1,0 +1,34 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/agent/agentApp_power.js"]}){
+<form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="agentPowerId" type="hidden"/>
+        <fieldset class="layui-elem-field">
+            <legend>单码模式</legend>
+            <div class="layui-field-box">
+                <input type="checkbox" name="cardCreate" title="卡密生成">
+                <input type="checkbox" name="cardDisable" title="卡密禁用">
+                <input type="checkbox" name="cardLook" title="卡密查看">
+                <input type="checkbox" name="cardData" title="卡密数据">
+                <input type="checkbox" name="cardTime" title="卡密加时">
+                <input type="checkbox" name="cardDelete" title="卡密删除">
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>账号模式</legend>
+            <div class="layui-field-box">
+                <input type="checkbox" name="accountCreate" title="充值卡生成">
+                <input type="checkbox" name="accountDisable" title="账号禁用">
+                <input type="checkbox" name="accountEditPassword" title="修改密码">
+                <input type="checkbox" name="accountDelete" title="账号删除">
+                <input type="checkbox" name="accountTime" title="账号加时">
+                <input type="checkbox" name="accountData" title="账号数据">
+                <input type="checkbox" name="accountQuery" title="查询用户">
+            </div>
+        </fieldset>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}
