@@ -16,33 +16,51 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
      * 初始化表格的列
      */
     AgentApp.initColumn = function () {
-        return [[
-            {align: 'center',field: 'agentAppId', fixed: 'left',type: 'checkbox'},
-            {field: 'agentPowerId',hide: true},
-            {align: 'center',field: 'appId', sort: true, title: '所属应用'},
-            {
-                align: 'center', field: 'status', title: '状态', templet: function (d) {
-                    if (d.status==0) {
-                        return '正常';
-                    } else {
-                        return '冻结';
+        return [
+            [
+                {align: 'center',field: 'agentAppId', fixed: 'left',rowspan: 2,type: 'checkbox'},
+                {field: 'agentPowerId',hide: true},
+                {align: 'center',field: 'appId', sort: true,  rowspan: 2,title: '所属应用'},
+                {
+                    align: 'center', field: 'status', title: '状态',  rowspan: 2, templet: function (d) {
+                        if (d.status==0) {
+                            return '正常';
+                        } else {
+                            return '冻结';
+                        }
                     }
-                }
-            },
+                },
+                {align: 'center',field: 'agentUserName',  rowspan: 2, title: '代理名称'},
+                {align: 'center',field: 'agentUserAccount',  rowspan: 2, title: '代理账号'},
+                {align: 'center',field: 'agentUserAccount',  colspan: 3, title: '注册码'},
+                {align: 'center',field: 'agentUserAccount',  colspan: 3, title: '单码'},
+                // {align: 'center',field: 'createUser', sort: true, title: '创建人'},
+                {align: 'center',field: 'createTime', sort: true,  rowspan: 2, title: '合作时间'},
+                {align: 'center',field: 'balance',rowspan: 2, title: '余额'},
+                // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
+                // {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
+                {align: 'center', toolbar: '#tableBar', width: 250,  rowspan: 2, fixed: 'right', title: '操作'}
+            ],
+            [
+
             // {align: 'center',field: 'agentUserId', sort: true, title: '代理用户id'},
-            {align: 'center',field: 'agentUserName', title: '代理用户名称'},
-            {align: 'center',field: 'agentUserAccount', title: '代理用户账号'},
+
             // {align: 'center',field: 'agentGrade', sort: true, title: '代理等级'},
             // {align: 'center',field: 'pid', sort: true, title: '父代理应用id'},
             // {align: 'center',field: 'pids', sort: true, title: '父级ids'},
-            {align: 'center',field: 'balance',  title: '余额'},
 
-            // {align: 'center',field: 'createUser', sort: true, title: '创建人'},
-            {align: 'center',field: 'createTime', sort: true, title: '合作时间'},
-            // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
-            // {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-            {align: 'center', toolbar: '#tableBar', width: 250, fixed: 'right', title: '操作'}
-        ]];
+            {align: 'center',field: 'balance', title: '未使用'},
+            {align: 'center',field: 'balance',  title: '已使用'},
+            {align: 'center',field: 'balance',   title: '总卡量'},
+            {align: 'center',field: 'balance',  title: '未使用'},
+            {align: 'center',field: 'balance',  title: '已使用'},
+            {align: 'center',field: 'balance',  title: '总卡量'},
+
+
+
+        ]
+
+        ];
     };
 
     /**
@@ -150,9 +168,27 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '权限设置',
+            title: '权限配置',
             area: '700px',
             content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data.agentPowerId,
+            end: function () {
+                admin.getTempData('formOk') && table.reload(AgentApp.tableId);
+            }
+        });
+    };
+
+    /**
+     * 点击卡密配置
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.openCardDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '卡密配置',
+            area: '700px',
+            content: Feng.ctxPath + '/agentApp/card?agentPowerId=' + data.agentPowerId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -262,6 +298,8 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             AgentApp.openRechargeDlg(data);
         }else if (layEvent === 'power') {
             AgentApp.openPowerDlg(data);
+        }else if (layEvent === 'card') {
+            AgentApp.openCardDlg(data);
         }
     });
 });

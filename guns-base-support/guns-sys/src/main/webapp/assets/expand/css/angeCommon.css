@@ -4,17 +4,17 @@
 /*.layui-input{height: 34px!important;line-height: 34px!important;border-radius: 3px!important;}*/
 /*.layui-form-label{width: 60px!important;padding-left: 0px!important;}*/
 .layui-table-tool-panel{margin-top:10px!important;}
-.layui-table-tool{background-color: white!important;border-bottom: none!important;padding-bottom: 10px!important;padding-left:0px!important;padding-top:10px!important;}
-.layui-table-header, .layui-table-header th{background-color: white!important;border-bottom: 2px solid #dee2e6;border-top: 1px solid #dee2e6;font-size: 15px;font-weight: 800;}
-.layui-table-view{border: none!important;}
-.layui-table-cell{height: 34px!important;line-height: 34px!important;}
+.layui-table-tool{background-color: white!important;padding-bottom: 10px!important;padding-left:0px!important;padding-top:10px!important;}
+/*.layui-table-header, .layui-table-header th{background-color: white!important;border-bottom: 2px solid #dee2e6;border-top: 1px solid #dee2e6;font-size: 15px;font-weight: 800;}1*/
+/*.layui-table-view{border: none!important;}1*/
+/*.layui-table-cell{height: 34px!important;line-height: 34px!important;}1*/
 /*.layui-laypage .layui-laypage-curr .layui-laypage-em{border-radius: 50px!important;background-color: #5FB878!important;}*/
 /*.layui-laypage-limits, .layui-laypage-skip{display: none!important;}*/
-.layui-table tr{height: 34px!important;line-height: 34px!important;}
-.layui-table-cell{padding-top: 1px!important;}
-.layui-table-box *{font-size: 13px!important;}
-.layui-table-box button{font-size: 15px!important;}
+/*.layui-table tr{height: 34px!important;line-height: 34px!important;}1*/
+/*.layui-table-cell{padding-top: 1px!important;}1*/
+/*.layui-table-box *{font-size: 13px!important;}1*/
+/*.layui-table-box button{font-size: 15px!important;}1*/
 .layui-table-page{height: 45px!important;padding-top: 10px!important;}
-.layui-table-tool .layui-inline{border-radius: 3px!important;width: 30px!important;height: 30px!important;line-height: 20px!important;}
-.layui-table-view .layui-table[lay-skin=line]{border: none!important;}
+/*.layui-table-tool .layui-inline{border-radius: 3px!important;width: 30px!important;height: 30px!important;line-height: 20px!important;}1*/
+/*.layui-table-view .layui-table[lay-skin=line]{border: none!important;}1*/
 .layui-table-tool-temp {padding-right: 40px!important;}

@@ -112,6 +112,17 @@ public class AgentAppController extends BaseController {
     }
 
     /**
+     * 卡密设置页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @RequestMapping("/card")
+    public String card() {
+        return PREFIX + "/agentApp_card.html";
+    }
+
+    /**
      * 新增接口
      *
      * @author shenyang.ou
