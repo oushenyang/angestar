@@ -1,0 +1,161 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/apiManage/apiManage_add.js"]}){
+<form id="apiManageForm" lay-filter="apiManageForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="apiManageId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">api类别<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="apiType" lay-search="" lay-verify="required" lay-filter="apiType" lay-verType="tips" required>
+                    <option value="">请选择api类别</option>
+                    @for(dict in dicts) {
+                    <option value="${dict.code}">${dict.name}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">接口名称</label>
+                <div class="layui-input-inline" >
+                    <input id="apiName" name="apiName" placeholder="请输入接口名称" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">接口编码</label>
+                <div class="layui-input-inline">
+                    <input id="apiCode" name="apiCode" placeholder="请输入接口编码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数一</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterOne" name="parameterOne" placeholder="请输入参数一名" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数一说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterOneRemark" name="parameterOneRemark" placeholder="请输入参数一说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数二</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterTwo" name="parameterTwo" placeholder="请输入参数二" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数二说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterTwoRemark" name="parameterTwoRemark" placeholder="请输入参数二说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数三</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterThree" name="parameterThree" placeholder="请输入参数三" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数三说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterThreeRemark" name="parameterThreeRemark" placeholder="请输入参数三说明" type="text" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数四</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterFour" name="parameterFour" placeholder="请输入参数四" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数四说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterFourRemark" name="parameterFourRemark" placeholder="请输入参数四说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数五</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterFive" name="parameterFive" placeholder="请输入参数五" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数五说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterFiveRemark" name="parameterFiveRemark" placeholder="请输入参数五说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数六</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterSix" name="parameterSix" placeholder="请输入参数六" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数六说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterSixRemark" name="parameterSixRemark" placeholder="请输入参数六说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数七</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterSeven" name="parameterSeven" placeholder="请输入参数七" type="text" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">参数七说明</label>
+                <div class="layui-input-inline">
+                    <input id="parameterSevenRemark" name="parameterSevenRemark" placeholder="请输入参数七说明" type="text" class="layui-input"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <div class="layui-inline">
+                <label class="layui-form-label">参数数量</label>
+                <div class="layui-input-inline" >
+                    <input id="parameterNum" name="parameterNum" placeholder="请输入参数数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input id="sort" name="sort" placeholder="请输入排序" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <label class="layui-form-label">返回说明<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="returnRemark" name="returnRemark" placeholder="请输入返回说明" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="remark" name="remark" placeholder="请输入备注" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}
