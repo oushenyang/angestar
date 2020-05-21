@@ -9,190 +9,17 @@
                 <li>账号卡密</li>
             </ul>
             <div class="layui-tab-content">
-                <!-- 基本信息 -->
-                <div class="layui-tab-item layui-show">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">软件名称<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="appName" name="appName" placeholder="请输入软件名" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">运营状态<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input type="radio" class="layui-input" name="cydiaFlag" value="0" title="收费" checked="">
-                            <input type="radio" class="layui-input" name="cydiaFlag" value="1" title="免费">
-                            <input type="radio" class="layui-input" name="cydiaFlag" value="2" title="关闭">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">软件密匙</label>
-                        <div class="layui-input-block">
-                            <input id="appNum" name="appNum" placeholder="无需输入自动生成" type="text" class="layui-input" disabled/>
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">软件公告</label>
-                        <div class="layui-input-block">
-                            <textarea id="appNotice" name="appNotice" placeholder="请输入软件公告" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">软件自定义数据</label>
-                        <div class="layui-input-block">
-                            <textarea id="customData1" name="customData1" placeholder="请输入软件自定义数据" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-                    <!--                <div class="layui-form-item text-right">-->
-                    <!--                    <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>-->
-                    <!--                    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>-->
-                    <!--                </div>-->
-                    <!--                <div class="form-group-bottom text-center">-->
-                    <!--                    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>-->
-                    <!--                    <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>-->
-                    <!--                </div>-->
+                <!-- 单码卡密 -->
+                <div class="layui-tab-item layui-show" style="height: 400px">
+                    <table class="layui-table" id="card" lay-filter="card"></table>
                 </div>
-                <!-- 绑机配置 -->
-                <div class="layui-tab-item">
-                    <fieldset class="layui-elem-field">
-                        <legend>单码模式</legend>
-                        <div class="layui-field-box">
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">绑机策略<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="codeBindType" value="0" title="关闭" checked="">
-                                    <input type="radio" class="layui-input" name="codeBindType" value="1" title="机器码" >
-                                    <input type="radio" class="layui-input" name="codeBindType" value="2" title="IP地址">
-                                    <input type="radio" class="layui-input" name="codeBindType" value="3" title="机器码+IP地址">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">绑机数量<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <!--                                    <input type="radio" class="layui-input" name="codeBindOption" value="0" title="每天" checked="">-->
-                                    <!--                                    <input type="radio" class="layui-input" name="codeBindOption" value="1" title="永久">-->
-                                    <input id="codeBindOption" name="codeBindOption" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">重绑次数<span style="color: red;">*</span></label>
-                                    <div class="layui-input-inline">
-                                        <input id="codeBindNum" name="codeBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">重绑扣时</label>
-                                    <div class="layui-input-inline">
-                                        <input id="codeBindTime" name="codeBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset class="layui-elem-field">
-                        <legend>账号模式</legend>
-                        <div class="layui-field-box">
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">绑机策略<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="accountBindType" value="0" title="关闭" checked="">
-                                    <input type="radio" class="layui-input" name="accountBindType" value="1" title="机器码">
-                                    <input type="radio" class="layui-input" name="accountBindType" value="2" title="IP地址">
-                                    <input type="radio" class="layui-input" name="accountBindType" value="3" title="机器码+IP地址">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">绑机数量<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <!--                                    <input type="radio" class="layui-input" name="accountBindOption" value="0" title="每天" checked="">-->
-                                    <!--                                    <input type="radio" class="layui-input" name="accountBindOption" value="1" title="永久">-->
-                                    <input id="accountBindOption" name="accountBindOption" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">重绑次数<span style="color: red;">*</span></label>
-                                    <div class="layui-input-inline">
-                                        <input id="accountBindNum" name="accountBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">重绑扣时</label>
-                                    <div class="layui-input-inline">
-                                        <input id="accountBindTime" name="accountBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <!--                <div class="layui-form-item text-right">-->
-                    <!--                    <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>-->
-                    <!--                    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>-->
-                    <!--                </div>-->
+                <!-- 通用单码卡密 -->
+                <div class="layui-tab-item" style="height: 400px">
+                    <table class="layui-table" id="current_card" lay-filter="current_card"></table>
                 </div>
-                <!-- 多开配置 -->
-                <div class="layui-tab-item">
-                    <fieldset class="layui-elem-field">
-                        <legend>单码模式</legend>
-                        <div class="layui-field-box">
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">多开范围<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="codeOpenRange" value="0" title="关闭" checked="">
-                                    <input type="radio" class="layui-input" name="codeOpenRange" value="1" title="单设备">
-                                    <input type="radio" class="layui-input" name="codeOpenRange" value="2" title="单IP">
-                                    <input type="radio" class="layui-input" name="codeOpenRange" value="3" title="所有设备">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">登陆方式<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="codeSignType" value="0" title="非顶号登录" checked="">
-                                    <input type="radio" class="layui-input" name="codeSignType" value="1" title="顶号登录">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" type="text" class="layui-input" lay-verify="required" required/>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset class="layui-elem-field">
-                        <legend>账号模式</legend>
-                        <div class="layui-field-box">
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">多开范围<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="accountOpenRange" value="0" title="关闭" checked="">
-                                    <input type="radio" class="layui-input" name="accountOpenRange" value="1" title="单设备">
-                                    <input type="radio" class="layui-input" name="accountOpenRange" value="2" title="单IP">
-                                    <input type="radio" class="layui-input" name="accountOpenRange" value="3" title="所有设备">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" pane="">
-                                <label class="layui-form-label">登陆方式<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input type="radio" class="layui-input" name="accountSignType" value="0" title="非顶号登录" checked="">
-                                    <input type="radio" class="layui-input" name="accountSignType" value="1" title="顶号登录">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
-                                <div class="layui-input-block">
-                                    <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" type="text" class="layui-input" lay-verify="required" required/>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <!--                <div class="layui-form-item text-right">-->
-                    <!--                    <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>-->
-                    <!--                    <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>-->
-                    <!--                </div>-->
+                <!-- 账号卡密 -->
+                <div class="layui-tab-item"style="height: 400px">
+                    <table class="layui-table" id="account" lay-filter="account"></table>
                 </div>
             </div>
         </div>
@@ -201,5 +28,9 @@
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
     </div>
+    <script type="text/html" id="tableBar">
+        <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+        <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+    </script>
 </form>
 @}

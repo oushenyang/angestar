@@ -187,7 +187,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '卡密配置',
-            area: '700px',
+            area: '800px',
             content: Feng.ctxPath + '/agentApp/card?agentPowerId=' + data.agentPowerId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
