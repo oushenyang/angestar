@@ -15,17 +15,18 @@ import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 
 /**
  * <p>
@@ -101,13 +102,26 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         List<AgentCard> agentCards = baseMapper.selectList(wrapper);
         //已经存在的卡类集合
         List<Long> cardTypeIds = new ArrayList<>();
+        List<AgentCard> agentCardsList = new ArrayList<>();
         agentCards.forEach(agentCard->{
             cardTypeIds.add(agentCard.getCardTypeId());
         });
         List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(),agentCardParam.getAppId(), LoginContextHolder.getContext().getUserId());
-
-//        baseMapper.selectList()
-
+        if (CollectionUtils.isNotEmpty(codeCardTypes)){
+            codeCardTypes.forEach(codeCardType -> {
+                AgentCard agentCard = new AgentCard();
+                agentCard.setAgentAppId(agentCardParam.getAgentAppId());
+                agentCard.setCardTypeId(codeCardType.getCardTypeId());
+                agentCard.setCardTypeName(codeCardType.getCardTypeName());
+                agentCard.setCardType(agentCardParam.getCardType());
+                agentCard.setMarketPrice(codeCardType.getCardTypePrice());
+                agentCard.setAgentPrice(codeCardType.getCardTypeAgentPrice());
+                agentCard.setCreateUser(LoginContextHolder.getContext().getUserId());
+                agentCard.setCreateTime(new Date());
+                agentCardsList.add(agentCard);
+            });
+        }
+        this.saveBatch(agentCardsList);
     }
 
     private Serializable getKey(AgentCardParam param){

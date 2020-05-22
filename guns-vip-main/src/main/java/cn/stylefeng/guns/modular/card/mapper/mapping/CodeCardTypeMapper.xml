@@ -93,10 +93,12 @@
         <if test="cardType != null and cardType ==2 and appId != null">
             and cct.app_id = #{appId} or cct.app_id = 0
         </if>
-        and cct.card_type_id not in
-        <foreach collection="cardTypeIds" index="index" item="item" separator="," open="(" close=")">
-            #{item,jdbcType=BIGINT}
-        </foreach>
+        <if test="cardTypeIds != null and cardTypeIds.size > 0">
+            and cct.card_type_id not in
+            <foreach collection="cardTypeIds" index="index" item="item" separator="," open="(" close=")">
+                #{item,jdbcType=BIGINT}
+            </foreach>
+        </if>
     </select>
 
 </mapper>
