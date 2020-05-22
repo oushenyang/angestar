@@ -44,7 +44,7 @@
         from ag_agent_card ac
         left join ag_app_info ai on ai.app_id = ac.app_id
         <where>
-            <if test="param.cardType != null and param.cardType != ''">
+            <if test="param.cardType != null">
                 and ac.card_type = #{param.cardType}
             </if>
             <if test="param.cardTypeId != null and param.cardTypeId !=''">

@@ -4,6 +4,7 @@ import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +25,5 @@ public interface AgentCardMapper extends BaseMapper<AgentCard> {
      * @param param 查询参数
      * @return 结果
      */
-    List<Map<String, Object>> findListBySpec(Page page, AgentCardParam param);
+    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AgentCardParam param);
 }

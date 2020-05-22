@@ -111,6 +111,7 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
             codeCardTypes.forEach(codeCardType -> {
                 AgentCard agentCard = new AgentCard();
                 agentCard.setAgentAppId(agentCardParam.getAgentAppId());
+                agentCard.setAppId(agentCardParam.getAppId());
                 agentCard.setCardTypeId(codeCardType.getCardTypeId());
                 agentCard.setCardTypeName(codeCardType.getCardTypeName());
                 agentCard.setCardType(agentCardParam.getCardType());

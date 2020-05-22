@@ -184,11 +184,12 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
      */
     AgentApp.openCardDlg = function (data) {
         admin.putTempData('formOk', false);
+        console.log(data.appId);
         top.layui.admin.open({
             type: 2,
             title: '卡密配置',
             area: '800px',
-            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId +'&appId' + data.appId,
+            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId +'&appId=' + data.appId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }

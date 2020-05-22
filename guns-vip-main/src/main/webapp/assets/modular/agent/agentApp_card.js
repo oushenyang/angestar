@@ -134,6 +134,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
      * 初始化
      */
     AgentApp.initializeItem = function (cardType) {
+        console.log(Feng.getUrlParam("appId"));
         var initializeItem = function () {
             var ajax = new $ax(Feng.ctxPath + "/agentCard/initializeItem", function (data) {
                 Feng.success("初始化成功!");
@@ -150,7 +151,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
             });
             ajax.set("cardType", cardType);
             ajax.set("agentAppId", Feng.getUrlParam("agentAppId"));
-            ajax.set("appId", Feng.getUrlParam("appId"));
+            ajax.set("appId",Feng.getUrlParam("appId"));
             ajax.start();
         };
         Feng.confirm("是否初始化?", initializeItem);
