@@ -32,4 +32,14 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
 
     @Transactional
     void addCardTypeBySql(Map map);
+
+    /**
+     * 排除已经存在的卡类获取剩余卡类信息
+     * @param cardTypeIds 已经存在的卡密类型id集合
+     * @param cardType 卡密类型
+     * @param appId 应用id
+     * @param userId 用户id
+     * @return 卡类信息
+     */
+    List<CodeCardType> findCardTypeByAppIdAndCardTypeIds(@Param("cardTypeIds")List<Long> cardTypeIds, @Param("cardType")Integer cardType, @Param("appId")Long appId, @Param("userId")Long userId);
 }

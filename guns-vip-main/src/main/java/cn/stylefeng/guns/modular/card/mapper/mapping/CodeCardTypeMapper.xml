@@ -77,5 +77,26 @@
     <select id="addCardTypeBySql" resultType="java.lang.Void">
        ${sqlStr}
     </select >
+    <select id="findCardTypeByAppIdAndCardTypeIds"
+            resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
+        select
+        cct.*
+        from ag_code_card_type cct
+        where
+        cct.create_user = #{userId}
+        <if test="cardType != null and cardType ==0 and appId != null">
+            and cct.app_id = #{appId} or cct.app_id = 0
+        </if>
+        <if test="cardType != null and cardType ==1">
+            and cct.app_id = 0
+        </if>
+        <if test="cardType != null and cardType ==2 and appId != null">
+            and cct.app_id = #{appId} or cct.app_id = 0
+        </if>
+        and cct.card_type_id not in
+        <foreach collection="cardTypeIds" index="index" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </select>
 
 </mapper>

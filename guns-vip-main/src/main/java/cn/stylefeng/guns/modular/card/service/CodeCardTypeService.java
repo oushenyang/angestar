@@ -86,6 +86,16 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
     List<CodeCardType> getCardTypeByAppId(Long appId,Long userId);
 
     /**
+     * 排除已经存在的卡类获取剩余卡类信息
+     * @param cardTypeIds 已经存在的卡密类型id集合
+     * @param cardType 卡密类型
+     * @param appId 应用id
+     * @param userId 用户id
+     * @return 卡类信息
+     */
+    List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long appId,Long userId);
+
+    /**
      * 根据应用id创建卡类信息
      * @param sqls sql
      * @return 卡类信息

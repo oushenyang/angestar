@@ -152,7 +152,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             type: 2,
             title: '代理充值',
             area: '500px',
-            content: Feng.ctxPath + '/agentApp/recharge?agentPowerId=' + data.agentAppId,
+            content: Feng.ctxPath + '/agentApp/recharge?agentAppId=' + data.agentAppId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -188,7 +188,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             type: 2,
             title: '卡密配置',
             area: '800px',
-            content: Feng.ctxPath + '/agentApp/card?agentPowerId=' + data.agentPowerId,
+            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId +'&appId' + data.appId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
