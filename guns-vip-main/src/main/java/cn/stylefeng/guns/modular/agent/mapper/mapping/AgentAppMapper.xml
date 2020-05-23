@@ -23,6 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
+        ai.app_name AS "appName",
         ap.agent_power_id AS "agentPowerId",
         aa.agent_app_id AS "agentAppId",
         aa.app_id AS "appId",
@@ -44,12 +45,16 @@
         <include refid="Base_Column_List"/>
         from ag_agent_app aa
         left join ag_agent_power ap on ap.agent_app_id = aa.agent_app_id
+        left join ag_app_info ai on ai.app_id = aa.app_id
         <where>
             <if test="param.createUser != null and param.createUser != ''">
                 and aa.create_user = #{param.createUser}
             </if>
             <if test="param.appId != null and param.appId !=''">
                 and aa.app_id = #{param.appId}
+            </if>
+            <if test="param.agentUserId != null and param.agentUserId !=''">
+                and aa.agent_user_id = #{param.agentUserId}
             </if>
         </where>
         order by aa.create_time DESC

@@ -16,52 +16,26 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
      * 初始化表格的列
      */
     AgentApp.initColumn = function () {
-        return [
-            [
-                {align: 'center',field: 'agentAppId', fixed: 'left',rowspan: 2,type: 'checkbox'},
-                {field: 'agentPowerId',hide: true},
-                {field: 'appId',hide: true},
-                {align: 'center',field: 'appName',rowspan: 2,title: '所属应用'},
-                {
-                    align: 'center', field: 'status', title: '状态',  rowspan: 2, templet: function (d) {
-                        if (d.status==0) {
-                            return '正常';
-                        } else {
-                            return '冻结';
-                        }
+        return [[
+            {align: 'center', field: 'agentAppId', fixed: 'left', type: 'checkbox'},
+            {field: 'agentPowerId', hide: true},
+            {field: 'appId', hide: true},
+            {align: 'center', field: 'appName', title: '所属应用'},
+            {align: 'center', field: 'agentGrade', sort: true, title: '代理等级'},
+            // {align: 'center', field: 'agentUserAccount', rowspan: 2, title: '代理账号'},
+            {align: 'center', field: 'createTime', sort: true, title: '合作时间'},
+            {align: 'center', field: 'balance',title: '余额'},
+            {
+                align: 'center', field: 'status', title: '状态', templet: function (d) {
+                    if (d.status==0) {
+                        return '正常';
+                    } else {
+                        return '冻结';
                     }
-                },
-                {align: 'center',field: 'agentUserName',  rowspan: 2, title: '代理名称'},
-                {align: 'center',field: 'agentUserAccount',  rowspan: 2, title: '代理账号'},
-                {align: 'center',field: 'agentUserAccount',  colspan: 3, title: '注册码'},
-                {align: 'center',field: 'agentUserAccount',  colspan: 3, title: '单码'},
-                // {align: 'center',field: 'createUser', sort: true, title: '创建人'},
-                {align: 'center',field: 'createTime', sort: true,  rowspan: 2, title: '合作时间'},
-                {align: 'center',field: 'balance',rowspan: 2, title: '余额'},
-                // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
-                // {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-                {align: 'center', toolbar: '#tableBar', width: 250,  rowspan: 2, fixed: 'right', title: '操作'}
-            ],
-            [
-
-            // {align: 'center',field: 'agentUserId', sort: true, title: '代理用户id'},
-
-            // {align: 'center',field: 'agentGrade', sort: true, title: '代理等级'},
-            // {align: 'center',field: 'pid', sort: true, title: '父代理应用id'},
-            // {align: 'center',field: 'pids', sort: true, title: '父级ids'},
-
-            {align: 'center',field: 'balance', title: '未使用'},
-            {align: 'center',field: 'balance',  title: '已使用'},
-            {align: 'center',field: 'balance',   title: '总卡量'},
-            {align: 'center',field: 'balance',  title: '未使用'},
-            {align: 'center',field: 'balance',  title: '已使用'},
-            {align: 'center',field: 'balance',  title: '总卡量'},
-
-
-
-        ]
-
-        ];
+                }
+            },
+            {align: 'center', toolbar: '#tableBar', width: 250, fixed: 'right', title: '操作'}
+        ]];
     };
 
     /**
@@ -86,7 +60,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             success: function (layero, dIndex) {
                 form.render('select');
                 form.val('agentAppForm', {
-                    "balance":0
+                    "balance": 0
                 });
                 //表单提交事件
                 form.on('submit(agentAppSubmit)', function (data) {
@@ -190,7 +164,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             type: 2,
             title: '卡密配置',
             area: '800px',
-            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId +'&appId=' + data.appId,
+            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId + '&appId=' + data.appId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -221,17 +195,17 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
      *
      * @param obj 选择的行数据
      */
-    AgentApp.batchRemove = function(obj){
+    AgentApp.batchRemove = function (obj) {
         let data = table.checkStatus(obj.config.id).data;
-        if(data.length === 0){
-            Feng.error("未选中数据!" );
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
             return false;
         }
         let ids = "";
-        for(let i = 0;i<data.length;i++){
-            ids += data[i].agentAppId+",";
+        for (let i = 0; i < data.length; i++) {
+            ids += data[i].agentAppId + ",";
         }
-        ids = ids.substr(0,ids.length-1);
+        ids = ids.substr(0, ids.length - 1);
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/agentApp/batchRemove", function (data) {
                 Feng.success("删除成功!");
@@ -248,14 +222,14 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + AgentApp.tableId,
-        url: Feng.ctxPath + '/agentApp/list',
+        url: Feng.ctxPath + '/actApp/list',
         page: true,
-        toolbar: '#' + AgentApp.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
+        // toolbar: '#' + AgentApp.tableId + '-toolbar',
+        // defaultToolbar: [{
+        //     title: '刷新',
+        //     layEvent: 'refresh',
+        //     icon: 'layui-icon-refresh',
+        // }, 'filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
         cols: AgentApp.initColumn()
@@ -277,13 +251,13 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
     });
 
     // 表头工具条点击事件
-    table.on('toolbar(' + AgentApp.tableId + ')', function(obj){
+    table.on('toolbar(' + AgentApp.tableId + ')', function (obj) {
         //添加
-        if(obj.event === 'btnAdd'){
+        if (obj.event === 'btnAdd') {
             AgentApp.openAddDlg();
-        } else if(obj.event === 'refresh'){
+        } else if (obj.event === 'refresh') {
             table.reload(AgentApp.tableId);
-        } else if(obj.event === 'batchRemove'){
+        } else if (obj.event === 'batchRemove') {
             AgentApp.batchRemove(obj)
         }
     });
@@ -296,11 +270,11 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             AgentApp.openEditDlg(data);
         } else if (layEvent === 'delete') {
             AgentApp.onDeleteItem(data);
-        }else if (layEvent === 'recharge') {
+        } else if (layEvent === 'recharge') {
             AgentApp.openRechargeDlg(data);
-        }else if (layEvent === 'power') {
+        } else if (layEvent === 'power') {
             AgentApp.openPowerDlg(data);
-        }else if (layEvent === 'card') {
+        } else if (layEvent === 'card') {
             AgentApp.openCardDlg(data);
         }
     });
