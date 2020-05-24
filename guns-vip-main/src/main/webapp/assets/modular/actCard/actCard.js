@@ -162,7 +162,21 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         Feng.confirm("确定要删除这些数据?", operation);
     };
 
-
+    /**
+     * 弹出添加对话框
+     */
+    actCard.openAddDlg = function (agentAppId) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '新增卡密',
+            area: '700px',
+            content: Feng.ctxPath + '/actCard/add?agentAppId='+agentAppId,
+            end: function () {
+                admin.getTempData('formOk') && table.reload(actCard.tableId+agentAppId);
+            }
+        });
+    };
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -187,6 +201,8 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             page: true,
             height: "full-158",
             cellMinWidth: 100,
+            toolbar: '#' + actCard.tableId + '-toolbar',
+            defaultToolbar: ['filter', 'print'],
             where:{
                 'actCardAppId':$('.layui-this').attr('data-appId')
             },
@@ -194,10 +210,10 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         });
     }
     // 表头工具条点击事件
-    table.on('toolbar(' + actCard.tableId + ')', function (obj) {
+    table.on('toolbar(' + actCard.tableId + agentAppId+ ')', function (obj) {
         //添加
         if (obj.event === 'btnAdd') {
-            actCard.openAddDlg();
+            actCard.openAddDlg(agentAppId);
         } else if (obj.event === 'refresh') {
             table.reload(actCard.tableId);
         } else if (obj.event === 'batchRemove') {
