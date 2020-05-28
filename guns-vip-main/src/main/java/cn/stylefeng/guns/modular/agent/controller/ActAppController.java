@@ -13,6 +13,8 @@ import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -40,6 +42,9 @@ public class ActAppController extends BaseController {
     private final AppInfoService appInfoService;
 
     private final UserService userService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     public ActAppController(AppInfoService appInfoService, AgentAppService agentAppService, UserService userService) {
         this.appInfoService = appInfoService;

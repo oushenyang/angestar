@@ -69,7 +69,13 @@ public class NoneAuthedResources {
             "/tenantInfo/listTenants",
 
             //api接口
-            "/api/*"
+            "/api/*",
+
+            //单码登录
+            "/cardLogin/*",
+
+            //用户登录
+            "/userLogin/*"
 
     };
 
