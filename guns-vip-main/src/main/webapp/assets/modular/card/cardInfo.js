@@ -98,7 +98,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加卡密表',
+            title: '添加卡密',
             area: '700px',
             content: Feng.ctxPath + '/cardInfo/add?type='+$('#type').val(),
             end: function () {

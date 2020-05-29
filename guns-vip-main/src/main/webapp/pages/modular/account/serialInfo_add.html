@@ -1,12 +1,7 @@
-@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_add.js"]}){
-<style>
-    .layui-form-select dl dd:nth-child(2) {
-        background-color: aliceblue;
-    }
-</style>
-<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/account/serialInfo_add.js"]}){
+<form id="serialInfoForm" lay-filter="serialInfoForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;">
-        <input name="cardId" type="hidden"/>
+        <input name="serialId" type="hidden"/>
         @if(tool.isNotEmpty(type)){
         @if(type==1){
         <div class="layui-form-item">
@@ -73,9 +68,9 @@
             </div>
         </div>
         <div class="layui-form-item layui-form-text" >
-            <label class="layui-form-label">卡密备注</label>
+            <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128" class="layui-textarea"></textarea>
+                <textarea id="remark" name="remark" placeholder="请输入备注" maxlength="128" class="layui-textarea"></textarea>
             </div>
         </div>
     </div>
@@ -83,20 +78,5 @@
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
     </div>
-
-    <script type="text/html" id="cardAddResultBar">
-        <div class="layui-fluid" style="max-height: 500px;overflow: auto;">
-            <div class="layui-form-item"><span>1、</span>55555555555555555555555555555555555 &nbsp;<button style="margin-left: 60px;" class="layui-badge layui-badge-blue">复制</button></div>
-            <div class="layui-form-item"><span>2、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
-            <div class="layui-form-item"><span>3、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
-            <div class="layui-form-item"><span>4、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
-            <div class="layui-form-item"><span>5、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
-            <div class="layui-form-item"><span>6、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
-        </div>
-        <div style="z-index: 9999;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
-            <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
-            <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
-        </div>
-    </script>
 </form>
 @}
