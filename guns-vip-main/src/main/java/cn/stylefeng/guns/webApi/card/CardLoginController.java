@@ -26,6 +26,9 @@ public class CardLoginController {
     @ResponseBody
     public Object cardLogin(@PathVariable String appId) {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
+        for (Map.Entry<String, String[]> m : cookies.entrySet()) {
+            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
+        }
         System.out.println(cookies);
         return appId;
     }

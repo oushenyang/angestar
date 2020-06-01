@@ -29,6 +29,7 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
      * 应用id
      */
     private Long appId;
+    private Integer type;
 
     /**
      * 调用码

@@ -38,7 +38,57 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        api_manage_id AS "apiManageId", app_id AS "appId", call_code AS "callCode", api_status AS "apiStatus", api_type AS "apiType", api_name AS "apiName", api_code AS "apiCode", parameter_num AS "parameterNum", parameter_one AS "parameterOne", parameter_one_remark AS "parameterOneRemark", parameter_two AS "parameterTwo", parameter_two_remark AS "parameterTwoRemark", parameter_three AS "parameterThree", parameter_three_remark AS "parameterThreeRemark", parameter_four AS "parameterFour", parameter_four_remark AS "parameterFourRemark", parameter_five AS "parameterFive", parameter_five_remark AS "parameterFiveRemark", parameter_six AS "parameterSix", parameter_six_remark AS "parameterSixRemark", parameter_seven AS "parameterSeven", parameter_seven_remark AS "parameterSevenRemark", return_remark AS "returnRemark", remark AS "remark", sort AS "sort", revision AS "revision", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS "appName",
+        am.api_manage_id AS "apiManageId",
+        am.app_id AS "appId",
+        am.call_code AS "callCode",
+        am.api_status AS "apiStatus",
+        am.api_type AS "apiType",
+        am.api_name AS "apiName",
+        am.api_code AS "apiCode",
+        am.parameter_num AS "parameterNum",
+        am.parameter_one AS "parameterOne",
+        am.parameter_one_remark AS "parameterOneRemark",
+        am.parameter_two AS "parameterTwo",
+        am.parameter_two_remark AS "parameterTwoRemark",
+        am.parameter_three AS "parameterThree",
+        am.parameter_three_remark AS "parameterThreeRemark",
+        am.parameter_four AS "parameterFour",
+        am.parameter_four_remark AS "parameterFourRemark",
+        am.parameter_five AS "parameterFive",
+        am.parameter_five_remark AS "parameterFiveRemark",
+        am.parameter_six AS "parameterSix",
+        am.parameter_six_remark AS "parameterSixRemark",
+        am.parameter_seven AS "parameterSeven",
+        am.parameter_seven_remark AS "parameterSevenRemark",
+        am.return_remark AS "returnRemark",
+        am.remark AS "remark",
+        am.sort AS "sort",
+        am.revision AS "revision",
+        am.create_user AS "createUser",
+        am.create_time AS "createTime",
+        am.update_user AS "updateUser",
+        am.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        (SELECT `name` FROM sys_dict WHERE dict_type_id = (SELECT dict_type_id FROM sys_dict_type WHERE `code` = 'API_TYPE'
+        ) AND `code` = am.api_type) AS apiTypeName,
+        <include refid="Base_Column_List"/>
+        from ag_api_manage am
+        left join ag_app_info ai on ai.app_id = am.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and am.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and am.app_id = #{param.appId}
+            </if>
+            <if test="param.type != null and param.type ==0">
+                and am.app_id is null
+            </if>
+        </where>
+        order by am.sort ASC
+    </select>
 
 </mapper>

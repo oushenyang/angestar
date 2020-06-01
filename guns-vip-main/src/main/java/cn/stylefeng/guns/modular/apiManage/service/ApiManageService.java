@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -64,7 +66,7 @@ public interface ApiManageService extends IService<ApiManage> {
      * @author shenyang.ou
      * @Date 2020-05-21
      */
-    List<ApiManageResult> findListBySpec(ApiManageParam param);
+    List<Map<String, Object>> findListBySpec(Page page, ApiManageParam param);
 
     /**
      * 查询分页数据，Specification模式

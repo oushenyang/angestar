@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.modular.apiManage.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
@@ -8,6 +10,7 @@ import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,8 +50,14 @@ public class ApiManageController extends BaseController {
      * @Date 2020-05-21
      */
     @RequestMapping("")
-    public String index() {
-        return PREFIX + "/apiManage.html";
+    public String index(Model model,int type) {
+        model.addAttribute("type", type);
+        if (type==1){
+            return PREFIX + "/apiManageList.html";
+        }else {
+            return PREFIX + "/apiManage.html";
+        }
+
     }
 
     /**
@@ -151,7 +161,13 @@ public class ApiManageController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(ApiManageParam apiManageParam) {
-        return this.apiManageService.findPageBySpec(apiManageParam);
+        //获取分页参数
+        Page page = LayuiPageFactory.defaultPage();
+        apiManageParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<Map<String, Object>> result = apiManageService.findListBySpec(page, apiManageParam);
+        page.setRecords(result);
+        return LayuiPageFactory.createPageInfo(page);
     }
 
 }
