@@ -1,7 +1,10 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
@@ -16,11 +19,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -38,6 +43,11 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE
  */
 @Service
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
+    private final ApiManageService apiManageService;
+
+    public AppInfoServiceImpl(ApiManageService apiManageService) {
+        this.apiManageService = apiManageService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -52,6 +62,21 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         //生成应用编码
         entity.setAppNum(wordAndNum("",12));
         this.save(entity);
+        //生成api接口
+        ApiManage temp = new ApiManage();
+        temp.setAppId(1L);
+        QueryWrapper<ApiManage> queryWrapper = new QueryWrapper<>(temp);
+        List<ApiManage> apiManages = apiManageService.list(queryWrapper);
+        apiManages.forEach(apiManage -> {
+            apiManage.setApiManageId(null);
+            apiManage.setAppId(entity.getAppId());
+            apiManage.setCallCode(entity.getAppNum());
+            apiManage.setCreateTime(new Date());
+            apiManage.setCreateUser(LoginContextHolder.getContext().getUserId());
+            apiManage.setUpdateTime(null);
+            apiManage.setUpdateUser(null);
+        });
+        apiManageService.saveBatch(apiManages);
         param.setAppId(entity.getAppId());
     }
 

@@ -6,10 +6,13 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
+import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,9 +41,12 @@ public class ApiManageController extends BaseController {
 
     private final DictService dictService;
 
-    public ApiManageController(ApiManageService apiManageService, DictService dictService) {
+    private final AppInfoService appInfoService;
+
+    public ApiManageController(ApiManageService apiManageService, DictService dictService, AppInfoService appInfoService) {
         this.apiManageService = apiManageService;
         this.dictService = dictService;
+        this.appInfoService = appInfoService;
     }
 
     /**
@@ -52,6 +58,14 @@ public class ApiManageController extends BaseController {
     @RequestMapping("")
     public String index(Model model,int type) {
         model.addAttribute("type", type);
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        if (CollectionUtils.isNotEmpty(appInfoParams)){
+            model.addAttribute("firstAppId", appInfoParams.get(0).getAppId());
+        }else {
+            model.addAttribute("firstAppId", 0);
+        }
+        model.addAttribute("appInfoParams", appInfoParams);
         if (type==1){
             return PREFIX + "/apiManageList.html";
         }else {

@@ -1,7 +1,8 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'form', 'ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
+    var form = layui.form;
     var admin = layui.admin;
 
     /**
@@ -30,6 +31,13 @@ layui.use(['table', 'admin', 'ax'], function () {
         });
     };
 
+    //应用选择下拉框事件监听
+    form.on('select(appId)', function (data) {
+        var queryData = {};
+        queryData['appId'] = $("select[name=appId]").val();
+        table.reload(ApiManage.tableId, {where: queryData});
+    });
+
     /**
      * 初始化表格的列
      */
@@ -44,7 +52,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
             {align: 'center',field: 'parameterNum', title: '返回加密'},
-            {align: 'center',field: 'callCode',  width: 320, title: '调用地址',templet: '#callCodeTpl'},
+            {align: 'left',field: 'callCode',  width: 360, title: '调用地址',templet: '#callCodeTpl'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
@@ -165,7 +173,8 @@ layui.use(['table', 'admin', 'ax'], function () {
         //         }, 'filter', 'print'],
         height: "full-158",
         where:{
-          type:$('#type').val()
+            type:$('#type').val(),
+            appId:$('#firstAppId').val()
         },
         cellMinWidth: 100,
         cols: ApiManage.initColumn(),
