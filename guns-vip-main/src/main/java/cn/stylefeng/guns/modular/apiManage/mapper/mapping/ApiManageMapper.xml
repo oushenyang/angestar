@@ -14,18 +14,32 @@
         <result column="parameter_num" property="parameterNum" />
         <result column="parameter_one" property="parameterOne" />
         <result column="parameter_one_remark" property="parameterOneRemark" />
+        <result column="parameter_one_note" property="parameterOneNote" />
+        <result column="parameter_one_required" property="parameterOneRequired" />
         <result column="parameter_two" property="parameterTwo" />
         <result column="parameter_two_remark" property="parameterTwoRemark" />
+        <result column="parameter_two_note" property="parameterTwoNote" />
+        <result column="parameter_two_required" property="parameterTwoRequired" />
         <result column="parameter_three" property="parameterThree" />
         <result column="parameter_three_remark" property="parameterThreeRemark" />
+        <result column="parameter_three_note" property="parameterThreeNote" />
+        <result column="parameter_three_required" property="parameterThreeRequired" />
         <result column="parameter_four" property="parameterFour" />
         <result column="parameter_four_remark" property="parameterFourRemark" />
+        <result column="parameter_four_note" property="parameterFourNote" />
+        <result column="parameter_four_required" property="parameterFourRequired" />
         <result column="parameter_five" property="parameterFive" />
         <result column="parameter_five_remark" property="parameterFiveRemark" />
+        <result column="parameter_five_note" property="parameterFiveNote" />
+        <result column="parameter_five_required" property="parameterFiveRequired" />
         <result column="parameter_six" property="parameterSix" />
         <result column="parameter_six_remark" property="parameterSixRemark" />
+        <result column="parameter_six_note" property="parameterSixNote" />
+        <result column="parameter_six_required" property="parameterSixRequired" />
         <result column="parameter_seven" property="parameterSeven" />
         <result column="parameter_seven_remark" property="parameterSevenRemark" />
+        <result column="parameter_seven_note" property="parameterSevenNote" />
+        <result column="parameter_seven_required" property="parameterSevenRequired" />
         <result column="return_remark" property="returnRemark" />
         <result column="remark" property="remark" />
         <result column="sort" property="sort" />
@@ -49,18 +63,32 @@
         am.parameter_num AS "parameterNum",
         am.parameter_one AS "parameterOne",
         am.parameter_one_remark AS "parameterOneRemark",
+        am.parameter_one_note AS "parameterOneNote",
+        am.parameter_one_required AS "parameterOneRequired",
         am.parameter_two AS "parameterTwo",
         am.parameter_two_remark AS "parameterTwoRemark",
+        am.parameter_two_note AS "parameterTwoNote",
+        am.parameter_two_required AS "parameterTwoRequired",
         am.parameter_three AS "parameterThree",
         am.parameter_three_remark AS "parameterThreeRemark",
+        am.parameter_three_note AS "parameterThreeNote",
+        am.parameter_three_required AS "parameterThreeRequired",
         am.parameter_four AS "parameterFour",
         am.parameter_four_remark AS "parameterFourRemark",
+        am.parameter_four_note AS "parameterFourNote",
+        am.parameter_four_required AS "parameterFourRequired",
         am.parameter_five AS "parameterFive",
         am.parameter_five_remark AS "parameterFiveRemark",
+        am.parameter_five_note AS "parameterFiveNote",
+        am.parameter_five_required AS "parameterFiveRequired",
         am.parameter_six AS "parameterSix",
         am.parameter_six_remark AS "parameterSixRemark",
+        am.parameter_six_note AS "parameterSixNote",
+        am.parameter_six_required AS "parameterSixRequired",
         am.parameter_seven AS "parameterSeven",
         am.parameter_seven_remark AS "parameterSevenRemark",
+        am.parameter_seven_note AS "parameterSevenNote",
+        am.parameter_seven_required AS "parameterSevenRequired",
         am.return_remark AS "returnRemark",
         am.remark AS "remark",
         am.sort AS "sort",

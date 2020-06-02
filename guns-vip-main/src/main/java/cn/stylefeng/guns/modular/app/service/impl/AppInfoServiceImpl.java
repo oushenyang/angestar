@@ -7,7 +7,9 @@ import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
+import cn.stylefeng.guns.sys.modular.system.entity.DictType;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HEAD_ERROR;
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
@@ -46,8 +49,30 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         } catch (IOException e) {
             throw new ServiceException(ADD_HEAD_ERROR);
         }
+        //生成应用编码
+        entity.setAppNum(wordAndNum("",12));
         this.save(entity);
         param.setAppId(entity.getAppId());
+    }
+
+    //生成小写字母+数字,
+    public String wordAndNum(String cardTypePrefix,Integer cardTypeLength) {
+        StringBuilder val = new StringBuilder(cardTypePrefix);
+        String base = "abcdefghkmnpqrstuvwxyz123456789";
+        Random random = new Random();
+        for ( int i = 0; i < cardTypeLength; i++ )
+        {
+            int number = random.nextInt( base.length() );
+            val.append( base.charAt( number ) );
+        }
+        AppInfo temp = new AppInfo();
+        temp.setAppNum(val.toString());
+        QueryWrapper<AppInfo> queryWrapper = new QueryWrapper<>(temp);
+        //递归算法，如果判断编码重复调用自身方法重新生成
+        if (baseMapper.selectOne(queryWrapper)!=null){
+            wordAndNum("",12);
+        }
+        return val.toString();
     }
 
     @Override

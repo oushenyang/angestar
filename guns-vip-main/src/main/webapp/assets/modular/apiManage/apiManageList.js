@@ -11,6 +11,25 @@ layui.use(['table', 'admin', 'ax'], function () {
         tableId: "apiManageTable"
     };
 
+    ApiManage.copy = function (data) {
+        var cla = '.callCode' + data.apiManageId;
+        var clipboard = new ClipboardJS(cla, {
+            text: function () {
+                return $(cla).html();
+            }
+        });
+        clipboard.on('success', function (e) {
+            e.clearSelection();
+            Feng.success("已复制到粘贴板");
+            return false;
+        });
+        clipboard.on('error', function (e) {
+            e.clearSelection();
+            Feng.error("复制失败");
+            return false;
+        });
+    };
+
     /**
      * 初始化表格的列
      */
@@ -20,12 +39,12 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center',field: 'apiTypeName', title: '分类'},
             {align: 'center',field: 'appName', title: '所属应用'},
             // {align: 'center',field: 'callCode',  title: '调用码'},
-            {align: 'center',field: 'apiStatus', title: '接口状态 '},
+            {align: 'center',field: 'apiStatus', title: '接口状态 ', templet: '#apiStatusTpl'},
             {align: 'center',field: 'apiName', title: '接口名称'},
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
             {align: 'center',field: 'parameterNum', title: '返回加密'},
-            {align: 'center',field: 'parameterNum', title: '调用地址'},
+            {align: 'center',field: 'callCode',  width: 320, title: '调用地址',templet: '#callCodeTpl'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
@@ -218,6 +237,8 @@ layui.use(['table', 'admin', 'ax'], function () {
             ApiManage.openEditDlg(data);
         } else if (layEvent === 'delete') {
             ApiManage.onDeleteItem(data);
+        }else if (layEvent === 'copy') {
+            ApiManage.copy(data)
         }
     });
 });

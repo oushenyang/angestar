@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author shenyang.ou
- * @since 2020-05-21
+ * @since 2020-06-02
  */
 @Data
 public class ApiManageParam implements Serializable, BaseValidatingParam {
@@ -72,6 +72,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
     private String parameterOneRemark;
 
     /**
+     * 参数一注释
+     */
+    private String parameterOneNote;
+
+    /**
+     * 参数一是否必填；0-是；1-否
+     */
+    private Boolean parameterOneRequired;
+
+    /**
      * 参数二
      */
     private String parameterTwo;
@@ -80,6 +90,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
      * 参数二说明
      */
     private String parameterTwoRemark;
+
+    /**
+     * 参数二注释
+     */
+    private String parameterTwoNote;
+
+    /**
+     * 参数二是否必填；0-是；1-否
+     */
+    private Boolean parameterTwoRequired;
 
     /**
      * 参数三
@@ -92,6 +112,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
     private String parameterThreeRemark;
 
     /**
+     * 参数三注释
+     */
+    private String parameterThreeNote;
+
+    /**
+     * 参数三是否必填；0-是；1-否
+     */
+    private Boolean parameterThreeRequired;
+
+    /**
      * 参数四
      */
     private String parameterFour;
@@ -100,6 +130,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
      * 参数四说明
      */
     private String parameterFourRemark;
+
+    /**
+     * 参数四注释
+     */
+    private String parameterFourNote;
+
+    /**
+     * 参数四是否必填；0-是；1-否
+     */
+    private Boolean parameterFourRequired;
 
     /**
      * 参数五
@@ -112,6 +152,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
     private String parameterFiveRemark;
 
     /**
+     * 参数五注释
+     */
+    private String parameterFiveNote;
+
+    /**
+     * 参数五是否必填；0-是；1-否
+     */
+    private Boolean parameterFiveRequired;
+
+    /**
      * 参数六
      */
     private String parameterSix;
@@ -122,6 +172,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
     private String parameterSixRemark;
 
     /**
+     * 参数六注释
+     */
+    private String parameterSixNote;
+
+    /**
+     * 参数六是否必填；0-是；1-否
+     */
+    private Boolean parameterSixRequired;
+
+    /**
      * 参数七
      */
     private String parameterSeven;
@@ -130,6 +190,16 @@ public class ApiManageParam implements Serializable, BaseValidatingParam {
      * 参数七说明
      */
     private String parameterSevenRemark;
+
+    /**
+     * 参数七注释
+     */
+    private String parameterSevenNote;
+
+    /**
+     * 参数七是否必填；0-是；1-否
+     */
+    private Boolean parameterSevenRequired;
 
     /**
      * 返回说明

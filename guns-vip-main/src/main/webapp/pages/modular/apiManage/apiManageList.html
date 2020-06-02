@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{js:["/assets/modular/apiManage/apiManageList.js"]}){
+@layout("/common/_container.html",{plugins:["clipboard"],js:["/assets/modular/apiManage/apiManageList.js"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">接口管理管理</span>
@@ -6,6 +6,7 @@
 
 <div class="layui-fluid">
     <input type="hidden" id="type" value="${type}">
+    <input type="hidden" id="apiUrl" value="${constants.getApiUrl()}">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
             <div class="layui-card">
@@ -30,9 +31,17 @@
         </div>
     </div>
 </div>
-
+<script type="text/html" id="apiStatusTpl">
+    <input type="checkbox" lay-filter="apiStatus" value="{{d.apiManageId}}" lay-skin="switch" lay-text="开启|关闭"
+           {{d.apiStatus==0?'checked':''}}/>
+</script>
+<script type="text/html" id="callCodeTpl">
+    <button  class="callCode{{d.apiManageId}}" style="border: 0;outline: none; background-color: transparent; color: blue; font-size: 13px!important;"
+            lay-event="copy">${constants.getApiUrl()}{{d.apiCode}}/
+    </button>
+</script>
 <script type="text/html" id="tableBar">
     <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
-    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+<!--    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>-->
 </script>
 @}

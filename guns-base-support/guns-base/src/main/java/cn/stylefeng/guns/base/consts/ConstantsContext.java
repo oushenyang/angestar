@@ -72,6 +72,14 @@ public class ConstantsContext {
     }
 
     /**
+     * 获取接口域名
+     */
+    public static String getApiUrl() {
+        String gunsApiUrl = (String) CONSTNTS_HOLDER.get("API_URL");
+       return gunsApiUrl;
+    }
+
+    /**
      * 获取短信的配置
      */
     public static AliyunSmsProperties getAliyunSmsProperties() {

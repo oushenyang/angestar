@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author shenyang.ou
- * @since 2020-05-21
+ * @since 2020-06-02
  */
 @TableName("ag_api_manage")
 public class ApiManage implements Serializable {
@@ -82,6 +82,18 @@ public class ApiManage implements Serializable {
     private String parameterOneRemark;
 
     /**
+     * 参数一注释
+     */
+    @TableField("parameter_one_note")
+    private String parameterOneNote;
+
+    /**
+     * 参数一是否必填；0-是；1-否
+     */
+    @TableField("parameter_one_required")
+    private Boolean parameterOneRequired;
+
+    /**
      * 参数二
      */
     @TableField("parameter_two")
@@ -92,6 +104,18 @@ public class ApiManage implements Serializable {
      */
     @TableField("parameter_two_remark")
     private String parameterTwoRemark;
+
+    /**
+     * 参数二注释
+     */
+    @TableField("parameter_two_note")
+    private String parameterTwoNote;
+
+    /**
+     * 参数二是否必填；0-是；1-否
+     */
+    @TableField("parameter_two_required")
+    private Boolean parameterTwoRequired;
 
     /**
      * 参数三
@@ -106,6 +130,18 @@ public class ApiManage implements Serializable {
     private String parameterThreeRemark;
 
     /**
+     * 参数三注释
+     */
+    @TableField("parameter_three_note")
+    private String parameterThreeNote;
+
+    /**
+     * 参数三是否必填；0-是；1-否
+     */
+    @TableField("parameter_three_required")
+    private Boolean parameterThreeRequired;
+
+    /**
      * 参数四
      */
     @TableField("parameter_four")
@@ -116,6 +152,18 @@ public class ApiManage implements Serializable {
      */
     @TableField("parameter_four_remark")
     private String parameterFourRemark;
+
+    /**
+     * 参数四注释
+     */
+    @TableField("parameter_four_note")
+    private String parameterFourNote;
+
+    /**
+     * 参数四是否必填；0-是；1-否
+     */
+    @TableField("parameter_four_required")
+    private Boolean parameterFourRequired;
 
     /**
      * 参数五
@@ -130,6 +178,18 @@ public class ApiManage implements Serializable {
     private String parameterFiveRemark;
 
     /**
+     * 参数五注释
+     */
+    @TableField("parameter_five_note")
+    private String parameterFiveNote;
+
+    /**
+     * 参数五是否必填；0-是；1-否
+     */
+    @TableField("parameter_five_required")
+    private Boolean parameterFiveRequired;
+
+    /**
      * 参数六
      */
     @TableField("parameter_six")
@@ -142,6 +202,18 @@ public class ApiManage implements Serializable {
     private String parameterSixRemark;
 
     /**
+     * 参数六注释
+     */
+    @TableField("parameter_six_note")
+    private String parameterSixNote;
+
+    /**
+     * 参数六是否必填；0-是；1-否
+     */
+    @TableField("parameter_six_required")
+    private Boolean parameterSixRequired;
+
+    /**
      * 参数七
      */
     @TableField("parameter_seven")
@@ -152,6 +224,18 @@ public class ApiManage implements Serializable {
      */
     @TableField("parameter_seven_remark")
     private String parameterSevenRemark;
+
+    /**
+     * 参数七注释
+     */
+    @TableField("parameter_seven_note")
+    private String parameterSevenNote;
+
+    /**
+     * 参数七是否必填；0-是；1-否
+     */
+    @TableField("parameter_seven_required")
+    private Boolean parameterSevenRequired;
 
     /**
      * 返回说明
@@ -282,6 +366,22 @@ public class ApiManage implements Serializable {
         this.parameterOneRemark = parameterOneRemark;
     }
 
+    public String getParameterOneNote() {
+        return parameterOneNote;
+    }
+
+    public void setParameterOneNote(String parameterOneNote) {
+        this.parameterOneNote = parameterOneNote;
+    }
+
+    public Boolean getParameterOneRequired() {
+        return parameterOneRequired;
+    }
+
+    public void setParameterOneRequired(Boolean parameterOneRequired) {
+        this.parameterOneRequired = parameterOneRequired;
+    }
+
     public String getParameterTwo() {
         return parameterTwo;
     }
@@ -296,6 +396,22 @@ public class ApiManage implements Serializable {
 
     public void setParameterTwoRemark(String parameterTwoRemark) {
         this.parameterTwoRemark = parameterTwoRemark;
+    }
+
+    public String getParameterTwoNote() {
+        return parameterTwoNote;
+    }
+
+    public void setParameterTwoNote(String parameterTwoNote) {
+        this.parameterTwoNote = parameterTwoNote;
+    }
+
+    public Boolean getParameterTwoRequired() {
+        return parameterTwoRequired;
+    }
+
+    public void setParameterTwoRequired(Boolean parameterTwoRequired) {
+        this.parameterTwoRequired = parameterTwoRequired;
     }
 
     public String getParameterThree() {
@@ -314,6 +430,22 @@ public class ApiManage implements Serializable {
         this.parameterThreeRemark = parameterThreeRemark;
     }
 
+    public String getParameterThreeNote() {
+        return parameterThreeNote;
+    }
+
+    public void setParameterThreeNote(String parameterThreeNote) {
+        this.parameterThreeNote = parameterThreeNote;
+    }
+
+    public Boolean getParameterThreeRequired() {
+        return parameterThreeRequired;
+    }
+
+    public void setParameterThreeRequired(Boolean parameterThreeRequired) {
+        this.parameterThreeRequired = parameterThreeRequired;
+    }
+
     public String getParameterFour() {
         return parameterFour;
     }
@@ -328,6 +460,22 @@ public class ApiManage implements Serializable {
 
     public void setParameterFourRemark(String parameterFourRemark) {
         this.parameterFourRemark = parameterFourRemark;
+    }
+
+    public String getParameterFourNote() {
+        return parameterFourNote;
+    }
+
+    public void setParameterFourNote(String parameterFourNote) {
+        this.parameterFourNote = parameterFourNote;
+    }
+
+    public Boolean getParameterFourRequired() {
+        return parameterFourRequired;
+    }
+
+    public void setParameterFourRequired(Boolean parameterFourRequired) {
+        this.parameterFourRequired = parameterFourRequired;
     }
 
     public String getParameterFive() {
@@ -346,6 +494,22 @@ public class ApiManage implements Serializable {
         this.parameterFiveRemark = parameterFiveRemark;
     }
 
+    public String getParameterFiveNote() {
+        return parameterFiveNote;
+    }
+
+    public void setParameterFiveNote(String parameterFiveNote) {
+        this.parameterFiveNote = parameterFiveNote;
+    }
+
+    public Boolean getParameterFiveRequired() {
+        return parameterFiveRequired;
+    }
+
+    public void setParameterFiveRequired(Boolean parameterFiveRequired) {
+        this.parameterFiveRequired = parameterFiveRequired;
+    }
+
     public String getParameterSix() {
         return parameterSix;
     }
@@ -362,6 +526,22 @@ public class ApiManage implements Serializable {
         this.parameterSixRemark = parameterSixRemark;
     }
 
+    public String getParameterSixNote() {
+        return parameterSixNote;
+    }
+
+    public void setParameterSixNote(String parameterSixNote) {
+        this.parameterSixNote = parameterSixNote;
+    }
+
+    public Boolean getParameterSixRequired() {
+        return parameterSixRequired;
+    }
+
+    public void setParameterSixRequired(Boolean parameterSixRequired) {
+        this.parameterSixRequired = parameterSixRequired;
+    }
+
     public String getParameterSeven() {
         return parameterSeven;
     }
@@ -376,6 +556,22 @@ public class ApiManage implements Serializable {
 
     public void setParameterSevenRemark(String parameterSevenRemark) {
         this.parameterSevenRemark = parameterSevenRemark;
+    }
+
+    public String getParameterSevenNote() {
+        return parameterSevenNote;
+    }
+
+    public void setParameterSevenNote(String parameterSevenNote) {
+        this.parameterSevenNote = parameterSevenNote;
+    }
+
+    public Boolean getParameterSevenRequired() {
+        return parameterSevenRequired;
+    }
+
+    public void setParameterSevenRequired(Boolean parameterSevenRequired) {
+        this.parameterSevenRequired = parameterSevenRequired;
     }
 
     public String getReturnRemark() {
@@ -455,20 +651,35 @@ public class ApiManage implements Serializable {
         ", parameterNum=" + parameterNum +
         ", parameterOne=" + parameterOne +
         ", parameterOneRemark=" + parameterOneRemark +
+        ", parameterOneNote=" + parameterOneNote +
+        ", parameterOneRequired=" + parameterOneRequired +
         ", parameterTwo=" + parameterTwo +
         ", parameterTwoRemark=" + parameterTwoRemark +
+        ", parameterTwoNote=" + parameterTwoNote +
+        ", parameterTwoRequired=" + parameterTwoRequired +
         ", parameterThree=" + parameterThree +
         ", parameterThreeRemark=" + parameterThreeRemark +
+        ", parameterThreeNote=" + parameterThreeNote +
+        ", parameterThreeRequired=" + parameterThreeRequired +
         ", parameterFour=" + parameterFour +
         ", parameterFourRemark=" + parameterFourRemark +
+        ", parameterFourNote=" + parameterFourNote +
+        ", parameterFourRequired=" + parameterFourRequired +
         ", parameterFive=" + parameterFive +
         ", parameterFiveRemark=" + parameterFiveRemark +
+        ", parameterFiveNote=" + parameterFiveNote +
+        ", parameterFiveRequired=" + parameterFiveRequired +
         ", parameterSix=" + parameterSix +
         ", parameterSixRemark=" + parameterSixRemark +
+        ", parameterSixNote=" + parameterSixNote +
+        ", parameterSixRequired=" + parameterSixRequired +
         ", parameterSeven=" + parameterSeven +
         ", parameterSevenRemark=" + parameterSevenRemark +
+        ", parameterSevenNote=" + parameterSevenNote +
+        ", parameterSevenRequired=" + parameterSevenRequired +
         ", returnRemark=" + returnRemark +
         ", remark=" + remark +
+        ", sort=" + sort +
         ", revision=" + revision +
         ", createUser=" + createUser +
         ", createTime=" + createTime +

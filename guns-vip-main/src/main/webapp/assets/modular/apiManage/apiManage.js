@@ -64,7 +64,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '添加接口管理',
-            area: '700px',
+            area: '900px',
             content: Feng.ctxPath + '/apiManage/add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(ApiManage.tableId);
