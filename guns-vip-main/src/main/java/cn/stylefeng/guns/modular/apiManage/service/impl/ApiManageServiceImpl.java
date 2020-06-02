@@ -33,6 +33,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
     @Override
     public void add(ApiManageParam param){
         ApiManage entity = getEntity(param);
+        entity.setAppId(1L);
         this.save(entity);
     }
 

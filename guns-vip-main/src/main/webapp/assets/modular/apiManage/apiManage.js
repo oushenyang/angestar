@@ -17,29 +17,10 @@ layui.use(['table', 'admin', 'ax'], function () {
     ApiManage.initColumn = function () {
         return [[
             {align: 'center',field: 'apiManageId', fixed: 'left',type: 'checkbox'},
-            // {align: 'center',field: 'appId', sort: true, title: '应用id'},
-            {align: 'center',field: 'callCode',  title: '调用码'},
-            {align: 'center',field: 'apiStatus', title: '接口状态 '},
-            {align: 'center',field: 'apiType', title: '接口类别'},
+            {align: 'center',field: 'apiTypeName', title: '分类'},
             {align: 'center',field: 'apiName', title: '接口名称'},
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
-            {align: 'center',field: 'parameterOne', title: '参数一'},
-            {align: 'center',field: 'parameterOneRemark', title: '参数一说明'},
-            {align: 'center',field: 'parameterTwo', title: '参数二'},
-            {align: 'center',field: 'parameterTwoRemark', title: '参数二说明'},
-            {align: 'center',field: 'parameterThree', title: '参数三'},
-            {align: 'center',field: 'parameterThreeRemark', title: '参数三说明'},
-            {align: 'center',field: 'parameterFour', title: '参数四'},
-            {align: 'center',field: 'parameterFourRemark', title: '参数四说明'},
-            {align: 'center',field: 'parameterFive', title: '参数五'},
-            {align: 'center',field: 'parameterFiveRemark', title: '参数五说明'},
-            {align: 'center',field: 'parameterSix', title: '参数六'},
-            {align: 'center',field: 'parameterSixRemark', title: '参数六说明'},
-            {align: 'center',field: 'parameterSeven', title: '参数七'},
-            {align: 'center',field: 'parameterSevenRemark', title: '参数七说明'},
-            {align: 'center',field: 'returnRemark', title: '返回说明'},
-            {align: 'center',field: 'remark', title: '备注'},
             {align: 'center',field: 'sort', title: '排序'},
             {align: 'center',field: 'createTime', title: '创建时间'},
             {align: 'center',field: 'updateTime', title: '更新时间'},
@@ -166,7 +147,38 @@ layui.use(['table', 'admin', 'ax'], function () {
             type:$('#type').val()
         },
         cellMinWidth: 100,
-        cols: ApiManage.initColumn()
+        cols: ApiManage.initColumn(),
+        done : function(res, curr, count) {
+            var data = res.data;
+            console.log(res.data)
+            var mergeIndex = 0;//定位需要添加合并属性的行数
+            var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+            var columsName = ['apiTypeName'];//需要合并的列名称
+            var columsIndex = [1];//需要合并的列索引值
+
+            for (var k = 0; k < columsName.length; k++) { //这里循环所有要合并的列
+                var trArr = $(".layui-table-body>.layui-table").find("tr");//所有行
+                for (var i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
+                    var tdCurArr = trArr.eq(i).find("td").eq(columsIndex[k]);//获取当前行的当前列
+                    var tdPreArr = trArr.eq(mergeIndex).find("td").eq(columsIndex[k]);//获取相同列的第一列
+
+                    if (data[i][columsName[k]] === data[i-1][columsName[k]]) { //后一行的值与前一行的值做比较，相同就需要合并
+                        mark += 1;
+                        tdPreArr.each(function () {//相同列的第一列增加rowspan属性
+                            $(this).attr("rowspan", mark);
+                        });
+                        tdCurArr.each(function () {//当前行隐藏
+                            $(this).css("display", "none");
+                        });
+                    }else {
+                        mergeIndex = i;
+                        mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+                    }
+                }
+                mergeIndex = 0;
+                mark = 1;
+            }
+        }
     });
 
     // 搜索按钮点击事件

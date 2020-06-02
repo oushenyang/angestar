@@ -113,7 +113,7 @@
                 and am.app_id = #{param.appId}
             </if>
             <if test="param.type != null and param.type ==0">
-                and am.app_id is null
+                and am.app_id = 1
             </if>
         </where>
         order by am.sort ASC
