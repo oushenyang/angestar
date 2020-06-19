@@ -244,7 +244,17 @@ body {
     margin-bottom: -2px!important;
 }
 .layui-btn{
-    font-size: 13px!important;
+    font-size: 12px!important;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 4px;
+}
+/*表单高度*/
+.toolbar .layui-input, .layui-select, .layui-textarea{
+    height: 28px!important;
+}
+.toolbar .layui-form-select dl dd, .layui-form-select dl dt{
+    line-height: 28px!important;
 }
 /*边距*/
 .layui-col-space15>*{
@@ -1466,7 +1476,7 @@ span.icon-text > .layui-icon, a.icon-text > .layui-icon, .layui-form-label.icon-
 }
 
 .layui-btn.icon-btn {
-    padding: 0 10px;
+    padding: 0 12px;
 }
 
 .layui-btn.layui-btn-sm.icon-btn {
@@ -4477,8 +4487,8 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 
 /* button */
 .theme-pink .layui-btn {
-    height: 36px;
-    line-height: 36px;
+    height: 28px;
+    line-height: 28px;
     border-radius: 4px;
     background-color: #FB7299;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .03);
@@ -5026,8 +5036,8 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 
 /* button */
 .theme-colorful .layui-btn {
-    height: 36px;
-    line-height: 36px;
+    height: 28px;
+    line-height: 28px;
     border-radius: 4px;
     background-color: #2d8cf0;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .03);

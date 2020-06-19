@@ -1,7 +1,7 @@
 /** Buttom 默认*/
 .pear-btn {
 	display: inline-block;
-	line-height: 30px;
+	line-height: 28px;
 	white-space: nowrap;
 	cursor: pointer;
 	background-color: #fff;
@@ -13,8 +13,8 @@
 	transition: 0.1s;
 	font-weight: 500;
 	padding: 0 10px;
-	height: 33px;
-	font-size: 13px;
+	height: 28px;
+	font-size: 12px;
 	border-radius: 4px;
 }
 
