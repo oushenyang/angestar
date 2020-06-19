@@ -64,9 +64,11 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
                 });
                 //表单提交事件
                 form.on('submit(agentAppSubmit)', function (data) {
-                    var loadIndex = layer.load(2);
+                    var loadIndex = top.layer.load(2);
+                    admin.btnLoading('.agentAppSubmit');
                     var ajax = new $ax(Feng.ctxPath + "/agentApp/addItem", function (data) {
                         layer.close(loadIndex);
+                        admin.removeLoading($content);
                         layer.close(dIndex);
                         layer.msg("添加成功！", {icon: 1});
                         table.reload(AgentApp.tableId);
@@ -230,7 +232,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
         //     layEvent: 'refresh',
         //     icon: 'layui-icon-refresh',
         // }, 'filter', 'print'],
-        height: "full-158",
+        height: "full-115",
         cellMinWidth: 100,
         cols: AgentApp.initColumn()
     });

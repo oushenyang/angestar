@@ -39,7 +39,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
     CardInfo.initColumn = function () {
         return [[
             // {type: 'checkbox'},
-            {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
+            {align: 'center', field: 'cardId', fixed: 'left',type: 'checkbox'},
             {field: 'appId', hide: true},
             {
                 align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用', templet: function (d) {

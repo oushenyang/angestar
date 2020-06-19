@@ -23,7 +23,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             elem: '#' + actCard.tableId + agentAppId,
             url: Feng.ctxPath + '/actCard/list',
             page: true,
-            height: "full-158",
+            height: "full-115",
             cellMinWidth: 100,
             where:{
                 'actCardAppId':$(this).attr('data-appId')
@@ -199,7 +199,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             elem: '#' + actCard.tableId + agentAppId,
             url: Feng.ctxPath + '/actCard/list',
             page: true,
-            height: "full-158",
+            height: "full-115",
             cellMinWidth: 100,
             toolbar: '#' + actCard.tableId + '-toolbar',
             defaultToolbar: ['filter', 'print'],

@@ -220,11 +220,16 @@ body {
     padding: 9px 15px;
     min-height: 20px;
     line-height: 20px;
-    font-size: 13px!important;
+    font-size: 12px!important;
+    color: rgb(71, 80, 89) !important;
 }
 /*表格高*/
 .layui-table-view .layui-table td, .layui-table-view .layui-table th{
-    padding: 3px 0!important;
+    padding: 4px 0!important;
+}
+/*行数据边距*/
+.layui-table-cell{
+    padding: 0 10px!important;
 }
 .layui-layout-admin .layui-footer
 .layui-tab-title li{
@@ -234,7 +239,10 @@ body {
 .layui-table th{
     font-weight: 550!important;
 }
-
+/*去除表头下面白线*/
+.layui-table-header .layui-table{
+    margin-bottom: -2px!important;
+}
 .layui-btn{
     font-size: 13px!important;
 }
@@ -409,7 +417,7 @@ body {
 /** admin移动端样式 */
 @media screen and (max-width: 768px) {
     .layui-layout-admin {
-        left: -235px;
+        left: -200px;
     }
 
     .layui-layout-admin .layui-side, .layui-layout-admin .layui-header .layui-logo {
@@ -423,7 +431,7 @@ body {
     /* 移动端展开 */
     .layui-layout-admin.admin-nav-mini {
         left: 0;
-        right: -235px;
+        right: -200px;
         position: fixed;
     }
 
@@ -441,7 +449,7 @@ body {
         top: 0;
         right: 0;
         bottom: 0;
-        left: 235px;
+        left: 200px;
         background-color: rgba(0, 0, 0, .25);
         -webkit-transition: background-color .3s;
         transition: background-color .3s;
@@ -1268,7 +1276,8 @@ body > .page-loading {
 /* form */
 .model-form {
     /*padding: 25px 30px 0 0;*/
-    padding: 0px 30px 0 0;
+    /*padding: 0px 30px 0 0;*/
+    padding: 0px 0px 0 0;
 }
 
 .model-form.no-padding {

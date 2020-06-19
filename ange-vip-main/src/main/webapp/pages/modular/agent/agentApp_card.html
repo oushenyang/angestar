@@ -1,6 +1,6 @@
 @layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/agent/agentApp_card.js"]}){
 <form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane tab-form">
-    <div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
         <input name="agentPowerId" type="hidden"/>
         <div class="layui-tab layui-tab-brief" lay-filter="cardTabBrief">
             <ul class="layui-tab-title">
@@ -11,15 +11,15 @@
             <div class="layui-tab-content">
                 <!-- 单码卡密 -->
                 <div class="layui-tab-item layui-show" style="height: 400px">
-                    <table class="layui-table" id="card" lay-filter="card"></table>
+                    <table class="layui-table" id="card" lay-filter="card" style="margin-top: -10px;"></table>
                 </div>
                 <!-- 通用单码卡密 -->
                 <div class="layui-tab-item" style="height: 400px">
-                    <table class="layui-table" id="current_card" lay-filter="current_card"></table>
+                    <table class="layui-table" id="current_card" lay-filter="current_card" style="margin-top: -10px;"></table>
                 </div>
                 <!-- 账号卡密 -->
                 <div class="layui-tab-item"style="height: 400px">
-                    <table class="layui-table" id="account" lay-filter="account"></table>
+                    <table class="layui-table" id="account" lay-filter="account" style="margin-top: -10px;"></table>
                 </div>
             </div>
         </div>

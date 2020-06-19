@@ -1,5 +1,5 @@
-<form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
-    <div class="layui-fluid" style="padding-bottom: 75px;">
+<form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane model-form agentAppAdd">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 15px;">
         <input name="agentAppId" type="hidden"/>
         <div class="layui-form-item">
             <label class="layui-form-label">选择应用<span style="color: red;">*</span></label>
@@ -27,6 +27,6 @@
     </div>
     <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
-        <button class="layui-btn" lay-filter="agentAppSubmit" lay-submit>提交</button>
+        <button class="layui-btn agentAppSubmit" lay-filter="agentAppSubmit" lay-submit>提交</button>
     </div>
 </form>

@@ -83,7 +83,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         elem: '#' + DatabaseInfo.tableId,
         url: Feng.ctxPath + '/databaseInfo/list',
         page: true,
-        height: "full-158",
+        height: "full-115",
         cellMinWidth: 100,
         cols: DatabaseInfo.initColumn()
     });

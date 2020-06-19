@@ -48,7 +48,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 page: true,
                 toolbar: '#' + AgentApp.card + '-toolbar',
                 defaultToolbar: [],
-                height: "full-158",
+                height: "full-115",
                 cellMinWidth: 100,
                 where:{
                     'cardType':0,
@@ -64,7 +64,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 page: true,
                 toolbar: '#' + AgentApp.currentCard + '-toolbar',
                 defaultToolbar: [],
-                height: "full-158",
+                height: "full-115",
                 cellMinWidth: 100,
                  where:{
                      'cardType':1,
@@ -80,7 +80,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 page: true,
                 toolbar: '#' + AgentApp.account + '-toolbar',
                 defaultToolbar: [],
-                height: "full-158",
+                height: "full-115",
                 cellMinWidth: 100,
                 where:{
                     'cardType':2,
@@ -119,7 +119,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         page: true,
         toolbar: '#' + AgentApp.card + '-toolbar',
         defaultToolbar: [],
-        height: "full-158",
+        height: "full-115",
         cellMinWidth: 100,
         where:{
             'cardType':0,
@@ -156,6 +156,31 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         };
         Feng.confirm("是否初始化?", initializeItem);
     };
+
+    /**
+     * 点击编辑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.openEditDlg = function (data,cardType) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '编辑价格',
+            area: '500px',
+            content: Feng.ctxPath + '/agentCard/edit?agentCardId=' + data.agentCardId + '&cardType=' + cardType,
+            end: function () {
+                if (cardType==0){
+                    admin.getTempData('formOk') && table.reload(AgentApp.card);
+                }else if (cardType==1){
+                    admin.getTempData('formOk') && table.reload(AgentApp.currentCard);
+                }else {
+                    admin.getTempData('formOk') && table.reload(AgentApp.account);
+                }
+            }
+        });
+    };
+
     // 单码卡密表头工具条点击事件
     table.on('toolbar(' + AgentApp.card + ')', function(obj){
         //添加
@@ -181,6 +206,39 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
             AgentApp.openAddDlg();
         } else if(obj.event === 'initialize'){
             AgentApp.initializeItem(2);
+        }
+    });
+
+    // 行内工具条点击事件
+    table.on('tool(' + AgentApp.card + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+        if (layEvent === 'edit') {
+            AgentApp.openEditDlg(data,0);
+        } else if (layEvent === 'delete') {
+            AgentApp.onDeleteItem(data,0);
+        }
+    });
+
+    // 行内工具条点击事件
+    table.on('tool(' + AgentApp.currentCard + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+        if (layEvent === 'edit') {
+            AgentApp.openEditDlg(data,1);
+        } else if (layEvent === 'delete') {
+            AgentApp.onDeleteItem(data,1);
+        }
+    });
+
+    // 行内工具条点击事件
+    table.on('tool(' + AgentApp.account + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+        if (layEvent === 'edit') {
+            AgentApp.openEditDlg(data,2);
+        } else if (layEvent === 'delete') {
+            AgentApp.onDeleteItem(data,2);
         }
     });
 

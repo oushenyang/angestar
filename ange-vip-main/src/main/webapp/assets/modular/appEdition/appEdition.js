@@ -190,7 +190,7 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
             icon: 'layui-icon-refresh',
         }, 'filter', 'print'],
         page: true,
-        height: "full-158",
+        height: "full-115",
         cellMinWidth: 100,
         skin: 'line',
         cols: AppEdition.initColumn()

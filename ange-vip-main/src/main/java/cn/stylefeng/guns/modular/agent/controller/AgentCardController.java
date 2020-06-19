@@ -64,7 +64,7 @@ public class AgentCardController extends BaseController {
      */
     @RequestMapping("/edit")
     public String edit() {
-        return PREFIX + "/agentCard_edit.html";
+        return PREFIX + "/agentApp_card_edit.html";
     }
 
     /**

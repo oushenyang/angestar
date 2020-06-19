@@ -10,11 +10,6 @@
     <input type="hidden" id="type" class="type" value="${type}">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
-<!--            <div class="layui-card">-->
-<!--                <div class="layui-card-body">-->
-
-<!--                </div>-->
-<!--            </div>-->
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
@@ -68,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="cardInfoTable" lay-filter="cardInfoTable"></table>
+                    <table class="layui-table" id="cardInfoTable" lay-filter="cardInfoTable" lay-size="sm"></table>
                 </div>
             </div>
         </div>
@@ -83,7 +78,7 @@
 <!-- 表单弹窗 -->
 <script type="text/html" id="cardEditDialog">
     <form id="cardInfoForm" lay-filter="cardInfoForm" class="layui-form layui-form-pane model-form">
-        <div class="layui-fluid" style="padding-bottom: 75px;">
+        <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
             <input name="cardId" type="hidden"/>
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">操作范围</label>

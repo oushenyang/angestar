@@ -142,7 +142,7 @@ layui.use(['table', 'admin', 'ax'], function () {
                     layEvent: 'refresh',
                     icon: 'layui-icon-refresh',
                 }, 'filter', 'print'],
-        height: "full-158",
+        height: "full-115",
         where:{
             type:$('#type').val()
         },

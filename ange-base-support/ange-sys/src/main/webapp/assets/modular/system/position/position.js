@@ -118,7 +118,7 @@ layui.use(['table', 'admin', 'ax', 'form', 'func'], function () {
         elem: '#' + Position.tableId,
         url: Feng.ctxPath + '/position/list',
         page: true,
-        height: "full-158",
+        height: "full-115",
         cellMinWidth: 100,
         cols: Position.initColumn()
     });
