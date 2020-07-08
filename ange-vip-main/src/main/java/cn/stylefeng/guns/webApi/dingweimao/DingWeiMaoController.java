@@ -8,10 +8,13 @@ import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.guns.sys.core.util.GPS;
 import cn.stylefeng.guns.sys.core.util.GPSConverterUtils;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
+import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +40,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api/cat")
 public class DingWeiMaoController {
+
+    @Autowired
+    private DictService dictService;
 
     @RequestMapping("/User/login")
     @ResponseBody
@@ -136,6 +142,43 @@ public class DingWeiMaoController {
     @ResponseBody
     public JSONObject Getlocations(@RequestBody String  body) throws Exception {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
+        String appName = null;
+        for (Map.Entry<String, String[]> m : cookies.entrySet()) {
+            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
+            if (m.getKey().equals("n")){
+                appName = String.join("", m.getValue());
+            }
+        }
+        if (StringUtils.isNotEmpty(appName)){
+            boolean isHave = false;
+            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+            for (Dict dict : dicts){
+                if (dict.getCode().equals(appName)){
+                    isHave = true;
+                }
+            }
+           if (!isHave){
+               Map map = new HashMap<String, String>();
+               Map map1 = new HashMap<String, String>();
+               map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
+               map.put("data",map1);
+               map.put("error", 0);
+               map.put("message", "");
+               map.put("type", 0);
+               JSONObject json = new JSONObject(map);
+               return json;
+           }
+        }else {
+            Map map = new HashMap<String, String>();
+            Map map1 = new HashMap<String, String>();
+            map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
+            map.put("data",map1);
+            map.put("error", 0);
+            map.put("message", "");
+            map.put("type", 0);
+            JSONObject json = new JSONObject(map);
+            return json;
+        }
         String aaa = null;
         JSONObject jbb = JSONObject.parseObject(body);
             String p = jbb.getString("p");
