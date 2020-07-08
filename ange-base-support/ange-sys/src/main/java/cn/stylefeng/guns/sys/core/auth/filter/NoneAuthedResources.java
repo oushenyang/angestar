@@ -68,9 +68,6 @@ public class NoneAuthedResources {
             //获取租户列表的接口
             "/tenantInfo/listTenants",
 
-            //api接口
-            "/api/*",
-
             //单码登录
             "/cardLogin/*",
             "/api/**",

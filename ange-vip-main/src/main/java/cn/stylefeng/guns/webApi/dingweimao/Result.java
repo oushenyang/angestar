@@ -5,11 +5,6 @@ public class Result {
 
     private double lon;
 
-    public Result(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
-
     public double getLat() {
         return lat;
     }

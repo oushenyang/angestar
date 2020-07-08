@@ -11,7 +11,7 @@ public class GPS {
 
     private double longitude;
 
-    public GPS(double lat, double longitude) {
+    public GPS(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

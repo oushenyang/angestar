@@ -30,11 +30,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("/cardLogin")
 public class CardLoginController {
-    @Autowired
-    private ApiManageService apiManageService;
+    private final ApiManageService apiManageService;
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
+
+    public CardLoginController(ApiManageService apiManageService, RedisUtil redisUtil) {
+        this.apiManageService = apiManageService;
+        this.redisUtil = redisUtil;
+    }
 
     @RequestMapping("/{appId}")
     @ResponseBody
@@ -71,6 +74,7 @@ public class CardLoginController {
                 sgin = String.join("", m.getValue());
             }
         }
+
         System.out.println(cookies);
         System.out.println(singleCode);
         System.out.println(edition);
