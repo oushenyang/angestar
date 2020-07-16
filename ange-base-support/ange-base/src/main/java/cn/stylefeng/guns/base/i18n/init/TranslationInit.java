@@ -33,6 +33,7 @@ public class TranslationInit implements CommandLineRunner {
             initFromTable();
         } catch (Exception e) {
             log.warn("从数据库初始化字典失败，读取默认字典!");
+            log.info("java.library.path路径：" + System.getProperty("java.library.path"));
             //加载默认的一些字典
             initDefaultDicts();
         }

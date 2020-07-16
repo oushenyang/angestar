@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.webApi.huanying.mapper.HyAppMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.webApi.huanying.entity.HyApp">
+        <id column="appinfoid" property="appinfoid" />
+        <result column="ut_did" property="utDid" />
+        <result column="appuserid" property="appuserid" />
+        <result column="name" property="name" />
+        <result column="package" property="packAge" />
+        <result column="fakedata" property="fakedata" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        appinfoid AS "appinfoid", appuserid AS "appuserid", name AS "name", package AS "packAge", fakedata AS "fakedata"
+    </sql>
+    <select id="findListBySpec" resultType="cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult">
+        select
+        <include refid="Base_Column_List"/>
+        from pj_hy_app
+        where ut_did = #{utDid}
+    </select>
+
+</mapper>
