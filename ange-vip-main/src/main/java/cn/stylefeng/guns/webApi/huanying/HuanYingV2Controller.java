@@ -68,6 +68,18 @@ public class HuanYingV2Controller {
                 hyApp.setUtDid(model);
                 hyAppService.save(hyApp);
             }
+            Map map = new HashMap<String, String>();
+            Map map1 = new HashMap<String, String>();
+            map1.put("username", "15156041422");
+            map1.put("name", name);
+            map1.put("package", packAge);
+            map1.put("fakedata", 0);
+            map1.put("appuserid", appuserid);
+            map.put("data",map1);
+            map.put("message", "ok");
+            map.put("code", 0);
+            JSONObject json = new JSONObject(map);
+            return json.toString();
         }
         List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model);
         Map map = new HashMap<String, String>();
