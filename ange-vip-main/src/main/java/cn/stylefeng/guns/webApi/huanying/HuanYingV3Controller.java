@@ -52,6 +52,17 @@ public class HuanYingV3Controller {
         return json.toString();
     }
 
+    @RequestMapping("/stepinfo")
+    @ResponseBody
+    public String stepinfo(){
+        Map map = new HashMap<String, String>();
+        map.put("data","");
+        map.put("message", "no data in database");
+        map.put("code", 199);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
     @RequestMapping("/vipprice")
     @ResponseBody
     public String vipprice(){
