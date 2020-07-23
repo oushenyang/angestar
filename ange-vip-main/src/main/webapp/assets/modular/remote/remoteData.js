@@ -16,8 +16,8 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     RemoteData.initColumn = function () {
         return [[
-            {align: 'center', field: 'dataId', fixed: 'left', type: 'checkbox'},
-            {align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用'},
+            {align: 'center', field: 'dataId', type: 'checkbox'},
+            {align: 'center', field: 'appName', width: 100, title: '所属应用'},
             {align: 'center', field: 'dataCode',title: '数据编码'},
             {align: 'center', field: 'dataValue', title: '数据值'},
             {

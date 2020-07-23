@@ -18,7 +18,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
     AgentApp.initColumn = function () {
         return [
             [
-                {align: 'center',field: 'agentAppId', fixed: 'left',rowspan: 2,type: 'checkbox'},
+                {align: 'center',field: 'agentAppId', rowspan: 2,type: 'checkbox'},
                 {field: 'agentPowerId',hide: true},
                 {field: 'appId',hide: true},
                 {align: 'center',field: 'appName',rowspan: 2,title: '所属应用'},

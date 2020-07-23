@@ -1627,7 +1627,7 @@ input.layui-disabled, input.layui-disabled:hover, textarea.layui-disabled, texta
 @media screen and (max-width: 768px) {
     ::-webkit-scrollbar {
         width: 4px;
-        height: 4px;
+        height: 8px;
     }
 
     ::-webkit-scrollbar-thumb {

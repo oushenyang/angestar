@@ -95,9 +95,9 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
      */
     AgentApp.initColumn = function () {
         return [[
-            {field: 'cardTypeId', type: 'checkbox', fixed: 'left'},
+            {field: 'cardTypeId', type: 'checkbox'},
             {
-                field: 'appName', fixed: 'left', title: '所属应用', templet: function (d) {
+                field: 'appName', title: '所属应用', templet: function (d) {
                     if (!d.appName) {
                         return '通用卡类';
                     } else {

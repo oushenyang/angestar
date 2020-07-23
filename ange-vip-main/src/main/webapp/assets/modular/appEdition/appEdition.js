@@ -20,8 +20,8 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
      */
     AppEdition.initColumn = function () {
         return [[
-            {align: 'center', field: 'editionId', fixed: 'left', type: 'checkbox'},
-            {align: 'center', field: 'appName', fixed: 'left', title: '所属应用'},
+            {align: 'center', field: 'editionId', type: 'checkbox'},
+            {align: 'center', field: 'appName', title: '所属应用'},
             // {align: 'center',field: 'editionSerial', sort: true, title: '版本编号'},
             {align: 'center', field: 'editionNum', sort: true, title: '版本号'},
             {align: 'center', field: 'editionName', sort: true, title: '版本名称'},
