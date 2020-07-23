@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,13 @@ public class HuanYingV2Controller {
         String appuserid = HttpContext.getRequest().getParameter("appuserid");
         String name = HttpContext.getRequest().getParameter("name");
         String model = null;
+        String sign = "0";
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
             if (m.getKey().equals("ut_did")){
                 model = String.join("", m.getValue());
+            }
+            if (m.getKey().equals("sign")){
+                sign = String.join("", m.getValue());
             }
         }
         if (StringUtils.isNotEmpty(packAge)){
@@ -66,20 +71,29 @@ public class HuanYingV2Controller {
                 }
                 hyApp.setPackAge(packAge);
                 hyApp.setUtDid(model);
+                hyApp.setSign(sign);
+                hyApp.setCreateTime(new Date());
                 hyAppService.save(hyApp);
             }
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
             map1.put("username", "15156041422");
-            map1.put("name", name);
-            map1.put("package", packAge);
+            try {
+                map1.put("name", URLDecoder.decode(name, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            map1.put("package",packAge);
+            map1.put("packName","极影");
             map1.put("fakedata", 0);
             map1.put("appuserid", appuserid);
             map.put("data",map1);
             map.put("message", "ok");
             map.put("code", 0);
             JSONObject json = new JSONObject(map);
-            return json.toString();
+            String aa = json.toString();
+            aa = aa.replaceAll("packAge", "package");
+            return aa;
         }
         List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model);
         Map map = new HashMap<String, String>();

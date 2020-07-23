@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,14 @@ public class HuanYingV3Controller {
     @RequestMapping("/now")
     @ResponseBody
     public String now(){
-        return "{\"message\": \"ok\", \"code\": 0, \"data\": {\"now\": 1594884626877}}";
+        Map map = new HashMap<String, String>();
+        Map map1 = new HashMap<String, String>();
+        map1.put("now", new Date().getTime());
+        map.put("data",map1);
+        map.put("message", "ok");
+        map.put("code", 0);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
     }
 
     @RequestMapping("/appactive")

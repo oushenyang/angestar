@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.webApi.huanying;
 
+import cn.hutool.core.io.file.FileReader;
+import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.util.HttpContext;
@@ -28,6 +30,20 @@ public class HuanYingV4Controller {
 
     @Autowired
     private DictService dictService;
+
+    @RequestMapping("/phonemodle")
+    @ResponseBody
+    public String phonemodle(){
+        Map map = new HashMap<String, String>();
+        String path = ConstantsContext.getPojieUploadPath() + "jixin.txt";
+        FileReader fileReader = new FileReader(path);
+        String result = fileReader.readString();
+        map.put("message", "success");
+        map.put("code", 200);
+        map.put("data",result);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
 
     @RequestMapping("/apptoken")
     @ResponseBody

@@ -1,10 +1,9 @@
 package cn.stylefeng.guns.webApi.huanying.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -36,6 +35,15 @@ public class HyApp implements Serializable {
 
     @TableField("fakedata")
     private Integer fakedata;
+
+    @TableField("sign")
+    private String sign;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Date createTime;
 
 
     public String getAppinfoid() {
@@ -86,6 +94,22 @@ public class HyApp implements Serializable {
         this.fakedata = fakedata;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "HyApp{" +
@@ -95,6 +119,8 @@ public class HyApp implements Serializable {
         ", name=" + name +
         ", package=" + packAge +
         ", fakedata=" + fakedata +
+        ", sign=" + sign +
+        ", createTime=" + createTime +
         "}";
     }
 }
