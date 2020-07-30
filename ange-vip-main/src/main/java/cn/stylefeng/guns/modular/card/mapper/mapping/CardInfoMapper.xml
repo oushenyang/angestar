@@ -229,7 +229,7 @@
     <select id="selectByBatchCardInfo" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">
         select
         *
-        from ag_card_info cci
+        from ag_card_info
         <where>
             <if test="param.operateApp != null and param.operateApp !=1">
                 and app_id = #{param.operateApp}
@@ -244,6 +244,20 @@
                 and create_user = #{param.createUser}
             </if>
         </where>
+    </select>
+    <select id="getCardInfoByAppIdAndCardCode" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">
+        select
+        *
+        from ag_card_info
+        <where>
+            <if test="appId != null">
+                and app_id = #{appId} or app_id = 0
+            </if>
+            <if test="singleCode != null">
+                and singleCode = #{singleCode}
+            </if>
+        </where>
+        limit 1
     </select>
 
 </mapper>

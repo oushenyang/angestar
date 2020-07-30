@@ -32,4 +32,12 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
     List<CardInfo> selectByBatchCardInfo(@Param("param")BatchCardInfoParam param);
 
     void BachUpdateCardInfo(@Param("cardInfos")List<CardInfo> cardInfos);
+
+    /**
+     * 通过应用id和卡密查找卡密信息
+     * @param appId 应用id
+     * @param singleCode 卡密
+     * @return 卡密信息
+     */
+    CardInfo getCardInfoByAppIdAndCardCode(@Param("appId") Long appId, @Param("singleCode") String singleCode);
 }

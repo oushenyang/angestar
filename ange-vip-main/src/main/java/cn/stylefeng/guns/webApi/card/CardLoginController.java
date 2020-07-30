@@ -4,14 +4,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
-import cn.stylefeng.guns.modular.remote.entity.RemoteData;
+import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
-import cn.stylefeng.guns.sys.modular.system.entity.DictType;
+import cn.stylefeng.guns.sys.core.exception.CardApiException;
 import cn.stylefeng.roses.core.util.HttpContext;
-import com.alibaba.fastjson.JSON;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +30,13 @@ import java.util.Map;
 @RequestMapping("/cardLogin")
 public class CardLoginController {
     private final ApiManageService apiManageService;
+    private final CardInfoService cardInfoService;
 
     private final RedisUtil redisUtil;
 
-    public CardLoginController(ApiManageService apiManageService, RedisUtil redisUtil) {
+    public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, RedisUtil redisUtil) {
         this.apiManageService = apiManageService;
+        this.cardInfoService = cardInfoService;
         this.redisUtil = redisUtil;
     }
 
@@ -74,12 +75,17 @@ public class CardLoginController {
                 sgin = String.join("", m.getValue());
             }
         }
-
+        CardInfo cardInfo = cardInfoService.getCardInfoByAppIdAndCardCode(apiManage.getAppId(),singleCode);
+        //如果卡密查不到，从易游查
+        if (ObjectUtil.isEmpty(cardInfo)){
+            throw new CardApiException(500, "创建多租户-执行sql出现问题！");
+        }
         System.out.println(cookies);
         System.out.println(singleCode);
         System.out.println(edition);
         System.out.println(mac);
         System.out.println(model);
+
         return singleCode;
     }
 }

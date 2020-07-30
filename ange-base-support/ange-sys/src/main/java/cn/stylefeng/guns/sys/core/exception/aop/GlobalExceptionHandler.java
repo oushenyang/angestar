@@ -19,12 +19,15 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.PermissionException;
 import cn.stylefeng.guns.base.auth.exception.enums.AuthExceptionEnum;
+//import cn.stylefeng.guns.core.exception.CardApiException;
+import cn.stylefeng.guns.sys.core.exception.CardApiException;
 import cn.stylefeng.guns.sys.core.exception.InvalidKaptchaException;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ErrorResponseData;
+import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.core.annotation.Order;
@@ -178,6 +181,19 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ErrorResponseData permissionExpection(PermissionException e) {
+        return new ErrorResponseData(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 接口自定义返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(CardApiException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponseData cardApiExpection(CardApiException e) {
         return new ErrorResponseData(e.getCode(), e.getMessage());
     }
 

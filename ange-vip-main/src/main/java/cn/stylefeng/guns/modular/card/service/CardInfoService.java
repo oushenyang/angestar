@@ -79,4 +79,11 @@ public interface CardInfoService extends IService<CardInfo> {
      */
      LayuiPageInfo findPageBySpec(CardInfoParam param);
 
+    /**
+     * 通过应用id和卡密查找卡密信息
+     * @param appId 应用id
+     * @param singleCode 卡密
+     * @return 卡密信息
+     */
+    CardInfo getCardInfoByAppIdAndCardCode(Long appId, String singleCode);
 }

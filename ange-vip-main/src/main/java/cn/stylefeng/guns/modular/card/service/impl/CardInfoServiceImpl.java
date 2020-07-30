@@ -281,6 +281,17 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         return LayuiPageFactory.createPageInfo(page);
     }
 
+    /**
+     * 通过应用id和卡密查找卡密信息
+     * @param appId 应用id
+     * @param singleCode 卡密
+     * @return 卡密信息
+     */
+    @Override
+    public CardInfo getCardInfoByAppIdAndCardCode(Long appId, String singleCode) {
+        return baseMapper.getCardInfoByAppIdAndCardCode(appId,singleCode);
+    }
+
     private Serializable getKey(CardInfoParam param){
         return param.getCardId();
     }
