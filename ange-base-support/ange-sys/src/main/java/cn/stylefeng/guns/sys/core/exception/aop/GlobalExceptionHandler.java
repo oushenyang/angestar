@@ -20,8 +20,10 @@ import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.PermissionException;
 import cn.stylefeng.guns.base.auth.exception.enums.AuthExceptionEnum;
 //import cn.stylefeng.guns.core.exception.CardApiException;
+import cn.stylefeng.guns.sys.core.exception.ApiResult;
 import cn.stylefeng.guns.sys.core.exception.CardApiException;
 import cn.stylefeng.guns.sys.core.exception.InvalidKaptchaException;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
@@ -182,6 +184,19 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponseData permissionExpection(PermissionException e) {
         return new ErrorResponseData(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 接口系统返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(SystemApiException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiResult SystemApiException(SystemApiException e) {
+        return ApiResult.resultError(e.getCode(), e.getMessage());
     }
 
     /**

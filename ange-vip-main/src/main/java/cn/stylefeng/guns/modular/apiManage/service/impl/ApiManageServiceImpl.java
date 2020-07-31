@@ -1,17 +1,23 @@
 package cn.stylefeng.guns.modular.apiManage.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.mapper.ApiManageMapper;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import  cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -29,6 +35,12 @@ import java.util.Map;
  */
 @Service
 public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage> implements ApiManageService {
+
+    private final RedisUtil redisUtil;
+
+    public ApiManageServiceImpl(RedisUtil redisUtil) {
+        this.redisUtil = redisUtil;
+    }
 
     @Override
     public void add(ApiManageParam param){
@@ -72,6 +84,28 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
         QueryWrapper<ApiManage> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 从redis中查接口管理
+     *
+     * @param apiCode 接口编码
+     * @param callCode   应用调用码
+     * @return 接口信息
+     */
+    @Override
+    public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
+        ApiManageApi apiManage = (ApiManageApi) redisUtil.get(RedisType.API_MANAGE + apiCode + callCode);
+        if (ObjectUtil.isNull(apiManage)){
+            apiManage = baseMapper.findApiManageApi(apiCode,callCode);
+            if (ObjectUtil.isNotNull(apiManage)){
+                redisUtil.set(RedisType.API_MANAGE + apiCode + callCode, apiManage);
+            }else {
+                //接口错误
+                throw new SystemApiException(-1, "接口不正确");
+            }
+        }
+        return apiManage;
     }
 
     private Serializable getKey(ApiManageParam param){

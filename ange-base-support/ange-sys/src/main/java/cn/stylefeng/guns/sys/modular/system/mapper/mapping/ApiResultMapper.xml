@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.ApiResultMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.ApiResult">
+        <id column="api_result_id" property="apiResultId" />
+        <result column="app_id" property="appId" />
+        <result column="result_type" property="resultType" />
+        <result column="result_success" property="resultSuccess" />
+        <result column="result_variables" property="resultVariables" />
+        <result column="result_code" property="resultCode" />
+        <result column="result_data" property="resultData" />
+        <result column="custom_result_data" property="customResultData" />
+        <result column="result_remark" property="resultRemark" />
+        <result column="whether_edit" property="whetherEdit" />
+        <result column="whether_result_json" property="whetherResultJson" />
+        <result column="sort" property="sort" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        api_result_id AS "apiResultId", app_id AS "appId", result_type AS "resultType", result_success AS "resultSuccess", result_variables AS "resultVariables", result_code AS "resultCode", result_data AS "resultData", custom_result_data AS "customResultData", result_remark AS "resultRemark", whether_edit AS "whetherEdit", whether_result_json AS "whetherResultJson", sort AS "sort", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>

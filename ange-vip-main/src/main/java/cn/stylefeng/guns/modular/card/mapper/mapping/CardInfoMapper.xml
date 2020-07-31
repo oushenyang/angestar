@@ -251,10 +251,10 @@
         from ag_card_info
         <where>
             <if test="appId != null">
-                and app_id = #{appId} or app_id = 0
+                and app_id = #{appId}
             </if>
             <if test="singleCode != null">
-                and singleCode = #{singleCode}
+                and card_code = #{singleCode}
             </if>
         </where>
         limit 1

@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.apiManage.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -76,4 +77,11 @@ public interface ApiManageService extends IService<ApiManage> {
      */
      LayuiPageInfo findPageBySpec(ApiManageParam param);
 
+    /**
+     * 从redis中查接口管理
+     * @param apiCode 接口编码
+     * @param callCode 应用调用码
+     * @return 接口信息
+     */
+    ApiManageApi getApiManageByRedis(String apiCode, String callCode);
 }

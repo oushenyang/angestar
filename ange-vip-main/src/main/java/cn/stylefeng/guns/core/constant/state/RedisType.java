@@ -11,8 +11,8 @@ import lombok.Getter;
 @Getter
 public enum RedisType {
 
-    //卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-年
-    CALL_CODE("call_code", "call_code"),
+    //api接口
+    API_MANAGE("apiManage", "apiManage"),
     APP_ID("APP_ID", "APP_ID"),
     DAY("", "天"),
     WEEK("", "周"),

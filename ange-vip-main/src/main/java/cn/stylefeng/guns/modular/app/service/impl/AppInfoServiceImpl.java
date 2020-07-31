@@ -10,16 +10,15 @@ import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
-import cn.stylefeng.guns.sys.modular.system.entity.DictType;
+import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
+import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,6 @@ import java.util.Map;
 import java.util.Random;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HEAD_ERROR;
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
 
 /**
  * <p>
@@ -43,10 +41,13 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE
  */
 @Service
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
-    private final ApiManageService apiManageService;
 
-    public AppInfoServiceImpl(ApiManageService apiManageService) {
+    private final ApiManageService apiManageService;
+    private final ApiResultService apiResultService;
+
+    public AppInfoServiceImpl(ApiManageService apiManageService, ApiResultService apiResultService) {
         this.apiManageService = apiManageService;
+        this.apiResultService = apiResultService;
     }
 
     @Override
@@ -77,6 +78,21 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
             apiManage.setUpdateUser(null);
         });
         apiManageService.saveBatch(apiManages);
+
+        //生成api自定义返回
+        ApiResult apiResult = new ApiResult();
+        apiResult.setAppId(1L);
+        QueryWrapper<ApiResult> apiResultQueryWrapper = new QueryWrapper<>(apiResult);
+        List<ApiResult> apiResults = apiResultService.list(apiResultQueryWrapper);
+        apiResults.forEach(apiResult1 -> {
+            apiResult1.setApiResultId(null);
+            apiResult1.setAppId(entity.getAppId());
+            apiResult1.setCreateTime(new Date());
+            apiResult1.setCreateUser(LoginContextHolder.getContext().getUserId());
+            apiResult1.setUpdateTime(null);
+            apiResult1.setUpdateUser(null);
+        });
+        apiResultService.saveBatch(apiResults);
         param.setAppId(entity.getAppId());
     }
 

@@ -3,14 +3,17 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.CardApiException;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,45 +43,26 @@ public class CardLoginController {
         this.redisUtil = redisUtil;
     }
 
-    @RequestMapping("/{appId}")
+    @RequestMapping("/{callCode}")
     @ResponseBody
-    public Object cardLogin(@PathVariable String appId) {
+    public Object cardLogin(@PathVariable String callCode) {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
-        ApiManage apiManage;
-        if (redisUtil.hasKey(RedisType.CALL_CODE + appId)){
-            apiManage = (ApiManage) redisUtil.get(RedisType.CALL_CODE + appId);
-        }else {
-            QueryWrapper<ApiManage> wrapper = new QueryWrapper<>();
-            wrapper.eq("call_code", appId);
-            wrapper.eq("api_code", "cardLogin");
-            apiManage = apiManageService.getOne(wrapper);
-            if (ObjectUtil.isNotNull(apiManage)){
-                redisUtil.set(RedisType.CALL_CODE + appId,apiManage);
-            }else {
-                //接口错误
-            }
+        //获取接口信息
+        ApiManageApi apiManage = apiManageService.getApiManageByRedis("cardLogin",callCode);
+        String singleCode = HttpContext.getRequest().getParameter(apiManage.getParameterOne());
+        String edition = HttpContext.getRequest().getParameter(apiManage.getParameterTwo());
+        String mac = HttpContext.getRequest().getParameter(apiManage.getParameterThree());
+        String model = HttpContext.getRequest().getParameter(apiManage.getParameterFour());
+        String appCode = HttpContext.getRequest().getParameter(apiManage.getParameterFive());
+        String sgin = HttpContext.getRequest().getParameter(apiManage.getParameterSix());
+        if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(edition)||StringUtils.isEmpty(mac)){
+            throw new SystemApiException(-2, "必传参数存在空值");
         }
-        String singleCode = null; String edition = null; String mac = null; String model = null; String appCode = null; String sgin = null;
-        for (Map.Entry<String, String[]> m : cookies.entrySet()) {
-            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
-            if (apiManage.getParameterOne().equals(m.getKey())){
-                singleCode = String.join("", m.getValue());
-            }else if (apiManage.getParameterTwo().equals(m.getKey())){
-                edition = String.join("", m.getValue());
-            }else if (apiManage.getParameterThree().equals(m.getKey())){
-                mac = String.join("", m.getValue());
-            }else if (apiManage.getParameterFour().equals(m.getKey())){
-                model = String.join("", m.getValue());
-            }else if (apiManage.getParameterFive().equals(m.getKey())){
-                appCode = String.join("", m.getValue());
-            }else if (apiManage.getParameterSix().equals(m.getKey())){
-                sgin = String.join("", m.getValue());
-            }
-        }
+
         CardInfo cardInfo = cardInfoService.getCardInfoByAppIdAndCardCode(apiManage.getAppId(),singleCode);
         //如果卡密查不到，从易游查
-        if (ObjectUtil.isEmpty(cardInfo)){
-            throw new CardApiException(500, "创建多租户-执行sql出现问题！");
+        if (ObjectUtil.isNull(cardInfo)){
+            throw new SystemApiException(500, "创建多租户-执行sql出现问题！");
         }
         System.out.println(cookies);
         System.out.println(singleCode);

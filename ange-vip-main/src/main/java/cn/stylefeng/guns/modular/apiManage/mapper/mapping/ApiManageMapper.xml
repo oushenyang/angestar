@@ -118,5 +118,30 @@
         </where>
         order by am.sort ASC
     </select>
+    <select id="findApiManageApi" resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi">
+        select
+        am.api_manage_id AS "apiManageId",
+        am.app_id AS "appId",
+        am.call_code AS "callCode",
+        am.api_status AS "apiStatus",
+        am.api_code AS "apiCode",
+        am.parameter_one AS "parameterOne",
+        am.parameter_two AS "parameterTwo",
+        am.parameter_three AS "parameterThree",
+        am.parameter_four AS "parameterFour",
+        am.parameter_five AS "parameterFive",
+        am.parameter_six AS "parameterSix",
+        am.parameter_seven AS "parameterSeven",
+        am.return_remark AS "returnRemark"
+        from ag_api_manage am
+        <where>
+            <if test="apiCode != null and apiCode != ''">
+                and am.api_code = #{apiCode}
+            </if>
+            <if test="callCode != null and callCode !=''">
+                and am.call_code = #{callCode}
+            </if>
+        </where>
+    </select>
 
 </mapper>
