@@ -55,7 +55,7 @@ public class ApiResult implements Serializable {
      * 默认返回码
      */
     @TableField("result_code")
-    private String resultCode;
+    private Integer resultCode;
 
     /**
      * 默认返回数据
@@ -158,11 +158,11 @@ public class ApiResult implements Serializable {
         this.resultVariables = resultVariables;
     }
 
-    public String getResultCode() {
+    public Integer getResultCode() {
         return resultCode;
     }
 
-    public void setResultCode(String resultCode) {
+    public void setResultCode(Integer resultCode) {
         this.resultCode = resultCode;
     }
 

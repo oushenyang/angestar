@@ -3,6 +3,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.model.params.ApiResultParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -74,4 +75,5 @@ public interface ApiResultService extends IService<ApiResult> {
      */
      LayuiPageInfo findPageBySpec(ApiResultParam param);
 
+    ApiResultApi findApiResultApi(Long appId, Integer resultCode);
 }

@@ -12,8 +12,16 @@ public class ApiResult<T> {
     private String msg;
     @ApiModelProperty("返回数据")
     private T data;
+    @ApiModelProperty("是否成功")
+    private Boolean success;
 
     public ApiResult() {
+    }
+    public ApiResult(int c, String m, T r,boolean s) {
+        code = c;
+        msg = m;
+        data = r;
+        success = s;
     }
 
     public ApiResult(int c, String m, T r) {
@@ -51,6 +59,14 @@ public class ApiResult<T> {
         this.data = data;
     }
 
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
     public static ApiResult success() {
         return new ApiResult(200, "操作成功");
     }
@@ -70,8 +86,8 @@ public class ApiResult<T> {
     public static ApiResult errorMsg(String object) {
         return new ApiResult(500, object,"");
     }
-    public static ApiResult resultError(Integer code,String msg) {
-        return new ApiResult(code,msg);
+    public static ApiResult resultError(Integer code,String msg,Object data,Boolean success) {
+        return new ApiResult(code,msg,data,success);
     }
 
 }

@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.app.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
+import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -79,4 +80,10 @@ public interface AppInfoService extends IService<AppInfo> {
      */
     List<AppInfoParam> getAppInfoList(Long userId);
 
+    /**
+     * 从redis获取软件信息
+     * @param appId 应用id
+     * @return 应用信息
+     */
+    AppInfoApi getAppInfoByRedis(Long appId);
 }

@@ -5,17 +5,24 @@ import cn.stylefeng.guns.base.log.BussinessLog;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.dictmap.AppInfoMap;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentCard;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
+import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -42,10 +49,18 @@ public class AppInfoController extends BaseController {
 
     private final AppInfoService appInfoService;
     private final AppEditionService appEditionService;
+    private final ApiManageService apiManageService;
+    private final CardInfoService cardInfoService;
+    private final AgentAppService agentAppService;
+    private final AgentCardService agentCardService;
 
-    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService) {
+    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService, ApiManageService apiManageService, CardInfoService cardInfoService, AgentAppService agentAppService, AgentCardService agentCardService) {
         this.appInfoService = appInfoService;
         this.appEditionService = appEditionService;
+        this.apiManageService = apiManageService;
+        this.cardInfoService = cardInfoService;
+        this.agentAppService = agentAppService;
+        this.agentCardService = agentCardService;
     }
 
     /**
@@ -131,9 +146,26 @@ public class AppInfoController extends BaseController {
     @ResponseBody
     public ResponseData delete(AppInfoParam appInfoParam) {
         this.appInfoService.delete(appInfoParam);
+        //删除版本
         AppEdition appEdition = new AppEdition();
         appEdition.setAppId(appInfoParam.getAppId());
         appEditionService.remove(new QueryWrapper<>(appEdition));
+        //删除api接口
+        ApiManage apiManage = new ApiManage();
+        apiManage.setAppId(appInfoParam.getAppId());
+        apiManageService.remove(new QueryWrapper<>(apiManage));
+        //删除卡密
+        CardInfo cardInfo = new CardInfo();
+        cardInfo.setAppId(appInfoParam.getAppId());
+        cardInfoService.remove(new QueryWrapper<>(cardInfo));
+        //删除代理
+        AgentApp agentApp = new AgentApp();
+        agentApp.setAppId(appInfoParam.getAppId());
+        agentAppService.remove(new QueryWrapper<>(agentApp));
+        //代理卡密
+        AgentCard agentCard = new AgentCard();
+        agentCard.setAppId(appInfoParam.getAppId());
+        agentCardService.remove(new QueryWrapper<>(agentCard));
         return ResponseData.success();
     }
 

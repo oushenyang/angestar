@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.app.model.result;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import java.util.Date;
 import java.io.Serializable;
@@ -180,6 +181,11 @@ public class AppInfoResult implements Serializable {
     private Integer accountRegisterTime;
 
     /**
+     * webApi加密范围 0-全部加密；1-仅加密api参数提交；2-仅加密api参数返回；
+     */
+    private Integer webAlgorithmRange;
+
+    /**
      * webApi加密算法 0-关闭；1-DES；2-AES；
      */
     private Integer webAlgorithmType;
@@ -193,6 +199,16 @@ public class AppInfoResult implements Serializable {
      * webApi签名盐
      */
     private String webSalt;
+
+    /**
+     * 接收Sign验证
+     */
+    private String signReceive;
+
+    /**
+     * 输出Sign验证
+     */
+    private String signOutput;
 
     /**
      * 版本号id

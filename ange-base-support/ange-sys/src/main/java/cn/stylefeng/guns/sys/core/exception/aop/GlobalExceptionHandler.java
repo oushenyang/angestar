@@ -15,22 +15,25 @@
  */
 package cn.stylefeng.guns.sys.core.exception.aop;
 
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.PermissionException;
 import cn.stylefeng.guns.base.auth.exception.enums.AuthExceptionEnum;
 //import cn.stylefeng.guns.core.exception.CardApiException;
-import cn.stylefeng.guns.sys.core.exception.ApiResult;
-import cn.stylefeng.guns.sys.core.exception.CardApiException;
-import cn.stylefeng.guns.sys.core.exception.InvalidKaptchaException;
-import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.*;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
+import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
+import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ErrorResponseData;
-import com.baomidou.mybatisplus.extension.exceptions.ApiException;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -48,6 +51,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static cn.stylefeng.roses.core.util.HttpContext.getIp;
@@ -63,6 +68,13 @@ import static cn.stylefeng.roses.core.util.HttpContext.getRequest;
 @Order(-100)
 @Slf4j
 public class GlobalExceptionHandler {
+    private final RedisUtil redisUtil;
+    private final ApiResultService apiResultService;
+
+    public GlobalExceptionHandler(RedisUtil redisUtil, ApiResultService apiResultService) {
+        this.redisUtil = redisUtil;
+        this.apiResultService = apiResultService;
+    }
 
     /**
      * 参数校验错误
@@ -195,12 +207,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SystemApiException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ApiResult SystemApiException(SystemApiException e) {
-        return ApiResult.resultError(e.getCode(), e.getMessage());
+    public ApiResult systemApiException(SystemApiException e) {
+        return ApiResult.resultError(e.getCode(), e.getMessage(),e.getData(),e.getSuccess());
     }
 
     /**
-     * 接口自定义返回异常
+     * 接口单码登录自定义返回异常
      *
      * @author fengshuonan
      * @Date 2020/2/6 11:14 上午
@@ -208,8 +220,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CardApiException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponseData cardApiExpection(CardApiException e) {
-        return new ErrorResponseData(e.getCode(), e.getMessage());
+    public Object cardLoginExpection(CardLoginException e) {
+        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get("apiResult" + e.getAppId() + e.getCode());
+        if (ObjectUtil.isNull(apiResultApi)){
+            apiResultApi = apiResultService.findApiResultApi(e.getAppId(),e.getCode());
+            if (ObjectUtil.isNotNull(apiResultApi)){
+                redisUtil.set("apiResult" + e.getAppId()+ e.getCode(), apiResultApi);
+            }
+        }
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            if (apiResultApi.getResultSuccess()){
+                Map map = new HashMap<String, String>();
+                map.put("expireTime", "2099-12-09");
+                map.put("token", IdUtil.simpleUUID());
+                JSONObject json = new JSONObject(map);
+                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),e.getData(),apiResultApi.getResultSuccess());
+            }
+        }else {
+            if (apiResultApi.getResultSuccess()){
+                return apiResultApi.getCustomResultData();
+            }else {
+                return apiResultApi.getCustomResultData();
+            }
+        }
     }
 
     /**

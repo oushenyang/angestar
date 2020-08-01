@@ -1,15 +1,21 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
+import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
@@ -44,10 +50,12 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     private final ApiManageService apiManageService;
     private final ApiResultService apiResultService;
+    private final RedisUtil redisUtil;
 
-    public AppInfoServiceImpl(ApiManageService apiManageService, ApiResultService apiResultService) {
+    public AppInfoServiceImpl(ApiManageService apiManageService, ApiResultService apiResultService, RedisUtil redisUtil) {
         this.apiManageService = apiManageService;
         this.apiResultService = apiResultService;
+        this.redisUtil = redisUtil;
     }
 
     @Override
@@ -127,6 +135,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         AppInfo newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
+        redisUtil.del(RedisType.APP_INFO + String.valueOf(newEntity.getAppId()));
     }
 
     @Override
@@ -168,5 +177,20 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     @Override
     public List<AppInfoParam> getAppInfoList(Long userId) {
         return baseMapper.findAppInfoList(userId);
+    }
+
+    @Override
+    public AppInfoApi getAppInfoByRedis(Long appId) {
+        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO + String.valueOf(appId));
+        if (ObjectUtil.isNull(appInfoApi)){
+            appInfoApi = baseMapper.findAppInfoApi(appId);
+            if (ObjectUtil.isNotNull(appInfoApi)){
+                redisUtil.set(RedisType.APP_INFO + String.valueOf(appId) , appInfoApi);
+            }else {
+                //接口错误
+                throw new SystemApiException(-1, "数据错误","",false);
+            }
+        }
+        return appInfoApi;
     }
 }

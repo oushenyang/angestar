@@ -213,6 +213,13 @@ public class AppInfo implements Serializable {
     @TableField("account_register_time")
     private Integer accountRegisterTime;
 
+
+    /**
+     * webApi加密范围 0-全部加密；1-仅加密api参数提交；2-仅加密api参数返回；
+     */
+    @TableField("web_algorithm_range")
+    private Integer webAlgorithmRange;
+
     /**
      * webApi加密算法 0-关闭；1-DES；2-AES；
      */
@@ -230,6 +237,18 @@ public class AppInfo implements Serializable {
      */
     @TableField("web_salt")
     private String webSalt;
+
+    /**
+     * 接收Sgin验证
+     */
+    @TableField("sign_receive")
+    private String signReceive;
+
+    /**
+     * 输出Sgin验证
+     */
+    @TableField("sign_output")
+    private String signOutput;
 
     /**
      * 版本号id
@@ -518,6 +537,14 @@ public class AppInfo implements Serializable {
         this.accountRegisterTime = accountRegisterTime;
     }
 
+    public Integer getWebAlgorithmRange() {
+        return webAlgorithmRange;
+    }
+
+    public void setWebAlgorithmRange(Integer webAlgorithmRange) {
+        this.webAlgorithmRange = webAlgorithmRange;
+    }
+
     public Integer getWebAlgorithmType() {
         return webAlgorithmType;
     }
@@ -540,6 +567,22 @@ public class AppInfo implements Serializable {
 
     public void setWebSalt(String webSalt) {
         this.webSalt = webSalt;
+    }
+
+    public String getSignReceive() {
+        return signReceive;
+    }
+
+    public void setSignReceive(String signReceive) {
+        this.signReceive = signReceive;
+    }
+
+    public String getSignOutput() {
+        return signOutput;
+    }
+
+    public void setSignOutput(String signOutput) {
+        this.signOutput = signOutput;
     }
 
     public Long getVersionNum() {

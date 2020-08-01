@@ -235,6 +235,12 @@
             <fieldset class="layui-elem-field">
                 <legend>作用于webApi</legend>
                 <div class="layui-field-box">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">加密范围<span style="color: red;">*</span></label>
+                        <div class="layui-input-block">
+                            <input id="webKe" name="webKe" placeholder="请输入加密范围" type="text" class="layui-input" lay-verify="required" required/>
+                        </div>
+                    </div>
                     <div class="layui-form-item" pane="">
                         <label class="layui-form-label">加密算法<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
@@ -249,39 +255,31 @@
                             <input id="webKey" name="webKey" placeholder="请输入加密Key" type="text" class="layui-input" lay-verify="required" required/>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">签名盐<span style="color: red;">*</span></label>
-                        <div class="layui-input-block">
-                            <input id="webSalt" name="webSalt" placeholder="请输入签名盐" type="text" class="layui-input" lay-verify="required" required/>
-                        </div>
-                    </div>
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">签名盐<span style="color: red;">*</span></label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <input id="webSalt" name="webSalt" placeholder="请输入签名盐" type="text" class="layui-input" lay-verify="required" required/>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </fieldset>
-            <!--                <fieldset class="layui-elem-field">-->
-            <!--                    <legend>作用于易语言</legend>-->
-            <!--                    <div class="layui-field-box">-->
-            <!--                        <div class="layui-form-item" pane="">-->
-            <!--                            <label class="layui-form-label">加密算法<span style="color: red;">*</span></label>-->
-            <!--                            <div class="layui-input-block">-->
-            <!--                                <input type="radio" class="layui-input" name="easyAlgorithmType" value="0" title="明文" checked="">-->
-            <!--                                <input type="radio" class="layui-input" name="easyAlgorithmType" value="1" title="DES">-->
-            <!--                                <input type="radio" class="layui-input" name="easyAlgorithmType" value="2" title="AES">-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                        <div class="layui-form-item">-->
-            <!--                            <label class="layui-form-label">加密Key<span style="color: red;">*</span></label>-->
-            <!--                            <div class="layui-input-block">-->
-            <!--                                <input id="easyKey" name="easyKey" placeholder="请输入加密Key" type="text" class="layui-input" lay-verify="required" required/>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                        <div class="layui-form-item">-->
-            <!--                            <label class="layui-form-label">签名盐<span style="color: red;">*</span></label>-->
-            <!--                            <div class="layui-input-block">-->
-            <!--                                <input id="easySalt" name="easySalt" placeholder="请输入签名盐" type="text" class="layui-input" lay-verify="required" required/>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </fieldset>-->
+                            <fieldset class="layui-elem-field">
+                                <legend>签名校验</legend>
+                                <div class="layui-field-box">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">接收Sgin验证<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input id="easyKey" name="easyKey" placeholder="请输入加密Key" type="text" class="layui-input" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">输出Sgin验证<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input id="easySalt" name="easySalt" placeholder="请输入签名盐" type="text" class="layui-input" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
         </div>
         @}
     @}

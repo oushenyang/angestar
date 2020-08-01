@@ -1,9 +1,9 @@
 package cn.stylefeng.guns.sys.modular.system.model.result;
 
 import lombok.Data;
-import java.util.Date;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,10 +14,7 @@ import java.math.BigDecimal;
  * @since 2020-07-31
  */
 @Data
-public class ApiResultResult implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class ApiResultApi{
 
     /**
      * 接口自定义返回id

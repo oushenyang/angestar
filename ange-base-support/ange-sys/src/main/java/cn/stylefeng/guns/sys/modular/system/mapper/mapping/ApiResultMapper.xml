@@ -26,5 +26,16 @@
     <sql id="Base_Column_List">
         api_result_id AS "apiResultId", app_id AS "appId", result_type AS "resultType", result_success AS "resultSuccess", result_variables AS "resultVariables", result_code AS "resultCode", result_data AS "resultData", custom_result_data AS "customResultData", result_remark AS "resultRemark", whether_edit AS "whetherEdit", whether_result_json AS "whetherResultJson", sort AS "sort", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
+    <select id="findApiResultApi" resultType="cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi">
+        select * from ag_api_result
+        <where>
+            <if test="appId != null and appId !=''">
+                and app_id = #{appId}
+            </if>
+            <if test="resultCode != null and resultCode !=''">
+                and result_code = #{resultCode}
+            </if>
+        </where>
+    </select>
 
 </mapper>

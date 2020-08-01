@@ -1,11 +1,9 @@
-package cn.stylefeng.guns.modular.app.model.params;
+package cn.stylefeng.guns.modular.app.model.result;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
-import java.util.Date;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -16,35 +14,7 @@ import java.math.BigDecimal;
  * @since 2020-04-01
  */
 @Data
-public class AppInfoParam implements Serializable, BaseValidatingParam {
-
-    private static final long serialVersionUID = 1L;
-
-
-    /**
-     * 软件id
-     */
-    private Long appId;
-
-    /**
-     * 应用编号
-     */
-    private String appNum;
-
-    /**
-     * 应用头像
-     */
-    private String appHead;
-
-    /**
-     * 开发者用户id
-     */
-    private Long userId;
-
-    /**
-     * 应用名
-     */
-    private String appName;
+public class AppInfoApi{
 
     /**
      * 运行状态 0-收费；1-免费；2-关闭
@@ -65,21 +35,6 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
      * 账号数量
      */
     private Integer accountNum;
-
-    /**
-     * 应用自定义数据1
-     */
-    private String customData1;
-
-    /**
-     * 应用自定义数据2
-     */
-    private String customData2;
-
-    /**
-     * 应用自定义数据2
-     */
-    private String customData3;
 
     /**
      * 单码绑机策略 0-关闭；1-MAC；2-IP；3-混合
@@ -210,35 +165,4 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
      * 输出Sign验证
      */
     private String signOutput;
-
-    /**
-     * 版本号id
-     */
-    private Long versionNum;
-
-    /**
-     * 创建人
-     */
-    private Long createUser;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新人
-     */
-    private Long updateUser;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    @Override
-    public String checkParam() {
-        return null;
-    }
-
 }

@@ -5,6 +5,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.mapper.ApiResultMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.ApiResultParam;
+import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultResult;
 import  cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -70,6 +71,11 @@ public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult
         QueryWrapper<ApiResult> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    @Override
+    public ApiResultApi findApiResultApi(Long appId, Integer resultCode) {
+        return baseMapper.findApiResultApi(appId,resultCode);
     }
 
     private Serializable getKey(ApiResultParam param){

@@ -48,7 +48,7 @@ public class ApiResultParam implements Serializable, BaseValidatingParam {
     /**
      * 默认返回码
      */
-    private String resultCode;
+    private Integer resultCode;
 
     /**
      * 默认返回数据

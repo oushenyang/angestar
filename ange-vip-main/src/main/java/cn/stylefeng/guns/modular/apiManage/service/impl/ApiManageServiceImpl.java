@@ -102,7 +102,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
                 redisUtil.set(RedisType.API_MANAGE + apiCode + callCode, apiManage);
             }else {
                 //接口错误
-                throw new SystemApiException(-1, "接口不正确");
+                throw new SystemApiException(-1, "接口不正确","",false);
             }
         }
         return apiManage;

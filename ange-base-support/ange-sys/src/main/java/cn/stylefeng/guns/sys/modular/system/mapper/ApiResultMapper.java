@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.sys.modular.system.mapper;
 
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ApiResultMapper extends BaseMapper<ApiResult> {
 
+    ApiResultApi findApiResultApi(@Param("appId") Long appId, @Param("resultCode") Integer resultCode);
 }
