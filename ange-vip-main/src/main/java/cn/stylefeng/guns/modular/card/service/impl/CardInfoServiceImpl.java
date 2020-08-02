@@ -1,12 +1,14 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
+import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -14,9 +16,12 @@ import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CardInfoMapper;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
+import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -28,11 +33,9 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.*;
 
@@ -51,10 +54,12 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_SEL
 public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> implements CardInfoService {
     public final CodeCardTypeService codeCardTypeService;
     public final AppInfoService appInfoService;
+    private final RedisUtil redisUtil;
 
-    public CardInfoServiceImpl(CodeCardTypeService codeCardTypeService, AppInfoService appInfoService) {
+    public CardInfoServiceImpl(CodeCardTypeService codeCardTypeService, AppInfoService appInfoService, RedisUtil redisUtil) {
         this.codeCardTypeService = codeCardTypeService;
         this.appInfoService = appInfoService;
+        this.redisUtil = redisUtil;
     }
 
     @Override
@@ -288,8 +293,15 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      * @return 卡密信息
      */
     @Override
-    public CardInfo getCardInfoByAppIdAndCardCode(Long appId, String singleCode) {
-        return baseMapper.getCardInfoByAppIdAndCardCode(appId,singleCode);
+    public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
+        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO + String.valueOf(appId) + singleCode);
+        if (ObjectUtil.isNull(cardInfoApi)){
+            cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
+            if (ObjectUtil.isNotNull(cardInfoApi)){
+                redisUtil.set(RedisType.CARD_INFO + String.valueOf(appId) + singleCode, cardInfoApi);
+            }
+        }
+        return cardInfoApi;
     }
 
     private Serializable getKey(CardInfoParam param){

@@ -14,6 +14,8 @@ public enum RedisType {
     //api接口
     API_MANAGE("apiManage", "apiManage"),
     APP_INFO("appInfo", "appInfo"),
+    CARD_INFO("cardInfo", "cardInfo"),
+    DEVICE("device", "device"),
     APP_ID("APP_ID", "APP_ID"),
     DAY("", "天"),
     WEEK("", "周"),

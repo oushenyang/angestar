@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.device.mapper.TokenMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.device.entity.Token">
+        <id column="token_id" property="tokenId" />
+        <result column="app_id" property="appId" />
+        <result column="card_or_user_id" property="cardOrUserId" />
+        <result column="card_or_user_code" property="cardOrUserCode" />
+        <result column="card_type" property="cardType" />
+        <result column="edition_num" property="editionNum" />
+        <result column="mac" property="mac" />
+        <result column="ip" property="ip" />
+        <result column="model" property="model" />
+        <result column="login_num" property="loginNum" />
+        <result column="login_time" property="loginTime" />
+        <result column="check_time" property="checkTime" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        token_id AS "tokenId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", edition_num AS "editionNum", mac AS "mac", ip AS "ip", model AS "model", login_num AS "loginNum", login_time AS "loginTime", check_time AS "checkTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>

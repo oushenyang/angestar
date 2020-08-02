@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
+import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -85,5 +86,5 @@ public interface CardInfoService extends IService<CardInfo> {
      * @param singleCode 卡密
      * @return 卡密信息
      */
-    CardInfo getCardInfoByAppIdAndCardCode(Long appId, String singleCode);
+    CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode);
 }

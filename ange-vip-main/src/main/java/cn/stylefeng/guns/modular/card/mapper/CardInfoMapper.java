@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.card.mapper;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
+import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -39,5 +40,5 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
      * @param singleCode 卡密
      * @return 卡密信息
      */
-    CardInfo getCardInfoByAppIdAndCardCode(@Param("appId") Long appId, @Param("singleCode") String singleCode);
+    CardInfoApi getCardInfoApiByAppIdAndCardCode(@Param("appId") Long appId, @Param("singleCode") String singleCode);
 }

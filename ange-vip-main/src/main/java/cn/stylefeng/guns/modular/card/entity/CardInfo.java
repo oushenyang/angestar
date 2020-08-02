@@ -118,6 +118,12 @@ public class CardInfo implements Serializable {
     private Integer cardBindType;
 
     /**
+     * 绑机数量
+     */
+    @TableField("card_bind_num")
+    private Integer cardBindNum;
+
+    /**
      * 多开开关 0-默认；1-关闭；2-开启
      */
     @TableField("card_open_range")
@@ -322,6 +328,14 @@ public class CardInfo implements Serializable {
 
     public void setCardBindType(Integer cardBindType) {
         this.cardBindType = cardBindType;
+    }
+
+    public Integer getCardBindNum() {
+        return cardBindNum;
+    }
+
+    public void setCardBindNum(Integer cardBindNum) {
+        this.cardBindNum = cardBindNum;
     }
 
     public Integer getCardOpenRange() {

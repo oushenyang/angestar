@@ -1,9 +1,10 @@
 package cn.stylefeng.guns.modular.card.model.result;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-import java.util.Date;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * @since 2020-04-20
  */
 @Data
-public class CardInfoResult implements Serializable {
+public class CardInfoApi implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -168,5 +169,16 @@ public class CardInfoResult implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+
+    /**
+     * 卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-年
+     */
+    private Integer cardTimeType;
+
+    /**
+     * 卡值
+     */
+    private Integer cardTypeData;
 
 }
