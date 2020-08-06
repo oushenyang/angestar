@@ -111,6 +111,11 @@ public class CardInfoApi implements Serializable {
     private Integer cardOpenRange;
 
     /**
+     * 单码登录方式 0-非顶号；1-顶号；
+     */
+    private Integer cardSignType;
+
+    /**
      * 多开数量
      */
     private Integer cardOpenNum;

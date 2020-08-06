@@ -130,6 +130,12 @@ public class CardInfo implements Serializable {
     private Integer cardOpenRange;
 
     /**
+     * 单码登录方式 0-非顶号；1-顶号；
+     */
+    @TableField("card_sign_type")
+    private Integer cardSignType;
+
+    /**
      * 多开数量
      */
     @TableField("card_open_num")
@@ -344,6 +350,14 @@ public class CardInfo implements Serializable {
 
     public void setCardOpenRange(Integer cardOpenRange) {
         this.cardOpenRange = cardOpenRange;
+    }
+
+    public Integer getCardSignType() {
+        return cardSignType;
+    }
+
+    public void setCardSignType(Integer cardSignType) {
+        this.cardSignType = cardSignType;
     }
 
     public Integer getCardOpenNum() {

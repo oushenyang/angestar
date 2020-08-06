@@ -80,6 +80,11 @@ public class TokenResult implements Serializable {
     private Date checkTime;
 
     /**
+     * token
+     */
+    private String token;
+
+    /**
      * 创建人
      */
     private Long createUser;

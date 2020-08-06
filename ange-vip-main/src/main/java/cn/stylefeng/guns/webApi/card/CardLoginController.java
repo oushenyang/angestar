@@ -125,7 +125,7 @@ public class CardLoginController {
                     //不绑机，直接生成token，返回成功信息
                     if (cardInfoApi.getCardBindType()==1){
                         //生成token
-//                        boolean successful = tokenService.createToken(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardOpenRange(),appInfoApi.getCodeOpenNum(),mac,model);
+                        boolean successful = tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model);
                     }else {
                         boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model);
                         if (successful){
@@ -133,11 +133,11 @@ public class CardLoginController {
                         }else {
                             switch (cardInfoApi.getCardBindType()-1){
                                 case 1:
-                                    throw new SystemApiException(-201, "创建多租户-执行sql出现问题！","",false);
+                                    throw new SystemApiException(-201, "卡密未在绑定的设备上登录！","",false);
                                 case 2:
-                                    throw new SystemApiException(-202, "创建多租户-执行sql出现问题！","",false);
+                                    throw new SystemApiException(-202, "卡密未在绑定的ip上登录！","",false);
                                 case 3:
-                                    throw new SystemApiException(-203, "创建多租户-执行sql出现问题！","",false);
+                                    throw new SystemApiException(-203, "卡密未在绑定的设备或ip上登录！","",false);
                             }
                         }
                     }
@@ -145,7 +145,8 @@ public class CardLoginController {
                 }else {
                     //不绑机，直接生成token，返回成功信息
                     if (appInfoApi.getCodeBindType()==0){
-
+                        //生成token
+                        boolean successful = tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model);
                     }else {
                         boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType(),cardInfoApi.getCardBindNum(),mac,model);
                         if (successful){

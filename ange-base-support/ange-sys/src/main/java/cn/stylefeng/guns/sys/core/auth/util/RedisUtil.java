@@ -427,6 +427,23 @@ public final class RedisUtil {
     }
 
     /**
+     * 获取list缓存的内容
+     *
+     * @param key   键
+     * @param start 开始
+     * @param end   结束 0 到 -1代表所有值
+     * @return
+     */
+    public Object lGetObject(String key, long start, long end) {
+        try {
+            return redisTemplate.opsForList().range(key, start, end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 获取list缓存的长度
      *
      * @param key 键

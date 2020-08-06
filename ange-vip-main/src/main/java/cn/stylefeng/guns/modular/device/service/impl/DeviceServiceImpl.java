@@ -84,11 +84,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model) {
-        List<Device> deviceApis = (List<Device>) redisUtil.lGet(RedisType.DEVICE + String.valueOf(cardId),0,-1);
+        List<Device> deviceApis = (List<Device>) redisUtil.get(RedisType.DEVICE + String.valueOf(cardId));
         if (CollectionUtils.isEmpty(deviceApis)){
             deviceApis = baseMapper.selectList(new QueryWrapper<Device>().eq("card_id", cardId));
             if (CollectionUtils.isEmpty(deviceApis)){
-                redisUtil.lSet(RedisType.CARD_INFO + String.valueOf(cardId), deviceApis);
+                redisUtil.set(RedisType.CARD_INFO + String.valueOf(cardId), deviceApis);
             }
         }
         //如果空
@@ -151,7 +151,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
-        redisUtil.lSet(RedisType.CARD_INFO + String.valueOf(cardId), deviceApiList);
+        redisUtil.set(RedisType.CARD_INFO + String.valueOf(cardId), deviceApiList);
     }
 
     private Serializable getKey(DeviceParam param){

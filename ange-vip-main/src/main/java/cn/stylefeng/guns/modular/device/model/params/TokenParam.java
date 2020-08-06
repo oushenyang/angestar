@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.device.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -79,6 +80,11 @@ public class TokenParam implements Serializable, BaseValidatingParam {
      * 校验时间
      */
     private Date checkTime;
+
+    /**
+     * token
+     */
+    private String token;
 
     /**
      * 创建人

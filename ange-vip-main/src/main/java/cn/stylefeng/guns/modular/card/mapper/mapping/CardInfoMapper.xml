@@ -52,6 +52,7 @@
         cci.card_bind_type AS "cardBindType",
         cci.card_bind_num AS "cardBindNum",
         cci.card_open_range AS "cardOpenRange",
+        cci.card_sign_type AS "cardSignType",
         cci.card_open_num AS "cardOpenNum",
         cci.card_remark AS "cardRemark",
         cci.prohibit_remark AS "prohibitRemark",

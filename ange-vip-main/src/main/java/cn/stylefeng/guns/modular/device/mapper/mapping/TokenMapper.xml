@@ -16,6 +16,7 @@
         <result column="login_num" property="loginNum" />
         <result column="login_time" property="loginTime" />
         <result column="check_time" property="checkTime" />
+        <result column="token" property="token" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />

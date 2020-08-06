@@ -94,6 +94,12 @@ public class Token implements Serializable {
     private Date checkTime;
 
     /**
+     * token
+     */
+    @TableField("token")
+    private String token;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_user", fill = FieldFill.INSERT)
@@ -214,6 +220,14 @@ public class Token implements Serializable {
         this.checkTime = checkTime;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public Long getCreateUser() {
         return createUser;
     }
@@ -261,6 +275,7 @@ public class Token implements Serializable {
         ", loginNum=" + loginNum +
         ", loginTime=" + loginTime +
         ", checkTime=" + checkTime +
+        ", token=" + token +
         ", createUser=" + createUser +
         ", createTime=" + createTime +
         ", updateUser=" + updateUser +

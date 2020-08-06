@@ -1,6 +1,9 @@
 package cn.stylefeng.guns.modular.device.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
+import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.model.params.TokenParam;
 import cn.stylefeng.guns.modular.device.model.result.TokenResult;
@@ -66,4 +69,14 @@ public interface TokenService extends IService<Token> {
      */
      LayuiPageInfo findPageBySpec(TokenParam param);
 
+    /**
+     * 创建token
+     * @param apiManage 接口信息
+     * @param cardInfoApi 卡密信息
+     * @param appInfoApi 应用信息
+     * @param mac mac地址
+     * @param model 设备型号
+     * @return 接口
+     */
+    boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model);
 }
