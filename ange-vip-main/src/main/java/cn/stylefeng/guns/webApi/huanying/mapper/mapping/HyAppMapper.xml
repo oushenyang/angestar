@@ -20,7 +20,7 @@
         select
         <include refid="Base_Column_List"/>
         from pj_hy_app
-        where ut_did = #{utDid}
+        where ut_did = #{utDid} AND sign = #{sign}
     </select>
 
 </mapper>

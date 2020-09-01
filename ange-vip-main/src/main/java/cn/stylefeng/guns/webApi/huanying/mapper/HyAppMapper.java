@@ -17,5 +17,5 @@ import java.util.List;
  */
 public interface HyAppMapper extends BaseMapper<HyApp> {
 
-    List<HyAppResult> findListBySpec(@Param("utDid") String utDid);
+    List<HyAppResult> findListBySpec(@Param("utDid") String utDid,@Param("sign") String sign);
 }

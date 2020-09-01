@@ -2,7 +2,9 @@ package cn.stylefeng.guns.webApi.huanying;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
 import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class HuanYingV2Controller {
     @Autowired
     private HyAppService hyAppService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @RequestMapping("/appdatainfo")
     @ResponseBody
@@ -59,6 +63,7 @@ public class HuanYingV2Controller {
             wrapper.eq("ut_did", model);
             wrapper.eq("appuserid", appuserid);
             wrapper.eq("package", packAge);
+            wrapper.eq("sign", sign);
             HyApp app = hyAppService.getOne(wrapper);
             if (ObjectUtil.isEmpty(app)){
                 HyApp hyApp = new HyApp();
@@ -74,6 +79,7 @@ public class HuanYingV2Controller {
                 hyApp.setSign(sign);
                 hyApp.setCreateTime(new Date());
                 hyAppService.save(hyApp);
+                redisUtil.del(RedisType.HUANYIN + model);
             }
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
@@ -95,7 +101,7 @@ public class HuanYingV2Controller {
             aa = aa.replaceAll("packAge", "package");
             return aa;
         }
-        List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model);
+        List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
         Map map = new HashMap<String, String>();
         map.put("data",hyAppResults);
         map.put("message", "ok");

@@ -64,10 +64,11 @@ public class HuanYingV4Controller {
             }
         }
         boolean isHave = false;
-        List<Dict> dictss = dictService.listDictsByCode("HUANYINGAPP");
+        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
         for (Dict dict : dictss){
             if (dict.getCode().equals(sign)){
                 isHave = true;
+                break;
             }
         }
         if (!isHave){
@@ -80,12 +81,13 @@ public class HuanYingV4Controller {
         }
         Map map = new HashMap<String, String>();
         if ("com.alibaba.android.rimet".equals(app_pkg)){
-            List<Dict> dicts = dictService.listDictsByCode("HUANYING_TOKEN");
+            List<Dict> dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
             boolean isChu = false;
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
                     map.put("data", dict.getCode());
                     isChu = true;
+                    break;
                 }
             }
             if (!isChu){

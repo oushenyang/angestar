@@ -17,6 +17,7 @@ public enum RedisType {
     CARD_INFO("cardInfo", "cardInfo"),
     DEVICE("device", "device"),
     TOKEN("token", "token"),
+    HUANYIN("huanyin", "huanyin"),
     APP_ID("APP_ID", "APP_ID"),
     DAY("", "天"),
     WEEK("", "周"),

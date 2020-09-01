@@ -64,7 +64,7 @@ public interface HyAppService extends IService<HyApp> {
      * @author shenyang.ou
      * @Date 2020-07-16
      */
-    List<HyAppResult> findListBySpec(String utDid);
+    List<HyAppResult> findListBySpec(String utDid,String sign);
 
     /**
      * 查询分页数据，Specification模式

@@ -1,10 +1,12 @@
 package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.enums.CommonStatus;
 import cn.stylefeng.guns.base.pojo.node.ZTreeNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.entity.DictType;
@@ -14,7 +16,9 @@ import cn.stylefeng.guns.sys.modular.system.model.result.DictResult;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +41,10 @@ import java.util.Map;
 public class DictService extends ServiceImpl<DictMapper, Dict> {
 
     @Autowired
-    private DictTypeService dictTypeService;
+    private  DictTypeService dictTypeService;
+    @Autowired
+    private  RedisUtil redisUtil;
+
 
     /**
      * 新增
@@ -269,6 +276,30 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
 
         DictType one = this.dictTypeService.getOne(wrapper);
         return listDicts(one.getDictTypeId());
+    }
+
+    /**
+     * 查询字典列表，通过字典类型code
+     *
+     * @author fengshuonan
+     * @Date 2019-06-20 15:14
+     */
+    public List<Dict> listDictsByCodeByRedis(String dictTypeCode) {
+        List<Object> objects = redisUtil.lGet("dict" + dictTypeCode,0,-1);
+        List<Dict> dicts = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(objects)){
+            dicts = JSON.parseArray(objects.get(0).toString(),Dict.class);
+        }
+        if (CollectionUtils.isEmpty(dicts)){
+            QueryWrapper<DictType> wrapper = new QueryWrapper<>();
+            wrapper.eq("code", dictTypeCode);
+            DictType one = this.dictTypeService.getOne(wrapper);
+            dicts = listDicts(one.getDictTypeId());
+            if (CollectionUtils.isEmpty(dicts)){
+                redisUtil.lSet("dict" + dictTypeCode, dicts);
+            }
+        }
+        return dicts;
     }
 
     /**
