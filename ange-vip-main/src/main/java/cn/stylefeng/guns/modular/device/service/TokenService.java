@@ -9,6 +9,7 @@ import cn.stylefeng.guns.modular.device.model.params.TokenParam;
 import cn.stylefeng.guns.modular.device.model.result.TokenResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,5 +79,5 @@ public interface TokenService extends IService<Token> {
      * @param model 设备型号
      * @return 接口
      */
-    boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model);
+    boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model, Date expireTime);
 }

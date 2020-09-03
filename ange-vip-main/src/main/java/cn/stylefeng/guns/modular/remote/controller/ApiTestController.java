@@ -1,12 +1,17 @@
 package cn.stylefeng.guns.modular.remote.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.remote.entity.RemoteData;
 import cn.stylefeng.guns.modular.remote.service.RemoteDataService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.Map;
+import java.util.*;
+
+import static cn.stylefeng.roses.core.util.HttpContext.getIp;
 
 /**
  * <p></p>
@@ -67,10 +73,36 @@ public class ApiTestController {
     @ResponseBody
     public Object getData(){
         //测试redis
+        String tokenStr = "1";
+        Date date = new Date();
+        Token token = new Token();
+        token.setAppId(11L);
+        token.setCardOrUserId(11L);
+        token.setCardOrUserCode("22");
+        token.setCardType(1);
+        token.setMac("mac");
+        token.setModel("model");
+        token.setIp(getIp());
+        token.setLoginNum(1);
+        token.setToken(tokenStr);
+        token.setLoginTime(date);
+        token.setCheckTime(date);
+        token.setCreateTime(date);
+        redisUtil.hset(RedisType.TOKEN.getCode(),tokenStr+"1",token,3000);
+        redisUtil.hset(RedisType.TOKEN.getCode(),tokenStr+"2",token,2000);
+        redisUtil.hset(RedisType.TOKEN.getCode(),tokenStr+"3",token,1000);
+//        redisUtil.hdel(RedisType.TOKEN.getCode(),"11","12","13","113");
 
-        redisUtil.set("name","小猫");
-        System.out.println(redisUtil.getExpire("name"));
-        return redisUtil.get("name");
-
+        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN.getCode());
+        List<Token> tokens = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(objects)){
+            for (Map.Entry<Object, Object> m : objects.entrySet()) {
+                tokens.add((Token)m.getValue());
+            }
+        }
+        for (int i = 0; i < 2; i++) {
+            redisUtil.hdel(RedisType.TOKEN.getCode(), tokens.get(i).getToken()+i);
+        }
+        return tokens;
     }
 }

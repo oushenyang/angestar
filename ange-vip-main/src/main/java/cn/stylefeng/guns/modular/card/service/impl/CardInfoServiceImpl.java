@@ -80,6 +80,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setCreateTime(date);
         param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+        param.setCardBindType(0);
+        param.setCardSignType(1);
+        param.setCardOpenRange(0);
         List<CardInfo> cardInfos = new ArrayList<>();
         List<String> cards = new ArrayList<>();
         //获取卡类信息
@@ -302,6 +305,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             }
         }
         return cardInfoApi;
+    }
+
+    @Override
+    public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
+        redisUtil.del(RedisType.CARD_INFO + String.valueOf(appId) + singleCode);
+        baseMapper.updateById(cardInfo);
     }
 
     private Serializable getKey(CardInfoParam param){

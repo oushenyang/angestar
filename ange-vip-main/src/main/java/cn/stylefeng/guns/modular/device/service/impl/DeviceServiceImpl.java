@@ -1,18 +1,22 @@
 package cn.stylefeng.guns.modular.device.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.device.entity.Device;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.mapper.DeviceMapper;
 import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
 import cn.stylefeng.guns.modular.device.model.result.DeviceApi;
 import cn.stylefeng.guns.modular.device.model.result.DeviceResult;
 import  cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -21,10 +25,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static cn.stylefeng.roses.core.util.HttpContext.getIp;
 
@@ -84,13 +85,26 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model) {
-        List<Device> deviceApis = (List<Device>) redisUtil.get(RedisType.DEVICE + String.valueOf(cardId));
-        if (CollectionUtils.isEmpty(deviceApis)){
-            deviceApis = baseMapper.selectList(new QueryWrapper<Device>().eq("card_id", cardId));
-            if (CollectionUtils.isEmpty(deviceApis)){
-                redisUtil.set(RedisType.CARD_INFO + String.valueOf(cardId), deviceApis);
+//        List<Object> objects = redisUtil.lGet(RedisType.DEVICE + String.valueOf(cardId),0,-1);
+//        List<Device> deviceApis = new ArrayList<>();
+//        if (CollectionUtil.isNotEmpty(objects)){
+//            deviceApis = JSON.parseArray(objects.get(0).toString(),Device.class);
+//        }
+//        if (CollectionUtils.isEmpty(deviceApis)){
+//            deviceApis = baseMapper.selectList(new QueryWrapper<Device>().eq("card_id", cardId));
+//            if (CollectionUtils.isEmpty(deviceApis)){
+//                redisUtil.lSet(RedisType.CARD_INFO + String.valueOf(cardId), deviceApis);
+//            }
+//        }
+
+        Map<Object, Object> objects = redisUtil.hmget(RedisType.DEVICE + String.valueOf(cardId));
+        List<Device> deviceApis = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(objects)) {
+            for (Map.Entry<Object, Object> m : objects.entrySet()) {
+                deviceApis.add((Device) m.getValue());
             }
         }
+
         //如果空
         if (CollectionUtils.isEmpty(deviceApis)){
             List<Device> deviceApiList = new ArrayList<>();
@@ -151,7 +165,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
-        redisUtil.set(RedisType.CARD_INFO + String.valueOf(cardId), deviceApiList);
+        redisUtil.hset(RedisType.CARD_INFO + String.valueOf(cardId),mac+getIp(),device);
     }
 
     private Serializable getKey(DeviceParam param){

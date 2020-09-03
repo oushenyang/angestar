@@ -87,4 +87,7 @@ public interface CardInfoService extends IService<CardInfo> {
      * @return 卡密信息
      */
     CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode);
+
+    //更新卡密和缓存
+    void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode);
 }

@@ -217,10 +217,10 @@ public class GlobalExceptionHandler {
      * @author fengshuonan
      * @Date 2020/2/6 11:14 上午
      */
-    @ExceptionHandler(CardApiException.class)
+    @ExceptionHandler(CardLoginException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Object cardLoginExpection(CardLoginException e) {
+    public Object cardLoginException(CardLoginException e) {
         ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get("apiResult" + e.getAppId() + e.getCode());
         if (ObjectUtil.isNull(apiResultApi)){
             apiResultApi = apiResultService.findApiResultApi(e.getAppId(),e.getCode());
@@ -232,8 +232,8 @@ public class GlobalExceptionHandler {
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (apiResultApi.getResultSuccess()){
                 Map map = new HashMap<String, String>();
-                map.put("expireTime", "2099-12-09");
-                map.put("token", IdUtil.simpleUUID());
+                map.put("expireTime", e.getExpireTime());
+                map.put("token", e.getData());
                 JSONObject json = new JSONObject(map);
                 return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
