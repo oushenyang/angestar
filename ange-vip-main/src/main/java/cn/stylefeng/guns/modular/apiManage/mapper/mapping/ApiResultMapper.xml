@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.ApiResultMapper">
+<mapper namespace="cn.stylefeng.guns.modular.apiManage.mapper.ApiResultMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.ApiResult">
@@ -24,9 +24,25 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        api_result_id AS "apiResultId", app_id AS "appId", result_type AS "resultType", result_success AS "resultSuccess", result_variables AS "resultVariables", result_code AS "resultCode", result_data AS "resultData", custom_result_data AS "customResultData", result_remark AS "resultRemark", whether_edit AS "whetherEdit", whether_result_json AS "whetherResultJson", sort AS "sort", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        ai.app_name AS "appName",
+        aar.api_result_id AS "apiResultId",
+        aar.app_id AS "appId",
+        aar.result_type AS "resultType",
+        aar.result_success AS "resultSuccess",
+        aar.result_variables AS "resultVariables",
+        aar.result_code AS "resultCode",
+        aar.result_data AS "resultData",
+        aar.custom_result_data AS "customResultData",
+        aar.result_remark AS "resultRemark",
+        aar.whether_edit AS "whetherEdit",
+        aar.whether_result_json AS "whetherResultJson",
+        aar.sort AS "sort",
+        aar.create_user AS "createUser",
+        aar.create_time AS "createTime",
+        aar.update_user AS "updateUser",
+        aar.update_time AS "updateTime"
     </sql>
-    <select id="findApiResultApi" resultType="cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi">
+    <select id="findApiResultApi" resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiResultApi">
         select * from ag_api_result
         <where>
             <if test="appId != null and appId !=''">
@@ -36,6 +52,23 @@
                 and result_code = #{resultCode}
             </if>
         </where>
+    </select>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        (SELECT `name` FROM sys_dict WHERE dict_type_id = (SELECT dict_type_id FROM sys_dict_type WHERE `code` = 'result_type'
+        ) AND `code` = aar.result_type) AS resultTypeName,
+        <include refid="Base_Column_List"/>
+        from ag_api_result aar
+        left join ag_app_info ai on ai.app_id = aar.app_id
+        <where>
+            <if test="param.appId != null and param.appId !=''">
+                and aar.app_id = #{param.appId}
+            </if>
+            <if test="param.type != null and param.type ==0">
+                and aar.app_id = 1
+            </if>
+        </where>
+        order by aar.sort ASC
     </select>
 
 </mapper>

@@ -138,14 +138,8 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + ApiResult.tableId,
-        url: Feng.ctxPath + '/apiResult/list?type=0',
+        url: Feng.ctxPath + '/apiResult/list?type=1',
         page: true,
-        toolbar: '#' + ApiResult.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
         height: "full-98",
         cellMinWidth: 100,
         cols: ApiResult.initColumn(),

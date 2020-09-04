@@ -103,7 +103,15 @@ public class CardLoginController {
                 break;
             //已激活
             case 1:
-                //TODO 先检查有没有过期，如果过期就删除缓存并更新状态
+                //已经过期
+                if (cardInfoApi.getExpireTime().compareTo(DateUtil.date())<0) {
+                    //更新卡密和删除缓存
+                    CardInfo cardInfo1 = new CardInfo();
+                    cardInfo1.setCardId(cardInfoApi.getCardId());
+                    cardInfo1.setCardStatus(CardStatus.EXPIRED.getCode());
+                    cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,singleCode);
+                    throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),false);
+                }
                 createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model, cardInfoApi.getExpireTime());
                 break;
             //已过期

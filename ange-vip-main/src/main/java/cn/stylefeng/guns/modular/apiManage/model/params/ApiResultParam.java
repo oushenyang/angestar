@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.sys.modular.system.model.params;
+package cn.stylefeng.guns.modular.apiManage.model.params;
 
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
@@ -29,6 +29,7 @@ public class ApiResultParam implements Serializable, BaseValidatingParam {
      * 应用id
      */
     private Long appId;
+    private Integer type;
 
     /**
      * 返回类别

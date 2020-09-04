@@ -15,7 +15,6 @@
  */
 package cn.stylefeng.guns.sys.core.exception.aop;
 
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
@@ -27,8 +26,8 @@ import cn.stylefeng.guns.sys.core.exception.*;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
-import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
-import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
+//import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
+//import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ErrorResponseData;
 import com.alibaba.fastjson.JSONObject;
@@ -68,13 +67,13 @@ import static cn.stylefeng.roses.core.util.HttpContext.getRequest;
 @Order(-100)
 @Slf4j
 public class GlobalExceptionHandler {
-    private final RedisUtil redisUtil;
-    private final ApiResultService apiResultService;
+//    private final RedisUtil redisUtil;
+//    private final ApiResultService apiResultService;
 
-    public GlobalExceptionHandler(RedisUtil redisUtil, ApiResultService apiResultService) {
-        this.redisUtil = redisUtil;
-        this.apiResultService = apiResultService;
-    }
+//    public GlobalExceptionHandler(RedisUtil redisUtil, ApiResultService apiResultService) {
+//        this.redisUtil = redisUtil;
+//        this.apiResultService = apiResultService;
+//    }
 
     /**
      * 参数校验错误
@@ -221,31 +220,32 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public Object cardLoginException(CardLoginException e) {
-        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get("apiResult" + e.getAppId() + e.getCode());
-        if (ObjectUtil.isNull(apiResultApi)){
-            apiResultApi = apiResultService.findApiResultApi(e.getAppId(),e.getCode());
-            if (ObjectUtil.isNotNull(apiResultApi)){
-                redisUtil.set("apiResult" + e.getAppId()+ e.getCode(), apiResultApi);
-            }
-        }
-        //如果没有自定义
-        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
-            if (apiResultApi.getResultSuccess()){
-                Map map = new HashMap<String, String>();
-                map.put("expireTime", e.getExpireTime());
-                map.put("token", e.getData());
-                JSONObject json = new JSONObject(map);
-                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
-            }else {
-                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),e.getData(),apiResultApi.getResultSuccess());
-            }
-        }else {
-            if (apiResultApi.getResultSuccess()){
-                return apiResultApi.getCustomResultData();
-            }else {
-                return apiResultApi.getCustomResultData();
-            }
-        }
+//        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get("apiResult" + e.getAppId() + e.getCode());
+//        if (ObjectUtil.isNull(apiResultApi)){
+//            apiResultApi = apiResultService.findApiResultApi(e.getAppId(),e.getCode());
+//            if (ObjectUtil.isNotNull(apiResultApi)){
+//                redisUtil.set("apiResult" + e.getAppId()+ e.getCode(), apiResultApi);
+//            }
+//        }
+//        //如果没有自定义
+//        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+//            if (apiResultApi.getResultSuccess()){
+//                Map map = new HashMap<String, String>();
+//                map.put("expireTime", e.getExpireTime());
+//                map.put("token", e.getData());
+//                JSONObject json = new JSONObject(map);
+//                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+//            }else {
+//                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),e.getData(),apiResultApi.getResultSuccess());
+//            }
+//        }else {
+//            if (apiResultApi.getResultSuccess()){
+//                return apiResultApi.getCustomResultData();
+//            }else {
+//                return apiResultApi.getCustomResultData();
+//            }
+//        }
+        return "1";
     }
 
     /**

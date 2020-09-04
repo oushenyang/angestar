@@ -1,14 +1,19 @@
-package cn.stylefeng.guns.sys.modular.system.controller;
+package cn.stylefeng.guns.modular.apiManage.controller;
 
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
-import cn.stylefeng.guns.sys.modular.system.model.params.ApiResultParam;
-import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
+import cn.stylefeng.guns.modular.apiManage.model.params.ApiResultParam;
+import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -34,9 +40,12 @@ public class ApiResultController extends BaseController {
 
     private final DictService dictService;
 
-    public ApiResultController(ApiResultService apiResultService, DictService dictService) {
+    private final AppInfoService appInfoService;
+
+    public ApiResultController(ApiResultService apiResultService, DictService dictService, AppInfoService appInfoService) {
         this.apiResultService = apiResultService;
         this.dictService = dictService;
+        this.appInfoService = appInfoService;
     }
 
     /**
@@ -46,8 +55,21 @@ public class ApiResultController extends BaseController {
      * @Date 2020-07-31
      */
     @RequestMapping("")
-    public String index() {
-        return PREFIX + "/apiResult.html";
+    public String index(Model model,Integer type) {
+        model.addAttribute("type", type);
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        if (CollectionUtils.isNotEmpty(appInfoParams)){
+            model.addAttribute("firstAppId", appInfoParams.get(0).getAppId());
+        }else {
+            model.addAttribute("firstAppId", 0);
+        }
+        model.addAttribute("appInfoParams", appInfoParams);
+        if (type==0){
+            return PREFIX + "/apiResult.html";
+        }else {
+            return PREFIX + "/appApiResult.html";
+        }
     }
 
     /**
@@ -151,7 +173,15 @@ public class ApiResultController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(ApiResultParam apiResultParam) {
-        return this.apiResultService.findPageBySpec(apiResultParam);
+//        return this.apiResultService.findPageBySpec(apiResultParam);
+
+        //获取分页参数
+        Page page = LayuiPageFactory.defaultPage();
+        apiResultParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<Map<String, Object>> result = apiResultService.findListBySpec(page, apiResultParam);
+        page.setRecords(result);
+        return LayuiPageFactory.createPageInfo(page);
     }
 
 }

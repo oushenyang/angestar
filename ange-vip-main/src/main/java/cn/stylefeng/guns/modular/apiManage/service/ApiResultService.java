@@ -1,13 +1,15 @@
-package cn.stylefeng.guns.sys.modular.system.service;
+package cn.stylefeng.guns.modular.apiManage.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.apiManage.model.params.ApiResultParam;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiResultApi;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
-import cn.stylefeng.guns.sys.modular.system.model.params.ApiResultParam;
-import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -65,7 +67,7 @@ public interface ApiResultService extends IService<ApiResult> {
      * @author shenyang.ou
      * @Date 2020-07-31
      */
-    List<ApiResultResult> findListBySpec(ApiResultParam param);
+    List<Map<String, Object>> findListBySpec(Page page, ApiResultParam param);
 
     /**
      * 查询分页数据，Specification模式

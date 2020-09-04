@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.sys.modular.system.model.result;
+package cn.stylefeng.guns.modular.apiManage.model.result;
 
 import lombok.Data;
 
