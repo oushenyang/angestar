@@ -79,7 +79,7 @@ public class HuanYingV2Controller {
                 hyApp.setSign(sign);
                 hyApp.setCreateTime(new Date());
                 hyAppService.save(hyApp);
-                redisUtil.del(RedisType.HUANYIN + model);
+                redisUtil.del(RedisType.HUANYIN + model + sign);
             }
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();

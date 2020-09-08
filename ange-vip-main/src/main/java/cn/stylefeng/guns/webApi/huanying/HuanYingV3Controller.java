@@ -25,8 +25,8 @@ public class HuanYingV3Controller {
     @ResponseBody
     public String user(){
         Map map = new HashMap<String, String>();
-        map.put("data","+8QmNNNLGKt6xBXiMKrVZzaE/mvEzil5OtXpVs4FPUiN6OT71mRm9O11/+V/PqOn3VsiLYS3wmlxKMqkDKUffxRxCBPCWq+yjOVecbIc/fdxdy6xDGIBm69b1YnLlaZvO/CGMXRP14mjJN7nxpIrJv/pxXGFMrdzPqBTzNGK9Nu6lJi7B6KtsAzeWnEpVQAbHBxdlo7i63Y3bs65EjgqTNDSC4q/CHcwRHDuOPPykLomjgxgGcquqrbSpGZsV5E90miPePjMmVwSM2N0/Flg1aJhWggobIAjFzpH88rqieVvMFPZLVD9+16bV431RsU6CqvnPibLx2ZORL2PLW6Fb/WYOCHQGEir3zo6xSfyhO6GdNy75q8EzWOFyEMgOPSJcxHJp4ASbAMc9BtyQZgVFDIbWezRa6O9kUFgAQF1LHYzahkn5AjI7VJn5+u0tjxntB0qQJvkwChwiLPdondUX405GQybDuiRLMPh35UvenPCpr3IHhPlvYh0da9CZ8v5fppsNSu4uKLkR2QI9GfO8kUM0VtD9wdo+5HiJXRrtkJj9XaPrsAGFO3YRqtqAthbWS9jllwOe8a2xY//3ruVaZwq0wQQwccGxAUtSCmxxtS2tt/ENJUE4uuzeFYX+nZc5OWmETR7suQ6CANcvPbfEItOu+C/1kbyIJvCo4PPGcN4aS0heEQlCwoE28W9gcDy");
-        map.put("message", "ok");
+        map.put("data","h9M9kQsr/d+/mG43m8PfkKl1eJGN4Jrr2/XvSj2zVs/aZpXPZgg73oJcUjlpK33BVIbdFMBuuRMr82QrX3uRBvXozAZVWs2k95uAzFGJmFNlbYXQTvhr+vzOtYaWOW0FOFrNgHV0JZDO28Fmcb8DY+l9n44wZN7syIaHl/SDFA58FBGMVZVTm9jM+ApjKInmchgxljBCEOcxyo7YsvjMFT1ILzrgMzvoaaIMuqP7B4NpPp4x2Hbf2tbKNT55CvLuL8E4ctWmIDHNmzefT7gvWgFEvQImldioI4UWdxaBcwV4Q8vv4/xv0aMBHXyuvkW1yg83i01pCEBaUDszCm7uq4ptk0GD1grdysRgW+NWsPIXSLSsmhvQTkJzMUW7jpJZN35gzerV9kUxMMSaJunU/fzGnfR1iJ/VGBw00HS0kiJoX3cZEoN15VBwYbvIIcaKepeyR9SCiVXQLGPOdxbqOEaAdbwQiMbb1l5ZELRyaeeGTirbVVlVxMnk8Zi3j91rs5Jfjka9dLQIcI3sc5vFpt57vQOX1hffOLq7U1t5FxNq7S/qIom1/tqXr03cvMLtCYjayE8CFxiplfNk2EdfkLHhvFaSLJwei6MGAWG3meGQs8TUUb3P1UUAEOWALAoFEPV0YRIAP7Cs86hapIKjy1W6NE4NZoj2xaLKs2oobUHzMKEJ02GHCXwLT7z9EJ6dTdtnJ9tht4OnUIm+tS5GLPAIX7zjxhnKnbKP3A4v7JZ6QIhUjDCAJfnWuDjtTqwXhg31f6XtRoyarn5LyiXDZFy824TweySPrSCk9NnwoteJQ/J1gtKcQgSlgqA1bcEIV3vLzd1gpeHd4zZJF0esIamdzMumIEBYCwmuSvpgRFt+siLJ6kMdKi3f90oRu4mILVWGG7mVAdWboraKa+qIgKz9Xfuo6ajmMEAB+lzkufgCXRkg+sZsWDhDkuQrRJWYw1G07puNpN0G/+gM0nWwCQ==");
+        map.put("message", "success");
         map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
@@ -45,14 +45,26 @@ public class HuanYingV3Controller {
         return json.toString();
     }
 
+    @RequestMapping("/recell")
+    @ResponseBody
+    public String recell(){
+        Map map = new HashMap<String, String>();
+        map.put("data","");
+        map.put("message", "some error in database");
+        map.put("code", 141);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
     @RequestMapping("/appactive")
     @ResponseBody
     public String appactive(){
         Map map = new HashMap<String, String>();
         Map map1 = new HashMap<String, String>();
-        map1.put("content", "某钉用户请确保幻影分身为最新版");
-        map1.put("title", "紧急通知");
+        map1.put("content", "请务必关闭钉钉自动更新，具体方法在手机应用商店把软件自动更新选项关闭");
+        map1.put("title", "重要通知");
         map1.put("type", "");
+        map1.put("show", 1);
         map.put("data",map1);
         map.put("message", "ok");
         map.put("code", 0);

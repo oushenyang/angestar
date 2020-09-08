@@ -63,7 +63,7 @@ public class HuanYingV4Controller {
                 app_version = String.join("", m.getValue());
             }
         }
-        boolean isHave = false;
+        boolean isHave = true;
         List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
         for (Dict dict : dictss){
             if (dict.getCode().equals(sign)){
