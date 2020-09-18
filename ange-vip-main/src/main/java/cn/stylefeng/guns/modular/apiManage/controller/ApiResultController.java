@@ -99,6 +99,19 @@ public class ApiResultController extends BaseController {
     }
 
     /**
+     * 编辑页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-07-31
+     */
+    @RequestMapping("/appEdit")
+    public String appEdit(Model model) {
+        List<Dict> dicts =  dictService.listDictsByCode("result_type");
+        model.addAttribute("dicts", dicts);
+        return PREFIX + "/appApiResult_edit.html";
+    }
+
+    /**
      * 新增接口
      *
      * @author shenyang.ou

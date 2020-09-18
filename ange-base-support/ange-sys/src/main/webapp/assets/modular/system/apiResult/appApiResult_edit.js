@@ -102,6 +102,26 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         lastEditRange = selection.getRangeAt(0)
     }
 
+
+    var editor = ace.edit("codeText");//绑定dom对象
+    editor.setTheme("ace/theme/xcode");//设置主题
+    editor.getSession().setMode("ace/mode/javascript");//设置程序语言
+    editor.setReadOnly(true);//设置只读（true时只读，用于展示代码）
+    //自动换行,设置为off关闭
+    editor.setOption("wrap", "free");
+    //启用提示菜单
+    ace.require("ace/ext/language_tools");
+    //以下部分是设置输入代码提示的
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+        autoScrollEditorIntoView: true
+    });
+    editor.setHighlightActiveLine(true); //代码高亮
+    editor.setShowPrintMargin(false);
+    editor.getSession().setUseWrapMode(true); //支持代码折叠
+
     //让当前iframe弹层高度适应
     admin.iframeAuto();
 
@@ -109,6 +129,8 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     var ajax = new $ax(Feng.ctxPath + "/apiResult/detail?apiResultId=" + Feng.getUrlParam("apiResultId"));
     var result = ajax.start();
     form.val('apiResultForm', result.data);
+    editor.getSession().setValue(result.data.resultData);
+    // editor.moveCursorTo(0, 0);
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {

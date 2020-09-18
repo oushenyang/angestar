@@ -80,7 +80,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             type: 2,
             title: '修改接口自定义返回',
             area: '700px',
-            content: Feng.ctxPath + '/apiResult/edit?apiResultId=' + data.apiResultId,
+            content: Feng.ctxPath + '/apiResult/appEdit?apiResultId=' + data.apiResultId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(ApiResult.tableId);
             }
