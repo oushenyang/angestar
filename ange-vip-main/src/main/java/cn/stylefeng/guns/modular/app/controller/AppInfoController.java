@@ -11,6 +11,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
+import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -19,6 +20,7 @@ import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -50,14 +52,16 @@ public class AppInfoController extends BaseController {
     private final AppInfoService appInfoService;
     private final AppEditionService appEditionService;
     private final ApiManageService apiManageService;
+    private final ApiResultService apiResultService;
     private final CardInfoService cardInfoService;
     private final AgentAppService agentAppService;
     private final AgentCardService agentCardService;
 
-    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService, ApiManageService apiManageService, CardInfoService cardInfoService, AgentAppService agentAppService, AgentCardService agentCardService) {
+    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService, ApiManageService apiManageService, ApiResultService apiResultService, CardInfoService cardInfoService, AgentAppService agentAppService, AgentCardService agentCardService) {
         this.appInfoService = appInfoService;
         this.appEditionService = appEditionService;
         this.apiManageService = apiManageService;
+        this.apiResultService = apiResultService;
         this.cardInfoService = cardInfoService;
         this.agentAppService = agentAppService;
         this.agentCardService = agentCardService;
@@ -154,6 +158,10 @@ public class AppInfoController extends BaseController {
         ApiManage apiManage = new ApiManage();
         apiManage.setAppId(appInfoParam.getAppId());
         apiManageService.remove(new QueryWrapper<>(apiManage));
+        //删除api返回
+        ApiResult apiResult = new ApiResult();
+        apiResult.setAppId(appInfoParam.getAppId());
+        apiResultService.remove(new QueryWrapper<>(apiResult));
         //删除卡密
         CardInfo cardInfo = new CardInfo();
         cardInfo.setAppId(appInfoParam.getAppId());

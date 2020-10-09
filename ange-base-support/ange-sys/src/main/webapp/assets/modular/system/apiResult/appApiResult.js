@@ -138,7 +138,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + ApiResult.tableId,
-        url: Feng.ctxPath + '/apiResult/list?type=1',
+        url: Feng.ctxPath + '/apiResult/list?type=1&appId='+$('#firstAppId').val(),
         page: true,
         height: "full-98",
         cellMinWidth: 100,

@@ -61,11 +61,14 @@
         from ag_api_result aar
         left join ag_app_info ai on ai.app_id = aar.app_id
         <where>
-            <if test="param.appId != null and param.appId !=''">
+            <if test="param.appId != null and param.appId !='' and param.type ==1">
                 and aar.app_id = #{param.appId}
             </if>
             <if test="param.type != null and param.type ==0">
                 and aar.app_id = 1
+            </if>
+            <if test="param.type != null and param.type ==1 and param.appId == null">
+                and aar.create_user = #{param.createUser}
             </if>
         </where>
         order by aar.sort ASC

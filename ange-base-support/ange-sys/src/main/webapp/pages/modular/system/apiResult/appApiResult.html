@@ -12,6 +12,7 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
+                                <input id="firstAppId" type="hidden" value="${firstAppId}"/>
                                 <select name="appId" id="appId" lay-search="" lay-filter="appId">
                                     <option value="">所属应用</option>
                                     @for(appInfo in appInfoParams) {
