@@ -73,6 +73,17 @@ public class DingWeiMaoController {
         return json;
     }
 
+    @RequestMapping("/Config/Update")
+    @ResponseBody
+    public JSONObject Update(){
+        Map map = new HashMap<String, String>();
+        List<String> a = new ArrayList<>();
+        map.put("error", 0);
+        map.put("message", "没有更新");
+        JSONObject json = new JSONObject(map);
+        return json;
+    }
+
     @RequestMapping("/User/Info")
     @ResponseBody
     public JSONObject Info(){
@@ -122,9 +133,56 @@ public class DingWeiMaoController {
         return json;
     }
 
+    @RequestMapping("/User/AppRecord")
+    @ResponseBody
+    public JSONObject AppRecord(){
+        Map map = new HashMap<String, String>();
+        map.put("error", 0);
+        map.put("message", "");
+        JSONObject json = new JSONObject(map);
+        return json;
+    }
+
     @RequestMapping("/config/AppBlackList")
     @ResponseBody
-    public JSONObject AppBlackList(){
+    public JSONObject AppBlackList(@RequestBody String  body){
+        Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
+        String av = null;
+        for (Map.Entry<String, String[]> m : cookies.entrySet()) {
+            if (m.getKey().equals("av")){
+                av = String.join("", m.getValue());
+            }
+        }
+        JSONObject jbb = JSONObject.parseObject(body);
+        String pkg = jbb.getString("apppackagename");
+        String version = jbb.getString("appversionname");
+
+        if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
+            if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
+                List<Dict> dicts = dictService.listDictsByCode("dingweimao");
+                boolean isHave = false;
+                for (Dict dict : dicts){
+                    if (dict.getName().equals(version)){
+                        isHave = true;
+                    }
+                }
+                if (!isHave){
+                    Map map = new HashMap<String, String>();
+                    List<String> a = new ArrayList<>();
+                    Map map1 = new HashMap<String, String>();
+                    map1.put("Level",2);
+                    map1.put("Content","您当前钉钉版本为："+version+",系统未做防检测处理！请不要打卡！请不要打卡！请不要打卡！钉钉签到正常操作！为防止此提示再次出现，请务必关闭钉钉自动更新，具体操作在手机应用商店里把软件自动更新关闭！");
+                    map.put("data",map1);
+                    map.put("error", 0);
+                    map.put("message", "");
+                    map.put("type", 0);
+                    JSONObject json = new JSONObject(map);
+                    return json;
+                }
+            }
+        }
+
+
         Map map = new HashMap<String, String>();
         List<String> a = new ArrayList<>();
         Map map1 = new HashMap<String, String>();
@@ -157,17 +215,17 @@ public class DingWeiMaoController {
                     isHave = true;
                 }
             }
-           if (!isHave){
-               Map map = new HashMap<String, String>();
-               Map map1 = new HashMap<String, String>();
-               map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
-               map.put("data",map1);
-               map.put("error", 0);
-               map.put("message", "");
-               map.put("type", 0);
-               JSONObject json = new JSONObject(map);
-               return json;
-           }
+            if (!isHave){
+                Map map = new HashMap<String, String>();
+                Map map1 = new HashMap<String, String>();
+                map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
+                map.put("data",map1);
+                map.put("error", 0);
+                map.put("message", "");
+                map.put("type", 0);
+                JSONObject json = new JSONObject(map);
+                return json;
+            }
         }else {
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
@@ -181,11 +239,37 @@ public class DingWeiMaoController {
         }
         String aaa = null;
         JSONObject jbb = JSONObject.parseObject(body);
-            String p = jbb.getString("p");
-            String a = CreateNamePicture.decrypt(p, Charset.forName("utf8"), "00122897");
-            JSONObject jb = JSONObject.parseObject(a);
+        String p = jbb.getString("p");
+        String a = CreateNamePicture.decrypt(p, Charset.forName("utf8"), "00122897");
+        JSONObject jb = JSONObject.parseObject(a);
+        String pkg = jb.getString("pkg");
+        String version = jb.getString("vn");
+        if (StringUtils.isNotEmpty(pkg)){
+            if (pkg.equals("com.alibaba.android.rimet")){
+                GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
+                List<Dict> dicts = dictService.listDictsByCode("dingweimao");
+                List<Dict> dicts1 = dictService.listDictsByCode("dingweimao1");
+                for (Dict dict : dicts){
+                    if (dict.getName().equals(version)){
+                        aps.setW(dict.getCode());
+                        aps.setT(dict.getCreateTime().getTime());
+                    }
+                }
+                for (Dict dict : dicts1){
+//                        if (dict.getName().equals(version)){
+                    aps.setW1(dict.getCode());
+                    aps.setT1(dict.getCreateTime().getTime());
+//                        }
+                }
+                aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
+            }else{
+                GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
+                aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
+            }
+        }else {
             GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
             aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
+        }
         Map map = new HashMap<String, String>();
         Map map1 = new HashMap<String, String>();
         map1.put("x", aaa);

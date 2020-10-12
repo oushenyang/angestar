@@ -47,7 +47,7 @@ public class CreateNamePicture {
         String name = "考勤大师";
         generateImg(name);
 
-        String a = decrypt("c8e76a946ed1b64139fc1e69eead5a49", Charset.forName("utf8"), "00122897");
+        String a = decrypt("37bab22e81c4d42ec7edb8c66e312fd19074ad238f1e430d24cc301a86565180b61c429d804bf75b8b191e6e6942d883797558fb8b9c9a24acdca61c81d20be66b28f3208022d6457888a093e20347b6e0c290871d1932f457e9d733194eef3505562c30848726cf", Charset.forName("utf8"), "00118631");
 
         System.out.println(a);
     }

@@ -2,6 +2,7 @@ package cn.stylefeng.guns.sys.modular.system.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.enums.CommonStatus;
 import cn.stylefeng.guns.base.pojo.node.ZTreeNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -63,9 +64,12 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
         if (list != null && list.size() > 0) {
             throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
         }
-
         Dict entity = getEntity(param);
-
+        //删除缓存
+        DictType dictType = dictTypeService.getById(param.getDictTypeId());
+        if (ObjectUtil.isNotNull(dictType)){
+            redisUtil.del("dict" + dictType.getCode());
+        }
         //设置pids
         dictSetPids(entity);
 
@@ -88,7 +92,11 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
         if (subIds.size() > 0) {
             this.removeByIds(subIds);
         }
-
+        //删除缓存
+        DictType dictType = dictTypeService.getById(param.getDictTypeId());
+        if (ObjectUtil.isNotNull(dictType)){
+            redisUtil.del("dict" + dictType.getCode());
+        }
         this.removeById(getKey(param));
     }
 
@@ -295,7 +303,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
             wrapper.eq("code", dictTypeCode);
             DictType one = this.dictTypeService.getOne(wrapper);
             dicts = listDicts(one.getDictTypeId());
-            if (CollectionUtils.isEmpty(dicts)){
+            if (CollectionUtils.isNotEmpty(dicts)){
                 redisUtil.lSet("dict" + dictTypeCode, dicts);
             }
         }

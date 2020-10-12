@@ -22,7 +22,7 @@ layui.use(['ax', 'treeTable', 'func'], function () {
             {type: 'checkbox'},
             {field: 'name', align: "center", title: '字典名称'},
             {field: 'code', align: "center", title: '字典编码'},
-            {field: 'description', align: "center", title: '字典的描述'},
+            {field: 'sort', align: "center", title: '排序'},
             {
                 field: 'status', align: "center", title: '状态', templet: function (d) {
                     if (d.status === 'ENABLE') {
@@ -92,6 +92,7 @@ layui.use(['ax', 'treeTable', 'func'], function () {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("dictId", data.dictId);
+            ajax.set("dictTypeId", $("#dictTypeId").val());
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
