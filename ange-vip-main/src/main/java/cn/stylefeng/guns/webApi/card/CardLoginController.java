@@ -63,7 +63,6 @@ public class CardLoginController {
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("cardLogin",callCode);
         AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(apiManage.getAppId());
-        String data = HttpContext.getRequest().getParameter("data");
         String singleCode = HttpContext.getRequest().getParameter(apiManage.getParameterOne());
         String edition = HttpContext.getRequest().getParameter(apiManage.getParameterTwo());
         String mac = HttpContext.getRequest().getParameter(apiManage.getParameterThree());

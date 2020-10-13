@@ -101,6 +101,19 @@ public class ApiManageController extends BaseController {
     }
 
     /**
+     * 用户编辑页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-21
+     */
+    @RequestMapping("/appEdit")
+    public String appEdit(Model model) {
+        List<Dict> dicts =  dictService.listDictsByCode("API_TYPE");
+        model.addAttribute("dicts", dicts);
+        return PREFIX + "/appApiManage_edit.html";
+    }
+
+    /**
      * 新增接口
      *
      * @author shenyang.ou

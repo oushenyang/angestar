@@ -103,9 +103,9 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '修改接口管理',
-            area: '700px',
-            content: Feng.ctxPath + '/apiManage/edit?apiManageId=' + data.apiManageId,
+            title: '接口管理',
+            area: '1000px',
+            content: Feng.ctxPath + '/apiManage/appEdit?apiManageId=' + data.apiManageId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(ApiManage.tableId);
             }
