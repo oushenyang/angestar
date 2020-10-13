@@ -2,9 +2,12 @@ package cn.stylefeng.guns.webApi.huanying;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
+import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
 import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
@@ -40,6 +43,8 @@ public class HuanYingV2Controller {
     private HyAppService hyAppService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private DictService dictService;
 
     @RequestMapping("/appdatainfo")
     @ResponseBody
@@ -102,6 +107,21 @@ public class HuanYingV2Controller {
             return aa;
         }
         List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
+        boolean isHave = false;
+        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
+        for (Dict dict : dictss){
+            if (dict.getCode().equals(sign)){
+                isHave = true;
+                break;
+            }
+        }
+        if (ConstantsContext.getPirateOpen()&&!isHave){
+            if (CollectionUtil.isNotEmpty(hyAppResults)){
+                hyAppResults.forEach(hyAppResult -> {
+                    hyAppResult.setName("盗版应用,正版微信:angestar88888");
+                });
+            }
+        }
         Map map = new HashMap<String, String>();
         map.put("data",hyAppResults);
         map.put("message", "ok");

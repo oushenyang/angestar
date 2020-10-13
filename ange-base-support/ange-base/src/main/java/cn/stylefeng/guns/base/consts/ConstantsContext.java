@@ -72,6 +72,18 @@ public class ConstantsContext {
     }
 
     /**
+     * 获取盗版显示开关
+     */
+    public static Boolean getPirateOpen() {
+        String pirateOpen = (String) CONSTNTS_HOLDER.get("PIRATE_DISPLAY");
+        if (CommonStatus.ENABLE.getCode().equalsIgnoreCase(pirateOpen)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取接口域名
      */
     public static String getApiUrl() {

@@ -260,6 +260,17 @@ body {
 .layui-col-space15>*{
     padding: 1.5px!important;
 }
+
+/*搜索按钮*/
+.layui-fluid .layui-btn {
+    height: 28px!important;
+    line-height: 28px!important;
+}
+/*操作按钮*/
+.form-group-bottom .layui-btn {
+    height: 28px!important;
+    line-height: 28px!important;
+}
 /*layui自定义样式结束*/
 
 .layui-layout-admin .layui-side > .layui-side-scroll > .layui-nav:first-child {
@@ -3528,7 +3539,7 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 .theme-cyan .layui-select,
 .theme-cyan .layui-textarea,
 .theme-cyan xm-select {
-    height: 36px;
+    height: 38px;
     border-radius: 4px;
 }
 
