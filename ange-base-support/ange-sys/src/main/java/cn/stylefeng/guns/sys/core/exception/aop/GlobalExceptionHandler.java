@@ -15,7 +15,10 @@
  */
 package cn.stylefeng.guns.sys.core.exception.aop;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.XmlUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.PermissionException;
@@ -52,6 +55,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -241,11 +245,31 @@ public class GlobalExceptionHandler {
                 return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),e.getData(),apiResultApi.getResultSuccess());
             }
         }else {
-            if (apiResultApi.getResultSuccess()){
-                return apiResultApi.getCustomResultData();
-            }else {
-                return apiResultApi.getCustomResultData();
+            String customResultData = apiResultApi.getCustomResultData();
+            //TODO
+            if (StringUtils.contains(customResultData, "%appCode%")){
+                if (StringUtils.isNotEmpty(e.getAppCode())){
+                    customResultData = customResultData.replaceAll("%appCode%",e.getAppCode());
+                }else {
+                    customResultData = customResultData.replaceAll("%appCode%","");
+                }
             }
+            if (StringUtils.contains(customResultData, "%token%")){
+                customResultData = customResultData.replaceAll("%token%",String.valueOf(e.getData()));
+            }
+            if (StringUtils.contains(customResultData, "%timestamp10%")){
+                customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
+            }
+            if (StringUtils.contains(customResultData, "%timestamp13%")){
+                customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
+            }
+            if (StringUtils.contains(customResultData, "%expireTime%")){
+                customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
+            if (StringUtils.contains(customResultData, "%currentTime%")){
+                customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
+            }
+            return customResultData;
         }
     }
 

@@ -145,13 +145,14 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             var el = document.createElement('div');
             $(el).html($1);
             var emoji = $(el).children('span').attr('data-value');
-            return '[[' + emoji + ']]';
+            return '%' + emoji + '%';
         });
         var text = html.replace(/(<br>)?(<\/div>)?<div>/g, '') // 空行 表情结尾行 表情行
             .replace(/(<br>)|(<div>)/g, '')
             .replace(/&nbsp;/g, ' ')
             .replace(/(<br>)?<\/div>$/, '');
         data.field.customResultData = text;
+        console.log($('#edit').html())
         data.field.customResultDataText = HTMLEncode($('#edit').html());
         var ajax = new $ax(Feng.ctxPath + "/apiResult/editItem", function (data) {
             Feng.success("更新成功！");

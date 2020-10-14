@@ -111,7 +111,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             var el = document.createElement('div');
             $(el).html($1);
             var emoji = $(el).children('span').attr('data-value');
-            return '[[' + emoji + ']]';
+            return '%' + emoji + '%';
         });
         var text = html.replace(/(<br>)?(<\/div>)?<div>/g, '') // 空行 表情结尾行 表情行
             .replace(/(<br>)|(<div>)/g, '')

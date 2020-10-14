@@ -105,7 +105,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
      * @return 接口
      */
     @Override
-    public boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model,Date expireTime) {
+    public boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model,String holdCheck,Date expireTime) {
         Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN + String.valueOf(cardInfoApi.getCardId()));
         List<Token> tokens = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(objects)) {
@@ -120,42 +120,42 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                     if (CollectionUtils.isEmpty(tokens)) {
                         List<Token> tokenList = new ArrayList<>();
                         String tokenStr = insertToken(tokenList, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                        throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                        throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                     } else {
                         //顶号登录，直接生成新的
                         if (appInfoApi.getAccountSignType() == 1) {
                             String tokenStr = delAndInsertToken(tokens, 1,apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                            throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                            throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                             //非顶号，提示
                         } else {
-                            throw new CardLoginException(-207, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), false);
+                            throw new CardLoginException(-207, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), holdCheck,false);
                         }
                     }
                 } else {
                     //开启
                     String tokenStr = updateAndInsertToken(tokens, appInfoApi.getCodeSignType(), appInfoApi.getCodeOpenNum(), apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                    throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                    throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                 }
             case 1:
                 //关闭，只允许一个
                 if (CollectionUtils.isEmpty(tokens)) {
                     List<Token> tokenList = new ArrayList<>();
                     String tokenStr = insertToken(tokenList, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                    throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                    throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                 } else {
                     //顶号登录，直接生成新的
                     if (appInfoApi.getAccountSignType() == 1) {
                         String tokenStr = delAndInsertToken(tokens,1, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                        throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                        throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                         //非顶号，提示
                     } else {
-                        throw new CardLoginException(-207, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), false);
+                        throw new CardLoginException(-207, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), holdCheck,false);
                     }
                 }
             case 2:
                 //开启
                 String tokenStr = updateAndInsertToken(tokens, cardInfoApi.getCardSignType(), cardInfoApi.getCardOpenNum(), apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
-                throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,true);
+                throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
         }
         return true;
     }

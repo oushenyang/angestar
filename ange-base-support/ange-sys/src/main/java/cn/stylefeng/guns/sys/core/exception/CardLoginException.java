@@ -18,14 +18,16 @@ public class CardLoginException extends RuntimeException {
     private Long appId;
     private Object data;
     private Date expireTime;
+    private String appCode;
     private Boolean success;
 
-    public CardLoginException(Integer code, Long appId, Object data, Date expireTime, Boolean success) {
+    public CardLoginException(Integer code, Long appId, Object data, Date expireTime, String appCode,Boolean success) {
 //        super(errorMessage);
         this.code = code;
         this.appId = appId;
         this.data = data;
         this.expireTime = expireTime;
+        this.appCode = appCode;
         this.success = success;
     }
 }

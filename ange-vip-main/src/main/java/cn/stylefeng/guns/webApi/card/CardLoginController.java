@@ -74,15 +74,15 @@ public class CardLoginController {
         }
         if (appInfoApi.getCydiaFlag()==2){
             //应用已关闭
-            throw new CardLoginException(-100, apiManage.getAppId(),"",new Date(),false);
+            throw new CardLoginException(-100, apiManage.getAppId(),"",new Date(),holdCheck,false);
         }else if (appInfoApi.getCydiaFlag()==1){
             //该应用免费
-            throw new CardLoginException(200, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),true);
+            throw new CardLoginException(200, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),holdCheck,true);
         }
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),singleCode);
         //如果卡密查不到，从易游查
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),false);
+            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
         //如果未激活
         switch (cardInfoApi.getCardStatus()){
@@ -98,7 +98,7 @@ public class CardLoginController {
                 cardInfo.setExpireTime(expireTime);
                 //更新卡密和删除缓存
                 cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo,singleCode);
-                createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model, expireTime);
+                createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model,holdCheck, expireTime);
                 break;
             //已激活
             case 1:
@@ -109,16 +109,16 @@ public class CardLoginController {
                     cardInfo1.setCardId(cardInfoApi.getCardId());
                     cardInfo1.setCardStatus(CardStatus.EXPIRED.getCode());
                     cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,singleCode);
-                    throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),false);
+                    throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
                 }
-                createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model, cardInfoApi.getExpireTime());
+                createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model,holdCheck, cardInfoApi.getExpireTime());
                 break;
             //已过期
             case 2:
-                throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),false);
+                throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
             //已禁用
             case 3:
-                throw new CardLoginException(-204, apiManage.getAppId(),"卡密已被禁用",new Date(),false);
+                throw new CardLoginException(-204, apiManage.getAppId(),"卡密已被禁用",new Date(),holdCheck,false);
         }
         return singleCode;
     }
@@ -156,27 +156,27 @@ public class CardLoginController {
     }
 
     //创建token和设备信息
-    public void createTokenAndDevice(CardInfoApi cardInfoApi,ApiManageApi apiManage,AppInfoApi appInfoApi,String mac,String model,Date expireTime){
+    public void createTokenAndDevice(CardInfoApi cardInfoApi,ApiManageApi apiManage,AppInfoApi appInfoApi,String mac,String model,String holdCheck,Date expireTime){
         //如果自定义绑机
         if (cardInfoApi.getCardBindType()!=0){
             //不绑机，直接生成token，返回成功信息
             if (cardInfoApi.getCardBindType()==1){
                 //生成token
-                tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,expireTime);
+                tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
                 boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model);
                 if (successful){
                     //返回成功信息
                     //生成token
-                    tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,expireTime);
+                    tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
                 }else {
                     switch (cardInfoApi.getCardBindType()-1){
                         case 1:
-                            throw new CardLoginException(-201, apiManage.getAppId(),"卡密未在绑定的设备上登录！",new Date(),false);
+                            throw new CardLoginException(-201, apiManage.getAppId(),"卡密未在绑定的设备上登录！",new Date(),holdCheck,false);
                         case 2:
-                            throw new CardLoginException(-202, apiManage.getAppId(),"卡密未在绑定的ip上登录！",new Date(),false);
+                            throw new CardLoginException(-202, apiManage.getAppId(),"卡密未在绑定的ip上登录！",new Date(),holdCheck,false);
                         case 3:
-                            throw new CardLoginException(-203, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录！",new Date(),false);
+                            throw new CardLoginException(-203, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录！",new Date(),holdCheck,false);
                     }
                 }
             }
@@ -185,20 +185,20 @@ public class CardLoginController {
             //不绑机，直接生成token，返回成功信息
             if (appInfoApi.getCodeBindType()==0){
                 //生成token
-                tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,expireTime);
+                tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
                 boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType(),cardInfoApi.getCardBindNum(),mac,model);
                 if (successful){
                     //返回成功信息
-                    tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,expireTime);
+                    tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
                 }else {
                     switch (cardInfoApi.getCardBindType()-1){
                         case 1:
-                            throw new CardLoginException(-201, apiManage.getAppId(),"卡密未在绑定的设备上登录",new Date(),false);
+                            throw new CardLoginException(-201, apiManage.getAppId(),"卡密未在绑定的设备上登录",new Date(),holdCheck,false);
                         case 2:
-                            throw new CardLoginException(-202, apiManage.getAppId(),"卡密未在绑定的ip上登录",new Date(),false);
+                            throw new CardLoginException(-202, apiManage.getAppId(),"卡密未在绑定的ip上登录",new Date(),holdCheck,false);
                         case 3:
-                            throw new CardLoginException(-203, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录",new Date(),false);
+                            throw new CardLoginException(-203, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录",new Date(),holdCheck,false);
                     }
                 }
             }

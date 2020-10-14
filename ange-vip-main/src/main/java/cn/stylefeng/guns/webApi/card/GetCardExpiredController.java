@@ -58,9 +58,9 @@ public class GetCardExpiredController {
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),singleCode);
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),false);
+            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }else {
-            throw new CardLoginException(200, apiManage.getAppId(),"成功！",new Date(),false);
+            throw new CardLoginException(200, apiManage.getAppId(),"成功！",new Date(),holdCheck,false);
         }
     }
 

@@ -68,7 +68,7 @@ public class CheckCardStatusController {
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),singleCode);
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),false);
+            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
         Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN + String.valueOf(cardInfoApi.getCardId()));
         List<Token> tokens = new ArrayList<>();
@@ -87,9 +87,9 @@ public class CheckCardStatusController {
             }
         }
         if (isHave){
-            throw new CardLoginException(200, apiManage.getAppId(),"状态正常！",new Date(),true);
+            throw new CardLoginException(200, apiManage.getAppId(),"状态正常！",new Date(),holdCheck,true);
         }else {
-            throw new CardLoginException(-206, apiManage.getAppId(),"卡密在别的设备上登录！",new Date(),false);
+            throw new CardLoginException(-206, apiManage.getAppId(),"卡密在别的设备上登录！",new Date(),holdCheck,false);
         }
 
     }

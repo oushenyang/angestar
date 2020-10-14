@@ -79,5 +79,5 @@ public interface TokenService extends IService<Token> {
      * @param model 设备型号
      * @return 接口
      */
-    boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model, Date expireTime);
+    boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model, String holdCheck,Date expireTime);
 }
