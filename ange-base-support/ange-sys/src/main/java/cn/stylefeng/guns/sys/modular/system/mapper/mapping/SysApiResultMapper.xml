@@ -11,10 +11,12 @@
         <result column="result_variables" property="resultVariables" />
         <result column="result_code" property="resultCode" />
         <result column="result_data" property="resultData" />
+        <result column="result_data_text" property="resultDataText" />
         <result column="custom_result_data" property="customResultData" />
+        <result column="custom_result_data_text" property="customResultDataText" />
         <result column="result_remark" property="resultRemark" />
         <result column="whether_edit" property="whetherEdit" />
-        <result column="whether_result_json" property="whetherResultJson" />
+        <result column="output_format" property="outputFormat" />
         <result column="sort" property="sort" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
@@ -32,10 +34,12 @@
         aar.result_variables AS "resultVariables",
         aar.result_code AS "resultCode",
         aar.result_data AS "resultData",
+        aar.result_data_text AS "resultDataText",
         aar.custom_result_data AS "customResultData",
+        aar.custom_result_data_text AS "customResultDataText",
         aar.result_remark AS "resultRemark",
         aar.whether_edit AS "whetherEdit",
-        aar.whether_result_json AS "whetherResultJson",
+        aar.output_format AS "outputFormat",
         aar.sort AS "sort",
         aar.create_user AS "createUser",
         aar.create_time AS "createTime",

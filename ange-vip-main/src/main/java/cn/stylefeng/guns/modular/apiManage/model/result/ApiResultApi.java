@@ -67,9 +67,9 @@ public class ApiResultApi{
     private Boolean whetherEdit;
 
     /**
-     * 是否返回json  0-否；1-是
+     * 输出格式：0-JSON；1-XML；2-HTML；3-TEXT
      */
-    private Boolean whetherResultJson;
+    private Integer outputFormat;
 
     /**
      * 排序

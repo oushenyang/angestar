@@ -64,10 +64,22 @@ public class ApiResult implements Serializable {
     private String resultData;
 
     /**
+     * 默认返回数据
+     */
+    @TableField("result_data_text")
+    private String resultDataText;
+
+    /**
      * 自定义返回数据
      */
     @TableField("custom_result_data")
     private String customResultData;
+
+    /**
+     * 自定义返回数据
+     */
+    @TableField("custom_result_data_text")
+    private String customResultDataText;
 
     /**
      * 返回说明
@@ -82,10 +94,10 @@ public class ApiResult implements Serializable {
     private Boolean whetherEdit;
 
     /**
-     * 是否返回json  0-否；1-是
+     * 输出格式：0-JSON；1-XML；2-HTML；3-TEXT
      */
-    @TableField("whether_result_json")
-    private Boolean whetherResultJson;
+    @TableField("output_format")
+    private Integer outputFormat;
 
     /**
      * 排序
@@ -174,12 +186,28 @@ public class ApiResult implements Serializable {
         this.resultData = resultData;
     }
 
+    public String getResultDataText() {
+        return resultDataText;
+    }
+
+    public void setResultDataText(String resultDataText) {
+        this.resultDataText = resultDataText;
+    }
+
     public String getCustomResultData() {
         return customResultData;
     }
 
     public void setCustomResultData(String customResultData) {
         this.customResultData = customResultData;
+    }
+
+    public String getCustomResultDataText() {
+        return customResultDataText;
+    }
+
+    public void setCustomResultDataText(String customResultDataText) {
+        this.customResultDataText = customResultDataText;
     }
 
     public String getResultRemark() {
@@ -198,12 +226,12 @@ public class ApiResult implements Serializable {
         this.whetherEdit = whetherEdit;
     }
 
-    public Boolean getWhetherResultJson() {
-        return whetherResultJson;
+    public Integer getOutputFormat() {
+        return outputFormat;
     }
 
-    public void setWhetherResultJson(Boolean whetherResultJson) {
-        this.whetherResultJson = whetherResultJson;
+    public void setOutputFormat(Integer outputFormat) {
+        this.outputFormat = outputFormat;
     }
 
     public Integer getSort() {
@@ -256,10 +284,12 @@ public class ApiResult implements Serializable {
         ", resultVariables=" + resultVariables +
         ", resultCode=" + resultCode +
         ", resultData=" + resultData +
+        ", resultDataText=" + resultDataText +
         ", customResultData=" + customResultData +
+        ", customResultDataText=" + customResultDataText +
         ", resultRemark=" + resultRemark +
         ", whetherEdit=" + whetherEdit +
-        ", whetherResultJson=" + whetherResultJson +
+        ", outputFormat=" + outputFormat +
         ", sort=" + sort +
         ", createUser=" + createUser +
         ", createTime=" + createTime +

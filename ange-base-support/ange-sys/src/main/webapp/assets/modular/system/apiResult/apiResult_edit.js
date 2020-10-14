@@ -9,10 +9,12 @@ var ApiResultInfoDlg = {
         resultVariables: "",
         resultCode: "",
         resultData: "",
+        resultDataText: "",
         customResultData: "",
+        customResultDataText: "",
         resultRemark: "",
         whetherEdit: "",
-        whetherResultJson: "",
+        outputFormat: "",
         sort: "",
         createUser: "",
         createTime: "",
@@ -109,12 +111,25 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     var ajax = new $ax(Feng.ctxPath + "/apiResult/detail?apiResultId=" + Feng.getUrlParam("apiResultId"));
     var result = ajax.start();
     form.val('apiResultForm', result.data);
+    $("#edit").append(HTMLDecode( result.data.resultDataText));
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         data.field.hasOwnProperty('resultSuccess')?'': data.field.resultSuccess = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('whetherEdit')?'': data.field.whetherEdit = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('whetherResultJson')?'': data.field.whetherResultJson = 'off'; //true 值为on,false 值给赋off
+        var textM = $('#edit').html();
+        var html = textM.replace(/<span\s*[^>]*>(.*?)<\/span>/g, function ($1, $2) {
+            var el = document.createElement('div');
+            $(el).html($1);
+            var emoji = $(el).children('span').attr('data-value');
+            return '[[' + emoji + ']]';
+        });
+        var text = html.replace(/(<br>)?(<\/div>)?<div>/g, '') // 空行 表情结尾行 表情行
+            .replace(/(<br>)|(<div>)/g, '')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/(<br>)?<\/div>$/, '');
+        data.field.resultData = text;
+        data.field.resultDataText = HTMLEncode($('#edit').html());
         var ajax = new $ax(Feng.ctxPath + "/apiResult/editItem", function (data) {
             Feng.success("更新成功！");
 
@@ -135,6 +150,13 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         var temp = document.createElement("div");
         (temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
         var output = temp.innerHTML;
+        temp = null;
+        return output;
+    }
+    function HTMLDecode(text) {
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
         temp = null;
         return output;
     }

@@ -26,7 +26,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center',field: 'customResultData',  title: '自定义返回数据'},
             {align: 'center',field: 'resultRemark', title: '返回说明'},
             {align: 'center',field: 'whetherEdit',  title: '是否可编辑'},
-            // {align: 'center',field: 'whetherResultJson', sort: true, title: '是否返回json  0-否；1-是'},
+            // {align: 'center',field: 'outputFormat', sort: true, title: '是否返回json  0-否；1-是'},
             {align: 'center',field: 'sort', sort: true, title: '排序'},
             {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];

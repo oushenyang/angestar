@@ -29,23 +29,24 @@
 <form id="apiResultForm" lay-filter="apiResultForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-top: 0px;padding-bottom: 75px;">
         <input name="apiResultId" type="hidden"/>
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">变量编码集合</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <input id="resultVariables" name="resultVariables" placeholder="请输入变量编码集合" type="text" class="layui-input"/>-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="layui-form-item">
-            <label class="layui-form-label">默认返回码</label>
-            <div class="layui-input-block">
-                <input id="resultCode" name="resultCode" placeholder="请输入默认返回码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            <div class="layui-inline">
+                <label class="layui-form-label">默认返回码</label>
+                <div class="layui-input-inline" >
+                    <input id="resultCode" name="resultCode" placeholder="请输入默认返回码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" readonly/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">返回说明</label>
+                <div class="layui-input-inline">
+                    <input id="resultRemark" name="resultRemark" placeholder="请输入返回说明" type="text" class="layui-input" lay-verify="required" lay-verType="tips" disabled/>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
+        <div class="layui-form-item layui-form-text" style="margin-top: 0;">
             <label class="layui-form-label">默认返回数据</label>
             <div class="layui-input-block">
-                <div class="layui-input-block ace_editor ace-monokai ace_dark" style="height: 100px" id="codeText" draggable="false"></div>
-<!--                <textarea id="resultData" name="resultData" placeholder="请输入默认返回数据" maxlength="999" class="layui-textarea"></textarea>-->
+                <div contentEditable="false" id="codeText" name="resultData" class="content"></div>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -56,27 +57,27 @@
                     <div class="layui-colla-item">
                         <h2 class="layui-colla-title" style="height: 30px!important;line-height: 30px!important;">添加变量</h2>
                         <div class="layui-colla-content layui-show emoji-content-select">
-                            <span class="layui-badge layui-badge-green" data-value="parameterOne" style="cursor: pointer;margin-left: 5px;">封包劫持appCode</span>
-                            <span class="layui-badge layui-badge-blue parameterTwo" data-value="parameterTwo" style="cursor: pointer;">绑定特征key</span>
-                            <span class="layui-badge layui-badge-yellow " data-value="timestamp13" style="cursor: pointer;">时间戳13位</span>
-                            <span class="layui-badge layui-badge-rim " data-value="timestamp10" style="cursor: pointer;">时间戳10位</span>
-                            <span class="layui-badge layui-badge-red " data-value="currentTime" style="cursor: pointer;">时间</span>
-                            <span class="layui-badge layui-badge-gray " data-value="currentTime" style="cursor: pointer;">到期时间</span>
+                            <span class="layui-badge layui-badge-green" data-value="appCode" style="cursor: pointer;margin-left: 5px;">封包劫持appCode</span>
+                            <span class="layui-badge layui-badge-pink token" data-value="token" style="cursor: pointer; display: none">登录状态码token</span>
+                            <span class="layui-badge layui-badge-blue expireTime" data-value="expireTime" style="cursor: pointer; display: none">卡密到期时间</span>
+                            <span class="layui-badge layui-badge-yellow " data-value="timestamp13" style="cursor: pointer;">当前时间戳13位</span>
+                            <span class="layui-badge layui-badge-violet " data-value="timestamp10" style="cursor: pointer;">当前时间戳10位</span>
+                            <span class="layui-badge layui-badge-red " data-value="currentTime" style="cursor: pointer;">当前时间</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item">
-            <label class="layui-form-label">返回说明</label>
+            <label class="layui-form-label">输出格式</label>
             <div class="layui-input-block">
-                <input id="resultRemark" name="resultRemark" placeholder="请输入返回说明" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否返回json</label>
-            <div class="layui-input-block">
-                <input type="checkbox" id="whetherResultJson" name="whetherResultJson" title="是否返回json">
+                <select name="outputFormat" id="outputFormat" lay-search="" lay-filter="outputFormat">
+                    <option value="0">JSON</option>
+                    <option value="1">XML</option>
+                    <option value="2">HTML</option>
+                    <option value="3">TEXT</option>
+                </select>
             </div>
         </div>
     </div>

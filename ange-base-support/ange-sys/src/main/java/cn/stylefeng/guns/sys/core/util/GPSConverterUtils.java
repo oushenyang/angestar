@@ -17,7 +17,6 @@ public class GPSConverterUtils {
         double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
         double tempLon = z * Math.cos(theta);
         double tempLat = z * Math.sin(theta);
-        double[] gps = { tempLat, tempLon };
         return new GPS(tempLat, tempLon);
     }
 

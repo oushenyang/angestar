@@ -52,26 +52,26 @@
                 <input id="resultCode" name="resultCode" placeholder="请输入默认返回码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
             </div>
         </div>
+<!--        <div class="layui-form-item layui-form-text">-->
+<!--            <label class="layui-form-label">默认返回数据</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <textarea id="resultData" name="resultData" placeholder="请输入默认返回数据" maxlength="999" class="layui-textarea"></textarea>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">默认返回数据</label>
             <div class="layui-input-block">
-                <textarea id="resultData" name="resultData" placeholder="请输入默认返回数据" maxlength="999" class="layui-textarea"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">自定义返回数据</label>
-            <div class="layui-input-block">
-                <div contentEditable="true" id="edit" name="customResultData" class="content"></div>
+                <div contentEditable="true" id="edit" name="resultData" class="content"></div>
                 <div class="layui-collapse" lay-accordion>
                     <div class="layui-colla-item">
                         <h2 class="layui-colla-title" style="height: 30px!important;line-height: 30px!important;">添加变量</h2>
                         <div class="layui-colla-content layui-show emoji-content-select">
-                            <span class="layui-badge layui-badge-green" data-value="parameterOne" style="cursor: pointer;margin-left: 5px;">参数一</span>&nbsp;
-                            <span class="layui-badge layui-badge-blue parameterTwo" data-value="parameterTwo" style="cursor: pointer;">参数二</span>
-                            <span class="layui-badge layui-badge-red parameterThree" data-value="parameterThree" style="cursor: pointer;">参数三</span>&nbsp;
-                            <span class="layui-badge layui-badge-yellow " data-value="timestamp13" style="cursor: pointer;">时间戳13位</span>&nbsp;
-                            <span class="layui-badge layui-badge-gray " data-value="timestamp10" style="cursor: pointer;">时间戳10位</span>
-                            <span class="layui-badge layui-badge-gray " data-value="currentTime" style="cursor: pointer;">时间</span>
+                            <span class="layui-badge layui-badge-green" data-value="appCode" style="cursor: pointer;margin-left: 5px;">封包劫持appCode</span>
+                            <span class="layui-badge layui-badge-pink" data-value="token" style="cursor: pointer;">登录状态码token</span>
+                            <span class="layui-badge layui-badge-blue " data-value="expireTime" style="cursor: pointer;">卡密到期时间</span>
+                            <span class="layui-badge layui-badge-yellow " data-value="timestamp13" style="cursor: pointer;">当前时间戳13位</span>
+                            <span class="layui-badge layui-badge-violet " data-value="timestamp10" style="cursor: pointer;">当前时间戳10位</span>
+                            <span class="layui-badge layui-badge-red " data-value="currentTime" style="cursor: pointer;">当前时间</span>
                         </div>
                     </div>
                 </div>
@@ -90,9 +90,14 @@
 <!--            </div>-->
 <!--        </div>-->
         <div class="layui-form-item">
-            <label class="layui-form-label">是否返回json</label>
+            <label class="layui-form-label">输出格式</label>
             <div class="layui-input-block">
-                <input type="checkbox" id="whetherResultJson" name="whetherResultJson" title="是否返回json">
+                <select name="outputFormat" id="outputFormat" lay-search="" lay-filter="outputFormat">
+                    <option value="0">JSON</option>
+                    <option value="1">XML</option>
+                    <option value="2">HTML</option>
+                    <option value="3">TEXT</option>
+                </select>
             </div>
         </div>
         <div class="layui-form-item">

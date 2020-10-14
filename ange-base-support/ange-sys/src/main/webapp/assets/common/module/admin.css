@@ -2100,6 +2100,18 @@ body .layui-elem-quote.layui-quote-nm {
     border: 1px solid #91d5ff;
 }
 
+.layui-badge-violet {
+    color: #b433ff;
+    background: #e6f7ff;
+    border: 1px solid #c784ee;
+}
+
+.layui-badge-pink {
+    color: #ff66ff;
+    background: #FFF0F5;
+    border: 1px solid #ff99ff;
+}
+
 .layui-badge-red {
     color: #f5222d;
     background: #fff1f0;

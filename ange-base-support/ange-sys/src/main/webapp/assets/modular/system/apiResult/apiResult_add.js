@@ -12,7 +12,7 @@ var ApiResultInfoDlg = {
         customResultData: "",
         resultRemark: "",
         whetherEdit: "",
-        whetherResultJson: "",
+        outputFormat: "",
         sort: "",
         createUser: "",
         createTime: "",
@@ -34,7 +34,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     form.on('submit(btnSubmit)', function (data) {
         data.field.hasOwnProperty('resultSuccess')?'': data.field.resultSuccess = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('whetherEdit')?'': data.field.whetherEdit = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('whetherResultJson')?'': data.field.whetherResultJson = 'off'; //true 值为on,false 值给赋off
+        data.field.hasOwnProperty('outputFormat')?'': data.field.outputFormat = 'off'; //true 值为on,false 值给赋off
         var ajax = new $ax(Feng.ctxPath + "/apiResult/addItem", function (data) {
             Feng.success("添加成功！");
 

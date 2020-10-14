@@ -57,9 +57,19 @@ public class ApiResultParam implements Serializable, BaseValidatingParam {
     private String resultData;
 
     /**
+     * 默认返回数据文本
+     */
+    private String resultDataText;
+
+    /**
      * 自定义返回数据
      */
     private String customResultData;
+
+    /**
+     * 自定义返回数据文本
+     */
+    private String customResultDataText;
 
     /**
      * 返回说明
@@ -72,9 +82,9 @@ public class ApiResultParam implements Serializable, BaseValidatingParam {
     private Boolean whetherEdit;
 
     /**
-     * 是否返回json  0-否；1-是
+     * 输出格式：0-JSON；1-XML；2-HTML；3-TEXT
      */
-    private Boolean whetherResultJson;
+    private Integer outputFormat;
 
     /**
      * 排序

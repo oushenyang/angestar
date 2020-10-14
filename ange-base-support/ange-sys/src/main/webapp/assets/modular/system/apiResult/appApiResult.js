@@ -78,7 +78,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '修改接口自定义返回',
+            title: '编辑/说明',
             area: '700px',
             content: Feng.ctxPath + '/apiResult/appEdit?apiResultId=' + data.apiResultId,
             end: function () {
