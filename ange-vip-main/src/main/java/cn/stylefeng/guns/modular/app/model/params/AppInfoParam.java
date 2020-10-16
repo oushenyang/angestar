@@ -212,6 +212,16 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private String signOutput;
 
     /**
+     * 外部验证：0-关闭；1-易游；2-万捷；
+     */
+    private Integer otherSign;
+
+    /**
+     * 验证地址
+     */
+    private String provingUrl;
+
+    /**
      * 版本号id
      */
     private Long versionNum;

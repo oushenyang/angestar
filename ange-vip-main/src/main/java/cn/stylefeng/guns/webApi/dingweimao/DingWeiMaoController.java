@@ -208,7 +208,7 @@ public class DingWeiMaoController {
             }
         }
         if (StringUtils.isNotEmpty(appName)){
-            boolean isHave = false;
+            boolean isHave = true;
             List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
             for (Dict dict : dicts){
                 if (dict.getCode().equals(appName)){

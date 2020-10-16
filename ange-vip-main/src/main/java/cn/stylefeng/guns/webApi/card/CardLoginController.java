@@ -3,6 +3,8 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -80,9 +82,17 @@ public class CardLoginController {
             throw new CardLoginException(200, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),holdCheck,true);
         }
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),singleCode);
-        //如果卡密查不到，从易游查
+        //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
+            //从易游查
+            if (appInfoApi.getOtherSign()==1){
+                getYiYouByCard(appInfoApi.getProvingUrl(),singleCode);
+                //从万捷查
+            }else if (appInfoApi.getOtherSign()==2){
+
+            }else {
+                throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
+            }
         }
         //如果未激活
         switch (cardInfoApi.getCardStatus()){
@@ -203,5 +213,19 @@ public class CardLoginController {
                 }
             }
         }
+    }
+
+    /**
+     * 从易游查询卡密信息
+     * @param url 易游查码地址
+     * @param singleCode 单码
+     */
+    public void getYiYouByCard(String url,String singleCode){
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("k", "QE17B90379C7B5B539655E5EF5D092B6");
+        String result2 = HttpRequest.post("https://dev.eydata.net/query/single/6004da377caece59")
+                .form(paramMap)//表单内容
+                .execute().body();
+        System.out.println(result2);
     }
 }

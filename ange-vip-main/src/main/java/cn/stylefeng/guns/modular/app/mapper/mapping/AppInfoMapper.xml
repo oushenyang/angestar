@@ -42,6 +42,8 @@
         <result column="web_salt" property="webSalt" />
         <result column="sign_receive" property="signReceive" />
         <result column="sign_output" property="signOutput" />
+        <result column="other_sign" property="otherSign" />
+        <result column="proving_url" property="provingUrl" />
         <result column="version_num" property="versionNum" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
@@ -83,6 +85,10 @@
         web_algorithm_type AS "webAlgorithmType",
         web_key AS "webKey",
         web_salt AS "webSalt",
+        sign_receive AS "signReceive",
+        sign_output AS "signOutput",
+        other_sign AS "otherSign",
+        proving_url AS "provingUrl",
         version_num AS "versionNum",
         create_user AS "createUser",
         create_time AS "createTime",
@@ -137,7 +143,9 @@
         web_key AS "webKey",
         web_salt AS "webSalt",
         sign_receive AS "signReceive",
-        sign_output AS "signOutput"
+        sign_output AS "signOutput",
+        other_sign AS "otherSign",
+        proving_url AS "provingUrl"
         from ag_app_info
         <where>
             <if test="appId != null and appId != ''">

@@ -165,4 +165,14 @@ public class AppInfoApi{
      * 输出Sign验证
      */
     private String signOutput;
+
+    /**
+     * 外部验证：0-关闭；1-易游；2-万捷；
+     */
+    private Integer otherSign;
+
+    /**
+     * 验证地址
+     */
+    private String provingUrl;
 }

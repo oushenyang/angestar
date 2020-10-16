@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.sys.core.util;
 
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import sun.misc.BASE64Encoder;
 import sun.security.krb5.internal.crypto.Des;
 
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Key;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,13 +48,21 @@ public class CreateNamePicture {
      * @throws
      **/
     public static void main(String[] args) throws Exception {
-        String name = "考勤大师";
-        generateImg(name);
+//        String name = "考勤大师";
+//        generateImg(name);
 
-        String a = decrypt("37bab22e81c4d42ec7edb8c66e312fd19074ad238f1e430d24cc301a86565180b61c429d804bf75b8b191e6e6942d883797558fb8b9c9a24acdca61c81d20be66b28f3208022d6457888a093e20347b6e0c290871d1932f457e9d733194eef3505562c30848726cf", Charset.forName("utf8"), "00118631");
+//        String a = decrypt("37bab22e81c4d42ec7edb8c66e312fd19074ad238f1e430d24cc301a86565180b61c429d804bf75b8b191e6e6942d883797558fb8b9c9a24acdca61c81d20be66b28f3208022d6457888a093e20347b6e0c290871d1932f457e9d733194eef3505562c30848726cf", Charset.forName("utf8"), "00118631");
 
-        System.out.println(a);
+//        System.out.println(a);
+
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("k", "QE17B90379C7B5B539655E5EF5D092B6");
+        String result2 = HttpRequest.post("https://dev.eydata.net/query/single/6004da377caece59")
+                .form(paramMap)//表单内容
+                .execute().body();
+        System.out.println(result2);
     }
+
 
 
     /**

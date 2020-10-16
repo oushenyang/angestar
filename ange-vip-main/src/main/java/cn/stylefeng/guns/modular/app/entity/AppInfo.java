@@ -251,6 +251,18 @@ public class AppInfo implements Serializable {
     private String signOutput;
 
     /**
+     * 外部验证：0-关闭；1-易游；2-万捷；
+     */
+    @TableField("other_sign")
+    private Integer otherSign;
+
+    /**
+     * 验证地址
+     */
+    @TableField("proving_url")
+    private String provingUrl;
+
+    /**
      * 版本号id
      */
     @TableField("version_num")
@@ -583,6 +595,22 @@ public class AppInfo implements Serializable {
 
     public void setSignOutput(String signOutput) {
         this.signOutput = signOutput;
+    }
+
+    public Integer getOtherSign() {
+        return otherSign;
+    }
+
+    public void setOtherSign(Integer otherSign) {
+        this.otherSign = otherSign;
+    }
+
+    public String getProvingUrl() {
+        return provingUrl;
+    }
+
+    public void setProvingUrl(String provingUrl) {
+        this.provingUrl = provingUrl;
     }
 
     public Long getVersionNum() {

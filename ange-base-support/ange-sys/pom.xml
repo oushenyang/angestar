@@ -30,11 +30,18 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.3.10</version>
+            <artifactId>hutool-http</artifactId>
+            <version>5.4.4</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-all</artifactId>-->
+<!--            <version>5.3.10</version>-->
+<!--        </dependency>-->
 
         <!-- 权限管理模块 -->
         <dependency>
