@@ -123,6 +123,18 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         return cards;
     }
 
+    /**
+     * 外部创建卡密
+     *
+     * @param param
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @Override
+    public void createCard(CardInfo param) {
+        baseMapper.insert(param);
+    }
+
     @Override
     public void delete(CardInfoParam param){
         this.removeById(getKey(param));

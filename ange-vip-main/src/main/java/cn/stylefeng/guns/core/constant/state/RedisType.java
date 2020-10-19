@@ -12,30 +12,22 @@ import lombok.Getter;
 public enum RedisType {
 
     //api接口
-    API_MANAGE("apiManage", "apiManage"),
-    APP_INFO("appInfo", "appInfo"),
-    CARD_INFO("cardInfo", "cardInfo"),
-    DEVICE("device", "device"),
-    TOKEN("token", "token"),
-    HUANYIN("huanyin", "huanyin"),
-    APP_ID("APP_ID", "APP_ID"),
-    DAY("", "天"),
-    WEEK("", "周"),
-    MONTH("", "月"),
-    YEAR("", "年");
-
+    API_MANAGE("ANGE:API_MANAGE:"),
+    APP_INFO("ANGE:APP_INFO:"),
+    CARD_INFO("ANGE:CARD_INFO:"),
+    DEVICE("ANGE:DEVICE:"),
+    TOKEN("ANGE:TOKEN:"),
+    HUANYIN("huanyin"),
+    APP_ID("APP_ID:");
     String code;
-    String message;
-
-    RedisType(String code, String message) {
+    RedisType(String code) {
         this.code = code;
-        this.message = message;
     }
 
     public static String getRedisTypeName(String status) {
         for (RedisType s : RedisType.values()) {
             if (s.getCode().equals(status)) {
-                return s.getMessage();
+                return s.getCode();
             }
         }
         return "";

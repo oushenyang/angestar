@@ -165,7 +165,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
-        redisUtil.hset(RedisType.CARD_INFO + String.valueOf(cardId),mac+getIp(),device);
+        redisUtil.hset(RedisType.DEVICE + String.valueOf(cardId),mac+getIp(),device);
     }
 
     private Serializable getKey(DeviceParam param){

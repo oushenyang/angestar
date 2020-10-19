@@ -1,8 +1,13 @@
 package cn.stylefeng.guns.sys.core.util;
 
 
+import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import sun.misc.BASE64Encoder;
 import sun.security.krb5.internal.crypto.Des;
 
@@ -55,12 +60,25 @@ public class CreateNamePicture {
 
 //        System.out.println(a);
 
-        HashMap<String, Object> paramMap = new HashMap<>();
+        Map<String, String> paramMap = new HashMap<>();
         paramMap.put("k", "QE17B90379C7B5B539655E5EF5D092B6");
-        String result2 = HttpRequest.post("https://dev.eydata.net/query/single/6004da377caece59")
-                .form(paramMap)//表单内容
-                .execute().body();
+        String result2= HttpClientUtil.postParams("https://dev.eydata.net/query/single/6004da377caece59", paramMap);
+        //说明已激活
+        if(StringUtils.contains(result2, "到期时间")){
+            Document doc = Jsoup.parse(result2);
+            Elements rows = doc.select("form").get(0).select("span");
+            //卡密类型
+            String q1 = rows.select("span").get(1).text();
+            //激活时间
+            String q2 = rows.select("span").get(2).text();
+            //到期时间
+            String q3 = rows.select("span").get(3).text();
+            System.out.println(q1);
+            System.out.println(q2);
+            System.out.println(q3);
+        }
         System.out.println(result2);
+
     }
 
 

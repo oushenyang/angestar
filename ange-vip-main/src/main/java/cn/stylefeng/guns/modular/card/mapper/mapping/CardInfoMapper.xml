@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.card.entity.CardInfo">
         <id column="card_id" property="cardId" />
         <result column="app_id" property="appId" />
+        <result column="card_type_name" property="cardTypeName" />
         <result column="card_type_id" property="cardTypeId" />
         <result column="user_id" property="userId" />
         <result column="user_name" property="userName" />
@@ -33,9 +34,10 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         ai.app_name AS appName,
-        cct.card_type_name AS cardTypeName,
+        cci.card_type_name AS cardTypeName,
         cci.card_id AS "cardId",
         cci.app_id AS "appId",
+        cci.card_type_name AS "cardTypeName",
         cci.card_type_id AS "cardTypeId",
         cci.user_id AS "userId",
         cci.user_name AS "userName",
@@ -65,6 +67,7 @@
         INSERT INTO `ag_card_info` (
         `card_id`,
         `app_id`,
+        `card_type_name`,
         `card_type_id`,
         `user_id`,
         `user_name`,
@@ -86,6 +89,7 @@
         <foreach collection ="cardInfos" item="cardInfo" separator =",">
             (#{cardInfo.cardId},
             #{cardInfo.appId},
+            #{cardInfo.cardTypeName},
             #{cardInfo.cardTypeId},
             #{cardInfo.userId},
             #{cardInfo.userName},
@@ -199,7 +203,6 @@
         <include refid="Base_Column_List"/>
         from ag_card_info cci
         left join ag_app_info ai on ai.app_id = cci.app_id
-        left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
         <where>
             <if test="param.createUser != null and param.createUser != ''">
                 and cci.create_user = #{param.createUser}

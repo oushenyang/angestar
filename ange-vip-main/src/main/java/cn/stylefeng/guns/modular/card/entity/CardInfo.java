@@ -34,6 +34,12 @@ public class CardInfo implements Serializable {
     private Long appId;
 
     /**
+     * 卡类名称
+     */
+    @TableField("card_type_name")
+    private String cardTypeName;
+
+    /**
      * 卡类ID
      */
     @TableField("card_type_id")
@@ -222,6 +228,14 @@ public class CardInfo implements Serializable {
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public String getCardTypeName() {
+        return cardTypeName;
+    }
+
+    public void setCardTypeName(String cardTypeName) {
+        this.cardTypeName = cardTypeName;
     }
 
     public Long getCardTypeId() {
@@ -461,6 +475,7 @@ public class CardInfo implements Serializable {
         return "CardInfo{" +
         "cardId=" + cardId +
         ", appId=" + appId +
+        ", cardTypeName=" + cardTypeName +
         ", cardTypeId=" + cardTypeId +
         ", userId=" + userId +
         ", userName=" + userName +

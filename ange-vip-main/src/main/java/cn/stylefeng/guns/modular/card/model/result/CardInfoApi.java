@@ -31,6 +31,11 @@ public class CardInfoApi implements Serializable {
     private Long appId;
 
     /**
+     * 卡类名称
+     */
+    private String cardTypeName;
+
+    /**
      * 卡类ID
      */
     private Long cardTypeId;

@@ -17,6 +17,11 @@ import java.util.Date;
 public class AppInfoApi{
 
     /**
+     * 应用id
+     */
+    private Long appId;
+
+    /**
      * 运行状态 0-收费；1-免费；2-关闭
      */
     private Integer cydiaFlag;
@@ -175,4 +180,9 @@ public class AppInfoApi{
      * 验证地址
      */
     private String provingUrl;
+
+    /**
+     * 创建人
+     */
+    private Long createUser;
 }

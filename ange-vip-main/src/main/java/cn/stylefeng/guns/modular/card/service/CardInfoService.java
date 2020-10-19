@@ -32,6 +32,14 @@ public interface CardInfoService extends IService<CardInfo> {
     List<String> add(CardInfoParam param);
 
     /**
+     * 外部创建卡密
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    void createCard(CardInfo param);
+
+    /**
      * 删除
      *
      * @author shenyang.ou

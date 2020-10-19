@@ -48,6 +48,48 @@ public class CardDateUtil {
     }
 
     /**
+     * 根据卡类名称获取到期时间
+     * @param cardTypeName 卡类名称
+     * @param date 激活时间
+     * @return 到期时间
+     */
+    public static DateTime getExpireTimeByCardTypeName(String cardTypeName,Date date){
+        //到期时间
+        DateTime expireTime = null;
+        switch (cardTypeName){
+            case "小时卡":
+                expireTime = DateUtil.offsetHour(date, 1);
+                break;
+            case "六时卡":
+                expireTime = DateUtil.offsetHour(date, 6);
+                break;
+            case "天卡":
+                expireTime = DateUtil.offsetDay(date, 1);
+                break;
+            case "周卡":
+                expireTime = DateUtil.offsetWeek(date, 1);
+                break;
+            case "半月卡":
+                expireTime = DateUtil.offsetDay(date, 15);
+                break;
+            case "月卡":
+                expireTime = DateUtil.offsetMonth(date, 1);
+                break;
+            case "季卡":
+                expireTime = DateUtil.offsetMonth(date, 3);
+                break;
+            case "半年卡":
+                expireTime = DateUtil.offsetMonth(date, 6);
+                break;
+            case "年卡":
+                expireTime = DateUtil.offsetMonth(date, 99*12);
+                break;
+
+        }
+        return expireTime;
+    }
+
+    /**
      * 加时时间处理
      * @param expireTime 到期时间
      * @param addDayNum 天数

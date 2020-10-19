@@ -100,6 +100,8 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     form.on('submit(btnSubmit)', function (data) {
         data.field.hasOwnProperty('isCustomTime')?'': data.field.isCustomTime = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off'; //true 值为on,false 值给赋off
+        var cardTypeId = $("[name='cardTypeId']").val();
+        data.field.cardTypeName = $("[name='cardTypeId']").children("[value=" + cardTypeId + "]").text();
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (data) {
             Feng.success("添加成功！");
             console.log(JSON.stringify(data.data));
@@ -107,18 +109,6 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             admin.putTempData('formOk', true);
             //关掉对话框
             admin.closeThisDialog();
-            // var html = '';
-            // top.layui.admin.open({
-            //     type: 1,
-            //     title: '卡密信息',
-            //     area: '500px',
-            //     content: $("#cardAddResultBar").html(),
-            //     success: function (layero, dIndex) {
-            //         var $content = $(layero).children('.layui-layer-content');
-            //         // $content.css('overflow', 'visible');
-            //         // admin.showLoading($content);
-            //     }
-            // });
             let cards = "";
             for (let i = 0; i < data.data.length; i++) {
                 cards += data.data[i] + ",";
