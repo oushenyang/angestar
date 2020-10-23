@@ -202,7 +202,6 @@ public class DingWeiMaoController {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
         String appName = null;
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
-            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
             if (m.getKey().equals("n")){
                 appName = String.join("", m.getValue());
             }

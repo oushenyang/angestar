@@ -123,9 +123,16 @@ public class HuanYingV2Controller {
             }
         }
         Map map = new HashMap<String, String>();
-        map.put("data",hyAppResults);
-        map.put("message", "ok");
-        map.put("code", 0);
+        if (ConstantsContext.getPirateOpen2()&&!isHave){
+            map.put("data",null);
+            map.put("message", "盗版应用,请立即卸载!正版微信:angestar88888");
+            map.put("code", 500);
+        }else{
+            map.put("data",hyAppResults);
+            map.put("message", "ok");
+            map.put("code", 0);
+        }
+
         JSONObject json = new JSONObject(map);
         String aa = json.toString();
         aa = aa.replaceAll("packAge", "package");

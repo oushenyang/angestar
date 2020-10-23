@@ -84,6 +84,30 @@ public class ConstantsContext {
     }
 
     /**
+     * 获取盗版制裁显示开关
+     */
+    public static Boolean getPirateOpen2() {
+        String pirateOpen = (String) CONSTNTS_HOLDER.get("PIRATE_DISPLAY2");
+        if (CommonStatus.ENABLE.getCode().equalsIgnoreCase(pirateOpen)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取盗版联系方式
+     */
+    public static String getPirateContact() {
+        String systemName = (String) CONSTNTS_HOLDER.get("PIRATE_CONTACT");
+        if (ToolUtil.isEmpty(systemName)) {
+            return "微信：angestar88888";
+        } else {
+            return systemName;
+        }
+    }
+
+    /**
      * 获取接口域名
      */
     public static String getApiUrl() {
