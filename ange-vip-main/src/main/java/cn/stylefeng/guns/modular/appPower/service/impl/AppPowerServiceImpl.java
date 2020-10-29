@@ -7,7 +7,10 @@ import cn.stylefeng.guns.modular.appPower.mapper.AppPowerMapper;
 import cn.stylefeng.guns.modular.appPower.model.params.AppPowerParam;
 import cn.stylefeng.guns.modular.appPower.model.result.AppPowerResult;
 import  cn.stylefeng.guns.modular.appPower.service.AppPowerService;
+import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,6 +36,16 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
     @Override
     public void add(AppPowerParam param){
         AppPower entity = getEntity(param);
+
+        //判断是否已经存在同编码或同名称字典
+        QueryWrapper<AppPower> dictQueryWrapper = new QueryWrapper<>();
+        dictQueryWrapper
+                .and(i -> i.eq("sign", param.getSign()))
+                .and(i -> i.eq("app_type_code", param.getAppTypeCode()));
+        List<AppPower> list = this.list(dictQueryWrapper);
+        if (list != null && list.size() > 0) {
+            throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
+        }
         this.save(entity);
     }
 
@@ -52,6 +65,15 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
         AppPower oldEntity = getOldEntity(param);
         AppPower newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
+        //判断是否已经存在同编码或同名称字典
+        QueryWrapper<AppPower> dictQueryWrapper = new QueryWrapper<>();
+        dictQueryWrapper
+                .and(i -> i.eq("sign", param.getSign()))
+                .and(i -> i.eq("app_type_code", param.getAppTypeCode()));
+        List<AppPower> list = this.list(dictQueryWrapper);
+        if (list != null && list.size() > 0) {
+            throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
+        }
         this.updateById(newEntity);
     }
 
