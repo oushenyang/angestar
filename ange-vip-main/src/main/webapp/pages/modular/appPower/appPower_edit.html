@@ -1,0 +1,77 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/appPower/appPower_edit.js"]}){
+<form id="appPowerForm" lay-filter="appPowerForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="appPowerId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appName" name="appName" placeholder="请输入应用名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用分类编码<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appTypeCode" name="appTypeCode" placeholder="请输入应用分类编码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">签名验证<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="sign" name="sign" placeholder="请输入签名验证" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否授权 0-否；1-是<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="whetherLegal" name="whetherLegal" placeholder="请输入是否授权 0-否；1-是" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否制裁 0-否；1-是<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="whetherSanction" name="whetherSanction" placeholder="请输入是否制裁 0-否；1-是" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用自定义数据<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="customData" name="customData" placeholder="请输入应用自定义数据" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createUser" name="createUser" placeholder="请输入创建人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createTime" name="createTime" placeholder="请输入创建时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateUser" name="updateUser" placeholder="请输入更新人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateTime" name="updateTime" placeholder="请输入更新时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">制裁时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="sanctionTime" name="sanctionTime" placeholder="请输入制裁时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

@@ -1,0 +1,44 @@
+@layout("/common/_container.html",{js:["/assets/modular/appPowerType/appPowerType.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">应用类型表管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-table" id="appPowerTypeTable" lay-filter="appPowerTypeTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+</script>
+
+<script type="text/html" id="appPowerTypeTable-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>新增</button>
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="layui-icon layui-icon-delete"></i>删除</button>
+</script>
+@}

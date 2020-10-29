@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -86,6 +87,11 @@ public class HyAppServiceImpl extends ServiceImpl<HyAppMapper, HyApp> implements
             }
         }
         return hyAppResults;
+    }
+
+    @Override
+    public List<Map<String, Object>> findListByPage(Page page, HyAppParam param,List<String> signList){
+        return baseMapper.findListByPage(page,param,signList);
     }
 
     @Override

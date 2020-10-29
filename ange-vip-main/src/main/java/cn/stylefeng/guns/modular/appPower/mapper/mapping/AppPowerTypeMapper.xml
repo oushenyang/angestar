@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.appPower.mapper.AppPowerTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.appPower.entity.AppPowerType">
+        <id column="app_power_type_id" property="appPowerTypeId" />
+        <result column="app_name" property="appName" />
+        <result column="app_code" property="appCode" />
+        <result column="custom_data" property="customData" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        app_power_type_id AS "appPowerTypeId", app_name AS "appName", app_code AS "appCode", custom_data AS "customData", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+    <select id="getTypeList" resultType="cn.stylefeng.guns.modular.appPower.model.result.AppPowerTypeResult">
+        select * from ag_app_power_type
+    </select>
+
+</mapper>

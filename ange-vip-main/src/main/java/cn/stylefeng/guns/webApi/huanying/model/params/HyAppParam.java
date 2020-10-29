@@ -5,6 +5,7 @@ import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +32,8 @@ public class HyAppParam implements Serializable, BaseValidatingParam {
     private String packAge;
 
     private Integer fakedata;
+
+    private List<String> signList;
 
     @Override
     public String checkParam() {

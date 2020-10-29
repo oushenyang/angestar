@@ -10,11 +10,12 @@
         <result column="name" property="name" />
         <result column="package" property="packAge" />
         <result column="fakedata" property="fakedata" />
+        <result column="sign" property="sign" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        appinfoid AS "appinfoid", appuserid AS "appuserid", name AS "name", package AS "packAge", fakedata AS "fakedata"
+        appinfoid AS "appinfoid", ut_did AS "utDid",  appuserid AS "appuserid", name AS "name", package AS "packAge", fakedata AS "fakedata", sign AS "sign", create_time AS "createTime"
     </sql>
     <select id="findListBySpec" resultType="cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult">
         select
@@ -23,4 +24,15 @@
         where ut_did = #{utDid} AND sign = #{sign}
     </select>
 
+    <select id="findListByPage" resultType="java.util.Map">
+        select
+        (select COUNT(distinct ph.ut_did) from pj_hy_app ph where ph.sign = ha.sign) AS packAge,
+        ha.sign AS sign
+        from pj_hy_app ha
+        where ha.sign NOT IN
+        <foreach collection="signList" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        GROUP BY ha.sign
+    </select>
 </mapper>

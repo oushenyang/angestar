@@ -63,6 +63,16 @@ public class HuanYingV2Controller {
                 sign = String.join("", m.getValue());
             }
         }
+        List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
+        boolean isHave = false;
+        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
+        for (Dict dict : dictss){
+            if (dict.getCode().equals(sign)){
+                isHave = true;
+                break;
+            }
+
+        }
         if (StringUtils.isNotEmpty(packAge)){
             QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
             wrapper.eq("ut_did", model);
@@ -83,8 +93,18 @@ public class HuanYingV2Controller {
                 hyApp.setUtDid(model);
                 hyApp.setSign(sign);
                 hyApp.setCreateTime(new Date());
-                hyAppService.save(hyApp);
-                redisUtil.del(RedisType.HUANYIN + model + sign);
+                //如果开关没开
+                if (!ConstantsContext.getPirateOpen2()){
+                    hyAppService.save(hyApp);
+                    redisUtil.del(RedisType.HUANYIN + model + sign);
+                }
+
+                //如果开关打开且包含
+                if (ConstantsContext.getPirateOpen2()&&isHave){
+                    hyAppService.save(hyApp);
+                    redisUtil.del(RedisType.HUANYIN + model + sign);
+                }
+
             }
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
@@ -106,15 +126,7 @@ public class HuanYingV2Controller {
             aa = aa.replaceAll("packAge", "package");
             return aa;
         }
-        List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
-        boolean isHave = false;
-        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
-        for (Dict dict : dictss){
-            if (dict.getCode().equals(sign)){
-                isHave = true;
-                break;
-            }
-        }
+
         if (ConstantsContext.getPirateOpen()&&!isHave){
             if (CollectionUtil.isNotEmpty(hyAppResults)){
                 hyAppResults.forEach(hyAppResult -> {

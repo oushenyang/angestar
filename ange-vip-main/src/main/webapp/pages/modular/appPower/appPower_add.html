@@ -1,0 +1,45 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/appPower/appPower_add.js"]}){
+<form id="appPowerForm" lay-filter="appPowerForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="appPowerId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用名<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appName" name="appName" placeholder="请输入应用名" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用分类<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appTypeCode" id="appTypeCode" lay-search="" lay-verType="tips" lay-verify="required" required>
+                    @for(appInfo in appPowerTypeResults) {
+                    <option value="${appInfo.appCode}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">签名验证<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="sign" name="sign" placeholder="请输入签名验证" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否授权<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="whetherLegal" name="whetherLegal" type="checkbox"  lay-filter="whetherLegal" lay-skin="switch" lay-text="是|否">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义数据</label>
+            <div class="layui-input-block">
+                <input id="customData" name="customData" placeholder="请输入自定义数据" type="text" class="layui-input"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

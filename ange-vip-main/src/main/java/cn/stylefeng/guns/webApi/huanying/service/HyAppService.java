@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.params.HyAppParam;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -73,5 +75,13 @@ public interface HyAppService extends IService<HyApp> {
      * @Date 2020-07-16
      */
      LayuiPageInfo findPageBySpec(HyAppParam param);
+
+    /**
+     * 查询列表，Specification模式
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-28
+     */
+    List<Map<String, Object>> findListByPage(Page page, HyAppParam param,List<String> signList);
 
 }

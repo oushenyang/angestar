@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.appPower.mapper.AppPowerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.appPower.entity.AppPower">
+        <id column="app_power_id" property="appPowerId" />
+        <result column="app_name" property="appName" />
+        <result column="app_type_code" property="appTypeCode" />
+        <result column="sign" property="sign" />
+        <result column="whether_legal" property="whetherLegal" />
+        <result column="whether_sanction" property="whetherSanction" />
+        <result column="custom_data" property="customData" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="sanction_time" property="sanctionTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        aap.app_power_id AS "appPowerId",
+        aap.app_name AS "appName",
+        aap.app_type_code AS "appTypeCode",
+        aap.sign AS "sign",
+        aap.whether_legal AS "whetherLegal",
+        aap.whether_sanction AS "whetherSanction",
+        aap.custom_data AS "customData",
+        aap.create_user AS "createUser",
+        aap.create_time AS "createTime",
+        aap.update_user AS "updateUser",
+        aap.update_time AS "updateTime",
+        aap.sanction_time AS "sanctionTime"
+    </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        (select COUNT(distinct ph.ut_did) from pj_hy_app ph where ph.sign = aap.sign) AS num,
+        <include refid="Base_Column_List"/>
+        from ag_app_power aap
+        <where>
+            <if test="param.sign != null and param.sign != ''">
+                and aap.sign = #{param.sign}
+            </if>
+        </where>
+        order by aap.create_time DESC
+    </select>
+
+</mapper>
