@@ -45,6 +45,11 @@ public class AppPowerResult implements Serializable {
     private Boolean whetherLegal;
 
     /**
+     * 是否显示 0-否；1-是
+     */
+    private Boolean whetherShow;
+
+    /**
      * 是否制裁 0-否；1-是
      */
     private Boolean whetherSanction;

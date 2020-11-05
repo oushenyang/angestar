@@ -265,6 +265,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("cardId", data.cardId);
+            ajax.set("cardCode", data.cardCode);
             ajax.set("appId", data.appId);
             ajax.start();
         };

@@ -76,7 +76,10 @@ public class AppPowerController extends BaseController {
      * @Date 2020-10-29
      */
     @RequestMapping("/edit")
-    public String edit() {
+    public String edit(Model model) {
+        //获取应用类型列表
+        List<AppPowerTypeResult> appPowerTypeResults = appPowerTypeService.getTypeList();
+        model.addAttribute("appPowerTypeResults", appPowerTypeResults);
         return PREFIX + "/appPower_edit.html";
     }
 

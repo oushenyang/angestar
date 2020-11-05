@@ -51,6 +51,11 @@ public class AppPowerParam implements Serializable, BaseValidatingParam {
     private Boolean whetherSanction;
 
     /**
+     * 是否显示 0-否；1-是
+     */
+    private Boolean whetherShow;
+
+    /**
      * 应用自定义数据
      */
     private String customData;

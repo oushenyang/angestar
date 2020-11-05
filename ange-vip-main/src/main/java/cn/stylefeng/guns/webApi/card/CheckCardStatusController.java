@@ -1,25 +1,16 @@
 package cn.stylefeng.guns.webApi.card;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.guns.core.constant.state.CardStatus;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
-import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.device.entity.Token;
-import cn.stylefeng.guns.modular.device.service.DeviceService;
-import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
-import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -70,7 +61,7 @@ public class CheckCardStatusController {
         if (ObjectUtil.isNull(cardInfoApi)){
             throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN + String.valueOf(cardInfoApi.getCardId()));
+        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN.getCode() + String.valueOf(cardInfoApi.getCardId()));
         List<Token> tokens = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(objects)) {
             for (Map.Entry<Object, Object> m : objects.entrySet()) {

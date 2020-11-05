@@ -276,6 +276,16 @@ public final class RedisUtil {
     }
 
     /**
+     * 删除hash表
+     *
+     * @param key  键 不能为null
+     */
+    public void hdelKey(String key) {
+        redisTemplate.opsForHash().delete(key);
+    }
+
+
+    /**
      * 判断hash表中是否有该项的值
      *
      * @param key  键 不能为null

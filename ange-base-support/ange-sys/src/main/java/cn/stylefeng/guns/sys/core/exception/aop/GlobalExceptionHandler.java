@@ -25,6 +25,7 @@ import cn.stylefeng.guns.base.auth.exception.PermissionException;
 import cn.stylefeng.guns.base.auth.exception.enums.AuthExceptionEnum;
 //import cn.stylefeng.guns.core.exception.CardApiException;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.*;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogManager;
@@ -226,11 +227,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public Object cardLoginException(CardLoginException e) {
-        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get("apiResult" + e.getAppId() + e.getCode());
+        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
         if (ObjectUtil.isNull(apiResultApi)){
             apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
             if (ObjectUtil.isNotNull(apiResultApi)){
-                redisUtil.set("apiResult" + e.getAppId()+ e.getCode(), apiResultApi);
+                redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
             }
         }
         //如果没有自定义

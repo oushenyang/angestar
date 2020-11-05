@@ -17,11 +17,17 @@ var AppPowerInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form', 'formX','admin', 'ax', 'laydate'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var laydate = layui.laydate;
+    laydate.render({
+        elem: '#sanctionTime',
+        position: 'fixed',
+        type: 'datetime'
+    });
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
@@ -33,6 +39,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        data.field.hasOwnProperty('whetherLegal')?'': data.field.whetherLegal = 'off';
+        data.field.hasOwnProperty('whetherSanction')?'': data.field.whetherSanction = 'off';
+        data.field.hasOwnProperty('whetherShow')?'': data.field.whetherShow = 'off';
         var ajax = new $ax(Feng.ctxPath + "/appPower/editItem", function (data) {
             Feng.success("更新成功！");
 

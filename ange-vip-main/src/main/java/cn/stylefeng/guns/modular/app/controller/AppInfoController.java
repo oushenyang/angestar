@@ -50,21 +50,9 @@ public class AppInfoController extends BaseController {
     private String PREFIX = "/modular/appInfo";
 
     private final AppInfoService appInfoService;
-    private final AppEditionService appEditionService;
-    private final ApiManageService apiManageService;
-    private final ApiResultService apiResultService;
-    private final CardInfoService cardInfoService;
-    private final AgentAppService agentAppService;
-    private final AgentCardService agentCardService;
 
-    public AppInfoController(AppInfoService appInfoService, AppEditionService appEditionService, ApiManageService apiManageService, ApiResultService apiResultService, CardInfoService cardInfoService, AgentAppService agentAppService, AgentCardService agentCardService) {
+    public AppInfoController(AppInfoService appInfoService) {
         this.appInfoService = appInfoService;
-        this.appEditionService = appEditionService;
-        this.apiManageService = apiManageService;
-        this.apiResultService = apiResultService;
-        this.cardInfoService = cardInfoService;
-        this.agentAppService = agentAppService;
-        this.agentCardService = agentCardService;
     }
 
     /**
@@ -116,12 +104,6 @@ public class AppInfoController extends BaseController {
         appInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
         appInfoParam.setCreateTime(new Date());
         this.appInfoService.add(appInfoParam);
-        //生成版本号
-        AppEditionParam appEditionParam = new AppEditionParam();
-        appEditionParam.setAppId(appInfoParam.getAppId());
-        appEditionParam.setEditionName("1.0");
-        appEditionParam.setEditionNum("1.0");
-        appEditionService.add(appEditionParam);
         return ResponseData.success();
     }
 
@@ -150,30 +132,6 @@ public class AppInfoController extends BaseController {
     @ResponseBody
     public ResponseData delete(AppInfoParam appInfoParam) {
         this.appInfoService.delete(appInfoParam);
-        //删除版本
-        AppEdition appEdition = new AppEdition();
-        appEdition.setAppId(appInfoParam.getAppId());
-        appEditionService.remove(new QueryWrapper<>(appEdition));
-        //删除api接口
-        ApiManage apiManage = new ApiManage();
-        apiManage.setAppId(appInfoParam.getAppId());
-        apiManageService.remove(new QueryWrapper<>(apiManage));
-        //删除api返回
-        ApiResult apiResult = new ApiResult();
-        apiResult.setAppId(appInfoParam.getAppId());
-        apiResultService.remove(new QueryWrapper<>(apiResult));
-        //删除卡密
-        CardInfo cardInfo = new CardInfo();
-        cardInfo.setAppId(appInfoParam.getAppId());
-        cardInfoService.remove(new QueryWrapper<>(cardInfo));
-        //删除代理
-        AgentApp agentApp = new AgentApp();
-        agentApp.setAppId(appInfoParam.getAppId());
-        agentAppService.remove(new QueryWrapper<>(agentApp));
-        //代理卡密
-        AgentCard agentCard = new AgentCard();
-        agentCard.setAppId(appInfoParam.getAppId());
-        agentCardService.remove(new QueryWrapper<>(agentCard));
         return ResponseData.success();
     }
 

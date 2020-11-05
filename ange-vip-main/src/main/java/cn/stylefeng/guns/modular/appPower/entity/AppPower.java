@@ -52,6 +52,12 @@ public class AppPower implements Serializable {
     private Boolean whetherLegal;
 
     /**
+     * 是否显示 0-否；1-是
+     */
+    @TableField("whether_show")
+    private Boolean whetherShow;
+
+    /**
      * 是否制裁 0-否；1-是
      */
     @TableField("whether_sanction")
@@ -142,6 +148,14 @@ public class AppPower implements Serializable {
         this.whetherSanction = whetherSanction;
     }
 
+    public Boolean getWhetherShow() {
+        return whetherShow;
+    }
+
+    public void setWhetherShow(Boolean whetherShow) {
+        this.whetherShow = whetherShow;
+    }
+
     public String getCustomData() {
         return customData;
     }
@@ -198,6 +212,7 @@ public class AppPower implements Serializable {
         ", appTypeCode=" + appTypeCode +
         ", sign=" + sign +
         ", whetherLegal=" + whetherLegal +
+        ", whetherShow=" + whetherShow +
         ", whetherSanction=" + whetherSanction +
         ", customData=" + customData +
         ", createUser=" + createUser +

@@ -1,10 +1,5 @@
 package cn.stylefeng.guns.webApi.dingweimao;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.guns.core.constant.state.RedisType;
-import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
-import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
-import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.guns.sys.core.util.GPS;
 import cn.stylefeng.guns.sys.core.util.GPSConverterUtils;
@@ -13,16 +8,13 @@ import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -51,6 +51,14 @@
     <span class="badge badge-pill badge-success">是</span>
     {{# } }}
 </script>
+
+<script type="text/html" id="whetherShow">
+    {{# if(d.whetherShow == 0){ }}
+    <span class="badge badge-pill badge-secondary">否</span>
+    {{# } else if(d.whetherShow == 1){ }}
+    <span class="badge badge-pill badge-success">是</span>
+    {{# } }}
+</script>
 <script type="text/html" id="tableBar">
     <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
     <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>

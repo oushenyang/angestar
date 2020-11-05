@@ -9,6 +9,7 @@
         <result column="app_type_code" property="appTypeCode" />
         <result column="sign" property="sign" />
         <result column="whether_legal" property="whetherLegal" />
+        <result column="whether_show" property="whetherShow" />
         <result column="whether_sanction" property="whetherSanction" />
         <result column="custom_data" property="customData" />
         <result column="create_user" property="createUser" />
@@ -25,6 +26,7 @@
         aap.app_type_code AS "appTypeCode",
         aap.sign AS "sign",
         aap.whether_legal AS "whetherLegal",
+        aap.whether_show AS "whetherShow",
         aap.whether_sanction AS "whetherSanction",
         aap.custom_data AS "customData",
         aap.create_user AS "createUser",

@@ -8,7 +8,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -21,7 +21,6 @@ import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
-import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -137,6 +136,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void delete(CardInfoParam param){
+        redisUtil.del(RedisType.CARD_INFO.getCode() + param.getAppId() + "-" +  param.getCardCode());
         this.removeById(getKey(param));
     }
 
@@ -145,6 +145,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         List<String> idList = Arrays.asList(ids.split(","));
         List<CardInfo> cardInfos = this.listByIds(idList);
         cardInfos.forEach(cardInfo->{
+            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getAppId() + "-" +  cardInfo.getCardCode());
             if (cardInfo.getAppId()!=0){
                 //获取应用信息
                 AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
@@ -176,8 +177,10 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         baseMapper.BachUpdateCardInfo(cardInfos);
 //        this.updateById(newEntity);
     }
+
     private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
         cardInfos.forEach(cardInfo->{
+            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getAppId() + "-" +  cardInfo.getCardCode());
             switch (param.getEvent()){
                 case "prohibition":
                     cardInfo.setProhibitRemark(param.getProhibitRemark());
@@ -309,11 +312,11 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      */
     @Override
     public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
-        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO + String.valueOf(appId) + singleCode);
+        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
         if (ObjectUtil.isNull(cardInfoApi)){
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
             if (ObjectUtil.isNotNull(cardInfoApi)){
-                redisUtil.set(RedisType.CARD_INFO + String.valueOf(appId) + singleCode, cardInfoApi);
+                redisUtil.set(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode, cardInfoApi,604800);
             }
         }
         return cardInfoApi;
@@ -321,7 +324,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
-        redisUtil.del(RedisType.CARD_INFO + String.valueOf(appId) + singleCode);
+        redisUtil.del(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
         baseMapper.updateById(cardInfo);
     }
 

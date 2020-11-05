@@ -1,9 +1,11 @@
 package cn.stylefeng.guns.modular.apiManage.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.modular.appPower.entity.AppPower;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.mapper.ApiManageMapper;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
@@ -17,10 +19,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -95,17 +97,36 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
      */
     @Override
     public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
-        ApiManageApi apiManage = (ApiManageApi) redisUtil.get(RedisType.API_MANAGE + apiCode + callCode);
-        if (ObjectUtil.isNull(apiManage)){
-            apiManage = baseMapper.findApiManageApi(apiCode,callCode);
-            if (ObjectUtil.isNotNull(apiManage)){
-                redisUtil.set(RedisType.API_MANAGE + apiCode + callCode, apiManage);
-            }else {
+        ApiManageApi apiManageApi = new ApiManageApi();
+        //是否存在改hash表
+        boolean isHave = redisUtil.hasKey(RedisType.API_MANAGE.getCode()+ callCode);
+        if (isHave){
+             apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
+            if (ObjectUtil.isNull(apiManageApi)){
+                //接口错误
+                throw new SystemApiException(-1, "接口不正确","",false);
+            }
+        }else {
+            //不存在则创建
+            List<ApiManageApi> apiManageApiList = baseMapper.findApiManageApiListByCallCode(callCode);
+            boolean isExist = false;
+            if (CollectionUtil.isEmpty(apiManageApiList)){
+                throw new SystemApiException(-1, "接口不正确","",false);
+            }
+            for (ApiManageApi apiManageApi1 : apiManageApiList){
+                redisUtil.hset(RedisType.API_MANAGE.getCode()+ callCode,apiManageApi1.getApiCode(),apiManageApi1);
+                if (apiManageApi1.getApiCode().equals(apiCode)){
+                    isExist = true;
+                    apiManageApi = apiManageApi1;
+                }
+            }
+            if (!isExist){
                 //接口错误
                 throw new SystemApiException(-1, "接口不正确","",false);
             }
         }
-        return apiManage;
+
+        return apiManageApi;
     }
 
     private Serializable getKey(ApiManageParam param){

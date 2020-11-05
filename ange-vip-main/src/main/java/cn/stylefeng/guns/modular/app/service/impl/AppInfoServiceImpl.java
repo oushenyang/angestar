@@ -2,9 +2,19 @@ package cn.stylefeng.guns.modular.app.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentCard;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
+import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
+import cn.stylefeng.guns.modular.app.service.AppEditionService;
+import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -24,6 +34,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,15 +58,20 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HE
 @Service
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
 
-    private final ApiManageService apiManageService;
-    private final ApiResultService apiResultService;
-    private final RedisUtil redisUtil;
-
-    public AppInfoServiceImpl(ApiManageService apiManageService, ApiResultService apiResultService, RedisUtil redisUtil) {
-        this.apiManageService = apiManageService;
-        this.apiResultService = apiResultService;
-        this.redisUtil = redisUtil;
-    }
+    @Autowired
+    private ApiManageService apiManageService;
+    @Autowired
+    private ApiResultService apiResultService;
+    @Autowired
+    private AppEditionService appEditionService;
+    @Autowired
+    private CardInfoService cardInfoService;
+    @Autowired
+    private AgentAppService agentAppService;
+    @Autowired
+    private AgentCardService agentCardService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -101,6 +117,13 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         });
         apiResultService.saveBatch(apiResults);
         param.setAppId(entity.getAppId());
+
+        //生成版本号
+        AppEditionParam appEditionParam = new AppEditionParam();
+        appEditionParam.setAppId(entity.getAppId());
+        appEditionParam.setEditionName("1.0");
+        appEditionParam.setEditionNum("1.0");
+        appEditionService.add(appEditionParam);
     }
 
     //生成小写字母+数字,
@@ -125,6 +148,44 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     @Override
     public void delete(AppInfoParam param){
+        //清除应用缓存
+        redisUtil.del(RedisType.APP_INFO.getCode() + param.getAppId());
+
+        //删除版本
+        AppEdition appEdition = new AppEdition();
+        appEdition.setAppId(param.getAppId());
+        appEditionService.remove(new QueryWrapper<>(appEdition));
+        //删除api接口
+        ApiManage apiManage = new ApiManage();
+        apiManage.setAppId(param.getAppId());
+        apiManageService.remove(new QueryWrapper<>(apiManage));
+        List<ApiManage> apiManages = apiManageService.list(new QueryWrapper<ApiManage>().eq("app_id", param.getAppId()));
+        apiManages.forEach(apiManage1 -> {
+            //清除api接口缓存
+            redisUtil.del(RedisType.API_MANAGE.getCode() + apiManage1.getApiCode() + "-" +  apiManage1.getCallCode());
+        });
+        //删除api返回
+        ApiResult apiResult = new ApiResult();
+        apiResult.setAppId(param.getAppId());
+        apiResultService.remove(new QueryWrapper<>(apiResult));
+        List<ApiResult> apiResults = apiResultService.list(new QueryWrapper<ApiResult>().eq("app_id", param.getAppId()));
+        apiResults.forEach(apiResult1 -> {
+            //清除api接口缓存
+            redisUtil.del(RedisType.API_RESULT.getCode() + apiResult1.getAppId() + "-" +  apiResult1.getResultCode());
+        });
+        //删除卡密
+        CardInfo cardInfo = new CardInfo();
+        cardInfo.setAppId(param.getAppId());
+        cardInfoService.remove(new QueryWrapper<>(cardInfo));
+        //删除代理
+        AgentApp agentApp = new AgentApp();
+        agentApp.setAppId(param.getAppId());
+        agentAppService.remove(new QueryWrapper<>(agentApp));
+        //代理卡密
+        AgentCard agentCard = new AgentCard();
+        agentCard.setAppId(param.getAppId());
+        agentCardService.remove(new QueryWrapper<>(agentCard));
+
         this.removeById(getKey(param));
     }
 
@@ -133,8 +194,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
+        redisUtil.del(RedisType.APP_INFO.getCode() + newEntity.getAppId());
         this.updateById(newEntity);
-        redisUtil.del(RedisType.APP_INFO + String.valueOf(newEntity.getAppId()));
     }
 
     @Override
@@ -180,11 +241,11 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     @Override
     public AppInfoApi getAppInfoByRedis(Long appId) {
-        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO + String.valueOf(appId));
+        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO.getCode() + appId);
         if (ObjectUtil.isNull(appInfoApi)){
             appInfoApi = baseMapper.findAppInfoApi(appId);
             if (ObjectUtil.isNotNull(appInfoApi)){
-                redisUtil.set(RedisType.APP_INFO + String.valueOf(appId) , appInfoApi);
+                redisUtil.set(RedisType.APP_INFO.getCode() + appId , appInfoApi,604800);
             }else {
                 //接口错误
                 throw new SystemApiException(-1, "数据错误","",false);

@@ -1,22 +1,16 @@
 package cn.stylefeng.guns.modular.device.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.device.entity.Device;
-import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.mapper.DeviceMapper;
 import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
-import cn.stylefeng.guns.modular.device.model.result.DeviceApi;
 import cn.stylefeng.guns.modular.device.model.result.DeviceResult;
 import  cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
-import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -85,7 +79,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model) {
-//        List<Object> objects = redisUtil.lGet(RedisType.DEVICE + String.valueOf(cardId),0,-1);
+//        List<Object> objects = redisUtil.lGet(RedisType.DEVICE.getCode() + String.valueOf(cardId),0,-1);
 //        List<Device> deviceApis = new ArrayList<>();
 //        if (CollectionUtil.isNotEmpty(objects)){
 //            deviceApis = JSON.parseArray(objects.get(0).toString(),Device.class);
@@ -93,11 +87,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 //        if (CollectionUtils.isEmpty(deviceApis)){
 //            deviceApis = baseMapper.selectList(new QueryWrapper<Device>().eq("card_id", cardId));
 //            if (CollectionUtils.isEmpty(deviceApis)){
-//                redisUtil.lSet(RedisType.CARD_INFO + String.valueOf(cardId), deviceApis);
+//                redisUtil.lSet(RedisType.CARD_INFO.getCode() + String.valueOf(cardId), deviceApis,604800);
 //            }
 //        }
 
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.DEVICE + String.valueOf(cardId));
+        Map<Object, Object> objects = redisUtil.hmget(RedisType.DEVICE.getCode() + cardId);
         List<Device> deviceApis = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(objects)) {
             for (Map.Entry<Object, Object> m : objects.entrySet()) {
@@ -165,7 +159,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
-        redisUtil.hset(RedisType.DEVICE + String.valueOf(cardId),mac+getIp(),device);
+        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device,604800);
     }
 
     private Serializable getKey(DeviceParam param){

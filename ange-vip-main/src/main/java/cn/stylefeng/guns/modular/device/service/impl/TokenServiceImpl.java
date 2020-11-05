@@ -1,16 +1,13 @@
 package cn.stylefeng.guns.modular.device.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.util.IdUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
-import cn.stylefeng.guns.modular.device.entity.Device;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.mapper.TokenMapper;
 import cn.stylefeng.guns.modular.device.model.params.TokenParam;
@@ -19,17 +16,12 @@ import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
-import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mchange.v1.util.ListUtils;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -106,7 +98,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
      */
     @Override
     public boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model,String holdCheck,Date expireTime) {
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN + String.valueOf(cardInfoApi.getCardId()));
+        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN.getCode() + cardInfoApi.getCardId());
         List<Token> tokens = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(objects)) {
             for (Map.Entry<Object, Object> m : objects.entrySet()) {
@@ -178,7 +170,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setCreateTime(date);
         baseMapper.insert(token);
         tokenList.add(token);
-        redisUtil.hset(RedisType.TOKEN + String.valueOf(cardId),tokenStr,token,3600);
+        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,3600);
         return tokenStr;
     }
 
@@ -195,7 +187,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
     private String delAndInsertToken(List<Token> tokenList, Integer delNum,Long appId, Long cardId, String cardCode, String mac, String model) {
         //先删除然后新增一个
         for (int i = 0; i < delNum; i++) {
-            redisUtil.hdel(RedisType.TOKEN + String.valueOf(cardId), tokenList.get(i).getToken());
+            redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
             baseMapper.deleteById(tokenList.get(i));
         }
         String tokenStr = IdUtil.simpleUUID();
@@ -215,7 +207,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setCreateTime(date);
         baseMapper.insert(token);
         tokenList.add(token);
-        redisUtil.hset(RedisType.TOKEN + String.valueOf(cardId),tokenStr,token,3600);
+        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,3600);
         return tokenStr;
     }
 

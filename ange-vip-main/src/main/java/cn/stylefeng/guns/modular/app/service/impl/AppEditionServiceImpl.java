@@ -37,8 +37,11 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
  */
 @Service
 public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdition> implements AppEditionService {
-    @Autowired
-    private AppInfoService appInfoService;
+    private final AppInfoService appInfoService;
+
+    public AppEditionServiceImpl(AppInfoService appInfoService) {
+        this.appInfoService = appInfoService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

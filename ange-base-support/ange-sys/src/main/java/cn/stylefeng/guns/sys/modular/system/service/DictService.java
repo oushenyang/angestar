@@ -304,7 +304,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
             DictType one = this.dictTypeService.getOne(wrapper);
             dicts = listDicts(one.getDictTypeId());
             if (CollectionUtils.isNotEmpty(dicts)){
-                redisUtil.lSet("dict" + dictTypeCode, dicts);
+                redisUtil.lSet("dict" + dictTypeCode, dicts,604800);
             }
         }
         return dicts;

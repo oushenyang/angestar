@@ -22,6 +22,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center',field: 'appTypeCode', title: '应用分类编码'},
             {align: 'center',field: 'sign', title: '签名验证'},
             {align: 'center',field: 'whetherLegal', title: '是否授权', templet: '#whetherLegalTpl'},
+            {align: 'center',field: 'whetherShow', title: '是否显示', templet: '#whetherShow'},
             {align: 'center',field: 'whetherSanction', title: '是否制裁',templet: '#whetherSanctionTpl'},
             // {align: 'center',field: 'customData', title: '应用自定义数据'},
             {align: 'center',field: 'sanctionTime', sort: true, title: '制裁时间'},
@@ -99,6 +100,7 @@ layui.use(['table', 'admin', 'ax'], function () {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("appPowerId", data.appPowerId);
+            // ajax.set("sign", data.sign);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);

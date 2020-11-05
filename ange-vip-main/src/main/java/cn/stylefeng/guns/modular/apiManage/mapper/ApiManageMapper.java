@@ -35,4 +35,6 @@ public interface ApiManageMapper extends BaseMapper<ApiManage> {
      * @return 结果
      */
     ApiManageApi findApiManageApi(@Param("apiCode") String apiCode, @Param("callCode") String callCode);
+
+    List<ApiManageApi> findApiManageApiListByCallCode(@Param("callCode") String callCode);
 }

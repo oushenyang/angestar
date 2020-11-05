@@ -76,4 +76,20 @@ public interface AppPowerService extends IService<AppPower> {
      */
      LayuiPageInfo findPageBySpec(AppPowerParam param);
 
+    /**
+     * 判断是否制裁
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    boolean whetherLegal(String sign);
+
+    /**
+     * 判断是否显示
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    boolean whetherShow(String sign);
+
 }

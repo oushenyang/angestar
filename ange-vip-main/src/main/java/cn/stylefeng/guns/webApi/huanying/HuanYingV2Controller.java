@@ -3,9 +3,9 @@ package cn.stylefeng.guns.webApi.huanying;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.consts.ConstantsContext;
-import cn.stylefeng.guns.core.constant.state.RedisType;
-import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
@@ -46,6 +46,9 @@ public class HuanYingV2Controller {
     @Autowired
     private DictService dictService;
 
+    @Autowired
+    private AppPowerService appPowerService;
+
     @RequestMapping("/appdatainfo")
     @ResponseBody
     public String appdatainfo(@RequestBody(required=false) String  body){
@@ -64,6 +67,15 @@ public class HuanYingV2Controller {
             }
         }
         List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
+//        boolean isHave = false;
+//        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
+//        for (Dict dict : dictss){
+//            if (dict.getCode().equals(sign)){
+//                isHave = true;
+//                break;
+//            }
+//
+//        }
         boolean isHave = false;
         List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
         for (Dict dict : dictss){
@@ -71,8 +83,10 @@ public class HuanYingV2Controller {
                 isHave = true;
                 break;
             }
-
         }
+//        boolean isHave = appPowerService.whetherShow(sign);
+//        boolean pirateOpen2 = ConstantsContext.getPirateOpen2();
+//        boolean whetherLegal = appPowerService.whetherLegal(sign);
         if (StringUtils.isNotEmpty(packAge)){
             QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
             wrapper.eq("ut_did", model);
@@ -94,23 +108,28 @@ public class HuanYingV2Controller {
                 hyApp.setSign(sign);
                 hyApp.setCreateTime(new Date());
                 //如果开关没开
-                if (!ConstantsContext.getPirateOpen2()){
+//                if (!pirateOpen2){
                     hyAppService.save(hyApp);
                     redisUtil.del(RedisType.HUANYIN + model + sign);
-                }
+//                }
 
-                //如果开关打开且包含
-                if (ConstantsContext.getPirateOpen2()&&isHave){
-                    hyAppService.save(hyApp);
-                    redisUtil.del(RedisType.HUANYIN + model + sign);
-                }
+                //如果开关打开且没有制裁
+//                if (pirateOpen2&&!whetherLegal){
+//                    hyAppService.save(hyApp);
+//                    redisUtil.del(RedisType.HUANYIN + model + sign);
+//                }
 
             }
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
-            map1.put("username", "15156041422");
+            map1.put("username", "15156061423");
             try {
-                map1.put("name", URLDecoder.decode(name, "UTF-8"));
+//                if (pirateOpen2&&whetherLegal){
+//                    map1.put("name", "盗版应用,请立即卸载!正版微信:angestar88888");
+//                }else {
+                    map1.put("name", URLDecoder.decode(name, "UTF-8"));
+//                }
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -135,15 +154,15 @@ public class HuanYingV2Controller {
             }
         }
         Map map = new HashMap<String, String>();
-        if (ConstantsContext.getPirateOpen2()&&!isHave){
-            map.put("data",null);
-            map.put("message", "盗版应用,请立即卸载!正版微信:angestar88888");
-            map.put("code", 500);
-        }else{
+//        if (pirateOpen2&&whetherLegal){
+//            map.put("data",null);
+//            map.put("message", "盗版应用,请立即卸载!正版微信:angestar88888");
+//            map.put("code", 500);
+//        }else{
             map.put("data",hyAppResults);
             map.put("message", "ok");
             map.put("code", 0);
-        }
+//        }
 
         JSONObject json = new JSONObject(map);
         String aa = json.toString();
