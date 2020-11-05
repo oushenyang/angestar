@@ -98,7 +98,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
     @Override
     public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
         ApiManageApi apiManageApi = new ApiManageApi();
-        //是否存在改hash表
+        //是否存在该hash表
         boolean isHave = redisUtil.hasKey(RedisType.API_MANAGE.getCode()+ callCode);
         if (isHave){
              apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);

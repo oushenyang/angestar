@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
@@ -8,6 +9,8 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
+import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -21,6 +24,7 @@ import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -312,11 +316,31 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      */
     @Override
     public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
-        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
-        if (ObjectUtil.isNull(cardInfoApi)){
+//        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
+//        if (ObjectUtil.isNull(cardInfoApi)){
+//            cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
+//            if (ObjectUtil.isNotNull(cardInfoApi)){
+//                redisUtil.set(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode, cardInfoApi,604800);
+//            }
+//        }
+//        return cardInfoApi;
+
+
+
+
+
+
+
+        CardInfoApi cardInfoApi;
+        //是否存在该hash表
+        boolean isHave = redisUtil.hasKey(RedisType.CARD_INFO.getCode()+ appId);
+        if (isHave){
+            cardInfoApi = (CardInfoApi)redisUtil.hget(RedisType.CARD_INFO.getCode()+ appId,singleCode);
+        }else {
+            //不存在则创建
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
             if (ObjectUtil.isNotNull(cardInfoApi)){
-                redisUtil.set(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode, cardInfoApi,604800);
+                redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.MONTH.getCode());
             }
         }
         return cardInfoApi;
