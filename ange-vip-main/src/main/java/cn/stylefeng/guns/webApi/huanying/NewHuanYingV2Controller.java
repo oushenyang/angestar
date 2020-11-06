@@ -4,9 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
-import cn.stylefeng.guns.sys.modular.system.entity.Dict;
+import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
@@ -18,11 +19,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +40,8 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/api/v2")
-public class HuanYingV2Controller {
+@RequestMapping("/newApi/v2")
+public class NewHuanYingV2Controller {
     @Autowired
     private HyAppService hyAppService;
     @Autowired
@@ -51,51 +54,44 @@ public class HuanYingV2Controller {
 
     @RequestMapping("/appdatainfo")
     @ResponseBody
-    public String appdatainfo(@RequestBody(required=false) String  body){
-        Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
+    public String appdatainfo(@RequestHeader(value = "User-Token", required = false) String token){
         String packAge = HttpContext.getRequest().getParameter("package");
         String appuserid = HttpContext.getRequest().getParameter("appuserid");
         String name = HttpContext.getRequest().getParameter("name");
-        String model = null;
-        String sign = "0";
-        for (Map.Entry<String, String[]> m : cookies.entrySet()) {
-            if (m.getKey().equals("ut_did")){
-                model = String.join("", m.getValue());
-            }
-            if (m.getKey().equals("sign")){
-                sign = String.join("", m.getValue());
-            }
-        }
-        if ("0".equals(sign)){
+        String model = HttpContext.getRequest().getParameter("ut_did");
+        //应用名称
+        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String sign;
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
-        }
-        List<HyAppResult> hyAppResults = hyAppService.findListBySpec(model,sign);
-//        boolean isHave = false;
-//        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
-//        for (Dict dict : dictss){
-//            if (dict.getCode().equals(sign)){
-//                isHave = true;
-//                break;
-//            }
-//
-//        }
-        boolean isHave = false;
-        List<Dict> dictss = dictService.listDictsByCodeByRedis("HUANYINGAPP");
-        for (Dict dict : dictss){
-            if (dict.getCode().equals(sign)){
-                isHave = true;
-                break;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            String time =  deSign.substring(deSign.length() -7);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
+            Date date = new Date(System.currentTimeMillis());
+            String newTime = simpleDateFormat.format(date);
+            //说明盗版
+            if (!time.equals(newTime)){
+                sign = deSign;
+            }else {
+                //从数据库里查是否正版
+                //去除最后七位
+                sign = deSign.substring(0,deSign.length()-7);
             }
         }
-//        boolean isHave = appPowerService.whetherShow(sign);
-//        boolean pirateOpen2 = ConstantsContext.getPirateOpen2();
-//        boolean whetherLegal = appPowerService.whetherLegal(sign);
+
+        boolean isShow = appPowerService.whetherShowBySignAndAppCode(sign,virtualId);
+        boolean pirateOpen2 = ConstantsContext.getPirateOpen2();
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,virtualId);
+
         if (StringUtils.isNotEmpty(packAge)){
             QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
             wrapper.eq("ut_did", model);
             wrapper.eq("appuserid", appuserid);
             wrapper.eq("package", packAge);
+            wrapper.eq("app_code", virtualId);
             wrapper.eq("sign", sign);
+            wrapper.eq("model", model);
             HyApp app = hyAppService.getOne(wrapper);
             if (ObjectUtil.isEmpty(app)){
                 HyApp hyApp = new HyApp();
@@ -106,38 +102,38 @@ public class HuanYingV2Controller {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+                hyApp.setAppCode(CustomEnAndDe.deCrypto(virtualId));
+                hyApp.setAppName(virtualId);
                 hyApp.setPackAge(packAge);
                 hyApp.setUtDid(model);
                 hyApp.setSign(sign);
                 hyApp.setCreateTime(new Date());
                 //如果开关没开
-//                if (!pirateOpen2){
+                if (!pirateOpen2){
                     hyAppService.save(hyApp);
-                    redisUtil.del(RedisType.HUANYIN + model + sign);
-//                }
-
+                    redisUtil.del(RedisType.HUANYIN.getCode() + model +"-"+ sign +"-"+ virtualId);
+                }
                 //如果开关打开且没有制裁
-//                if (pirateOpen2&&!whetherLegal){
-//                    hyAppService.save(hyApp);
-//                    redisUtil.del(RedisType.HUANYIN + model + sign);
-//                }
+                if (pirateOpen2&&!whetherLegal){
+                    hyAppService.save(hyApp);
+                    redisUtil.del(RedisType.HUANYIN.getCode() + model +"-"+ sign +"-"+ virtualId);
+                }
 
             }
-            Map map = new HashMap<String, String>();
-            Map map1 = new HashMap<String, String>();
+            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map1 = new HashMap<>();
             map1.put("username", "15156061423");
             try {
-//                if (pirateOpen2&&whetherLegal){
-//                    map1.put("name", "盗版应用,请立即卸载!正版微信:angestar88888");
-//                }else {
+                if (whetherLegal){
+                    map1.put("name", "盗版应用,请立即卸载!正版微信:angestar88888");
+                }else {
                     map1.put("name", URLDecoder.decode(name, "UTF-8"));
-//                }
-
+                }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
             map1.put("package",packAge);
-            map1.put("packName","极影");
+            map1.put("packName",name);
             map1.put("fakedata", 0);
             map1.put("appuserid", appuserid);
             map.put("data",map1);
@@ -148,24 +144,24 @@ public class HuanYingV2Controller {
             aa = aa.replaceAll("packAge", "package");
             return aa;
         }
-
-        if (ConstantsContext.getPirateOpen()&&!isHave){
+        List<HyAppResult> hyAppResults = hyAppService.findListByModelAndSignAndAppName(model,sign,virtualId);
+        if (ConstantsContext.getPirateOpen()&&isShow){
             if (CollectionUtil.isNotEmpty(hyAppResults)){
                 hyAppResults.forEach(hyAppResult -> {
                     hyAppResult.setName("盗版应用,正版微信:angestar88888");
                 });
             }
         }
-        Map map = new HashMap<String, String>();
-//        if (pirateOpen2&&whetherLegal){
-//            map.put("data",null);
-//            map.put("message", "盗版应用,请立即卸载!正版微信:angestar88888");
-//            map.put("code", 500);
-//        }else{
+        Map<String, Object> map = new HashMap<>();
+        if (whetherLegal){
+            map.put("data",null);
+            map.put("message", "ok");
+            map.put("code", 141);
+        }else{
             map.put("data",hyAppResults);
             map.put("message", "ok");
             map.put("code", 0);
-//        }
+        }
 
         JSONObject json = new JSONObject(map);
         String aa = json.toString();
@@ -176,8 +172,8 @@ public class HuanYingV2Controller {
     @RequestMapping("/deviceinfo")
     @ResponseBody
     public String deviceinfo(){
-        Map map = new HashMap<String, String>();
-        Map map1 = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
         map1.put("isphone", 1);
         map1.put("sdkversionname", "10");
         map1.put("abis", "WvMZuYLQ0W4DAArXTsQddFXj");
@@ -199,8 +195,8 @@ public class HuanYingV2Controller {
     @RequestMapping("/appmanager")
     @ResponseBody
     public String appmanager(){
-        Map map = new HashMap<String, String>();
-        Map map1 = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
         map1.put("website", "api.hyer.vip");
         map1.put("onlylife", 0);
         map1.put("storevisible", 0);
@@ -221,8 +217,8 @@ public class HuanYingV2Controller {
     @RequestMapping("/admanager")
     @ResponseBody
     public String admanager(){
-        Map map = new HashMap<String, String>();
-        Map map1 = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
         map1.put("pointwall", 1);
         map1.put("googleshowsplash", "3008091951");
         map1.put("splashad", "huan90s");

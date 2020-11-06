@@ -27,6 +27,12 @@ public class HyApp implements Serializable {
     @TableField("appuserid")
     private Integer appuserid;
 
+    @TableField("app_code")
+    private String appCode;
+
+    @TableField("app_name")
+    private String appName;
+
     @TableField("name")
     private String name;
 
@@ -68,6 +74,22 @@ public class HyApp implements Serializable {
 
     public void setAppuserid(Integer appuserid) {
         this.appuserid = appuserid;
+    }
+
+    public String getAppCode() {
+        return appCode;
+    }
+
+    public void setAppCode(String appCode) {
+        this.appCode = appCode;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getName() {
@@ -116,6 +138,8 @@ public class HyApp implements Serializable {
         "appinfoid=" + appinfoid +
         ", utDid=" + utDid +
         ", appuserid=" + appuserid +
+        ", appCode=" + appCode +
+        ", appName=" + appName +
         ", name=" + name +
         ", package=" + packAge +
         ", fakedata=" + fakedata +

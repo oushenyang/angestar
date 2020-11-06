@@ -22,5 +22,7 @@ public interface HyAppMapper extends BaseMapper<HyApp> {
 
     List<HyAppResult> findListBySpec(@Param("utDid") String utDid,@Param("sign") String sign);
 
+    List<HyAppResult> findListByModelAndSignAndAppName(@Param("utDid") String utDid,@Param("sign") String sign,@Param("appName") String appName);
+
     List<Map<String, Object>> findListByPage(@Param("page") Page page, @Param("param") HyAppParam param,@Param("signList") List<String> signList);
 }

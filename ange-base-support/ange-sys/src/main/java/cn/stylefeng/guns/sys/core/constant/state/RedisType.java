@@ -19,8 +19,8 @@ public enum RedisType {
     TOKEN("ANGE:TOKEN:CARD_ID:","ANGE:TOKEN:CARD_ID:"),
     API_RESULT("ANGE:API_RESULT:APP_ID_AND_RESULT_CODE:","ANGE:API_RESULT:APP_ID_AND_RESULT_CODE:"),
 
-    APP_POWER("APP_POWER","APP_POWER"),
-    HUANYIN("HUANYIN","HUANYIN"),
+    APP_POWER("ANGE:APP_POWER:APP_TYPE_CODE:","APP_POWER"),
+    HUANYIN("HUANYIN:utDid:sign:appCode:","HUANYIN:utDid:sign:appCode:"),
     APP_ID("ANGE:APP_ID:","ANGE:APP_ID:");
     String code;
     String message;

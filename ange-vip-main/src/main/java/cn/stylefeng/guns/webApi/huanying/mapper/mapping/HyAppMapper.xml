@@ -7,6 +7,7 @@
         <id column="appinfoid" property="appinfoid" />
         <result column="ut_did" property="utDid" />
         <result column="appuserid" property="appuserid" />
+        <result column="app_name" property="appName" />
         <result column="name" property="name" />
         <result column="package" property="packAge" />
         <result column="fakedata" property="fakedata" />
@@ -15,13 +16,21 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        appinfoid AS "appinfoid", ut_did AS "utDid",  appuserid AS "appuserid", name AS "name", package AS "packAge", fakedata AS "fakedata", sign AS "sign", create_time AS "createTime"
+        appinfoid AS "appinfoid", ut_did AS "utDid",  appuserid AS "appuserid", app_name AS "appName", name AS "name", package AS "packAge", fakedata AS "fakedata", sign AS "sign", create_time AS "createTime"
     </sql>
     <select id="findListBySpec" resultType="cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult">
         select
         <include refid="Base_Column_List"/>
         from pj_hy_app
         where ut_did = #{utDid} AND sign = #{sign}
+    </select>
+
+    <select id="findListByModelAndSignAndAppName"
+            resultType="cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult">
+        select
+        <include refid="Base_Column_List"/>
+        from pj_hy_app
+        where ut_did = #{utDid} AND sign = #{sign} AND app_name = #{appName}
     </select>
 
     <select id="findListByPage" resultType="java.util.Map">

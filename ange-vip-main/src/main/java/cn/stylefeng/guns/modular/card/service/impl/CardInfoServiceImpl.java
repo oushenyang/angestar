@@ -339,7 +339,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }else {
             //不存在则创建
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
-            if (ObjectUtil.isNotNull(cardInfoApi)){
+            if (ObjectUtil.isNull(cardInfoApi)){
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.MONTH.getCode());
             }
         }

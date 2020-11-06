@@ -68,6 +68,8 @@ public interface HyAppService extends IService<HyApp> {
      */
     List<HyAppResult> findListBySpec(String utDid,String sign);
 
+    List<HyAppResult> findListByModelAndSignAndAppName(String utDid,String sign,String appName);
+
     /**
      * 查询分页数据，Specification模式
      *

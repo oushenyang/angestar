@@ -47,5 +47,12 @@
         </where>
         order by aap.create_time DESC
     </select>
+    <select id="getAppPowerBySignAndAppTypeCode" resultType="cn.stylefeng.guns.modular.appPower.entity.AppPower">
+        select * from ag_app_power where sign = #{sign} AND app_type_code = #{appTypeCode}
+    </select>
+    <select id="getAppPowerBySignAndAppCodeAndAppTypeCode"
+            resultType="cn.stylefeng.guns.modular.appPower.entity.AppPower">
+        select * from ag_app_power where sign = #{sign} AND app_type_code = #{appTypeCode} AND custom_data = #{appCode}
+    </select>
 
 </mapper>

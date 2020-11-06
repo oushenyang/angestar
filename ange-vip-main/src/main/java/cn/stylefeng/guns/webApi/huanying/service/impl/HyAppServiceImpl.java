@@ -5,6 +5,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.mapper.HyAppMapper;
 import cn.stylefeng.guns.webApi.huanying.model.params.HyAppParam;
@@ -89,6 +90,22 @@ public class HyAppServiceImpl extends ServiceImpl<HyAppMapper, HyApp> implements
     }
 
     @Override
+    public List<HyAppResult> findListByModelAndSignAndAppName(String utDid,String sign,String appCode){
+        List<Object> objects = redisUtil.lGet(RedisType.HUANYIN.getCode() + utDid +"-"+ sign +"-"+ appCode,0,-1);
+        List<HyAppResult> hyAppResults = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(objects)){
+            hyAppResults = JSON.parseArray(objects.get(0).toString(),HyAppResult.class);
+        }
+        if (CollectionUtils.isEmpty(hyAppResults)){
+            hyAppResults = baseMapper.findListByModelAndSignAndAppName(utDid,sign, CustomEnAndDe.deCrypto(appCode));
+            if (CollectionUtils.isNotEmpty(hyAppResults)){
+                redisUtil.lSet(RedisType.HUANYIN.getCode() + utDid +"-"+ sign +"-"+ appCode, hyAppResults);
+            }
+        }
+        return hyAppResults;
+    }
+
+    @Override
     public List<Map<String, Object>> findListByPage(Page page, HyAppParam param,List<String> signList){
         return baseMapper.findListByPage(page,param,signList);
     }
@@ -118,5 +135,6 @@ public class HyAppServiceImpl extends ServiceImpl<HyAppMapper, HyApp> implements
         ToolUtil.copyProperties(param, entity);
         return entity;
     }
+
 
 }

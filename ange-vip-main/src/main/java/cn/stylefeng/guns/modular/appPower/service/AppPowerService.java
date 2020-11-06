@@ -85,11 +85,27 @@ public interface AppPowerService extends IService<AppPower> {
     boolean whetherLegal(String sign);
 
     /**
+     * 判断是否制裁
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    boolean whetherLegalBySignAndAppCode(String sign,String appCode);
+
+    /**
      * 判断是否显示
      *
      * @author shenyang.ou
      * @Date 2020-10-29
      */
     boolean whetherShow(String sign);
+
+    /**
+     * 判断是否显示
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    boolean whetherShowBySignAndAppCode(String sign,String appCode);
 
 }
