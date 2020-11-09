@@ -40,7 +40,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/newApi/v2")
+@RequestMapping("api/v2")
 public class NewHuanYingV2Controller {
     @Autowired
     private HyAppService hyAppService;
@@ -91,7 +91,6 @@ public class NewHuanYingV2Controller {
             wrapper.eq("package", packAge);
             wrapper.eq("app_code", virtualId);
             wrapper.eq("sign", sign);
-            wrapper.eq("model", model);
             HyApp app = hyAppService.getOne(wrapper);
             if (ObjectUtil.isEmpty(app)){
                 HyApp hyApp = new HyApp();
@@ -102,8 +101,8 @@ public class NewHuanYingV2Controller {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                hyApp.setAppCode(CustomEnAndDe.deCrypto(virtualId));
-                hyApp.setAppName(virtualId);
+                hyApp.setAppCode(virtualId);
+                hyApp.setAppName(CustomEnAndDe.deCrypto(virtualId));
                 hyApp.setPackAge(packAge);
                 hyApp.setUtDid(model);
                 hyApp.setSign(sign);

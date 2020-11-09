@@ -3,6 +3,7 @@ package cn.stylefeng.guns.webApi.huanying.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
@@ -99,7 +100,7 @@ public class HyAppServiceImpl extends ServiceImpl<HyAppMapper, HyApp> implements
         if (CollectionUtils.isEmpty(hyAppResults)){
             hyAppResults = baseMapper.findListByModelAndSignAndAppName(utDid,sign, CustomEnAndDe.deCrypto(appCode));
             if (CollectionUtils.isNotEmpty(hyAppResults)){
-                redisUtil.lSet(RedisType.HUANYIN.getCode() + utDid +"-"+ sign +"-"+ appCode, hyAppResults);
+                redisUtil.lSet(RedisType.HUANYIN.getCode() + utDid +"-"+ sign +"-"+ appCode, hyAppResults, RedisExpireTime.MONTH.getCode());
             }
         }
         return hyAppResults;

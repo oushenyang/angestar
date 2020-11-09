@@ -36,6 +36,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,15 +56,13 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_SEL
  */
 @Service
 public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> implements CardInfoService {
-    public final CodeCardTypeService codeCardTypeService;
-    public final AppInfoService appInfoService;
-    private final RedisUtil redisUtil;
+    @Autowired
+    public CodeCardTypeService codeCardTypeService;
+    @Autowired
+    public AppInfoService appInfoService;
+    @Autowired
+    private RedisUtil redisUtil;
 
-    public CardInfoServiceImpl(CodeCardTypeService codeCardTypeService, AppInfoService appInfoService, RedisUtil redisUtil) {
-        this.codeCardTypeService = codeCardTypeService;
-        this.appInfoService = appInfoService;
-        this.redisUtil = redisUtil;
-    }
 
     @Override
     public  List<String> add(CardInfoParam param){

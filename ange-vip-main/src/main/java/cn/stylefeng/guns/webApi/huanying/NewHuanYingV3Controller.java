@@ -28,7 +28,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/newApi/v3")
+@RequestMapping("api/v3")
 public class NewHuanYingV3Controller {
 
     @Autowired
@@ -105,13 +105,39 @@ public class NewHuanYingV3Controller {
 
     @RequestMapping("/appactive")
     @ResponseBody
-    public String appactive(){
+    public String appactive(@RequestHeader(value = "User-Token", required = false) String token){
+        //应用名称
+        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String sign;
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
+            return null;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            String time =  deSign.substring(deSign.length() -7);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
+            Date date = new Date(System.currentTimeMillis());
+            String newTime = simpleDateFormat.format(date);
+            //说明盗版
+            if (!time.equals(newTime)){
+                sign = deSign;
+            }else {
+                //从数据库里查是否正版
+                //去除最后七位
+                sign = deSign.substring(0,deSign.length()-7);
+            }
+        }
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,virtualId);
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> map1 = new HashMap<>();
-        map1.put("content", "请务必关闭钉钉自动更新，具体方法在手机应用商店把软件自动更新选项关闭");
+        map1.put("content", ConstantsContext.getPirateContact());
         map1.put("title", "重要通知");
         map1.put("type", "");
-        map1.put("show", 1);
+        if (whetherLegal){
+            map1.put("show", 1);
+        }else {
+            map1.put("show", 0);
+        }
+
         map.put("data",map1);
         map.put("message", "ok");
         map.put("code", 0);

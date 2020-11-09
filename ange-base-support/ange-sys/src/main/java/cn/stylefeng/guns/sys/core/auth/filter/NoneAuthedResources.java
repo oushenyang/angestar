@@ -71,6 +71,7 @@ public class NoneAuthedResources {
             //单码登录
             "/cardLogin/*",
             "/api/**",
+            "/new/api/**",
 
             //用户登录
             "/userLogin/*"

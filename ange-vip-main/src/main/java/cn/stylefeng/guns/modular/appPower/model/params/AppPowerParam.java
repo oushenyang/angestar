@@ -29,6 +29,7 @@ public class AppPowerParam implements Serializable, BaseValidatingParam {
      * 应用名
      */
     private String appName;
+    private String appCode;
 
     /**
      * 应用分类编码

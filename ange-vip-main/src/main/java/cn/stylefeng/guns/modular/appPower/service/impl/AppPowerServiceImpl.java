@@ -61,7 +61,7 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
     @Override
     public void delete(AppPowerParam param){
         AppPower appPower = this.getById(param.getAppPowerId());
-        redisUtil.hdel(RedisType.APP_POWER.getCode() + "huanyin",appPower.getSign());
+        redisUtil.hdel(RedisType.APP_POWER.getCode() + appPower.getAppTypeCode(),appPower.getSign()+"-"+appPower.getCustomData());
         this.removeById(getKey(param));
     }
 
@@ -86,7 +86,7 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
 //            throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
 //        }
         this.updateById(newEntity);
-        redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin",param.getSign(),newEntity,RedisExpireTime.MONTH.getCode());
+        redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData(),newEntity, RedisExpireTime.MONTH.getCode());
     }
 
     @Override
@@ -216,7 +216,7 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
                 appPower1.setSign(sign);
                 appPower1.setAppName(CustomEnAndDe.deCrypto(appCode));
                 appPower1.setCustomData(appCode);
-                appPower1.setAppTypeCode("huanyin");
+                appPower1.setAppTypeCode("huanyin125");
                 appPower1.setWhetherLegal(false);
                 appPower1.setWhetherSanction(false);
                 appPower1.setWhetherShow(false);

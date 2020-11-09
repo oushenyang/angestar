@@ -6,8 +6,8 @@ beetl:
   resource-auto-check: true         #热加载beetl模板，开发时候用
 
 spring:
-  profiles:
-    active: @spring.active@
+#  profiles:
+#    active: @spring.active@
   mvc:
     view:
       prefix: /pages
@@ -20,6 +20,34 @@ spring:
       properties:
         max-actives: -1
         enable-logging: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.108.252.160:3306/ange_new?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: root
+    filters: wall,mergeStat
+
+    # 连接池大小根据实际情况调整
+    max-active: 20
+    max-pool-prepared-statement-per-connection-size: 20
+
+  # 邮件发送配置（改为自己的账号和密码）
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: sn93@qq.com
+    password: xxxpassword
+  redis:
+    host: 115.159.104.158
+    port: 63799
+    password: oushenyang1314
+    timeout: 10s
+    jedis:
+      pool:
+        min-idle: 10
+        max-idle: 20
+        max-wait: -1ms
+        max-active: 200
 
 mybatis-plus:
   mapper-locations: classpath*:cn/stylefeng/**/mapping/*.xml
