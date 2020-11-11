@@ -150,9 +150,10 @@
         create_user AS "createUser"
         from ag_app_info
         <where>
-            <if test="appId != null and appId != ''">
-                app_id = #{appId}
+            <if test="callCode != null and callCode != ''">
+                app_num = #{callCode}
             </if>
         </where>
+        LIMIT 1
     </select>
 </mapper>

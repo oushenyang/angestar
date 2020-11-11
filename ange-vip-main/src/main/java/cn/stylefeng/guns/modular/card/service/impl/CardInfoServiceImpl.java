@@ -315,28 +315,13 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      */
     @Override
     public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
-//        CardInfoApi cardInfoApi = (CardInfoApi) redisUtil.get(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
-//        if (ObjectUtil.isNull(cardInfoApi)){
-//            cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
-//            if (ObjectUtil.isNotNull(cardInfoApi)){
-//                redisUtil.set(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode, cardInfoApi,604800);
-//            }
-//        }
-//        return cardInfoApi;
-
-
-
-
-
-
-
         CardInfoApi cardInfoApi;
         //是否存在该hash表
-        boolean isHave = redisUtil.hasKey(RedisType.CARD_INFO.getCode()+ appId);
+        boolean isHave = redisUtil.hHasKey(RedisType.CARD_INFO.getCode()+ appId,singleCode);
         if (isHave){
             cardInfoApi = (CardInfoApi)redisUtil.hget(RedisType.CARD_INFO.getCode()+ appId,singleCode);
         }else {
-            //不存在则创建
+            //不存在则数据库查
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
             if (ObjectUtil.isNull(cardInfoApi)){
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.MONTH.getCode());
@@ -347,7 +332,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
-        redisUtil.del(RedisType.CARD_INFO.getCode() + appId + "-" +  singleCode);
+        redisUtil.hdel(RedisType.CARD_INFO.getCode() + appId,singleCode);
         baseMapper.updateById(cardInfo);
     }
 

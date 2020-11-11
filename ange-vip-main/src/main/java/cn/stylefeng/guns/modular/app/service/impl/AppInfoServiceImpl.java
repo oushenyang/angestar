@@ -14,6 +14,7 @@ import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -149,7 +150,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     @Override
     public void delete(AppInfoParam param){
         //清除应用缓存
-        redisUtil.del(RedisType.APP_INFO.getCode() + param.getAppId());
+        redisUtil.del(RedisType.APP_INFO.getCode() + param.getAppNum());
 
         //删除版本
         AppEdition appEdition = new AppEdition();
@@ -194,7 +195,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
-        redisUtil.del(RedisType.APP_INFO.getCode() + newEntity.getAppId());
+        redisUtil.del(RedisType.APP_INFO.getCode() + newEntity.getAppNum());
         this.updateById(newEntity);
     }
 
@@ -240,12 +241,12 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
-    public AppInfoApi getAppInfoByRedis(Long appId) {
-        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO.getCode() + appId);
+    public AppInfoApi getAppInfoByRedis(String callCode) {
+        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO.getCode() + callCode);
         if (ObjectUtil.isNull(appInfoApi)){
-            appInfoApi = baseMapper.findAppInfoApi(appId);
+            appInfoApi = baseMapper.findAppInfoApi(callCode);
             if (ObjectUtil.isNotNull(appInfoApi)){
-                redisUtil.set(RedisType.APP_INFO.getCode() + appId , appInfoApi,604800);
+                redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.MONTH.getCode());
             }else {
                 //接口错误
                 throw new SystemApiException(-1, "数据错误","",false);

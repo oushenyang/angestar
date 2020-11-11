@@ -82,8 +82,8 @@ public interface AppInfoService extends IService<AppInfo> {
 
     /**
      * 从redis获取软件信息
-     * @param appId 应用id
+     * @param callCode 应用调用码
      * @return 应用信息
      */
-    AppInfoApi getAppInfoByRedis(Long appId);
+    AppInfoApi getAppInfoByRedis(String callCode);
 }

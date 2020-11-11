@@ -1,7 +1,10 @@
 package cn.stylefeng.guns.webApi.card;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.core.constant.state.CardStatus;
+import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -46,7 +49,7 @@ public class CheckCardStatusController {
 
     @RequestMapping("/{callCode}")
     @ResponseBody
-    public Object checkCardStatus(@PathVariable String callCode) {
+    public void checkCardStatus(@PathVariable String callCode) {
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("cardLogin",callCode);
         String statusCode = HttpContext.getRequest().getParameter(apiManage.getParameterOne());
@@ -61,28 +64,34 @@ public class CheckCardStatusController {
         if (ObjectUtil.isNull(cardInfoApi)){
             throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN.getCode() + String.valueOf(cardInfoApi.getCardId()));
-        List<Token> tokens = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(objects)) {
-            for (Map.Entry<Object, Object> m : objects.entrySet()) {
-                tokens.add((Token) m.getValue());
-            }
-        }
-        boolean isHave = false;
-        if (CollectionUtil.isNotEmpty(tokens)){
-            for (Token token : tokens) {
-                if (token.getToken().equals(statusCode)) {
-                    isHave = true;
-                    break;
-                }
-            }
-        }
+        //判断是否存在
+        boolean isHave = redisUtil.hHasKey(RedisType.TOKEN.getCode() + cardInfoApi.getCardId(),statusCode);
         if (isHave){
-            throw new CardLoginException(200, apiManage.getAppId(),"状态正常！",new Date(),holdCheck,true);
+            switch (cardInfoApi.getCardStatus()){
+                //已激活
+                case 1:
+                    //已经过期
+                    if (cardInfoApi.getExpireTime().compareTo(DateUtil.date())<0) {
+                        //更新卡密和删除缓存
+                        CardInfo cardInfo1 = new CardInfo();
+                        cardInfo1.setCardId(cardInfoApi.getCardId());
+                        cardInfo1.setCardStatus(CardStatus.EXPIRED.getCode());
+                        cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,singleCode);
+                        throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
+                    }else {
+                        throw new CardLoginException(200, apiManage.getAppId(),"状态正常！",new Date(),holdCheck,true);
+                    }
+                //已过期
+                case 2:
+                    throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
+                    //已禁用
+                case 3:
+                    throw new CardLoginException(-204, apiManage.getAppId(),"卡密已被禁用",new Date(),holdCheck,false);
+            }
+
         }else {
             throw new CardLoginException(-206, apiManage.getAppId(),"卡密在别的设备上登录！",new Date(),holdCheck,false);
         }
-
     }
 
 }

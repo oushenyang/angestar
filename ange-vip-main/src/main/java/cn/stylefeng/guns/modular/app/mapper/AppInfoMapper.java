@@ -31,5 +31,5 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
 
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AppInfoParam param);
 
-    AppInfoApi findAppInfoApi(@Param("appId") Long appId);
+    AppInfoApi findAppInfoApi(@Param("callCode") String callCode);
 }

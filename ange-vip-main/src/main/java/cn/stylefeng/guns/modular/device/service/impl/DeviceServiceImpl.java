@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.device.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.device.entity.Device;
 import cn.stylefeng.guns.modular.device.mapper.DeviceMapper;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -159,7 +161,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
-        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device,604800);
+        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device, RedisExpireTime.MONTH.getCode());
     }
 
     private Serializable getKey(DeviceParam param){

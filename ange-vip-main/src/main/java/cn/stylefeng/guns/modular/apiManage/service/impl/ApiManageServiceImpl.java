@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.appPower.entity.AppPower;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.mapper.ApiManageMapper;
@@ -99,7 +100,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
     public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
         ApiManageApi apiManageApi = new ApiManageApi();
         //是否存在该hash表
-        boolean isHave = redisUtil.hasKey(RedisType.API_MANAGE.getCode()+ callCode);
+        boolean isHave = redisUtil.hHasKey(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
         if (isHave){
              apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
             if (ObjectUtil.isNull(apiManageApi)){
@@ -107,25 +108,14 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
                 throw new SystemApiException(-1, "接口不正确","",false);
             }
         }else {
-            //不存在则创建
-            List<ApiManageApi> apiManageApiList = baseMapper.findApiManageApiListByCallCode(callCode);
-            boolean isExist = false;
-            if (CollectionUtil.isEmpty(apiManageApiList)){
+            //不存在则查询
+            apiManageApi = baseMapper.findApiManageApi(apiCode,callCode);
+            if (ObjectUtil.isNull(apiManageApi)){
                 throw new SystemApiException(-1, "接口不正确","",false);
-            }
-            for (ApiManageApi apiManageApi1 : apiManageApiList){
-                redisUtil.hset(RedisType.API_MANAGE.getCode()+ callCode,apiManageApi1.getApiCode(),apiManageApi1);
-                if (apiManageApi1.getApiCode().equals(apiCode)){
-                    isExist = true;
-                    apiManageApi = apiManageApi1;
-                }
-            }
-            if (!isExist){
-                //接口错误
-                throw new SystemApiException(-1, "接口不正确","",false);
+            }else {
+                redisUtil.hset(RedisType.API_MANAGE.getCode()+ callCode, apiCode, apiManageApi, RedisExpireTime.MONTH.getCode());
             }
         }
-
         return apiManageApi;
     }
 
