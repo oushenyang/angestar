@@ -66,18 +66,18 @@ public class NewHuanYingV2Controller {
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
-            String time =  deSign.substring(deSign.length() -7);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
-            Date date = new Date(System.currentTimeMillis());
-            String newTime = simpleDateFormat.format(date);
+//            String time =  deSign.substring(deSign.length() -7);
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
+//            Date date = new Date(System.currentTimeMillis());
+//            String newTime = simpleDateFormat.format(date);
             //说明盗版
-            if (!time.equals(newTime)){
-                sign = deSign;
-            }else {
+//            if (!time.equals(newTime)){
+//                sign = deSign;
+//            }else {
                 //从数据库里查是否正版
                 //去除最后七位
-                sign = deSign.substring(0,deSign.length()-7);
-            }
+                sign = deSign.substring(0,deSign.length()-8);
+//            }
         }
 
         boolean isShow = appPowerService.whetherShowBySignAndAppCode(sign,virtualId);

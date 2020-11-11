@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.*;
@@ -212,21 +213,58 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
             //不存在则创建
             AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
             if (ObjectUtil.isNull(appPower)){
-                AppPower appPower1 = new AppPower();
-                appPower1.setSign(sign);
-                appPower1.setAppName(CustomEnAndDe.deCrypto(appCode));
-                appPower1.setCustomData(appCode);
-                appPower1.setAppTypeCode("huanyin125");
-                appPower1.setWhetherLegal(false);
-                appPower1.setWhetherSanction(false);
-                appPower1.setWhetherShow(false);
-                appPower1.setCreateTime(new Date());
-                this.save(appPower1);
-                isLegal = false;
-                redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode,appPower1, RedisExpireTime.MONTH.getCode());
+                //并发情况防止重复插入数据
+                synchronized(this){
+                    AppPower appPower2 = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+                    if(ObjectUtil.isNull(appPower2)){
+                        AppPower appPower1 = new AppPower();
+                        appPower1.setSign(sign);
+                        appPower1.setAppName(CustomEnAndDe.deCrypto(appCode));
+                        appPower1.setCustomData(appCode);
+                        appPower1.setAppTypeCode("huanyin125");
+                        appPower1.setWhetherLegal(false);
+                        appPower1.setWhetherSanction(false);
+                        appPower1.setWhetherShow(false);
+                        appPower1.setCreateTime(new Date());
+                        redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode,appPower1, RedisExpireTime.MONTH.getCode());
+                        this.save(appPower1);
+                        isLegal = false;
+                    }
+                }
             }else {
                 redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",appPower.getSign()+"-"+appCode,appPower, RedisExpireTime.MONTH.getCode());
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
+                    isLegal = true;
+                }
+            }
+        }
+        return isLegal;
+    }
+
+    /**
+     * 判断是否制裁
+     *
+     * @param sign
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    @Override
+    public boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String appCode) {
+        boolean isLegal = false;
+        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        if (isHave){
+            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            if (ObjectUtil.isNotNull(appPower)){
+                if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
+                    isLegal = true;
+                }
+            }
+        }else {
+            //不存在则创建
+            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+            if (ObjectUtil.isNotNull(appPower)) {
+                redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", appPower.getSign() + "-" + appCode, appPower, RedisExpireTime.MONTH.getCode());
+                if (ConstantsContext.getPirateOpen2() && appPower.getWhetherSanction() && !appPower.getWhetherLegal()) {
                     isLegal = true;
                 }
             }
