@@ -65,8 +65,11 @@ public class CheckCardStatusController {
             throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
         //判断是否存在
-        boolean isHave = redisUtil.hHasKey(RedisType.TOKEN.getCode() + cardInfoApi.getCardId(),statusCode);
-        if (isHave){
+        Token token = (Token)redisUtil.hget(RedisType.TOKEN.getCode() + cardInfoApi.getCardId(),statusCode);
+        if (ObjectUtil.isNotNull(token)){
+            //更新校验时间
+            token.setCheckTime(new Date());
+            redisUtil.hset(RedisType.TOKEN.getCode() + cardInfoApi.getCardId(),statusCode,token);
             switch (cardInfoApi.getCardStatus()){
                 //已激活
                 case 1:

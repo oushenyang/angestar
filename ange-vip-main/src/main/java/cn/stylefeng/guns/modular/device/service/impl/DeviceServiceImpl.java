@@ -11,6 +11,7 @@ import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
 import cn.stylefeng.guns.modular.device.model.result.DeviceResult;
 import  cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -158,6 +159,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCardType(1);
         device.setMac(mac);
         device.setIp(getIp());
+        device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
         device.setCreateTime(date);
         baseMapper.insert(device);
         deviceApiList.add(device);
