@@ -21,8 +21,10 @@ import cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Controller;
@@ -167,6 +169,20 @@ public class AppInfoController extends BaseController {
         page.setRecords(result);
 
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 获取某个用户下的所有应用
+     *
+     * @author stylefeng
+     * @Date 2019-03-13
+     */
+    @ResponseBody
+    @RequestMapping("/listAppsByUser")
+    public ResponseData listAppsByUser() {
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        return new SuccessResponseData(appInfoParams);
     }
 
 }

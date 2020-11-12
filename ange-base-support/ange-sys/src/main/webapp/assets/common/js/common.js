@@ -123,6 +123,8 @@ layui.config({
     ztree: '../../expand/module/ztree/ztree-object',
     ax: '../../expand/module/ax/ax',
     func: '../../expand/module/func/func',
+    dict: '../../expand/module/dict/dict',
+    selectApp: '../../expand/module/app/selectApp',
 }).use(['layer', 'admin'], function () {
     var $ = layui.jquery;
     var layer = layui.layer;

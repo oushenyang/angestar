@@ -136,17 +136,16 @@
                             <input type="radio" class="layui-input" name="codeSignType" value="1" title="顶号登录">
                         </div>
                     </div>
-                    <div class="layui-form-item" pane="">
+                    <div class="layui-form-item">
                         <label class="layui-form-label">清理间隔<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input type="radio" class="layui-input" name="codeSignType" value="0" title="非顶号登录" checked="">
-                            <input type="radio" class="layui-input" name="codeSignType" value="1" title="顶号登录">
+                            <select name="codeClearSpace" id="codeClearSpace" dict="clear_space" class="selDict" lay-search="" lay-verify="required" required></select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" type="text" class="layui-input" lay-verify="required" required/>
+                            <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
                     </div>
                 </div>
@@ -170,17 +169,16 @@
                             <input type="radio" class="layui-input" name="accountSignType" value="1" title="顶号登录">
                         </div>
                     </div>
-                    <div class="layui-form-item" pane="">
+                    <div class="layui-form-item">
                         <label class="layui-form-label">清理间隔<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input type="radio" class="layui-input" name="codeSignType" value="0" title="非顶号登录" checked="">
-                            <input type="radio" class="layui-input" name="codeSignType" value="1" title="顶号登录">
+                            <select name="accountClearSpace" id="accountClearSpace" dict="clear_space" class="selDict" lay-search="" lay-verify="required" required></select>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" type="text" class="layui-input" lay-verify="required" required/>
+                            <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
                     </div>
                 </div>

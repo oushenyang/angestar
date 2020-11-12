@@ -1,4 +1,4 @@
-layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], function () {
+layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'selectApp'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
@@ -7,6 +7,10 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate'], fun
     var form = layui.form;
     var xmSelect = layui.xmSelect;
     var laydate = layui.laydate;
+    var selectApp=layui.selectApp; //获取自定义模块
+    selectApp.renderAppAll(); //渲染
+    //重新渲染select数据
+    form.render('select');
     // var clipboard = layui.clipboard;
     /**
      * 卡密表管理

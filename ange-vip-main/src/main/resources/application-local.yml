@@ -8,8 +8,8 @@ spring:
     filters: wall,mergeStat
 
     # 连接池大小根据实际情况调整
-    max-active: 20
-    max-pool-prepared-statement-per-connection-size: 20
+    max-active: 2000
+    max-pool-prepared-statement-per-connection-size: 2000
 
   # 邮件发送配置（改为自己的账号和密码）
   mail:

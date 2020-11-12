@@ -17,18 +17,7 @@
                             @if(tool.isNotEmpty(type)){
                             @if(type==1){
                             <div class="layui-inline">
-                                <select name="appId"  lay-search="" lay-filter="appId">
-                                    <option value="">所属应用</option>
-                                    <!--                                    <option value="0">通用卡密（对所有应用生效）</option>-->
-                                    @for(appInfo in appInfoParams) {
-                                    <option value="${appInfo.appId}"
-                                            @if(appId== appInfo.appId) {
-                                            selected="selected"
-                                            @}
-                                    >${appInfo.appName}
-                                    </option>
-                                    @}
-                                </select>
+                                <select name="appId" class="selectApp" lay-search="" lay-filter="appId"><option value="">所属应用</option></select>
                             </div>
                             @}
                             @if(type==0){

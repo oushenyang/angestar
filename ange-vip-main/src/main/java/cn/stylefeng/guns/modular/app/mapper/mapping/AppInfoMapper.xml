@@ -26,9 +26,11 @@
         <result column="account_bind_time" property="accountBindTime" />
         <result column="code_open_range" property="codeOpenRange" />
         <result column="code_sign_type" property="codeSignType" />
+        <result column="code_clear_space" property="codeClearSpace" />
         <result column="code_open_num" property="codeOpenNum" />
         <result column="account_open_range" property="accountOpenRange" />
         <result column="account_sign_type" property="accountSignType" />
+        <result column="account_clear_space" property="accountClearSpace" />
         <result column="account_open_num" property="accountOpenNum" />
         <result column="code_try_type" property="codeTryType" />
         <result column="code_try_time" property="codeTryTime" />
@@ -72,9 +74,11 @@
         account_bind_time AS "accountBindTime",
         code_open_range AS "codeOpenRange",
         code_sign_type AS "codeSignType",
+        code_clear_space AS "codeClearSpace",
         code_open_num AS "codeOpenNum",
         account_open_range AS "accountOpenRange",
         account_sign_type AS "accountSignType",
+        account_clear_space AS "accountClearSpace",
         account_open_num AS "accountOpenNum",
         code_try_type AS "codeTryType",
         code_try_time AS "codeTryTime",
@@ -129,9 +133,11 @@
         account_bind_time AS "accountBindTime",
         code_open_range AS "codeOpenRange",
         code_sign_type AS "codeSignType",
+        code_clear_space AS "codeClearSpace",
         code_open_num AS "codeOpenNum",
         account_open_range AS "accountOpenRange",
         account_sign_type AS "accountSignType",
+        account_clear_space AS "accountClearSpace",
         account_open_num AS "accountOpenNum",
         code_try_type AS "codeTryType",
         code_try_time AS "codeTryTime",

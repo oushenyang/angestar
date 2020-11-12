@@ -154,6 +154,12 @@ public class AppInfo implements Serializable {
     private Integer codeSignType;
 
     /**
+     * 卡密清理间隔（取字典clear_space）
+     */
+    @TableField("code_clear_space")
+    private Integer codeClearSpace;
+
+    /**
      * 单码多开数量
      */
     @TableField("code_open_num")
@@ -170,6 +176,12 @@ public class AppInfo implements Serializable {
      */
     @TableField("account_sign_type")
     private Integer accountSignType;
+
+    /**
+     * 卡密清理间隔（取字典clear_space）
+     */
+    @TableField("account_clear_space")
+    private Integer accountClearSpace;
 
     /**
      * 账号多开数量
@@ -469,6 +481,14 @@ public class AppInfo implements Serializable {
         this.codeSignType = codeSignType;
     }
 
+    public Integer getCodeClearSpace() {
+        return codeClearSpace;
+    }
+
+    public void setCodeClearSpace(Integer codeClearSpace) {
+        this.codeClearSpace = codeClearSpace;
+    }
+
     public Integer getCodeOpenNum() {
         return codeOpenNum;
     }
@@ -491,6 +511,14 @@ public class AppInfo implements Serializable {
 
     public void setAccountSignType(Integer accountSignType) {
         this.accountSignType = accountSignType;
+    }
+
+    public Integer getAccountClearSpace() {
+        return accountClearSpace;
+    }
+
+    public void setAccountClearSpace(Integer accountClearSpace) {
+        this.accountClearSpace = accountClearSpace;
     }
 
     public Integer getAccountOpenNum() {
@@ -675,10 +703,12 @@ public class AppInfo implements Serializable {
         ", accountBindNum=" + accountBindNum +
         ", accountBindTime=" + accountBindTime +
         ", codeOpenRange=" + codeOpenRange +
+        ", codeClearSpace=" + codeClearSpace +
         ", codeSignType=" + codeSignType +
         ", codeOpenNum=" + codeOpenNum +
         ", accountOpenRange=" + accountOpenRange +
         ", accountSignType=" + accountSignType +
+        ", accountClearSpace=" + accountClearSpace +
         ", accountOpenNum=" + accountOpenNum +
         ", codeTryType=" + codeTryType +
         ", codeTryTime=" + codeTryTime +

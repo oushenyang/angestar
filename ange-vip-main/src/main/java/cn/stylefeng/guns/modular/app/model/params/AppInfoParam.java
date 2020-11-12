@@ -132,6 +132,11 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private Integer codeSignType;
 
     /**
+     * 卡密清理间隔（取字典clear_space）
+     */
+    private Integer codeClearSpace;
+
+    /**
      * 单码多开数量
      */
     private Integer codeOpenNum;
@@ -145,6 +150,11 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
      * 账号登录方式 0-非顶号；1-顶号；
      */
     private Integer accountSignType;
+
+    /**
+     * 账号清理间隔（取字典clear_space）
+     */
+    private Integer accountClearSpace;
 
     /**
      * 账号多开数量
