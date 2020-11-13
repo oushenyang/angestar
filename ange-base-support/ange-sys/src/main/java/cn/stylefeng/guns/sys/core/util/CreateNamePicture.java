@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.sys.core.util;
 
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
@@ -19,10 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Key;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Cipher;
@@ -53,31 +52,15 @@ public class CreateNamePicture {
      * @throws
      **/
     public static void main(String[] args) throws Exception {
-//        String name = "考勤大师";
-//        generateImg(name);
+        String dateStr1 = "2017-03-01 22:33:23";
+        Date date1 = DateUtil.parse(dateStr1);
 
-//        String a = decrypt("37bab22e81c4d42ec7edb8c66e312fd19074ad238f1e430d24cc301a86565180b61c429d804bf75b8b191e6e6942d883797558fb8b9c9a24acdca61c81d20be66b28f3208022d6457888a093e20347b6e0c290871d1932f457e9d733194eef3505562c30848726cf", Charset.forName("utf8"), "00118631");
+        String dateStr2 = "2017-03-01 22:33:34";
+        Date date2 = DateUtil.parse(dateStr2);
 
-//        System.out.println(a);
-
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("k", "QE17B90379C7B5B539655E5EF5D092B6");
-        String result2= HttpClientUtil.postParams("https://dev.eydata.net/query/single/6004da377caece59", paramMap);
-        //说明已激活
-        if(StringUtils.contains(result2, "到期时间")){
-            Document doc = Jsoup.parse(result2);
-            Elements rows = doc.select("form").get(0).select("span");
-            //卡密类型
-            String q1 = rows.select("span").get(1).text();
-            //激活时间
-            String q2 = rows.select("span").get(2).text();
-            //到期时间
-            String q3 = rows.select("span").get(3).text();
-            System.out.println(q1);
-            System.out.println(q2);
-            System.out.println(q3);
-        }
-        System.out.println(result2);
+//相差一个月，31天
+        long betweenDay = DateUtil.between(date2, date1, DateUnit.SECOND);
+        System.out.println(betweenDay);
 
     }
 

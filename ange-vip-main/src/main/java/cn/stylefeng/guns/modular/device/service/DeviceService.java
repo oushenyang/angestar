@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.device.model.result.DeviceResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.models.auth.In;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,5 +74,5 @@ public interface DeviceService extends IService<Device> {
      * @param cardId 卡密id
      * @return 返回设备
      */
-    boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId, Integer cardBindType,Integer cardBindNum,String mac,String model);
+    boolean getDeviceApiAndHandleByCardOrUserId(Long appId, Long cardId, Integer cardBindType, Integer cardBindNum, String mac, String model, Date expireTime);
 }

@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.device.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.device.entity.Device;
@@ -11,6 +12,7 @@ import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
 import cn.stylefeng.guns.modular.device.model.result.DeviceResult;
 import  cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +40,11 @@ import static cn.stylefeng.roses.core.util.HttpContext.getIp;
 @Service
 public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> implements DeviceService {
 
-    private final RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
-    public DeviceServiceImpl(RedisUtil redisUtil) {
-        this.redisUtil = redisUtil;
-    }
+    @Autowired
+    private AsyncService asyncService;
 
     @Override
     public void add(DeviceParam param){
@@ -81,19 +84,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model) {
-//        List<Object> objects = redisUtil.lGet(RedisType.DEVICE.getCode() + String.valueOf(cardId),0,-1);
-//        List<Device> deviceApis = new ArrayList<>();
-//        if (CollectionUtil.isNotEmpty(objects)){
-//            deviceApis = JSON.parseArray(objects.get(0).toString(),Device.class);
-//        }
-//        if (CollectionUtils.isEmpty(deviceApis)){
-//            deviceApis = baseMapper.selectList(new QueryWrapper<Device>().eq("card_id", cardId));
-//            if (CollectionUtils.isEmpty(deviceApis)){
-//                redisUtil.lSet(RedisType.CARD_INFO.getCode() + String.valueOf(cardId), deviceApis,604800);
-//            }
-//        }
-
+    public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model,Date expireTime) {
         Map<Object, Object> objects = redisUtil.hmget(RedisType.DEVICE.getCode() + cardId);
         List<Device> deviceApis = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(objects)) {
@@ -105,7 +96,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         //如果空
         if (CollectionUtils.isEmpty(deviceApis)){
             List<Device> deviceApiList = new ArrayList<>();
-            insertDevice(deviceApiList,appId,cardId, mac);
+            insertDevice(deviceApiList,appId,cardId, mac,expireTime);
             return true;
         }else {
             boolean isHave = false;
@@ -141,7 +132,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             }else {
                 //如果还没达到上限,直接插入并返回成功
                 if (deviceApis.size()<cardBindNum){
-                    insertDevice(deviceApis,appId,cardId, mac);
+                    insertDevice(deviceApis,appId,cardId, mac,expireTime);
                     return true;
                 }else {
                     //返回错误,不在常用设备登录
@@ -151,7 +142,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         }
     }
 
-    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac){
+    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,Date expireTime){
         Date date = new Date();
         Device device = new Device();
         device.setAppId(appId);
@@ -161,9 +152,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setIp(getIp());
         device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
         device.setCreateTime(date);
-        baseMapper.insert(device);
+//        baseMapper.insert(device);
+        //异步调用插入
+        asyncService.insertDevice(device);
         deviceApiList.add(device);
-        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device, RedisExpireTime.MONTH.getCode());
+        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device, CardDateUtil.getExpireTimeSpace(expireTime));
     }
 
     private Serializable getKey(DeviceParam param){

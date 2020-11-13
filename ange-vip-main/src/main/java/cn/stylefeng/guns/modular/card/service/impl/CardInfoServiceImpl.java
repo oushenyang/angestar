@@ -139,7 +139,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void delete(CardInfoParam param){
-        redisUtil.del(RedisType.CARD_INFO.getCode() + param.getAppId() + "-" +  param.getCardCode());
+        redisUtil.hdel(RedisType.CARD_INFO.getCode() + param.getAppId(),param.getCardCode());
+        redisUtil.del(RedisType.TOKEN.getCode() + param.getCardId());
+        redisUtil.del(RedisType.DEVICE.getCode() + param.getCardId());
         this.removeById(getKey(param));
     }
 
@@ -148,7 +150,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         List<String> idList = Arrays.asList(ids.split(","));
         List<CardInfo> cardInfos = this.listByIds(idList);
         cardInfos.forEach(cardInfo->{
-            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getAppId() + "-" +  cardInfo.getCardCode());
+            redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardInfo.getAppId(),cardInfo.getCardCode());
+            redisUtil.hdel(RedisType.TOKEN.getCode() + cardInfo.getCardId());
+            redisUtil.hdel(RedisType.DEVICE.getCode() + cardInfo.getCardId());
             if (cardInfo.getAppId()!=0){
                 //获取应用信息
                 AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
@@ -176,14 +180,14 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         if (CollectionUtils.isEmpty(cardInfos)){
             throw new ServiceException(UN_FIND_CARD);
         }
-        cardInfos = editCardInfos(cardInfos,param);
+        editCardInfos(cardInfos, param);
         baseMapper.BachUpdateCardInfo(cardInfos);
 //        this.updateById(newEntity);
     }
 
     private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
         cardInfos.forEach(cardInfo->{
-            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getAppId() + "-" +  cardInfo.getCardCode());
+            redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardInfo.getAppId(),cardInfo.getCardCode());
             switch (param.getEvent()){
                 case "prohibition":
                     cardInfo.setProhibitRemark(param.getProhibitRemark());
@@ -323,8 +327,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }else {
             //不存在则数据库查
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
-            if (ObjectUtil.isNull(cardInfoApi)){
-                redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.MONTH.getCode());
+            if (ObjectUtil.isNotNull(cardInfoApi)){
+                redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.WEEK.getCode());
             }
         }
         return cardInfoApi;

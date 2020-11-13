@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.device.mapper;
 
 import cn.stylefeng.guns.modular.device.entity.Token;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TokenMapper extends BaseMapper<Token> {
 
+    void deleteByToken(@Param("token") String token);
 }

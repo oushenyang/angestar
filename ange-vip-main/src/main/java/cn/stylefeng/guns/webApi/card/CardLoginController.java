@@ -177,7 +177,7 @@ public class CardLoginController {
                 //生成token
                 tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
-                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model);
+                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model,expireTime);
                 if (successful){
                     //返回成功信息
                     //生成token
@@ -200,7 +200,7 @@ public class CardLoginController {
                 //生成token
                 tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
-                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindNum(),mac,model);
+                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindNum(),mac,model,expireTime);
                 if (successful){
                     //返回成功信息
                     tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);

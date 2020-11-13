@@ -24,6 +24,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * SpringBoot方式启动类
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.Bean;
  * @author stylefeng
  * @Date 2017/5/21 12:06
  */
+@EnableAsync
 @SpringBootApplication(exclude = {MybatisDataSourceAutoConfiguration.class})
 public class GunsApplication {
 

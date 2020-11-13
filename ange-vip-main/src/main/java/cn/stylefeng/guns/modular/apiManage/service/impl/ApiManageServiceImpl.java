@@ -1,10 +1,9 @@
 package cn.stylefeng.guns.modular.apiManage.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.appPower.entity.AppPower;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
@@ -20,10 +19,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +38,9 @@ import java.util.Map;
 @Service
 public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage> implements ApiManageService {
 
-    private final RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
-    public ApiManageServiceImpl(RedisUtil redisUtil) {
-        this.redisUtil = redisUtil;
-    }
 
     @Override
     public void add(ApiManageParam param){

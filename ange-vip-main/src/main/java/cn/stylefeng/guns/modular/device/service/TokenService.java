@@ -39,6 +39,14 @@ public interface TokenService extends IService<Token> {
     void delete(TokenParam param);
 
     /**
+     * 删除
+     *
+     * @author shenyang.ou
+     * @Date 2020-08-02
+     */
+    void deleteByToken(String token);
+
+    /**
      * 更新
      *
      * @author shenyang.ou

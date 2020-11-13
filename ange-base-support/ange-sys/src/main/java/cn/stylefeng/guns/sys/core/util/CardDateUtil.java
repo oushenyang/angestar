@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 
 import javax.xml.crypto.Data;
@@ -108,6 +109,31 @@ public class CardDateUtil {
             expireTime = DateUtil.offsetMinute(expireTime, addMinuteNum);
         }
         return DateTime.of(expireTime);
+    }
+
+    /**
+     * 获取token清理间隔
+     * @param expireTime 到期时间
+     * @param clearSpace 清理间隔
+     * @return 返回秒
+     */
+    public static long getClearSpace(Date expireTime, Integer clearSpace){
+        long time = 0;
+        if (clearSpace==0){
+            time = DateUtil.between(new Date(), expireTime, DateUnit.SECOND)+86400;
+        }else {
+            time = clearSpace*60*60;
+        }
+        return time;
+    }
+
+    /**
+     * 获取到期时间清理间隔
+     * @param expireTime 到期时间
+     * @return 返回秒
+     */
+    public static long getExpireTimeSpace(Date expireTime){
+        return DateUtil.between(new Date(), expireTime, DateUnit.SECOND)+86400;
     }
 
 }

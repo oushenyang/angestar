@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
@@ -16,12 +17,15 @@ import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -43,11 +47,12 @@ import static cn.stylefeng.roses.core.util.HttpContext.getIp;
 @Service
 public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements TokenService {
 
-    private final RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
-    public TokenServiceImpl(RedisUtil redisUtil) {
-        this.redisUtil = redisUtil;
-    }
+    @Autowired
+    private AsyncService asyncService;
+
 
     @Override
     public void add(TokenParam param) {
@@ -58,6 +63,18 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
     @Override
     public void delete(TokenParam param) {
         this.removeById(getKey(param));
+    }
+
+    /**
+     * 删除
+     *
+     * @param token
+     * @author shenyang.ou
+     * @Date 2020-08-02
+     */
+    @Override
+    public void deleteByToken(String token) {
+        baseMapper.deleteByToken(token);
     }
 
     @Override
@@ -111,12 +128,12 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                 if (appInfoApi.getCodeOpenRange() == 0) {
                     if (CollectionUtils.isEmpty(tokens)) {
                         List<Token> tokenList = new ArrayList<>();
-                        String tokenStr = insertToken(tokenList, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                        String tokenStr = insertToken(tokenList, appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                         throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                     } else {
                         //顶号登录，直接生成新的
                         if (appInfoApi.getAccountSignType() == 1) {
-                            String tokenStr = delAndInsertToken(tokens, 1,apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                            String tokenStr = delAndInsertToken(tokens, 1,appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                             throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                             //非顶号，提示
                         } else {
@@ -125,19 +142,19 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                     }
                 } else {
                     //开启
-                    String tokenStr = updateAndInsertToken(tokens, appInfoApi.getCodeSignType(), appInfoApi.getCodeOpenNum(), apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                    String tokenStr = updateAndInsertToken(tokens, appInfoApi.getCodeSignType(), appInfoApi.getCodeOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                     throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                 }
             case 1:
                 //关闭，只允许一个
                 if (CollectionUtils.isEmpty(tokens)) {
                     List<Token> tokenList = new ArrayList<>();
-                    String tokenStr = insertToken(tokenList, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                    String tokenStr = insertToken(tokenList, appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                     throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                 } else {
                     //顶号登录，直接生成新的
                     if (appInfoApi.getAccountSignType() == 1) {
-                        String tokenStr = delAndInsertToken(tokens,1, apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                        String tokenStr = delAndInsertToken(tokens,1, appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                         throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                         //非顶号，提示
                     } else {
@@ -146,17 +163,17 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                 }
             case 2:
                 //开启
-                String tokenStr = updateAndInsertToken(tokens, cardInfoApi.getCardSignType(), cardInfoApi.getCardOpenNum(), apiManage.getAppId(), cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model);
+                String tokenStr = updateAndInsertToken(tokens, cardInfoApi.getCardSignType(), cardInfoApi.getCardOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                 throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
         }
         return true;
     }
 
-    private String insertToken(List<Token> tokenList, Long appId, Long cardId, String cardCode, String mac, String model) {
+    private String insertToken(List<Token> tokenList, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = IdUtil.simpleUUID();
         Date date = new Date();
         Token token = new Token();
-        token.setAppId(appId);
+        token.setAppId(appInfoApi.getAppId());
         token.setCardOrUserId(cardId);
         token.setCardOrUserCode(cardCode);
         token.setCardType(1);
@@ -168,9 +185,11 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setLoginTime(date);
         token.setCheckTime(date);
         token.setCreateTime(date);
-        baseMapper.insert(token);
+        //异步调用插入
+        asyncService.insertTokenToSql(token);
+//        baseMapper.insert(token);
         tokenList.add(token);
-        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,3600);
+        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,CardDateUtil.getClearSpace(expireTime,appInfoApi.getCodeClearSpace()));
         return tokenStr;
     }
 
@@ -178,22 +197,24 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
      * 先删除指定数量再新增一个
      * @param delNum 删除的数量
      * @param tokenList token集合
-     * @param appId 应用id
+     * @param appInfoApi 应用
      * @param cardId 卡密id
      * @param cardCode 卡密
      * @param mac mac
      * @param model 设备型号
      */
-    private String delAndInsertToken(List<Token> tokenList, Integer delNum,Long appId, Long cardId, String cardCode, String mac, String model) {
-        //先删除然后新增一个
+    private String delAndInsertToken(List<Token> tokenList, Integer delNum,AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
+//        //先删除然后新增一个
         for (int i = 0; i < delNum; i++) {
             redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
-            baseMapper.deleteById(tokenList.get(i));
+//            baseMapper.deleteById(tokenList.get(i));
         }
+        //异步调用先删除
+        asyncService.delAndInsertToken(delNum,cardId,tokenList);
         String tokenStr = IdUtil.simpleUUID();
         Date date = new Date();
         Token token = new Token();
-        token.setAppId(appId);
+        token.setAppId(appInfoApi.getAppId());
         token.setCardOrUserId(cardId);
         token.setCardOrUserCode(cardCode);
         token.setCardType(1);
@@ -205,38 +226,40 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setLoginTime(date);
         token.setCheckTime(date);
         token.setCreateTime(date);
-        baseMapper.insert(token);
+//        baseMapper.insert(token);
+        //异步调用插入
+        asyncService.insertTokenToSql(token);
         tokenList.add(token);
-        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,3600);
+        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token, CardDateUtil.getClearSpace(expireTime,appInfoApi.getCodeClearSpace()));
         return tokenStr;
     }
 
-    private String updateAndInsertToken(List<Token> tokenList, Integer cardSignType, Integer codeOpenNumLong, Long appId, Long cardId, String cardCode, String mac, String model) {
+    private String updateAndInsertToken(List<Token> tokenList, Integer cardSignType, Integer codeOpenNumLong, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = null;
         //顶号登录
         if (cardSignType == 1) {
             if (CollectionUtil.isNotEmpty(tokenList)) {
                 //如果不等于空且小于多开数量
                 if (tokenList.size() < codeOpenNumLong) {
-                    tokenStr = insertToken(tokenList, appId, cardId, cardCode, mac, model);
+                    tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);
                 } else if (tokenList.size() == codeOpenNumLong) {
-                    tokenStr = delAndInsertToken(tokenList,1, appId, cardId, cardCode, mac, model);
+                    tokenStr = delAndInsertToken(tokenList,1, appInfoApi, cardId, cardCode, mac, model,expireTime);
                 } else if (tokenList.size() > codeOpenNumLong) {
-                    tokenStr = delAndInsertToken(tokenList, (tokenList.size() - codeOpenNumLong) - 1,appId, cardId, cardCode, mac, model);
+                    tokenStr = delAndInsertToken(tokenList, (tokenList.size() - codeOpenNumLong) - 1,appInfoApi, cardId, cardCode, mac, model,expireTime);
                 }
             } else {
-                tokenStr = insertToken(tokenList, appId, cardId, cardCode, mac, model);
+                tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);
             }
         } else {
             //如果不等于空且小于多开数量
             if (CollectionUtil.isNotEmpty(tokenList)) {
                 if (tokenList.size() < codeOpenNumLong) {
-                    tokenStr = insertToken(tokenList, appId, cardId, cardCode, mac, model);
+                    tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);
                 } else if (tokenList.size() >= codeOpenNumLong) {
                     throw new SystemApiException(-207, "卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！", "", false);
                 }
             } else {
-                tokenStr = insertToken(tokenList, appId, cardId, cardCode, mac, model);
+                tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);
             }
         }
         return tokenStr;
