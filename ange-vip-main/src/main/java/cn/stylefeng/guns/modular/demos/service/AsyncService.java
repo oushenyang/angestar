@@ -6,12 +6,14 @@ import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.SpringUtil;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,5 +53,18 @@ public class AsyncService {
     public void insertDevice(Device device) {
         DeviceService deviceService = SpringUtil.getBean(DeviceService.class);
         deviceService.save(device);
+    }
+
+    /**
+     * 更新token和缓存
+     * @param cardId 卡密id
+     * @param token token
+     */
+    @Async
+    public void updateTokenAndRedis(Long cardId, Token token, Integer clearSpace, Date expireTime) {
+        TokenService tokenService = SpringUtil.getBean(TokenService.class);
+        RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
+        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,token.getToken(),token, CardDateUtil.getClearSpace(expireTime,clearSpace));
+        tokenService.updateById(token);
     }
 }

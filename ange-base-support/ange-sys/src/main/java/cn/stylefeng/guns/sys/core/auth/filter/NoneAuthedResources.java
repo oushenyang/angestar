@@ -70,6 +70,8 @@ public class NoneAuthedResources {
 
             //单码登录
             "/cardLogin/*",
+            //检测单码用户状态
+            "/checkCardStatus/*",
             "/api/**",
             "/new/api/**",
 

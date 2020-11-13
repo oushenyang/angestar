@@ -96,6 +96,6 @@ public interface CardInfoService extends IService<CardInfo> {
      */
     CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode);
 
-    //更新卡密和缓存
+    //更新卡密和删除缓存
     void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode);
 }
