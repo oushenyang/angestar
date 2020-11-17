@@ -18,7 +18,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      */
     CodeCardType.initColumn = function () {
         return [[
-            {field: 'cardTypeId', type: 'checkbox'},
+            // {field: 'cardTypeId', type: 'checkbox'},
             {
                 field: 'appId',  title: '来源', templet: function (d) {
                     if (d.appId==0){

@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.node.MenuNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -9,6 +10,8 @@ import cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
 import  cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
+import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -41,6 +44,11 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     @Override
     public void add(CodeCardTypeParam param){
         CodeCardType entity = getEntity(param);
+        //判断是否已经存在同名称
+        List<CodeCardType> list = this.list(new QueryWrapper<CodeCardType>().eq("card_type_name",param.getCardTypeName()).eq("create_user",LoginContextHolder.getContext().getUserId()));
+        if (CollectionUtil.isNotEmpty(list)){
+            throw new ServiceException(BizExceptionEnum.CARD_TYPE_NAME_EXISTED);
+        }
         this.save(entity);
     }
 

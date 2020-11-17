@@ -60,8 +60,13 @@ layui.use(['form', 'admin', 'ax'], function () {
         "accountBindOption":1,
         "accountBindNum": 1,
         "accountBindTime": 0,
+        "codeOpenRange": 1,
         "codeOpenNum": 1,
+        "codeSignType": 1,
+        "codeClearSpace": 1,
+        "accountOpenRange": 1,
         "accountOpenNum": 1,
+        "accountClearSpace": 1,
         "codeTryTime": 0,
         "accountRegisterNum": 1,
         "accountRegisterTime": 0,
@@ -80,6 +85,8 @@ layui.use(['form', 'admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        data.field.codeClearSpace = 1;
+        data.field.accountClearSpace = 1;
         var ajax = new $ax(Feng.ctxPath + "/appInfo/addItem", function (data) {
             Feng.success("添加成功！");
 

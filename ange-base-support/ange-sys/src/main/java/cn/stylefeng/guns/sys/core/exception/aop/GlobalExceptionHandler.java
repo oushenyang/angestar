@@ -72,7 +72,7 @@ import static cn.stylefeng.roses.core.util.HttpContext.getRequest;
  */
 @ControllerAdvice
 @Order(-100)
-@Slf4j
+//@Slf4j
 public class GlobalExceptionHandler {
     private final RedisUtil redisUtil;
     private final SysApiResultService sysApiResultService;
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(MissingServletRequestParameterException e) {
-        log.warn("Missing Request Parameter", e);
+//        log.warn("Missing Request Parameter", e);
         String message = String.format("Missing Request Parameter: %s", e.getParameterName());
         return new ErrorResponseData(400, message);
     }
@@ -107,7 +107,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(MethodArgumentTypeMismatchException e) {
-        log.warn("Method Argument Type Mismatch", e);
+//        log.warn("Method Argument Type Mismatch", e);
         String message = String.format("Method Argument Type Mismatch: %s", e.getName());
         return new ErrorResponseData(400, message);
     }
@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(MethodArgumentNotValidException e) {
-        log.warn("Method Argument Not Valid", e);
+//        log.warn("Method Argument Not Valid", e);
         BindingResult result = e.getBindingResult();
         FieldError error = result.getFieldError();
         String message = String.format("%s:%s", error.getField(), error.getDefaultMessage());
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(BindException e) {
-        log.warn("Bind Exception", e);
+//        log.warn("Bind Exception", e);
         FieldError error = e.getFieldError();
         String message = String.format("%s:%s", error.getField(), error.getDefaultMessage());
         return new ErrorResponseData(400, message);
@@ -155,7 +155,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(ConstraintViolationException e) {
-        log.warn("Constraint Violation", e);
+//        log.warn("Constraint Violation", e);
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         ConstraintViolation<?> violation = violations.iterator().next();
         String path = ((PathImpl) violation.getPropertyPath()).getLeafNode().getName();
@@ -173,7 +173,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponseData handleError(HttpMessageNotReadableException e) {
-        log.warn("HttpMessageNotReadableException ", e);
+//        log.warn("HttpMessageNotReadableException ", e);
         String message = String.format("HttpMessageNotReadableException:%s", e.getMessage());
         return new ErrorResponseData(400, message);
     }
@@ -299,7 +299,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponseData bussiness(ServiceException e) {
-        log.error("业务异常:", e);
+//        log.error("业务异常:", e);
         if (LoginContextHolder.getContext().hasLogin()) {
             LogManager.me().executeLog(LogTaskFactory.exceptionLog(LoginContextHolder.getContext().getUserId(), e));
         }
@@ -317,7 +317,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponseData notFount(Throwable e) {
-        log.error("运行时异常:", e);
+//        log.error("运行时异常:", e);
         if (LoginContextHolder.getContext().hasLogin()) {
             LogManager.me().executeLog(LogTaskFactory.exceptionLog(LoginContextHolder.getContext().getUserId(), e));
         }

@@ -132,7 +132,12 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 卡密相关的异常
      */
     UN_SELECT_CARD(400, "未选择卡密"),
-    UN_FIND_CARD(400, "未找到相关卡密");
+    UN_FIND_CARD(400, "未找到相关卡密"),
+
+    /**
+     * 卡类相关的异常
+     */
+    CARD_TYPE_NAME_EXISTED(400, "卡类名称已经存在");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;
