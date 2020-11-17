@@ -1,8 +1,10 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     var $ = layui.$;
     var table = layui.table;
+    var form = layui.form;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var notice = layui.notice;
 
     /**
      * 单码卡类列表管理
@@ -18,17 +20,17 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             {field: 'cardTypeId', type: 'checkbox'},
             {
-                field: 'appName',  title: '所属应用', templet: function (d) {
-                    if (!d.appName){
-                        return '通用卡类';
+                field: 'appId',  title: '来源', templet: function (d) {
+                    if (d.appId==0){
+                        return '默认生成';
                     }else {
-                        return d.appName;
+                        return '自定义';
                     }
                 }
             },
-            {field: 'cardTypeName', sort: true, title: '卡类名称'},
+            {field: 'cardTypeName', title: '卡类名称'},
             {
-                field: 'cardTimeType', sort: true, title: '时间类型', templet: function (d) {
+                field: 'cardTimeType', title: '时间类型', templet: function (d) {
                     switch (d.cardTimeType) {
                         case 0:
                             return '分';
@@ -69,8 +71,10 @@ layui.use(['table', 'admin', 'ax'], function () {
                     }
                 }
             },
-            {field: 'cardTypeLength', sort: true, title: '卡密长度'},
+            {field: 'cardTypeLength', title: '卡密长度'},
             {field: 'createTime', sort: true, title: '创建时间'},
+            {field: 'status',  templet: '#statusTpl', title: '状态'},
+            {field: 'sort', title: '排序'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
@@ -153,6 +157,40 @@ layui.use(['table', 'admin', 'ax'], function () {
     };
 
     /**
+     * 修改卡密类型状态
+     *
+     * @param userId 用户id
+     * @param checked 是否选中（true,false），选中就是解锁用户，未选中就是锁定用户
+     */
+    CodeCardType.changeCardTypeStatus = function (cardTypeId, checked) {
+        if (checked) {
+            var ajax = new $ax(Feng.ctxPath + "/codeCardType/unfreeze", function (data) {
+                notice.msg('解除冻结成功!', {icon: 1});
+            }, function (data) {
+                notice.msg("解除冻结失败!" + data.responseJSON.message + "!", {icon: 2});
+                table.reload(CodeCardType.tableId);
+            });
+            ajax.set("cardTypeId", cardTypeId);
+            ajax.start();
+        } else {
+            var ajax = new $ax(Feng.ctxPath + "/codeCardType/freeze", function (data) {
+                notice.msg('冻结成功!', {icon: 1});
+            }, function (data) {
+                notice.msg("冻结失败!" + data.responseJSON.message + "!", {icon: 2});
+                table.reload(CodeCardType.tableId);
+            });
+            ajax.set("cardTypeId", cardTypeId);
+            ajax.start();
+        }
+    };
+    // 修改卡密类型状态
+    form.on('switch(status)', function (obj) {
+        var cardTypeId = obj.elem.value;
+        var checked = obj.elem.checked ? true : false;
+        CodeCardType.changeCardTypeStatus(cardTypeId, checked);
+    });
+
+    /**
      * 批量删除
      *
      * @param obj 选择的行数据
@@ -160,7 +198,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     CodeCardType.batchRemove = function (obj) {
         let data = table.checkStatus(obj.config.id).data;
         if (data.length === 0) {
-            Feng.error("未选中数据!");
+            notice.msg("未选中数据!", {icon: 2});
             return false;
         }
         let ids = "";
@@ -170,10 +208,10 @@ layui.use(['table', 'admin', 'ax'], function () {
         ids = ids.substr(0, ids.length - 1);
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/batchRemove", function (data) {
-                Feng.success("删除成功!");
+                notice.msg("删除成功!", {icon: 1});
                 table.reload(CodeCardType.tableId);
             }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
+                notice.msg("删除失败!" + data.responseJSON.message + "!", {icon: 2});
             });
             ajax.set("ids", ids);
             ajax.start();
@@ -187,14 +225,13 @@ layui.use(['table', 'admin', 'ax'], function () {
         url: Feng.ctxPath + '/codeCardType/list',
         page: true,
         toolbar: '#' + CodeCardType.tableId + '-toolbar',
-        defaultToolbar: [{
-            title: '刷新',
-            layEvent: 'refresh',
-            icon: 'layui-icon-refresh',
-        }, 'filter', 'print'],
+        // defaultToolbar: [{
+        //     title: '刷新',
+        //     layEvent: 'refresh',
+        //     icon: 'layui-icon-refresh',
+        // }, 'filter', 'print'],
         height: "full-115",
         cellMinWidth: 100,
-        skin: 'line',
         cols: CodeCardType.initColumn()
     });
 

@@ -294,6 +294,25 @@
                             </fieldset>
         </div>
         @}
+        @if(event=='otherSign'){
+        <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">外部应用对接<span style="color: red;">*</span></label>
+                <div class="layui-input-block">
+                    <select name="dictTypeId" id="dictTypeId" lay-filter="dictTypeId">
+                        <option value="0">关闭</option>
+                        <option value="1">易游网络验证</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">卡密查询接口<span style="color: red;">*</span></label>
+                <div class="layui-input-block">
+                    <input id="provingUrl" name="provingUrl" placeholder="请输入卡密查询接口" type="text" class="layui-input" lay-verify="required" required/>
+                </div>
+            </div>
+        </div>
+        @}
     @}
     <div class="form-group-bottom text-right">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">${lang.get("BTN_CANCEL","取消")}

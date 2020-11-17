@@ -89,6 +89,18 @@ public class CodeCardType implements Serializable {
     private BigDecimal cardTypeAgentPrice;
 
     /**
+     * 状态：0-关闭；1-开启
+     */
+    @TableField("status")
+    private Boolean status;
+
+    /**
+     * 排序
+     */
+    @TableField("sort")
+    private Integer sort;
+
+    /**
      * 乐观锁
      */
     @TableField("revision")
@@ -207,6 +219,22 @@ public class CodeCardType implements Serializable {
         this.cardTypeAgentPrice = cardTypeAgentPrice;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public Integer getRevision() {
         return revision;
     }
@@ -260,6 +288,8 @@ public class CodeCardType implements Serializable {
         ", cardTypeLength=" + cardTypeLength +
         ", cardTypePrice=" + cardTypePrice +
         ", cardTypeAgentPrice=" + cardTypeAgentPrice +
+        ", status=" + status +
+        ", sort=" + sort +
         ", revision=" + revision +
         ", createUser=" + createUser +
         ", createTime=" + createTime +

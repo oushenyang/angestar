@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
@@ -13,7 +14,10 @@ import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
@@ -58,19 +62,8 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HE
  */
 @Service
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
-
     @Autowired
-    private ApiManageService apiManageService;
-    @Autowired
-    private ApiResultService apiResultService;
-    @Autowired
-    private AppEditionService appEditionService;
-    @Autowired
-    private CardInfoService cardInfoService;
-    @Autowired
-    private AgentAppService agentAppService;
-    @Autowired
-    private AgentCardService agentCardService;
+    private AsyncService asyncService;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -87,44 +80,10 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         //生成应用编码
         entity.setAppNum(wordAndNum("",12));
         this.save(entity);
-        //生成api接口
-        ApiManage temp = new ApiManage();
-        temp.setAppId(1L);
-        QueryWrapper<ApiManage> queryWrapper = new QueryWrapper<>(temp);
-        List<ApiManage> apiManages = apiManageService.list(queryWrapper);
-        apiManages.forEach(apiManage -> {
-            apiManage.setApiManageId(null);
-            apiManage.setAppId(entity.getAppId());
-            apiManage.setCallCode(entity.getAppNum());
-            apiManage.setCreateTime(new Date());
-            apiManage.setCreateUser(LoginContextHolder.getContext().getUserId());
-            apiManage.setUpdateTime(null);
-            apiManage.setUpdateUser(null);
-        });
-        apiManageService.saveBatch(apiManages);
-
-        //生成api自定义返回
-        ApiResult apiResult = new ApiResult();
-        apiResult.setAppId(1L);
-        QueryWrapper<ApiResult> apiResultQueryWrapper = new QueryWrapper<>(apiResult);
-        List<ApiResult> apiResults = apiResultService.list(apiResultQueryWrapper);
-        apiResults.forEach(apiResult1 -> {
-            apiResult1.setApiResultId(null);
-            apiResult1.setAppId(entity.getAppId());
-            apiResult1.setCreateTime(new Date());
-            apiResult1.setCreateUser(LoginContextHolder.getContext().getUserId());
-            apiResult1.setUpdateTime(null);
-            apiResult1.setUpdateUser(null);
-        });
-        apiResultService.saveBatch(apiResults);
         param.setAppId(entity.getAppId());
 
-        //生成版本号
-        AppEditionParam appEditionParam = new AppEditionParam();
-        appEditionParam.setAppId(entity.getAppId());
-        appEditionParam.setEditionName("1.0");
-        appEditionParam.setEditionNum("1.0");
-        appEditionService.add(appEditionParam);
+        //异步调用插入
+        asyncService.insertAppOthers(entity.getAppId(),entity.getAppNum(),LoginContextHolder.getContext().getUserId());
     }
 
     //生成小写字母+数字,
@@ -149,44 +108,10 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     @Override
     public void delete(AppInfoParam param){
+        //异步调用删除
+        asyncService.deleteAppOthers(param.getAppId());
         //清除应用缓存
         redisUtil.del(RedisType.APP_INFO.getCode() + param.getAppNum());
-
-        //删除版本
-        AppEdition appEdition = new AppEdition();
-        appEdition.setAppId(param.getAppId());
-        appEditionService.remove(new QueryWrapper<>(appEdition));
-        //删除api接口
-        ApiManage apiManage = new ApiManage();
-        apiManage.setAppId(param.getAppId());
-        apiManageService.remove(new QueryWrapper<>(apiManage));
-        List<ApiManage> apiManages = apiManageService.list(new QueryWrapper<ApiManage>().eq("app_id", param.getAppId()));
-        apiManages.forEach(apiManage1 -> {
-            //清除api接口缓存
-            redisUtil.del(RedisType.API_MANAGE.getCode() + apiManage1.getApiCode() + "-" +  apiManage1.getCallCode());
-        });
-        //删除api返回
-        ApiResult apiResult = new ApiResult();
-        apiResult.setAppId(param.getAppId());
-        apiResultService.remove(new QueryWrapper<>(apiResult));
-        List<ApiResult> apiResults = apiResultService.list(new QueryWrapper<ApiResult>().eq("app_id", param.getAppId()));
-        apiResults.forEach(apiResult1 -> {
-            //清除api接口缓存
-            redisUtil.del(RedisType.API_RESULT.getCode() + apiResult1.getAppId() + "-" +  apiResult1.getResultCode());
-        });
-        //删除卡密
-        CardInfo cardInfo = new CardInfo();
-        cardInfo.setAppId(param.getAppId());
-        cardInfoService.remove(new QueryWrapper<>(cardInfo));
-        //删除代理
-        AgentApp agentApp = new AgentApp();
-        agentApp.setAppId(param.getAppId());
-        agentAppService.remove(new QueryWrapper<>(agentApp));
-        //代理卡密
-        AgentCard agentCard = new AgentCard();
-        agentCard.setAppId(param.getAppId());
-        agentCardService.remove(new QueryWrapper<>(agentCard));
-
         this.removeById(getKey(param));
     }
 

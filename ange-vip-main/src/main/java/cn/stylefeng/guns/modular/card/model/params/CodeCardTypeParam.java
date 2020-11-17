@@ -71,6 +71,16 @@ public class CodeCardTypeParam implements Serializable, BaseValidatingParam {
     private BigDecimal cardTypeAgentPrice;
 
     /**
+     * 状态：0-关闭；1-开启
+     */
+    private Boolean status;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
      * 乐观锁
      */
     private Integer revision;

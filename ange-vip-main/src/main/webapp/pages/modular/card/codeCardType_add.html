@@ -7,18 +7,7 @@
 <form id="codeCardTypeForm" lay-filter="codeCardTypeForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
         <input name="cardTypeId" type="hidden"/>
-        <div class="layui-form-item">
-            <label class="layui-form-label">选择软件<span style="color: red;">*</span></label>
-            <div class="layui-input-block">
-                <select name="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
-                    <option value="">请选择软件</option>
-                    <option value="0">通用卡类（对所有应用生效）</option>
-                    @for(appInfo in appInfoParams) {
-                    <option value="${appInfo.appId}">${appInfo.appName}</option>
-                    @}
-                </select>
-            </div>
-        </div>
+        <input name="appId" id="appId" type="hidden" value="1"/>
         <div class="layui-form-item">
             <label class="layui-form-label">卡类名称<span style="color: red;">*</span></label>
             <div class="layui-input-block">
@@ -91,6 +80,13 @@
                     <input id="cardTypeAgentPrice" name="cardTypeAgentPrice" placeholder="请输入代理售价" type="number"
                            class="layui-input"/>
                 </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <label class="layui-form-label">排序<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="sort" name="sort" placeholder="请输入排序" maxlength="10" type="number" class="layui-input" lay-verType="tips"
+                       lay-verify="required" required/>
             </div>
         </div>
     </div>

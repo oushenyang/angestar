@@ -163,6 +163,8 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
                     AppInfo.openEditDlg(data,'试用注册',event);
                 } else if (event == 'password') {
                     AppInfo.openEditDlg(data,'密匙配置',event);
+                } else if (event == 'otherSign') {
+                    AppInfo.openEditDlg(data,'外部验证对接',event);
                 } else if (event == 'delete') {
                     AppInfo.onDeleteItem(data);
                 }

@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.modular.card.controller;
 
+import cn.stylefeng.guns.base.auth.annotion.Permission;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.log.BussinessLog;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
@@ -8,7 +10,13 @@ import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.sys.core.constant.Const;
+import cn.stylefeng.guns.sys.core.constant.dictmap.UserDict;
+import cn.stylefeng.guns.sys.core.constant.state.ManagerStatus;
+import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -150,6 +159,38 @@ public class CodeCardTypeController extends BaseController {
     public ResponseData detail(CodeCardTypeParam codeCardTypeParam) {
         CodeCardType detail = this.codeCardTypeService.getById(codeCardTypeParam.getCardTypeId());
         return ResponseData.success(detail);
+    }
+
+    /**
+     * 冻结
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/freeze")
+    @ResponseBody
+    public ResponseData freeze(@RequestParam Long cardTypeId) {
+        CodeCardTypeParam param = new CodeCardTypeParam();
+        param.setCardTypeId(cardTypeId);
+        param.setStatus(false);
+        this.codeCardTypeService.update(param);
+        return ResponseData.success();
+    }
+
+    /**
+     * 解除冻结
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/unfreeze")
+    @ResponseBody
+    public ResponseData unfreeze(@RequestParam Long cardTypeId) {
+        CodeCardTypeParam param = new CodeCardTypeParam();
+        param.setCardTypeId(cardTypeId);
+        param.setStatus(true);
+        this.codeCardTypeService.update(param);
+        return ResponseData.success();
     }
 
     /**
