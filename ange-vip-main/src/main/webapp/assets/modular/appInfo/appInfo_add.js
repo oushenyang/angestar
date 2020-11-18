@@ -1,57 +1,4 @@
-/**
- * 详情对话框
- */
-var AppInfoInfoDlg = {
-    data: {
-        appNum: "",
-        userId: "",
-        appName: "",
-        cydiaFlag: "",
-        appNotice: "",
-        customData1: "",
-        customData2: "",
-        customData3: "",
-        codeBindType: "",
-        codeBindOption: "",
-        codeBindNum: "",
-        codeBindTime: "",
-        accountBindType: "",
-        accountBindOption: "",
-        accountBindNum: "",
-        accountBindTime: "",
-        codeOpenRange: "",
-        codeSignType: "",
-        codeOpenNum: "",
-        accountOpenRange: "",
-        accountSignType: "",
-        accountOpenNum: "",
-        codeTryType: "",
-        codeTryTime: "",
-        accountRegisterSwitch: "",
-        accountRegisterLimit: "",
-        accountRegisterNum: "",
-        accountRegisterTime: "",
-        webAlgorithmType: "",
-        webKey: "",
-        webSalt: "",
-        versionNum: "",
-        createUser: "",
-        createTime: "",
-        updateUser: "",
-        updateTime: ""
-    }
-};
-//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-layui.use('element', function(){
-    var element = layui.element;
-
-    //一些事件监听
-    element.on('tab(demo)', function(data){
-        console.log(data);
-    });
-});
-
-layui.use(['form', 'admin', 'ax'], function () {
+layui.use(['form', 'admin', 'ax','element'], function () {
     //表单初始赋值
     layui.form.val('appInfoForm', {
         "codeBindOption":1,
@@ -79,6 +26,7 @@ layui.use(['form', 'admin', 'ax'], function () {
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var element = layui.element;
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();

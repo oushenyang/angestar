@@ -23,12 +23,10 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
     List<Map<String, Object>> findListBySpec(@Param("page")Page page, @Param("param")CodeCardTypeParam param);
 
     /**
-     * 根据应用id获取卡类信息
-     *
-     * @param appId 应用id
+     * 根据用户id获取卡类信息
      * @return 卡类信息
      */
-    List<CodeCardType> findCardTypeByAppId(@Param("appId")Long appId,@Param("userId")Long userId);
+    List<CodeCardType> findCardTypeByUserId(@Param("userId")Long userId);
 
     @Transactional
     void addCardTypeBySql(Map map);

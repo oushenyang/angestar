@@ -63,6 +63,39 @@
         cci.update_user AS "updateUser",
         cci.update_time AS "updateTime"
     </sql>
+
+    <!-- Redis查询结果列 -->
+    <sql id="Redis_Column_List">
+        cci.card_id AS cardId,
+        cci.app_id AS appId,
+        cci.card_type_name AS cardTypeName,
+        cci.card_id AS "cardId",
+        cci.app_id AS "appId",
+        cci.card_type_name AS "cardTypeName",
+        cci.card_type_id AS "cardTypeId",
+        cci.user_id AS "userId",
+        cci.user_name AS "userName",
+        cci.is_universal AS "isUniversal",
+        cci.card_code AS "cardCode",
+        cci.is_custom_time AS "isCustomTime",
+        cci.custom_time_num AS "customTimeNum",
+        cci.card_status AS "cardStatus",
+        cci.card_mac AS "cardMac",
+        cci.card_ip AS "cardIp",
+        cci.card_token AS "cardToken",
+        cci.active_time AS "activeTime",
+        cci.expire_time AS "expireTime",
+        cci.card_bind_type AS "cardBindType",
+        cci.card_bind_num AS "cardBindNum",
+        cci.card_open_range AS "cardOpenRange",
+        cci.card_sign_type AS "cardSignType",
+        cci.card_open_num AS "cardOpenNum",
+        cci.card_remark AS "cardRemark",
+        cci.prohibit_remark AS "prohibitRemark",
+        cci.create_user AS "createUser",
+        cct.card_time_type,
+        cct.card_type_data
+    </sql>
     <insert id="saveCardBatch">
         INSERT INTO `ag_card_info` (
         `card_id`,
@@ -257,14 +290,15 @@
         cct.card_type_data
         from ag_card_info cci
         left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
-        <where>
-            <if test="appId != null">
-                and cci.app_id = #{appId}
-            </if>
-            <if test="singleCode != null">
-                and cci.card_code = #{singleCode}
-            </if>
-        </where>
+        where cci.app_id = #{appId} and cci.card_code = #{singleCode}
+        union all
+        select
+        cci.*,
+        cct.card_time_type,
+        cct.card_type_data
+        from ag_card_info cci
+        left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
+        where cci.app_id = 0 and cci.card_code = #{singleCode}
         limit 1
     </select>
 

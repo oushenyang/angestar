@@ -60,20 +60,12 @@
         </where>
         order by cct.sort ASC
     </select>
-    <select id="findCardTypeByAppId" resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
+    <select id="findCardTypeByUserId" resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
         select
-        cct.*,
-        ai.app_name
+        cct.*
         from ag_code_card_type cct
-        left join ag_app_info ai on ai.app_id = cct.app_id
         where
         cct.create_user = #{userId}
-        <if test="appId != null and appId !=-1">
-        and cct.app_id = #{appId} or cct.app_id = 0
-        </if>
-        <if test="appId != null and appId ==0">
-        and cct.app_id = 0
-        </if>
     </select>
 
     <select id="addCardTypeBySql" resultType="java.lang.Void">

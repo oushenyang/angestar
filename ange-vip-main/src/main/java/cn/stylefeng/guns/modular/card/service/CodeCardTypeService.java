@@ -78,12 +78,11 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      LayuiPageInfo findPageBySpec(CodeCardTypeParam param);
 
     /**
-     * 根据应用id获取卡类信息
-     * @param appId 应用id
+     * 根据用户id获取卡类信息
      * @param userId 用户id
      * @return 卡类信息
      */
-    List<CodeCardType> getCardTypeByAppId(Long appId,Long userId);
+    List<CodeCardType> getCardTypeByUserId(Long userId);
 
     /**
      * 排除已经存在的卡类获取剩余卡类信息

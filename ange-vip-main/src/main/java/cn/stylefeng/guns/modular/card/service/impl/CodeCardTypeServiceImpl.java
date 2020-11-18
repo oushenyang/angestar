@@ -108,15 +108,14 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     /**
-     * 根据应用id获取卡类信息
+     * 根据用户id获取卡类信息
      *
-     * @param appId 应用id
      * @param userId 用户id
      * @return 卡类信息
      */
     @Override
-    public List<CodeCardType> getCardTypeByAppId(Long appId,Long userId) {
-        return baseMapper.findCardTypeByAppId(appId,userId);
+    public List<CodeCardType> getCardTypeByUserId(Long userId) {
+        return baseMapper.findCardTypeByUserId(userId);
     }
 
     /**

@@ -192,7 +192,6 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         page: true,
         height: "full-115",
         cellMinWidth: 100,
-        skin: 'line',
         cols: AppEdition.initColumn()
     });
 

@@ -183,4 +183,26 @@ public class AsyncService {
         //代理卡密
         agentCardService.remove(new QueryWrapper<AgentCard>().eq("app_id", appId));
     }
+
+    /**
+     * 更新卡密信息
+     * @param cardInfo 卡密信息
+     */
+    @Async
+    public void updateCard(CardInfo cardInfo) {
+        CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
+        cardInfoService.updateById(cardInfo);
+    }
+
+    /**
+     * 更新卡密信息和缓存
+     * @param cardInfo 卡密信息
+     */
+    @Async
+    public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
+        RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
+        CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
+        redisUtil.hdel(RedisType.CARD_INFO.getCode() + appId,singleCode);
+        cardInfoService.updateById(cardInfo);
+    }
 }

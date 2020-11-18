@@ -3,9 +3,6 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.http.HtmlUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -14,18 +11,14 @@ import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
-import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.base.Charsets;
-import com.google.common.hash.BloomFilter;
-import com.google.common.hash.Funnels;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -55,13 +48,15 @@ public class CardLoginController {
     private final AppInfoService appInfoService;
     private final DeviceService deviceService;
     private final TokenService tokenService;
+    private final AsyncService asyncService;
 
-    public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, AppInfoService appInfoService, DeviceService deviceService, TokenService tokenService) {
+    public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, AppInfoService appInfoService, DeviceService deviceService, TokenService tokenService, AsyncService asyncService) {
         this.apiManageService = apiManageService;
         this.cardInfoService = cardInfoService;
         this.appInfoService = appInfoService;
         this.deviceService = deviceService;
         this.tokenService = tokenService;
+        this.asyncService = asyncService;
     }
 
     @RequestMapping("/{callCode}")
@@ -109,8 +104,9 @@ public class CardLoginController {
                 //到期时间
                 Date expireTime = getExpireTime(cardInfoApi);
                 cardInfo.setExpireTime(expireTime);
-                //更新卡密和删除缓存
-                cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo,singleCode);
+                //异步更新卡密和删除缓存
+                asyncService.updateCardAndRedis(apiManage.getAppId(),cardInfo,singleCode);
+//                cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo,singleCode);
                 createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model,holdCheck, expireTime);
                 break;
             //已激活
@@ -121,7 +117,8 @@ public class CardLoginController {
                     CardInfo cardInfo1 = new CardInfo();
                     cardInfo1.setCardId(cardInfoApi.getCardId());
                     cardInfo1.setCardStatus(CardStatus.EXPIRED.getCode());
-                    cardInfoService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,singleCode);
+                    //异步更新卡密和删除缓存
+                    asyncService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,singleCode);
                     throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
                 }
                 createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, mac, model,holdCheck, cardInfoApi.getExpireTime());

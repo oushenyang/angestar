@@ -10,6 +10,7 @@ import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -62,6 +63,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     public AppInfoService appInfoService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private AsyncService asyncService;
 
 
     @Override
@@ -70,6 +73,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         if (param.getAppId()==0){
             param.setIsUniversal(true);
         }else {
+            param.setIsUniversal(false);
             //获取应用信息
             AppInfo appInfo = appInfoService.getById(param.getAppId());
             appInfo.setCardNum(appInfo.getCardNum()+param.getAddNum());
@@ -328,6 +332,17 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             //不存在则数据库查
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
             if (ObjectUtil.isNotNull(cardInfoApi)){
+                //如果通用
+                if (cardInfoApi.getIsUniversal()){
+                    cardInfoApi.setAppId(appId);
+                    cardInfoApi.setIsUniversal(false);
+                    CardInfo cardInfo = new CardInfo();
+                    cardInfo.setCardId(cardInfoApi.getCardId());
+                    cardInfo.setAppId(appId);
+                    cardInfo.setUniversal(false);
+                    //异步调用更新卡密信息
+                    asyncService.updateCard(cardInfo);
+                }
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.WEEK.getCode());
             }
         }

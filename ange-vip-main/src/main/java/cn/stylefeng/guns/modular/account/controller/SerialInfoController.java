@@ -58,18 +58,10 @@ public class SerialInfoController extends BaseController {
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(-1L,LoginContextHolder.getContext().getUserId());
-        codeCardTypes.forEach(codeCardType->{
-            if (codeCardType.getAppId() == 0){
-                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---默认卡类");
-            }else {
-                codeCardType.setCardTypeName(codeCardType.getCardTypeName()+" ---"+codeCardType.getAppName());
-            }
-        });
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(LoginContextHolder.getContext().getUserId());
         model.addAttribute("type", type);
         model.addAttribute("codeCardTypes", codeCardTypes);
-        List<CodeCardType> codeCardTypeList = codeCardTypeService.getCardTypeByAppId(0L,LoginContextHolder.getContext().getUserId());
-        model.addAttribute("codeCardTypeList", codeCardTypeList);
+        model.addAttribute("codeCardTypeList", codeCardTypes);
         return PREFIX + "/serialInfo.html";
     }
 
@@ -86,7 +78,7 @@ public class SerialInfoController extends BaseController {
         model.addAttribute("appInfoParams", appInfoParams);
         model.addAttribute("appId", 0);
         model.addAttribute("type", type);
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppId(0L,LoginContextHolder.getContext().getUserId());
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(LoginContextHolder.getContext().getUserId());
         model.addAttribute("codeCardTypes", codeCardTypes);
         return PREFIX + "/serialInfo_add.html";
     }
