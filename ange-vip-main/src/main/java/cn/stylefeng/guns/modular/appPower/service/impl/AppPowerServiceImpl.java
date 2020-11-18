@@ -199,11 +199,11 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
      * @Date 2020-10-29
      */
     @Override
-    public boolean whetherLegalBySignAndAppCode(String sign,String appCode) {
+    public boolean whetherLegalBySignAndAppCode(String sign,String appCode,String appTypeCode) {
         boolean isLegal = false;
-        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
         if (isHave){
-            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
             if (ObjectUtil.isNotNull(appPower)){
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
                     isLegal = true;
@@ -211,28 +211,28 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
             }
         }else {
             //不存在则创建
-            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,appTypeCode);
             if (ObjectUtil.isNull(appPower)){
                 //并发情况防止重复插入数据
                 synchronized(this){
-                    AppPower appPower2 = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+                    AppPower appPower2 = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,appTypeCode);
                     if(ObjectUtil.isNull(appPower2)){
                         AppPower appPower1 = new AppPower();
                         appPower1.setSign(sign);
                         appPower1.setAppName(CustomEnAndDe.deCrypto(appCode));
                         appPower1.setCustomData(appCode);
-                        appPower1.setAppTypeCode("huanyin125");
+                        appPower1.setAppTypeCode(appTypeCode);
                         appPower1.setWhetherLegal(false);
                         appPower1.setWhetherSanction(false);
                         appPower1.setWhetherShow(false);
                         appPower1.setCreateTime(new Date());
-                        redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode,appPower1, RedisExpireTime.MONTH.getCode());
+                        redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode,appPower1, RedisExpireTime.MONTH.getCode());
                         this.save(appPower1);
                         isLegal = false;
                     }
                 }
             }else {
-                redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",appPower.getSign()+"-"+appCode,appPower, RedisExpireTime.MONTH.getCode());
+                redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,appPower.getSign()+"-"+appCode,appPower, RedisExpireTime.MONTH.getCode());
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
                     isLegal = true;
                 }

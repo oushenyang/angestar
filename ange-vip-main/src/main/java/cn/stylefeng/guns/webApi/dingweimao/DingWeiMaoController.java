@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.webApi.dingweimao;
 
+import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
+import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.core.util.GPS;
 import cn.stylefeng.guns.sys.core.util.GPSConverterUtils;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
@@ -35,6 +37,8 @@ public class DingWeiMaoController {
 
     @Autowired
     private DictService dictService;
+    @Autowired
+    private AppPowerService appPowerService;
 
     @RequestMapping("/User/login")
     @ResponseBody
@@ -198,6 +202,16 @@ public class DingWeiMaoController {
                 appName = String.join("", m.getValue());
             }
         }
+
+        String token = HttpContext.getRequest().getParameter("c");
+        String sign;
+        if (StringUtils.isEmpty(token)){
+            return null;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            sign = deSign.substring(0,deSign.length()-8);
+        }
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,CustomEnAndDe.enCrypto(appName),"dingweimao172");
         if (StringUtils.isNotEmpty(appName)){
             boolean isHave = true;
             List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");

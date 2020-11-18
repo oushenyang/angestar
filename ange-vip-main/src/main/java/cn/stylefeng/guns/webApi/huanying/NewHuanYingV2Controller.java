@@ -82,7 +82,7 @@ public class NewHuanYingV2Controller {
 
         boolean isShow = appPowerService.whetherShowBySignAndAppCode(sign,virtualId);
         boolean pirateOpen2 = ConstantsContext.getPirateOpen2();
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,virtualId);
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,virtualId,"huanyin125");
 
         if (StringUtils.isNotEmpty(packAge)){
             QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
