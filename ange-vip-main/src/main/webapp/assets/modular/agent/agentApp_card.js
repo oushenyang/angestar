@@ -48,7 +48,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 page: true,
                 toolbar: '#' + AgentApp.card + '-toolbar',
                 defaultToolbar: [],
-                height: "full-115",
+                height: "full-126",
                 cellMinWidth: 100,
                 where:{
                     'cardType':0,
@@ -56,23 +56,25 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 },
                 cols: AgentApp.initColumn()
             });
-        }else if(data.index==1){
-            // 渲染表格
-             table.render({
-                elem: '#' + AgentApp.currentCard,
-                url: Feng.ctxPath + '/agentCard/list',
-                page: true,
-                toolbar: '#' + AgentApp.currentCard + '-toolbar',
-                defaultToolbar: [],
-                height: "full-115",
-                cellMinWidth: 100,
-                 where:{
-                     'cardType':1,
-                     'agentAppId':Feng.getUrlParam("agentAppId")
-                 },
-                cols: AgentApp.initColumn()
-            });
-        }else {
+        }
+        // else if(data.index==1){
+        //     // 渲染表格
+        //      table.render({
+        //         elem: '#' + AgentApp.currentCard,
+        //         url: Feng.ctxPath + '/agentCard/list',
+        //         page: true,
+        //         toolbar: '#' + AgentApp.currentCard + '-toolbar',
+        //         defaultToolbar: [],
+        //         height: "full-115",
+        //         cellMinWidth: 100,
+        //          where:{
+        //              'cardType':1,
+        //              'agentAppId':Feng.getUrlParam("agentAppId")
+        //          },
+        //         cols: AgentApp.initColumn()
+        //     });
+        // }
+        else {
             // 渲染表格
             table.render({
                 elem: '#' + AgentApp.account,
@@ -80,7 +82,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 page: true,
                 toolbar: '#' + AgentApp.account + '-toolbar',
                 defaultToolbar: [],
-                height: "full-115",
+                height: "full-126",
                 cellMinWidth: 100,
                 where:{
                     'cardType':2,
@@ -95,9 +97,9 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
      */
     AgentApp.initColumn = function () {
         return [[
-            {field: 'cardTypeId', type: 'checkbox'},
+            // {field: 'cardTypeId', type: 'checkbox'},
             {
-                field: 'appName', title: '所属应用', templet: function (d) {
+                field: 'appName', align: 'center', title: '所属应用', templet: function (d) {
                     if (!d.appName) {
                         return '通用卡类';
                     } else {
@@ -105,13 +107,21 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                     }
                 }
             },
-            {field: 'cardTypeName', title: '卡类名称'},
-            {field: 'marketPrice', title: '市场价'},
-            {field: 'agentPrice', title: '代理价'},
-            {field: 'createTime',width: 160,  sort: true, title: '创建时间'},
+            {field: 'cardTypeName', align: 'center', title: '卡类名称'},
+            {field: 'marketPrice', align: 'center', edit: 'number', title: '市场价'},
+            {field: 'agentPrice', align: 'center', edit: 'number', title: '代理价'},
+            {field: 'createTime', align: 'center', width: 160,  sort: true, title: '创建时间'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
+    //监听单元格编辑
+    table.on('edit(card)', function(obj){
+        console.log(obj)
+        var value = obj.value //得到修改后的值
+            ,data = obj.data //得到所在行所有键值
+            ,field = obj.field; //得到字段
+        layer.msg('[ID: '+ data.cardTypeId +'] ' + field + ' 字段更改为：'+ value);
+    });
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + AgentApp.card,
@@ -119,13 +129,13 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         page: true,
         toolbar: '#' + AgentApp.card + '-toolbar',
         defaultToolbar: [],
-        height: "full-115",
+        height: "full-126",
         cellMinWidth: 100,
         where:{
             'cardType':0,
             'agentAppId':Feng.getUrlParam("agentAppId")
         },
-        cols: AgentApp.initColumn()
+        cols: AgentApp.initColumn(),
     });
     //让当前iframe弹层高度适应
     admin.iframeAuto();
@@ -140,9 +150,11 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 Feng.success("初始化成功!");
                 if (cardType==0){
                     table.reload(AgentApp.card);
-                }else if (cardType==1){
-                    table.reload(AgentApp.currentCard);
-                }else {
+                }
+                // else if (cardType==1){
+                //     table.reload(AgentApp.currentCard);
+                // }
+                else {
                     table.reload(AgentApp.account);
                 }
 
@@ -191,14 +203,14 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         }
     });
     // 通用卡密表头工具条点击事件
-    table.on('toolbar(' + AgentApp.currentCard + ')', function(obj){
-        //添加
-        if(obj.event === 'btnAdd'){
-            AgentApp.openAddDlg();
-        } else if(obj.event === 'initialize'){
-            AgentApp.initializeItem(1);
-        }
-    });
+    // table.on('toolbar(' + AgentApp.currentCard + ')', function(obj){
+    //     //添加
+    //     if(obj.event === 'btnAdd'){
+    //         AgentApp.openAddDlg();
+    //     } else if(obj.event === 'initialize'){
+    //         AgentApp.initializeItem(1);
+    //     }
+    // });
     // 账号卡密表头工具条点击事件
     table.on('toolbar(' + AgentApp.account + ')', function(obj){
         //添加
@@ -221,15 +233,15 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
     });
 
     // 行内工具条点击事件
-    table.on('tool(' + AgentApp.currentCard + ')', function (obj) {
-        var data = obj.data;
-        var layEvent = obj.event;
-        if (layEvent === 'edit') {
-            AgentApp.openEditDlg(data,1);
-        } else if (layEvent === 'delete') {
-            AgentApp.onDeleteItem(data,1);
-        }
-    });
+    // table.on('tool(' + AgentApp.currentCard + ')', function (obj) {
+    //     var data = obj.data;
+    //     var layEvent = obj.event;
+    //     if (layEvent === 'edit') {
+    //         AgentApp.openEditDlg(data,1);
+    //     } else if (layEvent === 'delete') {
+    //         AgentApp.onDeleteItem(data,1);
+    //     }
+    // });
 
     // 行内工具条点击事件
     table.on('tool(' + AgentApp.account + ')', function (obj) {

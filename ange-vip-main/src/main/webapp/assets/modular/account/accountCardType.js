@@ -7,18 +7,18 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     var notice = layui.notice;
 
     /**
-     * 单码卡类列表管理
+     * 注册码卡类列表管理
      */
-    var CodeCardType = {
-        tableId: "codeCardTypeTable"
+    var AccountCardType = {
+        tableId: "accountCardTypeTable"
     };
 
     /**
      * 初始化表格的列
      */
-    CodeCardType.initColumn = function () {
+    AccountCardType.initColumn = function () {
         return [[
-            // {field: 'cardTypeId', type: 'checkbox'},
+            // {field: 'accountCardTypeId', type: 'checkbox'},
             {
                 field: 'appId',  title: '来源', templet: function (d) {
                     if (d.appId==0){
@@ -80,27 +80,27 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     /**
      * 点击查询按钮
      */
-    CodeCardType.search = function () {
+    AccountCardType.search = function () {
         var queryData = {};
         queryData['appId'] = $("#appId").val();
         queryData['cardTypeName'] = $("#cardTypeName").val();
         $('.toolbar').reset();
         layui.form.render();
-        table.reload(CodeCardType.tableId, {where: queryData});
+        table.reload(AccountCardType.tableId, {where: queryData});
     };
 
     /**
      * 弹出添加对话框
      */
-    CodeCardType.openAddDlg = function () {
+    AccountCardType.openAddDlg = function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加单码卡类列表',
+            title: '添加注册码卡类列表',
             area: '700px',
-            content: Feng.ctxPath + '/codeCardType/add',
+            content: Feng.ctxPath + '/accountCardType/add',
             end: function () {
-                admin.getTempData('formOk') && table.reload(CodeCardType.tableId);
+                admin.getTempData('formOk') && table.reload(AccountCardType.tableId);
             }
         });
     };
@@ -108,8 +108,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     /**
      * 导出excel按钮
      */
-    CodeCardType.exportExcel = function () {
-        var checkRows = table.checkStatus(CodeCardType.tableId);
+    AccountCardType.exportExcel = function () {
+        var checkRows = table.checkStatus(AccountCardType.tableId);
         if (checkRows.data.length === 0) {
             Feng.error("请选择要导出的数据");
         } else {
@@ -122,15 +122,15 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    CodeCardType.openEditDlg = function (data) {
+    AccountCardType.openEditDlg = function (data) {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '修改单码卡类列表',
+            title: '修改注册码卡类列表',
             area: '700px',
-            content: Feng.ctxPath + '/codeCardType/edit?cardTypeId=' + data.cardTypeId,
+            content: Feng.ctxPath + '/accountCardType/edit?accountCardTypeId=' + data.accountCardTypeId,
             end: function () {
-                admin.getTempData('formOk') && table.reload(CodeCardType.tableId);
+                admin.getTempData('formOk') && table.reload(AccountCardType.tableId);
             }
         });
     };
@@ -140,15 +140,15 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    CodeCardType.onDeleteItem = function (data) {
+    AccountCardType.onDeleteItem = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/codeCardType/delete", function (data) {
+            var ajax = new $ax(Feng.ctxPath + "/accountCardType/delete", function (data) {
                 Feng.success("删除成功!");
-                table.reload(CodeCardType.tableId);
+                table.reload(AccountCardType.tableId);
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("cardTypeId", data.cardTypeId);
+            ajax.set("accountCardTypeId", data.accountCardTypeId);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
@@ -160,32 +160,32 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      * @param userId 用户id
      * @param checked 是否选中（true,false），选中就是解锁用户，未选中就是锁定用户
      */
-    CodeCardType.changeCardTypeStatus = function (cardTypeId, checked) {
+    AccountCardType.changeCardTypeStatus = function (accountCardTypeId, checked) {
         if (checked) {
-            var ajax = new $ax(Feng.ctxPath + "/codeCardType/unfreeze", function (data) {
+            var ajax = new $ax(Feng.ctxPath + "/accountCardType/unfreeze", function (data) {
                 notice.msg('解除冻结成功!', {icon: 1});
             }, function (data) {
                 notice.msg("解除冻结失败!" + data.responseJSON.message + "!", {icon: 2});
-                table.reload(CodeCardType.tableId);
+                table.reload(AccountCardType.tableId);
             });
-            ajax.set("cardTypeId", cardTypeId);
+            ajax.set("accountCardTypeId", accountCardTypeId);
             ajax.start();
         } else {
-            var ajax = new $ax(Feng.ctxPath + "/codeCardType/freeze", function (data) {
+            var ajax = new $ax(Feng.ctxPath + "/accountCardType/freeze", function (data) {
                 notice.msg('冻结成功!', {icon: 1});
             }, function (data) {
                 notice.msg("冻结失败!" + data.responseJSON.message + "!", {icon: 2});
-                table.reload(CodeCardType.tableId);
+                table.reload(AccountCardType.tableId);
             });
-            ajax.set("cardTypeId", cardTypeId);
+            ajax.set("accountCardTypeId", accountCardTypeId);
             ajax.start();
         }
     };
     // 修改卡密类型状态
     form.on('switch(status)', function (obj) {
-        var cardTypeId = obj.elem.value;
+        var accountCardTypeId = obj.elem.value;
         var checked = obj.elem.checked ? true : false;
-        CodeCardType.changeCardTypeStatus(cardTypeId, checked);
+        AccountCardType.changeCardTypeStatus(accountCardTypeId, checked);
     });
 
     /**
@@ -193,7 +193,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      *
      * @param obj 选择的行数据
      */
-    CodeCardType.batchRemove = function (obj) {
+    AccountCardType.batchRemove = function (obj) {
         let data = table.checkStatus(obj.config.id).data;
         if (data.length === 0) {
             notice.msg("未选中数据!", {icon: 2});
@@ -201,13 +201,13 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         }
         let ids = "";
         for (let i = 0; i < data.length; i++) {
-            ids += data[i].cardTypeId + ",";
+            ids += data[i].accountCardTypeId + ",";
         }
         ids = ids.substr(0, ids.length - 1);
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/codeCardType/batchRemove", function (data) {
+            var ajax = new $ax(Feng.ctxPath + "/accountCardType/batchRemove", function (data) {
                 notice.msg("删除成功!", {icon: 1});
-                table.reload(CodeCardType.tableId);
+                table.reload(AccountCardType.tableId);
             }, function (data) {
                 notice.msg("删除失败!" + data.responseJSON.message + "!", {icon: 2});
             });
@@ -219,10 +219,10 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
 
     // 渲染表格
     var tableResult = table.render({
-        elem: '#' + CodeCardType.tableId,
-        url: Feng.ctxPath + '/codeCardType/list',
+        elem: '#' + AccountCardType.tableId,
+        url: Feng.ctxPath + '/accountCardType/list',
         page: true,
-        toolbar: '#' + CodeCardType.tableId + '-toolbar',
+        toolbar: '#' + AccountCardType.tableId + '-toolbar',
         // defaultToolbar: [{
         //     title: '刷新',
         //     layEvent: 'refresh',
@@ -230,44 +230,44 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         // }, 'filter', 'print'],
         height: "full-115",
         cellMinWidth: 100,
-        cols: CodeCardType.initColumn()
+        cols: AccountCardType.initColumn()
     });
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
-        CodeCardType.search();
+        AccountCardType.search();
     });
 
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
-        CodeCardType.openAddDlg();
+        AccountCardType.openAddDlg();
     });
 
     // 导出excel
     $('#btnExp').click(function () {
-        CodeCardType.exportExcel();
+        AccountCardType.exportExcel();
     });
 
     // 表头工具条点击事件
-    table.on('toolbar(' + CodeCardType.tableId + ')', function (obj) {
+    table.on('toolbar(' + AccountCardType.tableId + ')', function (obj) {
         //添加
         if (obj.event === 'btnAdd') {
-            CodeCardType.openAddDlg();
+            AccountCardType.openAddDlg();
         } else if (obj.event === 'refresh') {
-            table.reload(CodeCardType.tableId);
+            table.reload(AccountCardType.tableId);
         } else if (obj.event === 'batchRemove') {
-            CodeCardType.batchRemove(obj)
+            AccountCardType.batchRemove(obj)
         }
     });
     // 行内工具条点击事件
-    table.on('tool(' + CodeCardType.tableId + ')', function (obj) {
+    table.on('tool(' + AccountCardType.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            CodeCardType.openEditDlg(data);
+            AccountCardType.openEditDlg(data);
         } else if (layEvent === 'delete') {
-            CodeCardType.onDeleteItem(data);
+            AccountCardType.onDeleteItem(data);
         }
     });
 });

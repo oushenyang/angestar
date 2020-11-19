@@ -1,9 +1,9 @@
-package cn.stylefeng.guns.modular.card.service;
+package cn.stylefeng.guns.modular.account.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.card.entity.CodeCardType;
-import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
-import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
+import cn.stylefeng.guns.modular.account.entity.AccountCardType;
+import cn.stylefeng.guns.modular.account.model.params.AccountCardTypeParam;
+import cn.stylefeng.guns.modular.account.model.result.AccountCardTypeResult;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -13,13 +13,13 @@ import java.util.Map;
 
 /**
  * <p>
- * 单码卡类列表  服务类
+ * 账号卡类列表  服务类
  * </p>
  *
  * @author shenyang.ou
  * @since 2020-04-16
  */
-public interface CodeCardTypeService extends IService<CodeCardType> {
+public interface AccountCardTypeService extends IService<AccountCardType> {
 
     /**
      * 新增
@@ -27,7 +27,7 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-    void add(CodeCardTypeParam param);
+    void add(AccountCardTypeParam param);
 
     /**
      * 删除
@@ -35,7 +35,7 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-    void delete(CodeCardTypeParam param);
+    void delete(AccountCardTypeParam param);
 
     /**
      * 批量删除
@@ -51,7 +51,7 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-    void update(CodeCardTypeParam param);
+    void update(AccountCardTypeParam param);
 
     /**
      * 查询单条数据，Specification模式
@@ -59,7 +59,7 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-    CodeCardTypeResult findBySpec(CodeCardTypeParam param);
+    AccountCardTypeResult findBySpec(AccountCardTypeParam param);
 
     /**
      * 查询列表，Specification模式
@@ -67,7 +67,7 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-    List<Map<String, Object>> findListBySpec(Page page, CodeCardTypeParam param);
+    List<Map<String, Object>> findListBySpec(Page page, AccountCardTypeParam param);
 
     /**
      * 查询分页数据，Specification模式
@@ -75,29 +75,28 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @author shenyang.ou
      * @Date 2020-04-16
      */
-     LayuiPageInfo findPageBySpec(CodeCardTypeParam param);
+     LayuiPageInfo findPageBySpec(AccountCardTypeParam param);
 
     /**
      * 根据用户id获取卡类信息
      * @param userId 用户id
      * @return 卡类信息
      */
-    List<CodeCardType> getCardTypeByUserId(Long userId);
+    List<AccountCardType> getCardTypeByUserId(Long userId);
 
     /**
      * 排除已经存在的卡类获取剩余卡类信息
-     * @param cardTypeIds 已经存在的卡密类型id集合
+     * @param accountCardTypeIds 已经存在的卡密类型id集合
      * @param cardType 卡密类型
-     * @param appId 应用id
      * @param userId 用户id
      * @return 卡类信息
      */
-    List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId);
+    List<AccountCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> accountCardTypeIds, Integer cardType, Long userId);
 
     /**
      * 根据应用id创建卡类信息
      * @param sqls sql
      * @return 卡类信息
      */
-    List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId);
+    List<AccountCardType> addCardTypeBySql(List<Sql> sqls, Long appId);
 }

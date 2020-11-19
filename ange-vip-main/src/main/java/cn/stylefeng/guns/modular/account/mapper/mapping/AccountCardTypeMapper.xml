@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper">
+<mapper namespace="cn.stylefeng.guns.modular.account.mapper.AccountCardTypeMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.card.entity.CodeCardType">
-        <id column="card_type_id" property="cardTypeId" />
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.account.entity.AccountCardType">
+        <id column="account_card_type_id" property="accountCardTypeId" />
         <result column="app_id" property="appId" />
         <result column="card_type_name" property="cardTypeName" />
         <result column="card_time_type" property="cardTimeType" />
@@ -25,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        cct.card_type_id AS "cardTypeId",
+        cct.account_card_type_id AS "accountCardTypeId",
         cct.app_id AS "appId",
         cct.card_type_name AS "cardTypeName",
         cct.card_time_type AS "cardTimeType",
@@ -46,7 +46,7 @@
     <select id="findListBySpec" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
-        from ag_code_card_type cct
+        from ag_account_card_type cct
         <where>
             <if test="param.createUser != null and param.createUser != ''">
                 and cct.create_user = #{param.createUser}
@@ -60,10 +60,10 @@
         </where>
         order by cct.sort ASC
     </select>
-    <select id="findCardTypeByUserId" resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
+    <select id="findCardTypeByUserId" resultType="cn.stylefeng.guns.modular.account.entity.AccountCardType">
         select
         cct.*
-        from ag_code_card_type cct
+        from ag_account_card_type cct
         where
         cct.create_user = #{userId}
     </select>
@@ -72,14 +72,14 @@
        ${sqlStr}
     </select >
     <select id="findCardTypeByAppIdAndCardTypeIds"
-            resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
+            resultType="cn.stylefeng.guns.modular.account.entity.AccountCardType">
         select
         cct.*
-        from ag_code_card_type cct
+        from ag_account_card_type cct
         where
         cct.create_user = #{userId}
         <if test="cardTypeIds != null and cardTypeIds.size > 0">
-            and cct.card_type_id not in
+            and cct.account_card_type_id not in
             <foreach collection="cardTypeIds" index="index" item="item" separator="," open="(" close=")">
                 #{item,jdbcType=BIGINT}
             </foreach>

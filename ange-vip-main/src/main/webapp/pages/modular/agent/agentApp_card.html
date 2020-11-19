@@ -5,20 +5,20 @@
         <div class="layui-tab layui-tab-brief" lay-filter="cardTabBrief">
             <ul class="layui-tab-title">
                 <li class="layui-this">单码卡密</li>
-                <li>通用单码卡密</li>
+<!--                <li>通用单码卡密</li>-->
                 <li>账号卡密</li>
             </ul>
             <div class="layui-tab-content">
                 <!-- 单码卡密 -->
-                <div class="layui-tab-item layui-show" style="height: 400px">
+                <div class="layui-tab-item layui-show" style="height: 485px">
                     <table class="layui-table" id="card" lay-filter="card" style="margin-top: -10px;"></table>
                 </div>
-                <!-- 通用单码卡密 -->
-                <div class="layui-tab-item" style="height: 400px">
-                    <table class="layui-table" id="current_card" lay-filter="current_card" style="margin-top: -10px;"></table>
-                </div>
+<!--                &lt;!&ndash; 通用单码卡密 &ndash;&gt;-->
+<!--                <div class="layui-tab-item" style="height: 400px">-->
+<!--                    <table class="layui-table" id="current_card" lay-filter="current_card" style="margin-top: -10px;"></table>-->
+<!--                </div>-->
                 <!-- 账号卡密 -->
-                <div class="layui-tab-item"style="height: 400px">
+                <div class="layui-tab-item"style="height: 485px">
                     <table class="layui-table" id="account" lay-filter="account" style="margin-top: -10px;"></table>
                 </div>
             </div>
@@ -34,17 +34,17 @@
     <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
 </script>
 <script type="text/html" id="card-toolbar">
-    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>添加授权</a>
+    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>添加授权</a>
     <a class="pear-btn pear-btn-success pear-btn-md" lay-event="initialize"><i class="fa fa-right fa-download"></i>一键初始化</a>
     <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>-->
 </script>
-<script type="text/html" id="current_card-toolbar">
-    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>添加授权</a>
-    <a class="pear-btn pear-btn-success pear-btn-md" lay-event="initialize"><i class="fa fa-right fa-download"></i>一键初始化</a>
-    <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>-->
-</script>
+<!--<script type="text/html" id="current_card-toolbar">-->
+<!--    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>添加授权</a>-->
+<!--    <a class="pear-btn pear-btn-success pear-btn-md" lay-event="initialize"><i class="fa fa-right fa-download"></i>一键初始化</a>-->
+<!--    &lt;!&ndash;    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>&ndash;&gt;-->
+<!--</script>-->
 <script type="text/html" id="account-toolbar">
-    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>添加授权</a>
+    <a class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>添加授权</a>
     <a class="pear-btn pear-btn-success pear-btn-md" lay-event="initialize"><i class="fa fa-right fa-download"></i>一键初始化</a>
     <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>-->
 </script>

@@ -1,5 +1,7 @@
-package cn.stylefeng.guns.modular.card.mapper;
+package cn.stylefeng.guns.modular.account.mapper;
 
+import cn.stylefeng.guns.modular.account.entity.AccountCardType;
+import cn.stylefeng.guns.modular.account.model.params.AccountCardTypeParam;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -18,15 +20,15 @@ import java.util.Map;
  * @author shenyang.ou
  * @since 2020-04-16
  */
-public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
+public interface AccountCardTypeMapper extends BaseMapper<AccountCardType> {
 
-    List<Map<String, Object>> findListBySpec(@Param("page")Page page, @Param("param")CodeCardTypeParam param);
+    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AccountCardTypeParam param);
 
     /**
      * 根据用户id获取卡类信息
      * @return 卡类信息
      */
-    List<CodeCardType> findCardTypeByUserId(@Param("userId")Long userId);
+    List<AccountCardType> findCardTypeByUserId(@Param("userId") Long userId);
 
     @Transactional
     void addCardTypeBySql(Map map);
@@ -38,5 +40,5 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
      * @param userId 用户id
      * @return 卡类信息
      */
-    List<CodeCardType> findCardTypeByAppIdAndCardTypeIds(@Param("cardTypeIds")List<Long> cardTypeIds, @Param("cardType")Integer cardType, @Param("userId")Long userId);
+    List<AccountCardType> findCardTypeByAppIdAndCardTypeIds(@Param("cardTypeIds") List<Long> cardTypeIds, @Param("cardType") Integer cardType, @Param("userId") Long userId);
 }

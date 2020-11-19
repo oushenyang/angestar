@@ -106,7 +106,7 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         agentCards.forEach(agentCard->{
             cardTypeIds.add(agentCard.getCardTypeId());
         });
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(),agentCardParam.getAppId(), LoginContextHolder.getContext().getUserId());
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
         if (CollectionUtils.isNotEmpty(codeCardTypes)){
             codeCardTypes.forEach(codeCardType -> {
                 AgentCard agentCard = new AgentCard();

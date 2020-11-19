@@ -1,17 +1,15 @@
-package cn.stylefeng.guns.modular.card.service.impl;
+package cn.stylefeng.guns.modular.account.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
-import cn.stylefeng.guns.base.pojo.node.MenuNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.card.entity.CodeCardType;
-import cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper;
-import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
-import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
-import  cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.modular.account.entity.AccountCardType;
+import cn.stylefeng.guns.modular.account.mapper.AccountCardTypeMapper;
+import cn.stylefeng.guns.modular.account.model.params.AccountCardTypeParam;
+import cn.stylefeng.guns.modular.account.model.result.AccountCardTypeResult;
+import cn.stylefeng.guns.modular.account.service.AccountCardTypeService;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
-import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -20,7 +18,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,7 +25,6 @@ import java.io.Serializable;
 import java.util.*;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.SQL_ERROR;
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE_APPEDITION_ERROR;
 
 /**
  * <p>
@@ -39,13 +35,13 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE
  * @since 2020-04-16
  */
 @Service
-public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, CodeCardType> implements CodeCardTypeService {
+public class AccountCardTypeServiceImpl extends ServiceImpl<AccountCardTypeMapper, AccountCardType> implements AccountCardTypeService {
 
     @Override
-    public void add(CodeCardTypeParam param){
-        CodeCardType entity = getEntity(param);
+    public void add(AccountCardTypeParam param){
+        AccountCardType entity = getEntity(param);
         //判断是否已经存在同名称
-        List<CodeCardType> list = this.list(new QueryWrapper<CodeCardType>().eq("card_type_name",param.getCardTypeName()).eq("create_user",LoginContextHolder.getContext().getUserId()));
+        List<AccountCardType> list = this.list(new QueryWrapper<AccountCardType>().eq("card_type_name",param.getCardTypeName()).eq("create_user",LoginContextHolder.getContext().getUserId()));
         if (CollectionUtil.isNotEmpty(list)){
             throw new ServiceException(BizExceptionEnum.CARD_TYPE_NAME_EXISTED);
         }
@@ -53,7 +49,7 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     @Override
-    public void delete(CodeCardTypeParam param){
+    public void delete(AccountCardTypeParam param){
         this.removeById(getKey(param));
     }
 
@@ -64,45 +60,45 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     @Override
-    public void update(CodeCardTypeParam param){
-        CodeCardType oldEntity = getOldEntity(param);
-        CodeCardType newEntity = getEntity(param);
+    public void update(AccountCardTypeParam param){
+        AccountCardType oldEntity = getOldEntity(param);
+        AccountCardType newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
     }
 
     @Override
-    public CodeCardTypeResult findBySpec(CodeCardTypeParam param){
+    public AccountCardTypeResult findBySpec(AccountCardTypeParam param){
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> findListBySpec(Page page,CodeCardTypeParam param){
+    public List<Map<String, Object>> findListBySpec(Page page,AccountCardTypeParam param){
         return baseMapper.findListBySpec(page,param);
     }
 
     @Override
-    public LayuiPageInfo findPageBySpec(CodeCardTypeParam param){
+    public LayuiPageInfo findPageBySpec(AccountCardTypeParam param){
         Page pageContext = getPageContext();
-        QueryWrapper<CodeCardType> objectQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<AccountCardType> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
     }
 
-    private Serializable getKey(CodeCardTypeParam param){
-        return param.getCardTypeId();
+    private Serializable getKey(AccountCardTypeParam param){
+        return param.getAccountCardTypeId();
     }
 
     private Page getPageContext() {
         return LayuiPageFactory.defaultPage();
     }
 
-    private CodeCardType getOldEntity(CodeCardTypeParam param) {
+    private AccountCardType getOldEntity(AccountCardTypeParam param) {
         return this.getById(getKey(param));
     }
 
-    private CodeCardType getEntity(CodeCardTypeParam param) {
-        CodeCardType entity = new CodeCardType();
+    private AccountCardType getEntity(AccountCardTypeParam param) {
+        AccountCardType entity = new AccountCardType();
         ToolUtil.copyProperties(param, entity);
         return entity;
     }
@@ -114,20 +110,20 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
      * @return 卡类信息
      */
     @Override
-    public List<CodeCardType> getCardTypeByUserId(Long userId) {
+    public List<AccountCardType> getCardTypeByUserId(Long userId) {
         return baseMapper.findCardTypeByUserId(userId);
     }
 
     /**
      * 排除已经存在的卡类获取剩余卡类信息
-     * @param cardTypeIds 已经存在的卡密类型id集合
+     * @param accountCardTypeIds 已经存在的卡密类型id集合
      * @param cardType 卡密类型
      * @param userId 用户id
      * @return 卡类信息
      */
     @Override
-    public List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId){
-        return baseMapper.findCardTypeByAppIdAndCardTypeIds(cardTypeIds,cardType,userId);
+    public List<AccountCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> accountCardTypeIds,Integer cardType,Long userId){
+        return baseMapper.findCardTypeByAppIdAndCardTypeIds(accountCardTypeIds,cardType,userId);
     }
 
     /**
@@ -138,27 +134,27 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
      */
     @Transactional
     @Override
-    public List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId) {
-        List<CodeCardType> codeCardTypes = new ArrayList<>();
+    public List<AccountCardType> addCardTypeBySql(List<Sql> sqls,Long appId) {
+        List<AccountCardType> accountCardTypes = new ArrayList<>();
         for (Sql sql : sqls){
-            Long cardTypeId = IdWorker.getId();
+            Long accountCardTypeId = IdWorker.getId();
             Map<String, Object> map = new HashMap<>();
             map.put("sqlStr",sql.getDescription());
-            map.put("cardTypeId",cardTypeId);
+            map.put("accountCardTypeId",accountCardTypeId);
             map.put("appId",0L);
             map.put("createUser",LoginContextHolder.getContext().getUserId());
             map.put("createTime",new Date());
             try{
                 baseMapper.addCardTypeBySql(map);
-                CodeCardType codeCardType = new CodeCardType();
-                codeCardType.setCardTypeId(cardTypeId);
-                codeCardType.setCardTypeName(sql.getName());
-                codeCardTypes.add(codeCardType);
+                AccountCardType accountCardType = new AccountCardType();
+                accountCardType.setAccountCardTypeId(accountCardTypeId);
+                accountCardType.setCardTypeName(sql.getName());
+                accountCardTypes.add(accountCardType);
             }catch (Exception e){
                 throw new ServiceException(SQL_ERROR);
             }
         }
-        return codeCardTypes;
+        return accountCardTypes;
     }
 
 }
