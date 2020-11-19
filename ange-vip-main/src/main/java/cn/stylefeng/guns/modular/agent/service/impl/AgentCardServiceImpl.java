@@ -3,19 +3,16 @@ package cn.stylefeng.guns.modular.agent.service.impl;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.account.entity.AccountCardType;
+import cn.stylefeng.guns.modular.account.service.AccountCardTypeService;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.mapper.AgentCardMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import  cn.stylefeng.guns.modular.agent.service.AgentCardService;
-import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
-import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
-import cn.stylefeng.guns.sys.modular.system.entity.Dict;
-import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -25,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.*;
-
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 
 /**
  * <p>
@@ -40,9 +35,11 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIN
 public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard> implements AgentCardService {
 
     private final CodeCardTypeService codeCardTypeService;
+    private final AccountCardTypeService accountCardTypeService;
 
-    public AgentCardServiceImpl(CodeCardTypeService codeCardTypeService) {
+    public AgentCardServiceImpl(CodeCardTypeService codeCardTypeService, AccountCardTypeService accountCardTypeService) {
         this.codeCardTypeService = codeCardTypeService;
+        this.accountCardTypeService = accountCardTypeService;
     }
 
     @Override
@@ -76,8 +73,13 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
     }
 
     @Override
-    public List<Map<String, Object>> findListBySpec(Page page,AgentCardParam param){
-        return baseMapper.findListBySpec(page,param);
+    public List<Map<String, Object>> findCodeCardTypeListBySpec(Page page,AgentCardParam param){
+        return baseMapper.findCodeCardTypeListBySpec(page,param);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAccountCardTypeListBySpec(Page page,AgentCardParam param){
+        return baseMapper.findAccountCardTypeListBySpec(page,param);
     }
 
     @Override
@@ -89,12 +91,12 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
     }
 
     /**
-     * 初始化
+     * 初始化单码卡类
      *
      * @param agentCardParam 参数
      */
     @Override
-    public void initializeItem(AgentCardParam agentCardParam) {
+    public void initializeItemCodeCard(AgentCardParam agentCardParam) {
         QueryWrapper<AgentCard> wrapper = new QueryWrapper<>();
         wrapper = wrapper.eq("agent_app_id", agentCardParam.getAgentAppId());
         wrapper = wrapper.eq("app_id", agentCardParam.getAppId());
@@ -117,6 +119,43 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
                 agentCard.setCardType(agentCardParam.getCardType());
                 agentCard.setMarketPrice(codeCardType.getCardTypePrice());
                 agentCard.setAgentPrice(codeCardType.getCardTypeAgentPrice());
+                agentCard.setCreateUser(LoginContextHolder.getContext().getUserId());
+                agentCard.setCreateTime(new Date());
+                agentCardsList.add(agentCard);
+            });
+        }
+        this.saveBatch(agentCardsList);
+    }
+
+    /**
+     * 初始化注册码卡类
+     *
+     * @param agentCardParam 参数
+     */
+    @Override
+    public void initializeItemAccountCard(AgentCardParam agentCardParam) {
+        QueryWrapper<AgentCard> wrapper = new QueryWrapper<>();
+        wrapper = wrapper.eq("agent_app_id", agentCardParam.getAgentAppId());
+        wrapper = wrapper.eq("app_id", agentCardParam.getAppId());
+        wrapper = wrapper.eq("card_type", agentCardParam.getCardType());
+        List<AgentCard> agentCards = baseMapper.selectList(wrapper);
+        //已经存在的卡类集合
+        List<Long> cardTypeIds = new ArrayList<>();
+        List<AgentCard> agentCardsList = new ArrayList<>();
+        agentCards.forEach(agentCard->{
+            cardTypeIds.add(agentCard.getCardTypeId());
+        });
+        List<AccountCardType> accountCardTypes = accountCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
+        if (CollectionUtils.isNotEmpty(accountCardTypes)){
+            accountCardTypes.forEach(accountCardType -> {
+                AgentCard agentCard = new AgentCard();
+                agentCard.setAgentAppId(agentCardParam.getAgentAppId());
+                agentCard.setAppId(agentCardParam.getAppId());
+                agentCard.setCardTypeId(accountCardType.getAccountCardTypeId());
+                agentCard.setCardTypeName(accountCardType.getCardTypeName());
+                agentCard.setCardType(agentCardParam.getCardType());
+                agentCard.setMarketPrice(accountCardType.getCardTypePrice());
+                agentCard.setAgentPrice(accountCardType.getCardTypeAgentPrice());
                 agentCard.setCreateUser(LoginContextHolder.getContext().getUserId());
                 agentCard.setCreateTime(new Date());
                 agentCardsList.add(agentCard);

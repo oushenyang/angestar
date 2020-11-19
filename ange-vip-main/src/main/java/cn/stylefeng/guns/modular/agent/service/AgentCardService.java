@@ -66,7 +66,15 @@ public interface AgentCardService extends IService<AgentCard> {
      * @author shenyang.ou
      * @Date 2020-05-22
      */
-    List<Map<String, Object>> findListBySpec(Page page,AgentCardParam param);
+    List<Map<String, Object>> findCodeCardTypeListBySpec(Page page,AgentCardParam param);
+
+    /**
+     * 查询列表，Specification模式
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    List<Map<String, Object>> findAccountCardTypeListBySpec(Page page,AgentCardParam param);
 
     /**
      * 查询分页数据，Specification模式
@@ -77,8 +85,10 @@ public interface AgentCardService extends IService<AgentCard> {
      LayuiPageInfo findPageBySpec(AgentCardParam param);
 
     /**
-     * 初始化
+     * 初始化单码卡类
      * @param agentCardParam
      */
-    void initializeItem(AgentCardParam agentCardParam);
+    void initializeItemCodeCard(AgentCardParam agentCardParam);
+
+    void initializeItemAccountCard(AgentCardParam agentCardParam);
 }

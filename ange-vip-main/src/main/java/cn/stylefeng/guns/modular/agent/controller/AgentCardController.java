@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,15 +108,28 @@ public class AgentCardController extends BaseController {
     }
 
     /**
-     * 初始化接口
+     * 初始化单码卡类接口
      *
      * @author shenyang.ou
      * @Date 2020-05-22
      */
-    @RequestMapping("/initializeItem")
+    @RequestMapping("/initializeItemCodeCard")
     @ResponseBody
-    public ResponseData initializeItem(AgentCardParam agentCardParam) {
-        this.agentCardService.initializeItem(agentCardParam);
+    public ResponseData initializeItemCodeCard(AgentCardParam agentCardParam) {
+        this.agentCardService.initializeItemCodeCard(agentCardParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 初始化单码卡类接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    @RequestMapping("/initializeItemAccountCard")
+    @ResponseBody
+    public ResponseData initializeItemAccountCard(AgentCardParam agentCardParam) {
+        this.agentCardService.initializeItemAccountCard(agentCardParam);
         return ResponseData.success();
     }
 
@@ -159,8 +173,15 @@ public class AgentCardController extends BaseController {
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
         agentCardParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        List<Map<String, Object>> result = new ArrayList<>();
         //根据条件查询操作日志
-        List<Map<String, Object>> result = agentCardService.findListBySpec(page, agentCardParam);
+        //注册码类型
+        if (agentCardParam.getCardType()==2){
+            result = agentCardService.findAccountCardTypeListBySpec(page, agentCardParam);
+        }else {
+            result = agentCardService.findCodeCardTypeListBySpec(page, agentCardParam);
+        }
+
         page.setRecords(result);
         return LayuiPageFactory.createPageInfo(page);
     }

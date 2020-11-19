@@ -141,18 +141,47 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
     admin.iframeAuto();
 
     /**
-     * 初始化
+     * 初始化单码卡类
      */
-    AgentApp.initializeItem = function (cardType) {
+    AgentApp.initializeItemCodeCard = function (cardType) {
         console.log(Feng.getUrlParam("appId"));
         var initializeItem = function () {
-            var ajax = new $ax(Feng.ctxPath + "/agentCard/initializeItem", function (data) {
+            var ajax = new $ax(Feng.ctxPath + "/agentCard/initializeItemCodeCard", function (data) {
                 Feng.success("初始化成功!");
                 if (cardType==0){
                     table.reload(AgentApp.card);
                 }
                 // else if (cardType==1){
                 //     table.reload(AgentApp.currentCard);
+                // }
+                else {
+                    table.reload(AgentApp.account);
+                }
+
+            }, function (data) {
+                Feng.error("初始化失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("cardType", cardType);
+            ajax.set("agentAppId", Feng.getUrlParam("agentAppId"));
+            ajax.set("appId",Feng.getUrlParam("appId"));
+            ajax.start();
+        };
+        Feng.confirm("是否初始化?", initializeItem);
+    };
+
+    /**
+     * 初始化注册码卡类
+     */
+    AgentApp.initializeItemAccountCard = function (cardType) {
+        console.log(Feng.getUrlParam("appId"));
+        var initializeItem = function () {
+            var ajax = new $ax(Feng.ctxPath + "/agentCard/initializeItemAccountCard", function (data) {
+                Feng.success("初始化成功!");
+                if (cardType==0){
+                    table.reload(AgentApp.card);
+                }
+                    // else if (cardType==1){
+                    //     table.reload(AgentApp.currentCard);
                 // }
                 else {
                     table.reload(AgentApp.account);
@@ -199,7 +228,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         if(obj.event === 'btnAdd'){
             AgentApp.openAddDlg();
         } else if(obj.event === 'initialize'){
-            AgentApp.initializeItem(0);
+            AgentApp.initializeItemCodeCard(0);
         }
     });
     // 通用卡密表头工具条点击事件
@@ -217,7 +246,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         if(obj.event === 'btnAdd'){
             AgentApp.openAddDlg();
         } else if(obj.event === 'initialize'){
-            AgentApp.initializeItem(2);
+            AgentApp.initializeItemAccountCard(2);
         }
     });
 

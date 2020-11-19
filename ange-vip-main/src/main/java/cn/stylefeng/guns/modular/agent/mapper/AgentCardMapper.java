@@ -20,10 +20,18 @@ import java.util.Map;
 public interface AgentCardMapper extends BaseMapper<AgentCard> {
 
     /**
-     * 获取代理卡密分页列表
+     * 获取代理单码卡类分页列表
      * @param page 分页数据
      * @param param 查询参数
      * @return 结果
      */
-    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AgentCardParam param);
+    List<Map<String, Object>> findCodeCardTypeListBySpec(@Param("page") Page page, @Param("param") AgentCardParam param);
+
+    /**
+     * 获取代理注册码卡类分页列表
+     * @param page 分页数据
+     * @param param 查询参数
+     * @return 结果
+     */
+    List<Map<String, Object>> findAccountCardTypeListBySpec(@Param("page") Page page, @Param("param") AgentCardParam param);
 }

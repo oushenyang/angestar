@@ -2,6 +2,8 @@ package cn.stylefeng.guns.modular.demos.service;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.modular.account.entity.AccountCardType;
+import cn.stylefeng.guns.modular.account.service.AccountCardTypeService;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
@@ -97,6 +99,7 @@ public class AsyncService {
         ApiManageService apiManageService = SpringUtil.getBean(ApiManageService.class);
         ApiResultService apiResultService = SpringUtil.getBean(ApiResultService.class);
         CodeCardTypeService codeCardTypeService = SpringUtil.getBean(CodeCardTypeService.class);
+        AccountCardTypeService accountCardTypeService = SpringUtil.getBean(AccountCardTypeService.class);
         AppEditionService appEditionService = SpringUtil.getBean(AppEditionService.class);
         //生成api接口
         List<ApiManage> apiManages = apiManageService.list(new QueryWrapper<ApiManage>().eq("app_id", 1L));
@@ -136,6 +139,21 @@ public class AsyncService {
                 codeCardType2.setUpdateUser(null);
             });
             codeCardTypeService.saveBatch(codeCardTypes);
+        }
+
+        //生成注册码卡密类型
+        //先判断有没有
+        List<AccountCardType> accountCardTypeList = accountCardTypeService.list(new QueryWrapper<AccountCardType>().eq("app_id", 0L).eq("create_user",userId));
+        if (CollectionUtil.isEmpty(accountCardTypeList)){
+            List<AccountCardType> accountCardTypes = accountCardTypeService.list(new QueryWrapper<AccountCardType>().eq("create_user",0L));
+            accountCardTypes.forEach(accountCardType -> {
+                accountCardType.setAccountCardTypeId(null);
+                accountCardType.setCreateTime(new Date());
+                accountCardType.setCreateUser(userId);
+                accountCardType.setUpdateTime(null);
+                accountCardType.setUpdateUser(null);
+            });
+            accountCardTypeService.saveBatch(accountCardTypes);
         }
 
         //生成版本号

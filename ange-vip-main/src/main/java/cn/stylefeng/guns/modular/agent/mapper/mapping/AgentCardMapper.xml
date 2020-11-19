@@ -38,11 +38,12 @@
         ac.update_user AS "updateUser",
         ac.update_time AS "updateTime"
     </sql>
-    <select id="findListBySpec" resultType="java.util.Map">
+    <select id="findCodeCardTypeListBySpec" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
         from ag_agent_card ac
         left join ag_app_info ai on ai.app_id = ac.app_id
+        left join ag_code_card_type cct on cct.card_type_id = ac.card_type_id
         <where>
             <if test="param.cardType != null">
                 and ac.card_type = #{param.cardType}
@@ -54,7 +55,27 @@
                 and ac.agent_app_id = #{param.agentAppId}
             </if>
         </where>
-        order by ac.create_time ASC
+        order by cct.sort ASC
+    </select>
+
+    <select id="findAccountCardTypeListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_agent_card ac
+        left join ag_app_info ai on ai.app_id = ac.app_id
+        left join ag_account_card_type act on act.account_card_type_id = ac.card_type_id
+        <where>
+            <if test="param.cardType != null">
+                and ac.card_type = #{param.cardType}
+            </if>
+            <if test="param.cardTypeId != null and param.cardTypeId !=''">
+                and ac.app_id = #{param.appId}
+            </if>
+            <if test="param.agentAppId != null and param.agentAppId !=''">
+                and ac.agent_app_id = #{param.agentAppId}
+            </if>
+        </where>
+        order by act.sort ASC
     </select>
 
 </mapper>
