@@ -84,7 +84,7 @@ public class HyAppServiceImpl extends ServiceImpl<HyAppMapper, HyApp> implements
         if (CollectionUtils.isEmpty(hyAppResults)){
             hyAppResults = baseMapper.findListBySpec(utDid,sign);
             if (CollectionUtils.isNotEmpty(hyAppResults)){
-                redisUtil.lSet(RedisType.HUANYIN + utDid + sign, hyAppResults);
+                redisUtil.lSet(RedisType.HUANYIN + utDid + sign, hyAppResults, RedisExpireTime.WEEK.getCode());
             }
         }
         return hyAppResults;

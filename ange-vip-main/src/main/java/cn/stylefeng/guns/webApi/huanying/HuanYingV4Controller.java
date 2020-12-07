@@ -36,7 +36,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/api1/v4")
+@RequestMapping("/api/v4")
 public class HuanYingV4Controller {
 
     @Autowired

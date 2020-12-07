@@ -28,7 +28,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("api/v3")
+@RequestMapping("api1/v3")
 public class NewHuanYingV3Controller {
 
     @Autowired
