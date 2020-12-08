@@ -14,41 +14,48 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         tableId: "actCardTable"
     };
 
-    var agentAppId = $('.layui-this').attr('data-appId');
+    // var agentAppId = $('.layui-this').attr('data-appId');
 
-    //tab事件监听
-    element.on('tab(actCardTabBrief)', function(data){
-        agentAppId = $(this).attr('data-appId');
-        table.render({
-            elem: '#' + actCard.tableId + agentAppId,
-            url: Feng.ctxPath + '/actCard/list',
-            page: true,
-            height: "full-115",
-            cellMinWidth: 100,
-            where:{
-                'actCardAppId':$(this).attr('data-appId')
-            },
-            cols: actCard.initColumn()
-        });
-        // 行内工具条点击事件
-        table.on('tool(' + actCard.tableId + agentAppId+')', function (obj) {
-            var data = obj.data;
-            var layEvent = obj.event;
-            if (layEvent === 'edit') {
-                actCard.openEditDlg(data);
-            } else if (layEvent === 'delete') {
-                actCard.onDeleteItem(data);
-            } else if (layEvent === 'recharge') {
-                actCard.openRechargeDlg(data);
-            } else if (layEvent === 'power') {
-                actCard.openPowerDlg(data);
-            } else if (layEvent === 'card') {
-                actCard.openCardDlg(data);
-            } else if (layEvent === 'copy') {
-                actCard.copy(data)
-            }
-        });
+    //应用选择下拉框事件监听
+    form.on('select(appId)', function (data) {
+        var queryData = {};
+        queryData['actCardAppId'] = $("select[name=appId]").val();
+        table.reload(actCard.tableId, {where: queryData});
     });
+
+    // //tab事件监听
+    // element.on('tab(actCardTabBrief)', function(data){
+    //     agentAppId = $(this).attr('data-appId');
+    //     table.render({
+    //         elem: '#' + actCard.tableId + agentAppId,
+    //         url: Feng.ctxPath + '/actCard/list',
+    //         page: true,
+    //         height: "full-115",
+    //         cellMinWidth: 100,
+    //         where:{
+    //             'actCardAppId':$(this).attr('data-appId')
+    //         },
+    //         cols: actCard.initColumn()
+    //     });
+    //     // 行内工具条点击事件
+    //     table.on('tool(' + actCard.tableId + agentAppId+')', function (obj) {
+    //         var data = obj.data;
+    //         var layEvent = obj.event;
+    //         if (layEvent === 'edit') {
+    //             actCard.openEditDlg(data);
+    //         } else if (layEvent === 'delete') {
+    //             actCard.onDeleteItem(data);
+    //         } else if (layEvent === 'recharge') {
+    //             actCard.openRechargeDlg(data);
+    //         } else if (layEvent === 'power') {
+    //             actCard.openPowerDlg(data);
+    //         } else if (layEvent === 'card') {
+    //             actCard.openCardDlg(data);
+    //         } else if (layEvent === 'copy') {
+    //             actCard.copy(data)
+    //         }
+    //     });
+    // });
 
     actCard.copy = function (data) {
         var cla = '.cardCode' + data.cardId;
@@ -165,15 +172,15 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     /**
      * 弹出添加对话框
      */
-    actCard.openAddDlg = function (agentAppId) {
+    actCard.openAddDlg = function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '新增卡密',
             area: '700px',
-            content: Feng.ctxPath + '/actCard/add?agentAppId='+agentAppId,
+            content: Feng.ctxPath + '/actCard/add?agentAppId='+$("select[name=appId] option:selected").attr("data-agentAppId")+'&appId='+$("select[name=appId]").val(),
             end: function () {
-                admin.getTempData('formOk') && table.reload(actCard.tableId+agentAppId);
+                admin.getTempData('formOk') && table.reload(actCard.tableId);
             }
         });
     };
@@ -192,28 +199,25 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     $('#btnExp').click(function () {
         actCard.exportExcel();
     });
-
-    if ($('#agentAppsSize').val()>0){
-        // 渲染表格
-        var tableResult = table.render({
-            elem: '#' + actCard.tableId + agentAppId,
-            url: Feng.ctxPath + '/actCard/list',
-            page: true,
-            height: "full-115",
-            cellMinWidth: 100,
-            toolbar: '#' + actCard.tableId + '-toolbar',
-            defaultToolbar: ['filter', 'print'],
-            where:{
-                'actCardAppId':$('.layui-this').attr('data-appId')
-            },
-            cols: actCard.initColumn()
-        });
-    }
+    // 渲染表格
+    var tableResult = table.render({
+        elem: '#' + actCard.tableId,
+        url: Feng.ctxPath + '/actCard/list',
+        page: true,
+        height: "full-115",
+        cellMinWidth: 100,
+        toolbar: '#' + actCard.tableId + '-toolbar',
+        defaultToolbar: ['filter', 'print'],
+        where:{
+            actCardAppId:$("select[name=appId]").val()
+        },
+        cols: actCard.initColumn()
+    });
     // 表头工具条点击事件
-    table.on('toolbar(' + actCard.tableId + agentAppId+ ')', function (obj) {
+    table.on('toolbar(' + actCard.tableId+ ')', function (obj) {
         //添加
         if (obj.event === 'btnAdd') {
-            actCard.openAddDlg(agentAppId);
+            actCard.openAddDlg();
         } else if (obj.event === 'refresh') {
             table.reload(actCard.tableId);
         } else if (obj.event === 'batchRemove') {
@@ -221,7 +225,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         }
     });
     // 行内工具条点击事件
-    table.on('tool(' + actCard.tableId + agentAppId+')', function (obj) {
+    table.on('tool(' + actCard.tableId +')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
 

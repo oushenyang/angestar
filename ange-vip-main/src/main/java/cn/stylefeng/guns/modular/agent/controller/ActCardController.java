@@ -3,9 +3,11 @@ package cn.stylefeng.guns.modular.agent.controller;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
@@ -72,7 +74,9 @@ public class ActCardController extends BaseController {
      * @Date 2020-05-22
      */
     @RequestMapping("/add")
-    public String add() {
+    public String add(Model model,Long agentAppId,Long appId) {
+        List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(appId,agentAppId, CardType.SINGLE_CARD.getCode());
+        model.addAttribute("agentCardResults", agentCardResults);
         return PREFIX + "/actCard_add.html";
     }
 

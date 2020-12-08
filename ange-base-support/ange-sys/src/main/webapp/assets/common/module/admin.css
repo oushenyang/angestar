@@ -249,6 +249,11 @@ body {
     line-height: 28px;
     border-radius: 4px;
 }
+/*label高度*/
+.toolbar .layui-form-label{
+    height: 28px!important;
+    line-height: 14px!important;
+}
 /*表单高度*/
 .toolbar .layui-input, .layui-select, .layui-textarea{
     height: 28px!important;

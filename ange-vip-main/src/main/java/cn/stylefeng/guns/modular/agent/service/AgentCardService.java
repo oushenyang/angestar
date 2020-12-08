@@ -91,4 +91,13 @@ public interface AgentCardService extends IService<AgentCard> {
     void initializeItemCodeCard(AgentCardParam agentCardParam);
 
     void initializeItemAccountCard(AgentCardParam agentCardParam);
+
+
+    /**
+     * 通过应用Id和代理应用id查找卡密类型
+     * @param appId 应用id
+     * @param agentAppId 代理应用id
+     * @return 卡密列表
+     */
+    List<AgentCardResult> findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId,Integer cardType);
 }

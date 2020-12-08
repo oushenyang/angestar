@@ -164,6 +164,18 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         this.saveBatch(agentCardsList);
     }
 
+    /**
+     * 通过应用Id和代理应用id查找卡密类型
+     *
+     * @param appId      应用id
+     * @param agentAppId 代理应用id
+     * @return 卡密列表
+     */
+    @Override
+    public List<AgentCardResult> findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId,Integer cardType) {
+        return baseMapper.selectCardTypeByAppIdAndAgentAppId(appId,agentAppId, cardType);
+    }
+
     private Serializable getKey(AgentCardParam param){
         return param.getAgentCardId();
     }

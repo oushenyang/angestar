@@ -247,7 +247,7 @@
                 and cci.app_id = #{param.appId}
             </if>
             <if test="param.actCardAppId != null and param.actCardAppId !=''">
-                and cci.app_id = #{param.actCardAppId} or cci.app_id = 0
+                and cci.app_id = #{param.actCardAppId}
             </if>
             <if test="param.type != null and param.type !=1">
                 and cci.app_id = 0

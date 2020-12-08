@@ -9,36 +9,30 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
             <div class="layui-card">
-                <div class="layui-card-body layui-form-pane">
-                    <div class="layui-tab layui-tab-brief" lay-filter="actCardTabBrief">
-                        <ul class="layui-tab-title">
-                            @if(isNotEmpty(agentApps)){
-                                @for(agentApp in agentApps){
-                                    @if(agentAppLP.index == 1){
-                                    <li class="layui-this" data-appId="${agentApp.appId}">${agentApp.appName}</li>
-                                    @}else{
-                                    <li data-appId="${agentApp.appId}">${agentApp.appName}</li>
-                                    @}
-                                @}
-                            @}
-                        </ul>
-                        <div class="layui-tab-content">
-                            <!-- 基本信息 -->
-                            @if(isNotEmpty(agentApps)){
-                                @for(agentApp in agentApps){
-                                    @if(agentAppLP.index == 1){
-                                    <div class="layui-tab-item layui-show">
-                                        <table class="layui-table" id="actCardTable${agentApp.appId}" lay-filter="actCardTable${agentApp.appId}"></table>
-                                    </div>
-                                    @}else{
-                                    <div class="layui-tab-item">
-                                        <table class="layui-table" id="actCardTable${agentApp.appId}" lay-filter="actCardTable${agentApp.appId}"></table>
-                                    </div>
-                                    @}
-                                @}
-                            @}
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar layui-form-pane">
+                        <div class="layui-form-item">
+                            <div class="layui-form-item layui-inline">
+                                <label class="layui-form-label">所属应用</label>
+                                <div class="layui-input-inline">
+                                    <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                        @if(isNotEmpty(agentApps)){
+                                        @for(agentApp in agentApps) {
+                                        <option value="${agentApp.appId}"
+                                                data-agentAppId = "${agentApp.agentAppId}"
+                                                @if(agentAppLP.index == 1) {
+                                                selected="selected"
+                                                @}
+                                        >${agentApp.appName}
+                                        </option>
+                                        @}
+                                        @}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <table class="layui-table" id="actCardTable" lay-filter="actCardTable"></table>
                 </div>
             </div>
         </div>
