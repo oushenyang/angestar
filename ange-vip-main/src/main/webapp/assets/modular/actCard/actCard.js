@@ -178,7 +178,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             type: 2,
             title: '新增卡密',
             area: '700px',
-            content: Feng.ctxPath + '/actCard/add?agentAppId='+$("select[name=appId] option:selected").attr("data-agentAppId")+'&appId='+$("select[name=appId]").val(),
+            content: Feng.ctxPath + '/actCard/add?agentAppId='+$("select[name=appId] option:selected").attr("data-agentAppId")+'&appId='+$("select[name=appId]").val()+'&developerUserId='+$("select[name=appId] option:selected").attr("data-developerUserId"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(actCard.tableId);
             }

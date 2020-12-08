@@ -68,6 +68,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
 
     @Override
+    @Transactional
     public  List<String> add(CardInfoParam param){
         //通用应用
         if (param.getAppId()==0){
@@ -81,10 +82,10 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }
         //当前时间
         Date date = DateUtil.date();
-        param.setUserId(LoginContextHolder.getContext().getUserId());
-        param.setCreateUser(LoginContextHolder.getContext().getUserId());
+//        param.setUserId(LoginContextHolder.getContext().getUserId());
+//        param.setCreateUser(LoginContextHolder.getContext().getUserId());
         param.setCreateTime(date);
-        param.setUserName(LoginContextHolder.getContext().getUserName());
+//        param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
         param.setCardBindType(0);
         param.setCardSignType(1);

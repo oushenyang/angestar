@@ -144,23 +144,49 @@ public class DingWeiMaoController {
     public JSONObject AppBlackList(@RequestBody String  body){
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
         String av = null;
+        String appName = null;
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
             if (m.getKey().equals("av")){
                 av = String.join("", m.getValue());
+            }
+            if (m.getKey().equals("n")){
+                appName = String.join("", m.getValue());
             }
         }
         JSONObject jbb = JSONObject.parseObject(body);
         String pkg = jbb.getString("apppackagename");
         String version = jbb.getString("appversionname");
-
+        String token = HttpContext.getRequest().getParameter("c");
+        String sign;
+        if (StringUtils.isEmpty(token)){
+            return null;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            sign = deSign.substring(0,deSign.length()-8);
+        }
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,CustomEnAndDe.enCrypto(appName),"dingweimao172");
         if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
             if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
+
                 List<Dict> dicts = dictService.listDictsByCode("dingweimao");
                 boolean isHave = false;
                 for (Dict dict : dicts){
                     if (dict.getName().equals(version)){
                         isHave = true;
                     }
+                }
+                if (whetherLegal){
+                    Map map = new HashMap<String, String>();
+                    List<String> a = new ArrayList<>();
+                    Map map1 = new HashMap<String, String>();
+                    map1.put("Level",2);
+                    map1.put("Content","您当前使用的软件为盗版！盗版应用钉钉会检测！请务必卸载安装正版！正版联系微信：angestar88888");
+                    map.put("data",map1);
+                    map.put("error", 0);
+                    map.put("message", "");
+                    map.put("type", 0);
+                    JSONObject json = new JSONObject(map);
+                    return json;
                 }
                 if (!isHave){
                     Map map = new HashMap<String, String>();
@@ -213,14 +239,14 @@ public class DingWeiMaoController {
         }
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,CustomEnAndDe.enCrypto(appName),"dingweimao172");
         if (StringUtils.isNotEmpty(appName)){
-            boolean isHave = true;
-            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
-            for (Dict dict : dicts){
-                if (dict.getCode().equals(appName)){
-                    isHave = true;
-                }
-            }
-            if (!isHave){
+//            boolean isHave = true;
+//            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+//            for (Dict dict : dicts){
+//                if (dict.getCode().equals(appName)){
+//                    isHave = true;
+//                }
+//            }
+            if (whetherLegal){
                 Map map = new HashMap<String, String>();
                 Map map1 = new HashMap<String, String>();
                 map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");

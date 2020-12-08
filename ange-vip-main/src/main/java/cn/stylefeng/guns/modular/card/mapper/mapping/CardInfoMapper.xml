@@ -74,7 +74,6 @@
         cci.card_type_name AS "cardTypeName",
         cci.card_type_id AS "cardTypeId",
         cci.user_id AS "userId",
-        cci.user_name AS "userName",
         cci.is_universal AS "isUniversal",
         cci.card_code AS "cardCode",
         cci.is_custom_time AS "isCustomTime",
@@ -233,6 +232,7 @@
     </update>
     <select id="findListBySpec" resultType="java.util.Map">
         select
+        (select `name` from sys_user where user_id = cci.user_id) AS userName,
         <include refid="Base_Column_List"/>
         from ag_card_info cci
         left join ag_app_info ai on ai.app_id = cci.app_id

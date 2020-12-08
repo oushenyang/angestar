@@ -15,11 +15,12 @@ import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
+import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -52,11 +53,14 @@ public class CardInfoController extends BaseController {
 
     private final SqlService SqlService;
 
-    public CardInfoController(CardInfoService cardInfoService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService) {
+    private final UserService userService;
+
+    public CardInfoController(CardInfoService cardInfoService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService, UserService userService) {
         this.cardInfoService = cardInfoService;
         this.appInfoService = appInfoService;
         this.codeCardTypeService = codeCardTypeService;
         this.SqlService = SqlService;
+        this.userService = userService;
     }
 
     /**
@@ -140,7 +144,7 @@ public class CardInfoController extends BaseController {
     }
 
     /**
-     * 新增接口
+     * 开发者新增接口
      *
      * @author shenyang.ou
      * @Date 2020-04-20
@@ -148,6 +152,25 @@ public class CardInfoController extends BaseController {
     @RequestMapping("/addItem")
     @ResponseBody
     public ResponseData addItem(CardInfoParam cardInfoParam) {
+        cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
+        cardInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
+        List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
+        return ResponseData.success(cardInfos);
+    }
+
+    /**
+     * 代理新增接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/actAddItem")
+    @ResponseBody
+    public ResponseData actAddItem(CardInfoParam cardInfoParam) {
+        cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
+        cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
+        cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
         List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
         return ResponseData.success(cardInfos);
     }
