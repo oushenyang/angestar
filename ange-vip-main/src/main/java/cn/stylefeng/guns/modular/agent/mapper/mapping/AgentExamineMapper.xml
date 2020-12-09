@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.agent.mapper.AgentExamineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentExamine">
+        <id column="agent_examine_id" property="agentExamineId" />
+        <result column="app_id" property="appId" />
+        <result column="developer_user_id" property="developerUserId" />
+        <result column="agent_user_id" property="agentUserId" />
+        <result column="agent_user_name" property="agentUserName" />
+        <result column="agent_user_account" property="agentUserAccount" />
+        <result column="apply_reason" property="applyReason" />
+        <result column="apply_type" property="applyType" />
+        <result column="examine_status" property="examineStatus" />
+        <result column="examine_time" property="examineTime" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        agent_examine_id AS "agentExamineId", app_id AS "appId", developer_user_id AS "developerUserId", agent_user_id AS "agentUserId", agent_user_name AS "agentUserName", agent_user_account AS "agentUserAccount", apply_reason AS "applyReason", apply_type AS "applyType", examine_status AS "examineStatus", examine_time AS "examineTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>
