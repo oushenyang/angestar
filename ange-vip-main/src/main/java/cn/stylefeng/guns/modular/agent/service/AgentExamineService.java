@@ -4,9 +4,11 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentExamineResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,12 +21,12 @@ import java.util.List;
 public interface AgentExamineService extends IService<AgentExamine> {
 
     /**
-     * 新增
+     * 开发者端新增代理审核记录
      *
      * @author shenyang.ou
      * @Date 2020-12-09
      */
-    void add(AgentExamineParam param);
+    void developerAddItem(AgentExamineParam param);
 
     /**
      * 查询单条数据，Specification模式
@@ -40,7 +42,7 @@ public interface AgentExamineService extends IService<AgentExamine> {
      * @author shenyang.ou
      * @Date 2020-12-09
      */
-    List<AgentExamineResult> findListBySpec(AgentExamineParam param);
+    List<Map<String, Object>> findListBySpec(Page page, AgentExamineParam param);
 
     /**
      * 查询分页数据，Specification模式

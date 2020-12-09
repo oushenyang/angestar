@@ -18,12 +18,18 @@
                 <input id="agentUserAccount" name="agentUserAccount" placeholder="请输入代理用户账号" type="text" maxlength="45" class="layui-input" lay-verify="required" lay-verType="tips" required/>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">代理余额<span style="color: red;">*</span></label>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">申请理由</label>
             <div class="layui-input-block">
-                <input id="balance" name="balance" placeholder="请输入代理余额" type="number" min="1" max="999999999" lay-verify="required|numberX|h5" oninput="if(value>999999999)value=999999999;if(value<0)value=0" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                <textarea id="applyReason" name="applyReason" placeholder="请输入申请理由" class="layui-textarea layext-text-tool"></textarea>
             </div>
         </div>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">代理余额<span style="color: red;">*</span></label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input id="balance" name="balance" placeholder="请输入代理余额" type="number" min="1" max="999999999" lay-verify="required|numberX|h5" oninput="if(value>999999999)value=999999999;if(value<0)value=0" class="layui-input" lay-verify="required" lay-verType="tips" required/>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>

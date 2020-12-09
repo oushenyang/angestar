@@ -1,9 +1,11 @@
-layui.use(['table', 'form', 'admin', 'ax'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var form = layui.form;
+    var notice = layui.notice;
+    var textool = layui.textool;
 
     /**
      * 代理软件表管理
@@ -87,6 +89,12 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             area: '500px',
             url: Feng.ctxPath + '/agentApp/add',
             success: function (layero, dIndex) {
+                textool.init({
+                    // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+                    eleId: null,
+                    // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+                    maxlength: 128,
+                });
                 form.render('select');
                 form.val('agentAppForm', {
                     "balance": 0
@@ -94,16 +102,16 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
                 //表单提交事件
                 form.on('submit(agentAppSubmit)', function (data) {
                     var loadIndex = layer.load(2);
-                    var ajax = new $ax(Feng.ctxPath + "/agentApp/addItem", function (data) {
+                    var ajax = new $ax(Feng.ctxPath + "/actExamine/developerAddItem", function (data) {
                         layer.close(loadIndex);
                         layer.close(dIndex);
-                        layer.msg("添加成功！", {icon: 1});
+                        notice.msg('申请成功，请等待代理审批!', {icon: 1});
                         table.reload(AgentApp.tableId);
                         //关掉对话框
                         admin.closeThisDialog();
                     }, function (data) {
                         layer.close(loadIndex);
-                        layer.msg("添加失败！" + data.responseJSON.message, {icon: 2});
+                        notice.msg('申请失败！'+ data.responseJSON.message, {icon: 2});
                     });
                     ajax.set(data.field);
                     ajax.start();

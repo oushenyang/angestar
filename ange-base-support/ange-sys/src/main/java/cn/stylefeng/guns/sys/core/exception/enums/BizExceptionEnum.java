@@ -137,7 +137,12 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     /**
      * 卡类相关的异常
      */
-    CARD_TYPE_NAME_EXISTED(400, "卡类名称已经存在");
+    CARD_TYPE_NAME_EXISTED(400, "卡类名称已经存在"),
+
+    /**
+     * 代理审核相关异常
+     */
+    INVITED_AGENT(400, "已邀请过该代理，请等待代理审批");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;

@@ -21,6 +21,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
+import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.auth.exception.PermissionException;
 import cn.stylefeng.guns.base.auth.exception.enums.AuthExceptionEnum;
 //import cn.stylefeng.guns.core.exception.CardApiException;
@@ -303,6 +304,20 @@ public class GlobalExceptionHandler {
         if (LoginContextHolder.getContext().hasLogin()) {
             LogManager.me().executeLog(LogTaskFactory.exceptionLog(LoginContextHolder.getContext().getUserId(), e));
         }
+        getRequest().setAttribute("tip", e.getMessage());
+        return new ErrorResponseData(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 拦截操作异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(OperationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorResponseData operationException(OperationException e) {
         getRequest().setAttribute("tip", e.getMessage());
         return new ErrorResponseData(e.getCode(), e.getMessage());
     }

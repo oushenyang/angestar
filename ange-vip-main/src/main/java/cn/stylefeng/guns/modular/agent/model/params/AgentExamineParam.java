@@ -26,6 +26,11 @@ public class AgentExamineParam implements Serializable, BaseValidatingParam {
     private Long agentExamineId;
 
     /**
+     * 菜单类型：1-开发者菜单；2-代理者菜单
+     */
+    private Integer type;
+
+    /**
      * 应用id
      */
     private Long appId;

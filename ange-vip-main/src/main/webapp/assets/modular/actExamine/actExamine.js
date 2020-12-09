@@ -16,20 +16,28 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AgentExamine.initColumn = function () {
         return [[
-            {align: 'center',field: 'agentExamineId', fixed: 'left',type: 'checkbox'},
-            {align: 'center',field: 'appId', sort: true, title: '应用id'},
-            {align: 'center',field: 'developerUserId', sort: true, title: '开发者用户id'},
-            {align: 'center',field: 'agentUserId', sort: true, title: '代理用户id'},
-            {align: 'center',field: 'agentUserName', sort: true, title: '代理用户名称'},
-            {align: 'center',field: 'agentUserAccount', sort: true, title: '代理用户账号'},
-            {align: 'center',field: 'applyReason', sort: true, title: '申请理由'},
-            {align: 'center',field: 'applyType', sort: true, title: '申请类型：1-申请代理；2-邀请代理'},
-            {align: 'center',field: 'examineStatus', sort: true, title: '审核状态：1-等待开发者审核；2-等待代理审核；3-开发者拒绝；4-代理拒绝；5-代理成功'},
-            {align: 'center',field: 'examineTime', sort: true, title: '审核时间'},
-            {align: 'center',field: 'createUser', sort: true, title: '创建人'},
-            {align: 'center',field: 'createTime', sort: true, title: '创建时间'},
-            {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
-            {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
+            {align: 'center', field: 'agentExamineId', fixed: 'left', type: 'checkbox'},
+            {align: 'center', field: 'appName', title: '应用名称'},
+            {align: 'center', field: 'developerUserId',title: '开发者名称'},
+            {align: 'center', field: 'agentUserName', title: '代理名称'},
+            {align: 'center', field: 'agentUserAccount',title: '代理账号'},
+            {
+                align: 'center', field: 'applyType', title: '申请类型', templet: function (d) {
+                    if (d.applyType === 1) {
+                        return '申请代理';
+                    } else if (d.applyType === 2){
+                        return '邀请代理';
+                    }
+                }
+            },
+            {align: 'center', field: 'applyReason', title: '申请理由'},
+            {
+                align: 'center',
+                field: 'examineStatus',
+                title: '审核状态',templet:'#examineStatusTpl'
+            },
+            {align: 'center', field: 'createTime', sort: true, title: '申请时间'},
+            {align: 'center', field: 'examineTime', sort: true, title: '审核时间'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
@@ -101,17 +109,17 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param obj 选择的行数据
      */
-    AgentExamine.batchRemove = function(obj){
+    AgentExamine.batchRemove = function (obj) {
         let data = table.checkStatus(obj.config.id).data;
-        if(data.length === 0){
-            Feng.error("未选中数据!" );
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
             return false;
         }
         let ids = "";
-        for(let i = 0;i<data.length;i++){
-            ids += data[i].agentExamineId+",";
+        for (let i = 0; i < data.length; i++) {
+            ids += data[i].agentExamineId + ",";
         }
-        ids = ids.substr(0,ids.length-1);
+        ids = ids.substr(0, ids.length - 1);
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/agentExamine/batchRemove", function (data) {
                 Feng.success("删除成功!");
@@ -128,16 +136,13 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + AgentExamine.tableId,
-        url: Feng.ctxPath + '/agentExamine/list',
+        url: Feng.ctxPath + '/actExamine/list',
         page: true,
-        toolbar: '#' + AgentExamine.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
+        where:{
+            type:$("#type").val()
+        },
         cols: AgentExamine.initColumn()
     });
 
@@ -152,13 +157,13 @@ layui.use(['table', 'admin', 'ax'], function () {
     });
 
     // 表头工具条点击事件
-    table.on('toolbar(' + AgentExamine.tableId + ')', function(obj){
+    table.on('toolbar(' + AgentExamine.tableId + ')', function (obj) {
         //添加
-        if(obj.event === 'btnAdd'){
+        if (obj.event === 'btnAdd') {
             AgentExamine.openAddDlg();
-        } else if(obj.event === 'refresh'){
+        } else if (obj.event === 'refresh') {
             table.reload(AgentExamine.tableId);
-        } else if(obj.event === 'batchRemove'){
+        } else if (obj.event === 'batchRemove') {
             AgentExamine.batchRemove(obj)
         }
     });

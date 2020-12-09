@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.agent.service.impl;
 
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
@@ -55,7 +56,7 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         param.setPid(LoginContextHolder.getContext().getUserId());
         User user = userService.getByAccount(param.getAgentUserAccount());
         if (user == null) {
-            throw new ServiceException(USER_NOT_EXISTED);
+            throw new OperationException(USER_NOT_EXISTED);
         }
         param.setAgentUserId(user.getUserId());
         param.setAgentUserName(user.getName());

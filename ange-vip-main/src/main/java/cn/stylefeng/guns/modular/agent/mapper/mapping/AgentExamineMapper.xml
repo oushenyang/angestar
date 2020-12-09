@@ -22,7 +22,50 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        agent_examine_id AS "agentExamineId", app_id AS "appId", developer_user_id AS "developerUserId", agent_user_id AS "agentUserId", agent_user_name AS "agentUserName", agent_user_account AS "agentUserAccount", apply_reason AS "applyReason", apply_type AS "applyType", examine_status AS "examineStatus", examine_time AS "examineTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        aae.agent_examine_id AS "agentExamineId",
+        aae.app_id AS "appId",
+        aae.developer_user_id AS "developerUserId",
+        aae.agent_user_id AS "agentUserId",
+        aae.agent_user_name AS "agentUserName",
+        aae.agent_user_account AS "agentUserAccount",
+        aae.apply_reason AS "applyReason",
+        aae.apply_type AS "applyType",
+        aae.examine_status AS "examineStatus",
+        aae.examine_time AS "examineTime",
+        aae.create_user AS "createUser",
+        aae.create_time AS "createTime",
+        aae.update_user AS "updateUser",
+        aae.update_time AS "updateTime"
     </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        ai.app_name AS "appName",
+        (select `name` from sys_user where user_id = aae.developer_user_id) AS developerUserName,
+        (select `name` from sys_user where user_id = aae.agent_user_id) AS agentUserName,
+        <include refid="Base_Column_List"/>
+        from ag_agent_examine aae
+        left join ag_app_info ai on ai.app_id = aae.app_id
+        <where>
+            <if test="param.examineStatus != null">
+                and aae.examine_status = #{param.examineStatus}
+            </if>
+            <if test="param.applyType != null">
+                and aae.apply_type = #{param.applyType}
+            </if>
+            <if test="param.developerUserId != null and param.developerUserId !=''">
+                and aae.developer_user_id = #{param.developerUserId}
+            </if>
+            <if test="param.agentUserId != null and param.agentUserId !=''">
+                and aae.agent_user_id = #{param.agentUserId}
+            </if>
+            <if test="param.type!= null and param.type == 1">
+                and aae.developer_user_id = #{param.createUser}
+            </if>
+            <if test="param.type!= null and param.type == 2">
+                and aae.agent_user_id = #{param.createUser}
+            </if>
+        </where>
+        order by aae.create_time ASC
+    </select>
 
 </mapper>
