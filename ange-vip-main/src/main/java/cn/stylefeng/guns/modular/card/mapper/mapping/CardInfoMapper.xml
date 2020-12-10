@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.card.entity.CardInfo">
         <id column="card_id" property="cardId" />
         <result column="app_id" property="appId" />
+        <result column="batch_no" property="batchNo" />
         <result column="card_type_name" property="cardTypeName" />
         <result column="card_type_id" property="cardTypeId" />
         <result column="user_id" property="userId" />
@@ -37,6 +38,7 @@
         cci.card_type_name AS cardTypeName,
         cci.card_id AS "cardId",
         cci.app_id AS "appId",
+        cci.batch_no AS "batchNo",
         cci.card_type_name AS "cardTypeName",
         cci.card_type_id AS "cardTypeId",
         cci.user_id AS "userId",
@@ -71,6 +73,7 @@
         cci.card_type_name AS cardTypeName,
         cci.card_id AS "cardId",
         cci.app_id AS "appId",
+        cci.batch_no AS "batchNo",
         cci.card_type_name AS "cardTypeName",
         cci.card_type_id AS "cardTypeId",
         cci.user_id AS "userId",
@@ -99,6 +102,7 @@
         INSERT INTO `ag_card_info` (
         `card_id`,
         `app_id`,
+        `batch_no`,
         `card_type_name`,
         `card_type_id`,
         `user_id`,
@@ -121,6 +125,7 @@
         <foreach collection ="cardInfos" item="cardInfo" separator =",">
             (#{cardInfo.cardId},
             #{cardInfo.appId},
+            #{cardInfo.batchNo},
             #{cardInfo.cardTypeName},
             #{cardInfo.cardTypeId},
             #{cardInfo.userId},

@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.card.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -28,6 +29,7 @@ import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
+import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -87,6 +89,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setCreateTime(date);
 //        param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+        //生成批次号
+        param.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
         param.setCardBindType(0);
         param.setCardSignType(1);
         param.setCardOpenRange(0);

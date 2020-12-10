@@ -34,6 +34,12 @@ public class CardInfo implements Serializable {
     private Long appId;
 
     /**
+     * 批次号
+     */
+    @TableField("batch_no")
+    private String batchNo;
+
+    /**
      * 卡类名称
      */
     @TableField("card_type_name")
@@ -228,6 +234,14 @@ public class CardInfo implements Serializable {
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public String getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
     }
 
     public String getCardTypeName() {
@@ -475,6 +489,7 @@ public class CardInfo implements Serializable {
         return "CardInfo{" +
         "cardId=" + cardId +
         ", appId=" + appId +
+        ", batchNo=" + batchNo +
         ", cardTypeName=" + cardTypeName +
         ", cardTypeId=" + cardTypeId +
         ", userId=" + userId +

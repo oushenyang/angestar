@@ -39,6 +39,11 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     private Long actCardAppId;
 
     /**
+     * 批次号
+     */
+    private String batchNo;
+
+    /**
      * 卡类名称
      */
     private String cardTypeName;
