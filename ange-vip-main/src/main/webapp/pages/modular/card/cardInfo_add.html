@@ -30,12 +30,8 @@
             <div class="layui-input-block">
                 <select name="cardTypeId" lay-search="" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
                     <option value="">请选择卡密类型</option>
-                    @if(tool.isNotEmpty(type)){
-                    @if(type==0){
                     @for(codeCardType in codeCardTypes) {
                     <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
-                    @}
-                    @}
                     @}
                 </select>
             </div>
