@@ -89,15 +89,15 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
             area: '500px',
             url: Feng.ctxPath + '/agentApp/add',
             success: function (layero, dIndex) {
+                form.render('select');
+                form.val('agentAppForm', {
+                    "balance": 0
+                });
                 textool.init({
                     // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
                     eleId: null,
                     // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
-                    maxlength: 128,
-                });
-                form.render('select');
-                form.val('agentAppForm', {
-                    "balance": 0
+                    maxlength: 128
                 });
                 //表单提交事件
                 form.on('submit(agentAppSubmit)', function (data) {

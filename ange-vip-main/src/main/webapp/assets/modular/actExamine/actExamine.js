@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'ax', 'notice'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var notice = layui.notice;
 
     /**
      * 代理审核表管理
@@ -18,7 +19,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             {align: 'center', field: 'agentExamineId', fixed: 'left', type: 'checkbox'},
             {align: 'center', field: 'appName', title: '应用名称'},
-            {align: 'center', field: 'developerUserId',title: '开发者名称'},
+            {align: 'center', field: 'developerUserName',title: '开发者名称'},
             {align: 'center', field: 'agentUserName', title: '代理名称'},
             {align: 'center', field: 'agentUserAccount',title: '代理账号'},
             {
@@ -68,21 +69,47 @@ layui.use(['table', 'admin', 'ax'], function () {
     };
 
     /**
-     * 点击编辑
+     * 代理点击同意
      *
      * @param data 点击按钮时候的行数据
      */
-    AgentExamine.openEditDlg = function (data) {
-        admin.putTempData('formOk', false);
-        top.layui.admin.open({
-            type: 2,
-            title: '修改代理审核表',
-            area: '700px',
-            content: Feng.ctxPath + '/agentExamine/edit?agentExamineId=' + data.agentExamineId,
-            end: function () {
-                admin.getTempData('formOk') && table.reload(AgentExamine.tableId);
-            }
-        });
+    AgentExamine.agree = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/actExamine/actAgree", function (data) {
+                notice.msg("代理成功!", {icon: 1});
+                parent.layer.closeAll();
+                table.reload(AgentExamine.tableId);
+            }, function (data) {
+                notice.msg("代理失败!" + data.responseJSON.message, {icon: 2});
+                parent.layer.closeAll();
+            });
+            ajax.set("agentExamineId", data.agentExamineId);
+            ajax.set("type", $('#type').val());
+            ajax.start();
+        };
+        Feng.confirm("是否同意代理?", operation);
+    };
+
+    /**
+     * 代理点击拒绝
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentExamine.refuse = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/actExamine/actRefuse", function (data) {
+                notice.msg("拒绝成功!", {icon: 1});
+                parent.layer.closeAll();
+                table.reload(AgentExamine.tableId);
+            }, function (data) {
+                notice.msg("拒绝失败!" + data.responseJSON.message, {icon: 2});
+                parent.layer.closeAll();
+            });
+            ajax.set("agentExamineId", data.agentExamineId);
+            ajax.set("type", $('#type').val());
+            ajax.start();
+        };
+        Feng.confirm("是否拒绝代理?", operation);
     };
 
     /**
@@ -172,10 +199,10 @@ layui.use(['table', 'admin', 'ax'], function () {
         var data = obj.data;
         var layEvent = obj.event;
 
-        if (layEvent === 'edit') {
-            AgentExamine.openEditDlg(data);
-        } else if (layEvent === 'delete') {
-            AgentExamine.onDeleteItem(data);
+        if (layEvent === 'agree') {
+            AgentExamine.agree(data);
+        } else if (layEvent === 'refuse') {
+            AgentExamine.refuse(data);
         }
     });
 });

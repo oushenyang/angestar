@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
+import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -60,6 +61,32 @@ public class AgentExamineController extends BaseController {
     }
 
     /**
+     * 同意代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    @RequestMapping("/actAgree")
+    @ResponseBody
+    public ResponseData actAgree(AgentExamineParam agentExamineParam) {
+        this.agentExamineService.agree(agentExamineParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 拒绝代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    @RequestMapping("/actRefuse")
+    @ResponseBody
+    public ResponseData actRefuse(AgentExamineParam agentExamineParam) {
+        this.agentExamineService.actRefuse(agentExamineParam);
+        return ResponseData.success();
+    }
+
+    /**
      * 查询列表
      *
      * @author shenyang.ou
@@ -68,8 +95,6 @@ public class AgentExamineController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(AgentExamineParam agentExamineParam) {
-//        return this.agentExamineService.findPageBySpec(agentExamineParam);
-
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
         agentExamineParam.setCreateUser(LoginContextHolder.getContext().getUserId());

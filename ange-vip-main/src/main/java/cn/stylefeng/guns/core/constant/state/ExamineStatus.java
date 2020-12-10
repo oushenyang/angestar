@@ -13,9 +13,9 @@ public enum ExamineStatus {
 
     WAITING_DEVELOPER_REVIEW(1, "等待开发者审核"),
     WAITING_AGENT_REVIEW(2, "等待代理审核"),
-    DEVELOPER_REFUSE(2, "开发者拒绝"),
-    AGENT_REFUSE(2, "代理拒绝"),
-    AGENT_SUCCESS(2, "代理成功");
+    DEVELOPER_REFUSE(3, "开发者拒绝"),
+    AGENT_REFUSE(4, "代理拒绝"),
+    AGENT_SUCCESS(5, "代理成功");
 
     int code;
     String message;

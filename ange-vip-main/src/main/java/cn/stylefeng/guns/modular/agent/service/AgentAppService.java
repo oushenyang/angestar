@@ -2,8 +2,10 @@ package cn.stylefeng.guns.modular.agent.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
+import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -28,6 +30,14 @@ public interface AgentAppService extends IService<AgentApp> {
      * @Date 2020-05-20
      */
     void add(AgentAppParam param);
+
+    /**
+     * 新增一级代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    void addAgent(AgentExamine entity);
 
     /**
      * 删除

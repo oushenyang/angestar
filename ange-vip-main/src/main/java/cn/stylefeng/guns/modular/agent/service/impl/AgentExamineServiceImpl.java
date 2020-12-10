@@ -7,27 +7,30 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.ExamineStatus;
 import cn.stylefeng.guns.core.constant.type.ApplyType;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.mapper.AgentExamineMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentExamineResult;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import  cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.rmi.ServerException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.INVITED_AGENT;
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.USER_NOT_EXISTED;
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
 
 /**
  * <p>
@@ -41,9 +44,11 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.USER_N
 public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, AgentExamine> implements AgentExamineService {
 
     private final UserService userService;
+    private final AgentAppService agentAppService;
 
-    public AgentExamineServiceImpl(UserService userService) {
+    public AgentExamineServiceImpl(UserService userService, AgentAppService agentAppService) {
         this.userService = userService;
+        this.agentAppService = agentAppService;
     }
 
     /**
@@ -65,6 +70,13 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
             throw new OperationException(INVITED_AGENT);
+        }
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",param.getAppId())
+                .eq("developer_user_id",LoginContextHolder.getContext().getUserId())
+                .eq("agent_user_id",user.getUserId()));
+        if (ObjectUtil.isNotNull(agentApp)){
+            throw new OperationException(ALREADY_AGENT);
         }
         param.setDeveloperUserId(LoginContextHolder.getContext().getUserId());
         param.setAgentUserId(user.getUserId());
@@ -94,6 +106,43 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         QueryWrapper<AgentExamine> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 代理同意代理
+     *
+     * @param agentExamineParam
+     */
+    @Override
+    @Transactional
+    public void agree(AgentExamineParam agentExamineParam) {
+        AgentExamine entity = this.getById(agentExamineParam.getAgentExamineId());
+        entity.setExamineStatus(ExamineStatus.AGENT_SUCCESS.getCode());
+        entity.setExamineTime(new Date());
+        entity.setUpdateTime(new Date());
+        this.updateById(entity);
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",entity.getAppId())
+                .eq("developer_user_id",entity.getDeveloperUserId())
+                .eq("agent_user_id",entity.getAgentUserId()));
+        if (ObjectUtil.isNotNull(agentApp)){
+            throw new OperationException(AGREED_AGENT);
+        }
+        agentAppService.addAgent(entity);
+    }
+
+    /**
+     * 代理拒绝代理
+     *
+     * @param agentExamineParam
+     */
+    @Override
+    public void actRefuse(AgentExamineParam agentExamineParam) {
+        agentExamineParam.setExamineStatus(ExamineStatus.AGENT_REFUSE.getCode());
+        agentExamineParam.setExamineTime(new Date());
+        agentExamineParam.setUpdateTime(new Date());
+        AgentExamine entity = getEntity(agentExamineParam);
+        this.updateById(entity);
     }
 
     private Serializable getKey(AgentExamineParam param){

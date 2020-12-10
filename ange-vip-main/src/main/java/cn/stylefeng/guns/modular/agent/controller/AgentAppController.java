@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 /**
- * 代理软件表控制器
+ * 开发者端代理软件表控制器
  *
  * @author shenyang.ou
  * @Date 2020-05-20 11:20:02
@@ -214,7 +214,7 @@ public class AgentAppController extends BaseController {
 //        return this.agentAppService.findPageBySpec(agentAppParam);
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
-        agentAppParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        agentAppParam.setDeveloperUserId(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
         List<Map<String, Object>> result = agentAppService.findListBySpec(page, agentAppParam);
         page.setRecords(result);

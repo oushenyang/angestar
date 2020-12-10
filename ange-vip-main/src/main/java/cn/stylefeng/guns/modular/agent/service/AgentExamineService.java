@@ -52,4 +52,15 @@ public interface AgentExamineService extends IService<AgentExamine> {
      */
      LayuiPageInfo findPageBySpec(AgentExamineParam param);
 
+    /**
+     * 代理同意代理
+     * @param agentExamineParam
+     */
+    void agree(AgentExamineParam agentExamineParam);
+
+    /**
+     * 代理拒绝代理
+     * @param agentExamineParam
+     */
+    void actRefuse(AgentExamineParam agentExamineParam);
 }

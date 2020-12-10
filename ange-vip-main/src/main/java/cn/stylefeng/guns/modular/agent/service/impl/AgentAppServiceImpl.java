@@ -5,10 +5,12 @@ import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.entity.AgentPower;
 import cn.stylefeng.guns.modular.agent.mapper.AgentAppMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
+import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
@@ -24,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +71,32 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         this.save(entity);
         AgentPower agentPower = new AgentPower();
         agentPower.setAgentAppId(entity.getAgentAppId());
+        agentPower.setCreateTime(new Date());
+        agentPower.setCreateUser(LoginContextHolder.getContext().getUserId());
+        agentPowerService.save(agentPower);
+    }
+
+    /**
+     * 新增一级代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @Override
+    public void addAgent(AgentExamine entity) {
+        AgentApp agentApp = new AgentApp();
+        agentApp.setAppId(entity.getAppId());
+        agentApp.setDeveloperUserId(entity.getDeveloperUserId());
+        agentApp.setPid(entity.getDeveloperUserId());
+        agentApp.setAgentUserId(entity.getAgentUserId());
+        agentApp.setAgentUserName(entity.getAgentUserName());
+        agentApp.setAgentUserAccount(entity.getAgentUserAccount());
+        agentApp.setAgentGrade(1);
+        agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
+        agentApp.setPids("[" + entity.getDeveloperUserId() + "]," + "[" + entity.getAgentUserId() + "],");
+        this.save(agentApp);
+        AgentPower agentPower = new AgentPower();
+        agentPower.setAgentAppId(agentApp.getAgentAppId());
         agentPower.setCreateTime(new Date());
         agentPower.setCreateUser(LoginContextHolder.getContext().getUserId());
         agentPowerService.save(agentPower);

@@ -142,7 +142,9 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     /**
      * 代理审核相关异常
      */
-    INVITED_AGENT(400, "已邀请过该代理，请等待代理审批");
+    INVITED_AGENT(400, "已邀请过该代理，请等待代理审批"),
+    ALREADY_AGENT(400, "该用户已经是您的代理，请勿重复操作"),
+    AGREED_AGENT(400, "已同意代理，请勿重复操作");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;
