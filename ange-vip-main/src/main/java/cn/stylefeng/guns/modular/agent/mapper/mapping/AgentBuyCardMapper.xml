@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.agent.mapper.AgentBuyCardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentBuyCard">
+        <id column="agent_buy_card_id" property="agentBuyCardId" />
+        <result column="app_id" property="appId" />
+        <result column="developer_user_id" property="developerUserId" />
+        <result column="agent_user_id" property="agentUserId" />
+        <result column="agent_user_name" property="agentUserName" />
+        <result column="agent_user_account" property="agentUserAccount" />
+        <result column="agent_grade" property="agentGrade" />
+        <result column="agent_price" property="agentPrice" />
+        <result column="buy_card_type" property="buyCardType" />
+        <result column="buy_num" property="buyNum" />
+        <result column="card_type_id" property="cardTypeId" />
+        <result column="card_type" property="cardType" />
+        <result column="amount" property="amount" />
+        <result column="examine_time" property="examineTime" />
+        <result column="detailed" property="detailed" />
+        <result column="remark" property="remark" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        agent_buy_card_id AS "agentBuyCardId", app_id AS "appId", developer_user_id AS "developerUserId", agent_user_id AS "agentUserId", agent_user_name AS "agentUserName", agent_user_account AS "agentUserAccount", agent_grade AS "agentGrade", agent_price AS "agentPrice", buy_card_type AS "buyCardType", buy_num AS "buyNum", card_type_id AS "cardTypeId", card_type AS "cardType", amount AS "amount", examine_time AS "examineTime", detailed AS "detailed", remark AS "remark", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+    </sql>
+
+</mapper>

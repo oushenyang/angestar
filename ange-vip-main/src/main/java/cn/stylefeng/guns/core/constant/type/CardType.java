@@ -10,8 +10,6 @@ import lombok.Getter;
  */
 @Getter
 public enum CardType {
-
-    //卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-年
     SINGLE_CARD(0, "单码卡密"),
     CURRENCY_CARD(1, "通用卡密"),
     ACCOUNT_CARD(2, "注册卡密");

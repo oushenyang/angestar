@@ -160,18 +160,17 @@ public class CardInfoController extends BaseController {
     }
 
     /**
-     * 代理新增接口
+     * 一级代理新增卡密接口
      *
      * @author shenyang.ou
      * @Date 2020-04-20
      */
-    @RequestMapping("/actAddItem")
+    @RequestMapping("/oneLevelActAddItem")
     @ResponseBody
-    public ResponseData actAddItem(CardInfoParam cardInfoParam) {
-        cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
-        cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
-        cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
-        List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
+    public ResponseData oneLevelActAddItem(CardInfoParam cardInfoParam) {
+
+        List<String> cardInfos = this.cardInfoService.oneLevelActAddItem(cardInfoParam);
+//        List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
         return ResponseData.success(cardInfos);
     }
 

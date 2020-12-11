@@ -98,4 +98,9 @@ public interface CardInfoService extends IService<CardInfo> {
 
     //更新卡密和删除缓存
     void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode);
+
+    /**
+     * 一级代理新增卡密
+     */
+    List<String> oneLevelActAddItem(CardInfoParam cardInfoParam);
 }

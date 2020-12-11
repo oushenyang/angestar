@@ -4,12 +4,22 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.core.constant.state.CardTypeRule;
+import cn.stylefeng.guns.core.constant.type.BuyCardType;
+import cn.stylefeng.guns.core.constant.type.CardType;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentCard;
+import cn.stylefeng.guns.modular.agent.model.params.AgentBuyCardParam;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
@@ -44,10 +54,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_SELECT_CARD;
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
 
 /**
  * <p>
@@ -67,6 +77,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     private RedisUtil redisUtil;
     @Autowired
     private AsyncService asyncService;
+    @Autowired
+    private AgentAppService agentAppService;
+    @Autowired
+    private AgentCardService agentCardService;
+    @Autowired
+    private AgentBuyCardService agentBuyCardService;
 
 
     @Override
@@ -358,6 +374,72 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
         redisUtil.hdel(RedisType.CARD_INFO.getCode() + appId,singleCode);
         baseMapper.updateById(cardInfo);
+    }
+
+    /**
+     * 一级代理新增卡密
+     *
+     * @param cardInfoParam
+     */
+    @Override
+    @Transactional
+    public List<String> oneLevelActAddItem(CardInfoParam cardInfoParam) {
+        cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
+        cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
+        cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
+        //先检查余额够不够
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",cardInfoParam.getAppId())
+                .eq("developer_user_id",cardInfoParam.getDeveloperUserId())
+                .eq("agent_user_id",LoginContextHolder.getContext().getUserId()));
+        //代理卡密价格信息
+        AgentCard agentCard = agentCardService.getOne(new QueryWrapper<AgentCard>()
+                .eq("app_id",cardInfoParam.getAppId())
+                .eq("card_type_id",cardInfoParam.getCardTypeId())
+                .eq("agent_app_id",agentApp.getAgentAppId()));
+        //卡类信息
+        CodeCardType cardType = codeCardTypeService.getById(cardInfoParam.getCardTypeId());
+        if (ObjectUtil.isNull(agentApp)){
+            throw new OperationException(NOT_AGENT);
+        }
+        //代理余额
+        BigDecimal balance = agentApp.getBalance();
+        //此次扣除金额
+        BigDecimal deductionAmount = agentCard.getAgentPrice().multiply(BigDecimal.valueOf(cardInfoParam.getAddNum()));
+        //如果扣除余额大于代理余额
+        if (deductionAmount.compareTo(balance)>0){
+            //代理余额不足
+            throw new OperationException(INSUFFICIENT_BALANCE_AGENT);
+        }
+        //设置余额
+        agentApp.setBalance(balance.subtract(deductionAmount));
+        //更新代理余额
+        agentAppService.updateById(agentApp);
+        //新增购卡记录
+        AgentBuyCardParam param = new AgentBuyCardParam();
+        param.setAppId(cardInfoParam.getAppId());
+        param.setDeveloperUserId(cardInfoParam.getDeveloperUserId());
+        param.setAgentUserId(LoginContextHolder.getContext().getUserId());
+        param.setAgentUserName(LoginContextHolder.getContext().getUserName());
+        param.setAgentUserAccount(LoginContextHolder.getContext().getUserAccount());
+        param.setAgentGrade(agentApp.getAgentGrade());
+        param.setAgentPrice(agentCard.getAgentPrice());
+        param.setBuyCardType(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getCode());
+        param.setBuyNum(cardInfoParam.getAddNum());
+        param.setCardTypeId(cardInfoParam.getCardTypeId());
+        param.setCardType(CardType.SINGLE_CARD.getCode());
+        param.setAmount(deductionAmount);
+        //设置明细
+        param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getDetailed(),
+                cardInfoParam.getAddNum(),
+                cardType.getCardTypeName(),
+                agentCard.getAgentPrice(),
+                deductionAmount));
+        param.setCreateTime(new Date());
+        param.setCreateUser(LoginContextHolder.getContext().getUserId());
+        agentBuyCardService.add(param);
+        List<String> cardInfos = this.add(cardInfoParam);
+        return cardInfos;
     }
 
     private Serializable getKey(CardInfoParam param){

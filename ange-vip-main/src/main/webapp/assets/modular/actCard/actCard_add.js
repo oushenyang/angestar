@@ -29,11 +29,12 @@ var CardInfoInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var notice = layui.notice;
     //表单初始赋值
     layui.form.val('cardInfoForm', {
         "addNum":1
@@ -49,8 +50,8 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         data.field.appId = Feng.getUrlParam("appId");
         //是否自定义时间
         data.field.isCustomTime = false;
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/actAddItem", function (data) {
-            Feng.success("添加成功！");
+        var ajax = new $ax(Feng.ctxPath + "/cardInfo/oneLevelActAddItem", function (data) {
+            notice.msg("新增卡密成功！",{icon:1});
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
             //关掉对话框
@@ -67,7 +68,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             });
             return false;
         }, function (data) {
-            Feng.error("添加失败！" + data.responseJSON.message)
+            notice.msg("新增卡密失败！" + data.responseJSON.message,{icon:2});
         });
         ajax.set(data.field);
         ajax.start();

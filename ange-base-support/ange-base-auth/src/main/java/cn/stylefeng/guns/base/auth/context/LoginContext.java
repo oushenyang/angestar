@@ -53,6 +53,14 @@ public interface LoginContext {
     String getUserName();
 
     /**
+     * 获取当前登录用户账号
+     *
+     * @author fengshuonan
+     * @Date 2019/7/18 22:31
+     */
+    String getUserAccount();
+
+    /**
      * 验证当前用户是否包含该角色
      *
      * @param roleName 角色名称
