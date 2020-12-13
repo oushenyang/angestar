@@ -1,4 +1,4 @@
-layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
@@ -6,6 +6,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
     var form = layui.form;
     var notice = layui.notice;
     var textool = layui.textool;
+    var dropdown = layui.dropdown;
 
     /**
      * 代理软件表管理
