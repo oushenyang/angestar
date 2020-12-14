@@ -1,18 +1,23 @@
 package cn.stylefeng.guns.modular.agent.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.type.BuyCardType;
+import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.entity.AgentPower;
 import cn.stylefeng.guns.modular.agent.mapper.AgentAppMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
+import cn.stylefeng.guns.modular.agent.model.params.AgentBuyCardParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
@@ -24,6 +29,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -48,10 +54,12 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.USER_N
 public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> implements AgentAppService {
     private final UserService userService;
     private final AgentPowerService agentPowerService;
+    private final AgentBuyCardService agentBuyCardService;
 
-    public AgentAppServiceImpl(UserService userService,AgentPowerService agentPowerService) {
+    public AgentAppServiceImpl(UserService userService, AgentPowerService agentPowerService, AgentBuyCardService agentBuyCardService) {
         this.userService = userService;
         this.agentPowerService = agentPowerService;
+        this.agentBuyCardService = agentBuyCardService;
     }
 
     @Override
@@ -123,16 +131,37 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
     }
 
     @Override
+    @Transactional
     public void recharge(AgentAppRechargeParam agentAppRechargeParam) {
-        AgentApp agentApp = new AgentApp();
+        AgentApp agentApp =this.getById(agentAppRechargeParam.getAgentAppId());
         agentApp.setAgentAppId(agentAppRechargeParam.getAgentAppId());
+        AgentBuyCardParam param = new AgentBuyCardParam();
         //充值
         if (agentAppRechargeParam.getRechargeType() == 0) {
             agentApp.setBalance(agentAppRechargeParam.getBalance().add(agentAppRechargeParam.getRechargeBalance()));
+            param.setAmount(agentAppRechargeParam.getRechargeBalance());
+            //设置明细
+            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_RECHARGE.getDetailed(),
+                    agentAppRechargeParam.getRechargeBalance()));
         }else {
             agentApp.setBalance(agentAppRechargeParam.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()));
+            param.setAmount(new BigDecimal(BigInteger.ZERO).subtract(agentAppRechargeParam.getRechargeBalance()));
+            //设置明细
+            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_RECHARGE.getDetailed(),
+                    new BigDecimal(BigInteger.ZERO).subtract(agentAppRechargeParam.getRechargeBalance())));
         }
         this.updateById(agentApp);
+        //生成充值
+        param.setAppId(agentApp.getAppId());
+        param.setDeveloperUserId(agentApp.getDeveloperUserId());
+        param.setAgentUserId(agentApp.getAgentUserId());
+        param.setAgentUserName(agentApp.getAgentUserName());
+        param.setAgentUserAccount(agentApp.getAgentUserAccount());
+        param.setAgentGrade(agentApp.getAgentGrade());
+        param.setBuyCardType(BuyCardType.PRIMARY_AGENT_RECHARGE.getCode());
+        param.setCreateTime(new Date());
+        param.setCreateUser(LoginContextHolder.getContext().getUserId());
+        agentBuyCardService.add(param);
     }
 
     @Override

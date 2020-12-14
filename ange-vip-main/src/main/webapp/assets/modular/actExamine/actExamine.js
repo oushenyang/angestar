@@ -17,7 +17,7 @@ layui.use(['table', 'admin', 'ax', 'notice'], function () {
      */
     AgentExamine.initColumn = function () {
         return [[
-            {align: 'center', field: 'agentExamineId', fixed: 'left', type: 'checkbox'},
+            // {align: 'center', field: 'agentExamineId', fixed: 'left', type: 'checkbox'},
             {align: 'center', field: 'appName', title: '应用名称'},
             {align: 'center', field: 'developerUserName',title: '开发者名称'},
             {align: 'center', field: 'agentUserName', title: '代理名称'},
