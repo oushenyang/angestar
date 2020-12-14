@@ -31,7 +31,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("api1/v4")
+@RequestMapping("api/v4")
 public class NewHuanYingV4Controller {
 
     @Autowired
@@ -62,6 +62,7 @@ public class NewHuanYingV4Controller {
     public String apptoken(@RequestHeader(value = "User-Token", required = false) String token){
         String app_pkg = HttpContext.getRequest().getParameter("app_pkg");
         String app_version = HttpContext.getRequest().getParameter("app_version");
+        String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
         String sign;

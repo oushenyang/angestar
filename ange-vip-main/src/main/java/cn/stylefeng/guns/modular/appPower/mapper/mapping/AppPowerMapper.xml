@@ -37,7 +37,7 @@
     </sql>
     <select id="findListBySpec" resultType="java.util.Map">
         select
-        (select COUNT(distinct ph.ut_did) from pj_hy_app ph where ph.sign = aap.sign) AS num,
+        (select COUNT(distinct ph.ut_did) from pj_hy_app ph where ph.sign = aap.sign AND ph.app_name = aap.app_name) AS num,
         <include refid="Base_Column_List"/>
         from ag_app_power aap
         <where>

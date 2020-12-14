@@ -40,7 +40,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("api1/v2")
+@RequestMapping("api/v2")
 public class NewHuanYingV2Controller {
     @Autowired
     private HyAppService hyAppService;

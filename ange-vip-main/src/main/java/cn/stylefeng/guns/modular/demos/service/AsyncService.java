@@ -4,10 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.modular.account.entity.AccountCardType;
 import cn.stylefeng.guns.modular.account.service.AccountCardTypeService;
-import cn.stylefeng.guns.modular.agent.entity.AgentApp;
-import cn.stylefeng.guns.modular.agent.entity.AgentCard;
-import cn.stylefeng.guns.modular.agent.service.AgentAppService;
-import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.agent.entity.*;
+import cn.stylefeng.guns.modular.agent.service.*;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
@@ -176,8 +174,13 @@ public class AsyncService {
         RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
         ApiResultService apiResultService = SpringUtil.getBean(ApiResultService.class);
         CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
+        DeviceService deviceService = SpringUtil.getBean(DeviceService.class);
+        TokenService tokenService = SpringUtil.getBean(TokenService.class);
         AgentAppService agentAppService = SpringUtil.getBean(AgentAppService.class);
         AgentCardService agentCardService = SpringUtil.getBean(AgentCardService.class);
+        AgentPowerService agentPowerService = SpringUtil.getBean(AgentPowerService.class);
+        AgentExamineService agentExamineService = SpringUtil.getBean(AgentExamineService.class);
+        AgentBuyCardService agentBuyCardService = SpringUtil.getBean(AgentBuyCardService.class);
         //删除版本
         appEditionService.remove(new QueryWrapper<AppEdition>().eq("app_id", appId));
         //删除api接口
@@ -196,10 +199,20 @@ public class AsyncService {
         });
         //删除卡密
         cardInfoService.remove(new QueryWrapper<CardInfo>().eq("app_id", appId));
+        //删除绑定设备
+        deviceService.remove(new QueryWrapper<Device>().eq("app_id", appId));
+        //删除token
+        tokenService.remove(new QueryWrapper<Token>().eq("app_id", appId));
         //删除代理
         agentAppService.remove(new QueryWrapper<AgentApp>().eq("app_id", appId));
         //代理卡密
         agentCardService.remove(new QueryWrapper<AgentCard>().eq("app_id", appId));
+        //代理权限
+        agentPowerService.remove(new QueryWrapper<AgentPower>().eq("app_id", appId));
+        //代理审核记录
+        agentExamineService.remove(new QueryWrapper<AgentExamine>().eq("app_id", appId));
+        //代理购卡记录
+        agentBuyCardService.remove(new QueryWrapper<AgentBuyCard>().eq("app_id", appId));
     }
 
     /**
