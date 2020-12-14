@@ -97,6 +97,7 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         this.save(agentApp);
         AgentPower agentPower = new AgentPower();
         agentPower.setAgentAppId(agentApp.getAgentAppId());
+        agentPower.setAppId(agentApp.getAppId());
         agentPower.setCreateTime(new Date());
         agentPower.setCreateUser(LoginContextHolder.getContext().getUserId());
         agentPowerService.save(agentPower);

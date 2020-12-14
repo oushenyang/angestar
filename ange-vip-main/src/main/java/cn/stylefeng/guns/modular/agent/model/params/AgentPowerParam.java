@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.agent.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -29,6 +30,11 @@ public class AgentPowerParam implements Serializable, BaseValidatingParam {
      * 代理应用id
      */
     private Long agentAppId;
+
+    /**
+     * 代理应用id
+     */
+    private Long AppId;
 
     /**
      * 卡密生成 0-否；1-是；

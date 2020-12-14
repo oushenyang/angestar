@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentPower">
         <id column="agent_power_id" property="agentPowerId" />
         <result column="agent_app_id" property="agentAppId" />
+        <result column="app_id" property="appId" />
         <result column="card_create" property="cardCreate" />
         <result column="card_disable" property="cardDisable" />
         <result column="card_look" property="cardLook" />
@@ -28,7 +29,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        agent_power_id AS "agentPowerId", agent_app_id AS "agentAppId", card_create AS "cardCreate", card_disable AS "cardDisable", card_look AS "cardLook", card_data AS "cardData", card_time AS "cardTime", card_delete AS "cardDelete", account_create AS "accountCreate", account_disable AS "accountDisable", account_edit_password AS "accountEditPassword", account_delete AS "accountDelete", account_time AS "accountTime", account_data AS "accountData", account_query AS "accountQuery", revision AS "revision", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        agent_power_id AS "agentPowerId", agent_app_id AS "agentAppId", app_id AS "appId", card_create AS "cardCreate", card_disable AS "cardDisable", card_look AS "cardLook", card_data AS "cardData", card_time AS "cardTime", card_delete AS "cardDelete", account_create AS "accountCreate", account_disable AS "accountDisable", account_edit_password AS "accountEditPassword", account_delete AS "accountDelete", account_time AS "accountTime", account_data AS "accountData", account_query AS "accountQuery", revision AS "revision", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
 
 </mapper>

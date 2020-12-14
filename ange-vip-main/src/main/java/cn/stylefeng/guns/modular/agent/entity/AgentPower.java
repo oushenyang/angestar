@@ -34,6 +34,12 @@ public class AgentPower implements Serializable {
     private Long agentAppId;
 
     /**
+     * 应用id
+     */
+    @TableField("app_id")
+    private Long appId;
+
+    /**
      * 卡密生成 0-否；1-是；
      */
     @TableField("card_create")
@@ -156,6 +162,14 @@ public class AgentPower implements Serializable {
 
     public void setAgentAppId(Long agentAppId) {
         this.agentAppId = agentAppId;
+    }
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
 
     public Boolean getCardCreate() {
@@ -307,6 +321,7 @@ public class AgentPower implements Serializable {
         return "AgentPower{" +
         "agentPowerId=" + agentPowerId +
         ", agentAppId=" + agentAppId +
+        ", appId=" + appId +
         ", cardCreate=" + cardCreate +
         ", cardDisable=" + cardDisable +
         ", cardLook=" + cardLook +

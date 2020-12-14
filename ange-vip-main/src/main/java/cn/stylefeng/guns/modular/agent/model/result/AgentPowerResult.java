@@ -30,6 +30,11 @@ public class AgentPowerResult implements Serializable {
     private Long agentAppId;
 
     /**
+     * 代理应用id
+     */
+    private Long AppId;
+
+    /**
      * 卡密生成 0-否；1-是；
      */
     private Boolean cardCreate;
