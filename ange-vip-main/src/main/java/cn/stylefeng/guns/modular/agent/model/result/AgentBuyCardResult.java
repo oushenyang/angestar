@@ -70,6 +70,11 @@ public class AgentBuyCardResult implements Serializable {
     private Integer buyNum;
 
     /**
+     * 卡密批次号
+     */
+    private String batchNo;
+
+    /**
      * 卡类Id
      */
     private Long cardTypeId;

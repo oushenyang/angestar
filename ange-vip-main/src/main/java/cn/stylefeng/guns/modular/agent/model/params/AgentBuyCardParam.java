@@ -76,6 +76,11 @@ public class AgentBuyCardParam implements Serializable, BaseValidatingParam {
     private Integer buyNum;
 
     /**
+     * 卡密批次号
+     */
+    private String batchNo;
+
+    /**
      * 卡类Id
      */
     private Long cardTypeId;

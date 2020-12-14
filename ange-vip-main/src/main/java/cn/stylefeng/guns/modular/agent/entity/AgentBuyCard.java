@@ -83,6 +83,12 @@ public class AgentBuyCard implements Serializable {
     private Integer buyNum;
 
     /**
+     * 卡密批次号
+     */
+    @TableField("batch_no")
+    private String batchNo;
+
+    /**
      * 卡类Id
      */
     @TableField("card_type_id")
@@ -223,6 +229,14 @@ public class AgentBuyCard implements Serializable {
         this.buyNum = buyNum;
     }
 
+    public String getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
+    }
+
     public Long getCardTypeId() {
         return cardTypeId;
     }
@@ -316,6 +330,7 @@ public class AgentBuyCard implements Serializable {
         ", agentPrice=" + agentPrice +
         ", buyCardType=" + buyCardType +
         ", buyNum=" + buyNum +
+        ", batchNo=" + batchNo +
         ", cardTypeId=" + cardTypeId +
         ", cardType=" + cardType +
         ", amount=" + amount +

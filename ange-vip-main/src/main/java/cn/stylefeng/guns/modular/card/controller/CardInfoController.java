@@ -14,6 +14,7 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
+import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
@@ -155,6 +156,8 @@ public class CardInfoController extends BaseController {
         cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
         cardInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
         cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
+        //生成批次号
+        cardInfoParam.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
         List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
         return ResponseData.success(cardInfos);
     }

@@ -105,8 +105,6 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setCreateTime(date);
 //        param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
-        //生成批次号
-        param.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
         param.setCardBindType(0);
         param.setCardSignType(1);
         param.setCardOpenRange(0);
@@ -416,6 +414,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         //更新代理余额
         agentAppService.updateById(agentApp);
         //新增购卡记录
+        String batchNo = SnowflakeUtil.getInstance().nextIdStr();
         AgentBuyCardParam param = new AgentBuyCardParam();
         param.setAppId(cardInfoParam.getAppId());
         param.setDeveloperUserId(cardInfoParam.getDeveloperUserId());
@@ -426,6 +425,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setAgentPrice(agentCard.getAgentPrice());
         param.setBuyCardType(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getCode());
         param.setBuyNum(cardInfoParam.getAddNum());
+        param.setBatchNo(batchNo);
         param.setCardTypeId(cardInfoParam.getCardTypeId());
         param.setCardType(CardType.SINGLE_CARD.getCode());
         param.setAmount(deductionAmount);
@@ -438,6 +438,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setCreateTime(new Date());
         param.setCreateUser(LoginContextHolder.getContext().getUserId());
         agentBuyCardService.add(param);
+        //生成批次号
+        cardInfoParam.setBatchNo(batchNo);
         List<String> cardInfos = this.add(cardInfoParam);
         return cardInfos;
     }
