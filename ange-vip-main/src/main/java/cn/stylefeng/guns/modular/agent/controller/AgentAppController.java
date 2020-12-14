@@ -176,6 +176,34 @@ public class AgentAppController extends BaseController {
     }
 
     /**
+     * 设置总代
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @RequestMapping("/setRose")
+    @ResponseBody
+    public ResponseData setRose(AgentAppParam agentAppParam) {
+        agentAppParam.setRose(true);
+        this.agentAppService.update(agentAppParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 取消总代
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @RequestMapping("/cancelRose")
+    @ResponseBody
+    public ResponseData cancelRose(AgentAppParam agentAppParam) {
+        agentAppParam.setRose(false);
+        this.agentAppService.update(agentAppParam);
+        return ResponseData.success();
+    }
+
+    /**
      * 批量删除接口
      *
      * @author shenyang.ou

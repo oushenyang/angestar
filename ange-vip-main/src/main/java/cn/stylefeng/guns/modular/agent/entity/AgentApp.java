@@ -61,6 +61,12 @@ public class AgentApp implements Serializable {
     /**
      * 代理等级
      */
+    @TableField("rose")
+    private Boolean rose;
+
+    /**
+     * 代理等级
+     */
     @TableField("agent_grade")
     private Integer agentGrade;
 
@@ -161,6 +167,14 @@ public class AgentApp implements Serializable {
         this.agentUserAccount = agentUserAccount;
     }
 
+    public Boolean getRose() {
+        return rose;
+    }
+
+    public void setRose(Boolean rose) {
+        this.rose = rose;
+    }
+
     public Integer getAgentGrade() {
         return agentGrade;
     }
@@ -242,6 +256,7 @@ public class AgentApp implements Serializable {
         ", agentUserId=" + agentUserId +
         ", agentUserName=" + agentUserName +
         ", agentUserAccount=" + agentUserAccount +
+        ", rose=" + rose +
         ", agentGrade=" + agentGrade +
         ", pid=" + pid +
         ", pids=" + pids +

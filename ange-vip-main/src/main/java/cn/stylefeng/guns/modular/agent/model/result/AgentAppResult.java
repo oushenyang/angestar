@@ -52,6 +52,11 @@ public class AgentAppResult implements Serializable {
     /**
      * 代理等级
      */
+    private Boolean rose;
+
+    /**
+     * 代理等级
+     */
     private Integer agentGrade;
 
     /**

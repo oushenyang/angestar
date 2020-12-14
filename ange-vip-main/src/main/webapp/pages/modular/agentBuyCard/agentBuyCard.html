@@ -1,7 +1,7 @@
 @layout("/common/_container.html",{js:["/assets/modular/agentBuyCard/agentBuyCard.js"]}){
 
 <div class="layui-body-header">
-    <span class="layui-body-header-title">代理购卡记录管理</span>
+    <span class="layui-body-header-title">购卡记录</span>
 </div>
 
 <div class="layui-fluid">
@@ -16,15 +16,11 @@
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
-                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>
+<!--                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>-->
+<!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="layui-card">
-                <div class="layui-card-body">
                     <table class="layui-table" id="agentBuyCardTable" lay-filter="agentBuyCardTable"></table>
                 </div>
             </div>
@@ -33,8 +29,8 @@
 </div>
 
 <script type="text/html" id="tableBar">
-    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
-    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">卡密详情</a>
+<!--    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>-->
 </script>
 
 <script type="text/html" id="agentBuyCardTable-toolbar">

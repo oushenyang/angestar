@@ -38,8 +38,11 @@
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser{{d.LAY_INDEX}}">
         <div class="dropdown-anchor"></div>
         <li><a lay-event="edit2"><i class="fa fa-right fa-edit fa-fw"></i>购卡记录</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-lock fa-fw"></i>设为总代</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-lock fa-fw"></i>取消总代</a></li>
+        {{# if(d.rose == 0){ }}
+        <li><a lay-event="setRose"><i class="fa fa-right fa-link fa-fw"></i>设为总代</a></li>
+        {{# } else{ }}
+        <li><a lay-event="cancelRose"><i class="fa fa-right fa-chain-broken fa-fw"></i>取消总代</a></li>
+        {{# } }}
         <li><a lay-event="delete" style="color: red"><i class="fa fa-right fa-ban fa-fw"></i>禁用代理</a></li>
     </ul>
 </script>

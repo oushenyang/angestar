@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -60,8 +61,8 @@ public class AgentBuyCardServiceImpl extends ServiceImpl<AgentBuyCardMapper, Age
     }
 
     @Override
-    public List<AgentBuyCardResult> findListBySpec(AgentBuyCardParam param){
-        return null;
+    public List<Map<String, Object>> findListBySpec(Page page, AgentBuyCardParam param){
+        return baseMapper.findListBySpec(page,param);
     }
 
     @Override

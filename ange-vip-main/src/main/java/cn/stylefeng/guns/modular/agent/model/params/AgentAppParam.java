@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.agent.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -49,6 +50,11 @@ public class AgentAppParam implements Serializable, BaseValidatingParam {
      * 代理用户账号
      */
     private String agentUserAccount;
+
+    /**
+     * 代理等级
+     */
+    private Boolean rose;
 
     /**
      * 代理等级

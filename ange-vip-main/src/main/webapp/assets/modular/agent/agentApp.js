@@ -211,6 +211,48 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
     };
 
     /**
+     * 设置总代
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.setRose = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/agentApp/setRose", function (data) {
+                notice.msg("设置成功!", {icon: 1});
+                parent.layer.closeAll();
+                table.reload(AgentApp.tableId);
+            }, function (data) {
+                notice.msg("设置失败!" + data.responseJSON.message + "!", {icon: 2});
+                parent.layer.closeAll();
+            });
+            ajax.set("agentAppId", data.agentAppId);
+            ajax.start();
+        };
+        Feng.confirm("是否设置总代?", operation);
+    };
+
+    /**
+     * 取消总代
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.cancelRose = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/agentApp/cancelRose", function (data) {
+                notice.msg("取消成功!", {icon: 1});
+                parent.layer.closeAll();
+                table.reload(AgentApp.tableId);
+            }, function (data) {
+                notice.msg("取消失败!" + data.responseJSON.message + "!", {icon: 2});
+                parent.layer.closeAll();
+            });
+            ajax.set("agentAppId", data.agentAppId);
+            ajax.start();
+        };
+        Feng.confirm("是否取消总代?", operation);
+    };
+
+    /**
      * 点击删除
      *
      * @param data 点击按钮时候的行数据
@@ -218,15 +260,17 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
     AgentApp.onDeleteItem = function (data) {
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/agentApp/delete", function (data) {
-                Feng.success("删除成功!");
+                notice.msg("禁用成功!", {icon: 1});
+                parent.layer.closeAll();
                 table.reload(AgentApp.tableId);
             }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
+                notice.msg("禁用失败!" + data.responseJSON.message + "!", {icon: 2});
+                parent.layer.closeAll();
             });
             ajax.set("agentAppId", data.agentAppId);
             ajax.start();
         };
-        Feng.confirm("是否删除?", operation);
+        Feng.confirm("是否禁用代理?", operation);
     };
 
     /**
@@ -315,6 +359,10 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
             AgentApp.openPowerDlg(data);
         } else if (layEvent === 'card') {
             AgentApp.openCardDlg(data);
+        } else if (layEvent === 'setRose') {
+            AgentApp.setRose(data);
+        } else if (layEvent === 'cancelRose') {
+            AgentApp.cancelRose(data);
         }
     });
 });

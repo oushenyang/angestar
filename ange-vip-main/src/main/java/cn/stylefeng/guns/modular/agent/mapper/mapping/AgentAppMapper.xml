@@ -10,6 +10,7 @@
         <result column="agent_user_id" property="agentUserId" />
         <result column="agent_user_name" property="agentUserName" />
         <result column="agent_user_account" property="agentUserAccount" />
+        <result column="rose" property="rose" />
         <result column="agent_grade" property="agentGrade" />
         <result column="pid" property="pid" />
         <result column="pids" property="pids" />
@@ -31,7 +32,9 @@
         aa.agent_user_id AS "agentUserId",
         aa.agent_user_name AS "agentUserName",
         aa.agent_user_account AS "agentUserAccount",
-        aa.agent_grade AS "agentGrade", pid AS "pid",
+        aa.rose AS "rose",
+        aa.agent_grade AS "agentGrade",
+        aa.pid AS "pid",
         aa.pids AS "pids",
         aa.balance AS "balance",
         aa.status AS "status",
