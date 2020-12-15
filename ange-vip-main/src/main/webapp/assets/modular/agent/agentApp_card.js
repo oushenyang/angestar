@@ -20,13 +20,14 @@ var AgentAppInfoDlg = {
     }
 };
 
-layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
+layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element', 'notice'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var element = layui.element;
     var table = layui.table;
+    var notice = layui.notice;
 
 
     /**
@@ -108,8 +109,12 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
                 }
             },
             {field: 'cardTypeName', align: 'center', title: '卡类名称'},
-            {field: 'marketPrice', align: 'center', title: '市场价',templet: '#marketPriceEditTpl'},
-            {field: 'agentPrice', align: 'center', title: '代理价',templet: '#agentPriceEditTpl'
+            {field: 'marketPrice', align: 'center', title: '市场价', templet: function (d) {
+                    return '<span style="color: orange">'+'￥'+d.marketPrice+'</span>';
+                }},
+            {field: 'agentPrice', align: 'center', title: '代理价', templet: function (d) {
+                    return '<span style="color: orange">'+'￥'+d.agentPrice+'</span>';
+                }
                 // style: 'outline: 1px solid #e6e6e6;outline-offset: -5px;'
             },
             {field: 'createTime', align: 'center', width: 160, sort: true, title: '创建时间'},
@@ -222,7 +227,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
      */
     AgentApp.openEditDlg = function (data, cardType) {
         admin.putTempData('formOk', false);
-        top.layui.admin.open({
+        admin.open({
             type: 2,
             title: '编辑价格',
             area: '500px',
@@ -239,11 +244,90 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
         });
     };
 
+    /**
+     * 点击添加授权卡密
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.openAddDlg = function (cardType) {
+        admin.open({
+            type: 1,
+            title: '添加授权卡密',
+            area: '500px',
+            url: Feng.ctxPath + '/agentCard/add?agentAppId=' + Feng.getUrlParam("agentAppId") + '&cardType=' + cardType+ '&appId=' + Feng.getUrlParam("appId"),
+            success: function (layero, dIndex) {
+                form.render('select');
+                form.verify({
+                    digital: function (agentPrice) {
+                        var marketPrice = $('#agentAppCardForm input[name=marketPrice]').val();
+                        if (marketPrice){
+                            if (Number(marketPrice)<Number(agentPrice)){
+                                return '代理价格不能大于市场价格';
+                            }
+                        }
+                    }
+                });
+                //表单提交事件
+                form.on('submit(agentAppCardSubmit)', function (data) {
+                    data.field.cardTypeName = $('select[name="cardTypeId"] option:selected').text();
+                    var loadIndex = layer.load(2);
+                    var ajax = new $ax(Feng.ctxPath + "/agentCard/addItem", function (data) {
+                        layer.close(loadIndex);
+                        notice.msg('添加成功!', {icon: 1});
+                        if (cardType === 0) {
+                            table.reload(AgentApp.card);
+                        } else if (cardType === 1) {
+                            table.reload(AgentApp.currentCard);
+                        } else {
+                            table.reload(AgentApp.account);
+                        }
+                        layer.close(dIndex);
+                    }, function (data) {
+                        layer.close(loadIndex);
+                        notice.msg('添加失败！'+ data.responseJSON.message, {icon: 2});
+                    });
+                    ajax.set(data.field);
+                    ajax.start();
+                    return false;
+                });
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
+            }
+        });
+    };
+
+    /**
+     * 点击删除
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.onDeleteItem = function (data,cardType) {
+        var operation = function (dIndex) {
+            var ajax = new $ax(Feng.ctxPath + "/agentCard/delete", function (data) {
+                notice.msg("删除成功!", {icon: 1});
+                parent.layer.closeAll('dialog');
+                if (cardType === 0) {
+                    table.reload(AgentApp.card);
+                } else if (cardType === 1) {
+                    table.reload(AgentApp.currentCard);
+                } else {
+                    table.reload(AgentApp.account);
+                }
+            }, function (data) {
+                notice.msg("删除失败!" + data.responseJSON.message + "!", {icon: 2});
+                parent.layer.closeAll('dialog');
+            });
+            ajax.set("agentCardId", data.agentCardId);
+            ajax.start();
+        };
+        var confirm = Feng.confirm("是否删除授权卡类?", operation);
+    };
+
     // 单码卡密表头工具条点击事件
     table.on('toolbar(' + AgentApp.card + ')', function (obj) {
         //添加
         if (obj.event === 'btnAdd') {
-            AgentApp.openAddDlg();
+            AgentApp.openAddDlg(0);
         } else if (obj.event === 'initialize') {
             AgentApp.initializeItemCodeCard(0);
         }
@@ -261,7 +345,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
     table.on('toolbar(' + AgentApp.account + ')', function (obj) {
         //添加
         if (obj.event === 'btnAdd') {
-            AgentApp.openAddDlg();
+            AgentApp.openAddDlg(2);
         } else if (obj.event === 'initialize') {
             AgentApp.initializeItemAccountCard(2);
         }

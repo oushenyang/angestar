@@ -163,7 +163,7 @@ public class AgentAppController extends BaseController {
     }
 
     /**
-     * 删除接口
+     * 删除代理接口
      *
      * @author shenyang.ou
      * @Date 2020-05-20
@@ -199,6 +199,34 @@ public class AgentAppController extends BaseController {
     @ResponseBody
     public ResponseData cancelRose(AgentAppParam agentAppParam) {
         agentAppParam.setRose(false);
+        this.agentAppService.update(agentAppParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 冻结代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @RequestMapping("/disable")
+    @ResponseBody
+    public ResponseData disable(AgentAppParam agentAppParam) {
+        agentAppParam.setStatus(1);
+        this.agentAppService.update(agentAppParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 解冻代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @RequestMapping("/cancelDisable")
+    @ResponseBody
+    public ResponseData cancelDisable(AgentAppParam agentAppParam) {
+        agentAppParam.setStatus(0);
         this.agentAppService.update(agentAppParam);
         return ResponseData.success();
     }

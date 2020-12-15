@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
@@ -88,11 +89,18 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * 排除已经存在的卡类获取剩余卡类信息
      * @param cardTypeIds 已经存在的卡密类型id集合
      * @param cardType 卡密类型
-     * @param appId 应用id
      * @param userId 用户id
      * @return 卡类信息
      */
     List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId);
+
+    /**
+     * 排除已经存在的卡类获取剩余卡类信息
+     * @param agentAppId 代理应用id
+     * @param cardType 卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    List<CodeCardType> getCardTypeByAgentAppIdAndCardType(Long agentAppId,Integer cardType);
 
     /**
      * 根据应用id创建卡类信息

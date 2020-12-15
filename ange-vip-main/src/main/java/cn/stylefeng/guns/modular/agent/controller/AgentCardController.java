@@ -6,12 +6,15 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
+import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,10 +33,12 @@ import java.util.Map;
 @RequestMapping("/agentCard")
 public class AgentCardController extends BaseController {
 
-    private String PREFIX = "/modular/agentCard";
+    private String PREFIX = "/modular/agent";
 
     @Autowired
     private AgentCardService agentCardService;
+    @Autowired
+    private CodeCardTypeService codeCardTypeService;
 
     /**
      * 跳转到主页面
@@ -53,8 +58,13 @@ public class AgentCardController extends BaseController {
      * @Date 2020-05-22
      */
     @RequestMapping("/add")
-    public String add() {
-        return PREFIX + "/agentCard_add.html";
+    public String add(Model model,String agentAppId, Integer cardType,String appId) {
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
+        model.addAttribute("agentAppId", agentAppId);
+        model.addAttribute("cardType", cardType);
+        model.addAttribute("appId", appId);
+        model.addAttribute("codeCardTypes", codeCardTypes);
+        return PREFIX + "/agentApp_card_add.html";
     }
 
     /**

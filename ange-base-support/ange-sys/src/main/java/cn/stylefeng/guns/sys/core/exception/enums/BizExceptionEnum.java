@@ -150,7 +150,13 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 代理操作相关异常
      */
     NOT_AGENT(400, "您还不是代理，不能生成卡密"),
-    INSUFFICIENT_BALANCE_AGENT(400, "代理余额不足，请联系开发者充值");
+    DISABLE_AGENT(400, "您的代理已被冻结，无法操作，请联系开发者处理"),
+    INSUFFICIENT_BALANCE_AGENT(400, "代理余额不足，请联系开发者充值"),
+
+    /**
+     * 代理权限相关异常
+     */
+    NOT_CARD_CREATE(400, "您没有生成卡密权限，无法操作，请联系上级代理开通");
 
 
     BizExceptionEnum(int code, String message) {

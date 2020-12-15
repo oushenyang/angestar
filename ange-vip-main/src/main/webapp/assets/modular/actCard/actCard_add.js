@@ -48,6 +48,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
         data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off';
         data.field.developerUserId = Feng.getUrlParam("developerUserId");
         data.field.appId = Feng.getUrlParam("appId");
+        data.field.agentAppId = Feng.getUrlParam("agentAppId");
         //是否自定义时间
         data.field.isCustomTime = false;
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/oneLevelActAddItem", function (data) {

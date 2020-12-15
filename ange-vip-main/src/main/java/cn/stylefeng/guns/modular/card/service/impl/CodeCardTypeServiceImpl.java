@@ -5,6 +5,9 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.node.MenuNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.agent.entity.AgentCard;
+import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
@@ -17,10 +20,12 @@ import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,6 +45,9 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UPDATE
  */
 @Service
 public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, CodeCardType> implements CodeCardTypeService {
+
+    @Autowired
+    AgentCardService agentCardService;
 
     @Override
     public void add(CodeCardTypeParam param){
@@ -128,6 +136,26 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     @Override
     public List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId){
         return baseMapper.findCardTypeByAppIdAndCardTypeIds(cardTypeIds,cardType,userId);
+    }
+
+    /**
+     * 排除已经存在的卡类获取剩余卡类信息
+     * @param agentAppId 代理应用id
+     * @param cardType 卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    @Override
+    public List<CodeCardType> getCardTypeByAgentAppIdAndCardType(Long agentAppId,Integer cardType) {
+        QueryWrapper<AgentCard> wrapper = new QueryWrapper<>();
+        wrapper = wrapper.eq("agent_app_id", agentAppId);
+        wrapper = wrapper.eq("card_type", cardType);
+        List<AgentCard> agentCards = agentCardService.list(wrapper);
+        //已经存在的卡类集合
+        List<Long> cardTypeIds = new ArrayList<>();
+        agentCards.forEach(agentCard->{
+            cardTypeIds.add(agentCard.getCardTypeId());
+        });
+        return this.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,cardType, LoginContextHolder.getContext().getUserId());
     }
 
     /**

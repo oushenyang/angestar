@@ -6,28 +6,26 @@ import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.type.BuyCardType;
-import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.entity.AgentBuyCard;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
 import cn.stylefeng.guns.modular.agent.entity.AgentPower;
 import cn.stylefeng.guns.modular.agent.mapper.AgentAppMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentBuyCardParam;
-import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
+import cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.USER_NOT_EXISTED;
 
 /**
@@ -55,11 +52,13 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
     private final UserService userService;
     private final AgentPowerService agentPowerService;
     private final AgentBuyCardService agentBuyCardService;
+    private final AgentExamineService agentExamineService;
 
-    public AgentAppServiceImpl(UserService userService, AgentPowerService agentPowerService, AgentBuyCardService agentBuyCardService) {
+    public AgentAppServiceImpl(UserService userService, AgentPowerService agentPowerService, AgentBuyCardService agentBuyCardService, AgentExamineService agentExamineService) {
         this.userService = userService;
         this.agentPowerService = agentPowerService;
         this.agentBuyCardService = agentBuyCardService;
+        this.agentExamineService = agentExamineService;
     }
 
     @Override
@@ -112,7 +111,14 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
     }
 
     @Override
+    @Transactional
     public void delete(AgentAppParam param) {
+        //代理权限
+        agentPowerService.remove(new QueryWrapper<AgentPower>().eq("agent_app_id", param.getAgentAppId()));
+        //代理审核记录
+//        agentExamineService.remove(new QueryWrapper<AgentExamine>().eq("agent_app_id", param.getAgentAppId()));
+//        //代理购卡记录
+//        agentBuyCardService.remove(new QueryWrapper<AgentBuyCard>().eq("agent_app_id", param.getAgentAppId()));
         this.removeById(getKey(param));
     }
 

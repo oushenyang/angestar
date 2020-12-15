@@ -44,6 +44,8 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
 
     @Override
     public void add(AgentCardParam param){
+        AgentCardParam param1 = new AgentCardParam();
+
         AgentCard entity = getEntity(param);
         this.save(entity);
     }

@@ -16,10 +16,12 @@ import cn.stylefeng.guns.core.constant.type.BuyCardType;
 import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
+import cn.stylefeng.guns.modular.agent.entity.AgentPower;
 import cn.stylefeng.guns.modular.agent.model.params.AgentBuyCardParam;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
@@ -83,6 +85,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     private AgentCardService agentCardService;
     @Autowired
     private AgentBuyCardService agentBuyCardService;
+    @Autowired
+    private AgentPowerService agentPowerService;
 
 
     @Override
@@ -385,11 +389,14 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
         cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
         cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
-        //先检查余额够不够
-        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
-                .eq("app_id",cardInfoParam.getAppId())
-                .eq("developer_user_id",cardInfoParam.getDeveloperUserId())
-                .eq("agent_user_id",LoginContextHolder.getContext().getUserId()));
+        //先检查有没有新增权限
+        AgentPower agentPower = agentPowerService.getOne(new QueryWrapper<AgentPower>()
+                .eq("agent_app_id",cardInfoParam.getAgentAppId()));
+        if (!agentPower.getCardCreate()){
+            throw new OperationException(NOT_CARD_CREATE);
+        }
+        //再检查余额够不够
+        AgentApp agentApp = agentAppService.getById(cardInfoParam.getAgentAppId());
         //代理卡密价格信息
         AgentCard agentCard = agentCardService.getOne(new QueryWrapper<AgentCard>()
                 .eq("app_id",cardInfoParam.getAppId())
@@ -399,6 +406,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         CodeCardType cardType = codeCardTypeService.getById(cardInfoParam.getCardTypeId());
         if (ObjectUtil.isNull(agentApp)){
             throw new OperationException(NOT_AGENT);
+        }
+        if (agentApp.getStatus()==1){
+            throw new OperationException(DISABLE_AGENT);
         }
         //代理余额
         BigDecimal balance = agentApp.getBalance();

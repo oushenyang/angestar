@@ -43,7 +43,12 @@
         {{# } else{ }}
         <li><a lay-event="cancelRose"><i class="fa fa-right fa-chain-broken fa-fw"></i>取消总代</a></li>
         {{# } }}
-        <li><a lay-event="delete" style="color: red"><i class="fa fa-right fa-ban fa-fw"></i>禁用代理</a></li>
+        {{# if(d.status == 0){ }}
+        <li><a lay-event="disable" style="color: orange"><i class="fa fa-right fa-ban fa-fw"></i>冻结代理</a></li>
+        {{# } else{ }}
+        <li><a lay-event="cancelDisable" style="color: green"><i class="fa fa-right fa-check fa-fw"></i>解冻代理</a></li>
+        {{# } }}
+        <li><a lay-event="delete" style="color: red"><i class="fa fa-right fa-trash-o fa-fw"></i>删除代理</a></li>
     </ul>
 </script>
 

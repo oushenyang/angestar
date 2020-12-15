@@ -1,9 +1,8 @@
-layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element', 'notice'], function () {
+layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
-    var notice = layui.notice;
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();
@@ -16,27 +15,18 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element', 'notice'], functi
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/agentCard/editItem", function (data) {
-            notice.msg('更新成功!', {icon: 1});
+            Feng.success("更新成功！");
+
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
+
             //关掉对话框
             admin.closeThisDialog();
-
         }, function (data) {
-            notice.msg("更新失败！"+ data.responseJSON.message,{icon:2})
+            Feng.error("更新失败！" + data.responseJSON.message)
         });
         ajax.set(data.field);
         ajax.start();
         return false;
-    });
-    form.verify({
-        digital: function (agentPrice) {
-            var marketPrice = $('#agentAppForm input[name=marketPrice]').val();
-            if (marketPrice){
-                if (Number(marketPrice)<Number(agentPrice)){
-                    return '代理价格不能大于市场价格';
-                }
-            }
-        }
     });
 });
