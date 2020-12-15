@@ -21,23 +21,29 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center', maxWidth:150,field: 'developerUserName', title: '开发者名称'},
             {align: 'center', maxWidth:150,field: 'agentUserName', title: '代理名称'},
             {align: 'center', maxWidth:150,field: 'agentUserAccount', title: '代理账号'},
-            {align: 'center', maxWidth:150,field: 'buyNum', title: '购买数量'},
-            {align: 'center', maxWidth:150,field: 'cardTypeName', title: '卡类名称'},
-            {align: 'center', maxWidth:150,field: 'cardType', title: '卡密类型',
-                templet: function (d) {
-                    if (d.cardType == 0) {
-                        return '单码卡密';
-                    } else if (d.cardType == 1) {
-                        return '通用卡密';
-                    } else if (d.cardType == 2) {
-                        return '注册卡密';
-                    }
-            }},
+            // {align: 'center', maxWidth:150,field: 'buyNum', title: '购买数量'},
+            // {align: 'center', maxWidth:150,field: 'cardTypeName', title: '卡类名称'},
+            // {align: 'center', maxWidth:150,field: 'cardType', title: '卡密类型',
+            //     templet: function (d) {
+            //         if (d.cardType == 0) {
+            //             return '单码卡密';
+            //         } else if (d.cardType == 1) {
+            //             return '通用卡密';
+            //         } else if (d.cardType == 2) {
+            //             return '注册卡密';
+            //         }
+            // }},
             {align: 'center', maxWidth:120,field: 'amount', title: '金额', templet: function (d) {
                     if (d.buyCardType == 2) {
                         return '<span style="color: red">'+'-'+d.amount+'</span>';
-                    }else{
-                        return '<span style="color: green">'+'+'+d.amount+'</span>';
+                    }else if (d.buyCardType == 1||d.buyCardType == 3){
+                        if (d.amount>0){
+                            return '<span style="color: orange">'+'+'+d.amount+'</span>';
+                        }else {
+                            return '<span style="color: red">'+d.amount+'</span>';
+                        }
+                    }else {
+                        return '<span style="color: orange">'+'+'+d.amount+'</span>';
                     }
 
                 }},
