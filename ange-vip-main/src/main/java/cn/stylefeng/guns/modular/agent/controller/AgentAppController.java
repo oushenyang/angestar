@@ -279,7 +279,7 @@ public class AgentAppController extends BaseController {
 //        return this.agentAppService.findPageBySpec(agentAppParam);
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
-        agentAppParam.setDeveloperUserId(LoginContextHolder.getContext().getUserId());
+        agentAppParam.setPid(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
         List<Map<String, Object>> result = agentAppService.findListBySpec(page, agentAppParam);
         page.setRecords(result);

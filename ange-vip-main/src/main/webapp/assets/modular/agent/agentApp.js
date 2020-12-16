@@ -76,6 +76,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
     AgentApp.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
+        queryData['type'] = Feng.getUrlParam("type");
         table.reload(AgentApp.tableId, {where: queryData});
     };
 
@@ -352,6 +353,9 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         url: Feng.ctxPath + '/agentApp/list',
         page: true,
         toolbar: '#' + AgentApp.tableId + '-toolbar',
+        where: {
+            'type': Feng.getUrlParam("type")
+        },
         defaultToolbar: [{
             title: '刷新',
             layEvent: 'refresh',
