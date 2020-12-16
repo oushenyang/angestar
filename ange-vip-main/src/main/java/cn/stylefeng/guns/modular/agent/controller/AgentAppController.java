@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -58,10 +59,11 @@ public class AgentAppController extends BaseController {
      * @Date 2020-05-20
      */
     @RequestMapping("")
-    public String index(Model model) {
+    public String index(Model model,Integer type) {
         //获取当前用户应用列表
         List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
         model.addAttribute("appInfoParams", appInfoParams);
+        model.addAttribute("type", type);
         return PREFIX + "/agentApp.html";
     }
 
@@ -72,9 +74,16 @@ public class AgentAppController extends BaseController {
      * @Date 2020-05-20
      */
     @RequestMapping("/add")
-    public String add(Model model) {
-        //获取当前用户应用列表
-        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+    public String add(Model model,Integer type) {
+        List<AppInfoParam> appInfoParams = new ArrayList<>();
+        //新增二级代理
+        if (type == 2){
+            //查找当前一级代理用户所有拥有总代权限软件列表
+            appInfoParams = appInfoService.getAgentAppInfoList(LoginContextHolder.getContext().getUserId());
+        }else {
+            //获取当前用户应用列表
+            appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        }
         model.addAttribute("appInfoParams", appInfoParams);
         return PREFIX + "/agentApp_add.html";
     }

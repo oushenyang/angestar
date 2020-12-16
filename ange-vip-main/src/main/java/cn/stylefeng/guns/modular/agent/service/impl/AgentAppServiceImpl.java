@@ -52,13 +52,11 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
     private final UserService userService;
     private final AgentPowerService agentPowerService;
     private final AgentBuyCardService agentBuyCardService;
-    private final AgentExamineService agentExamineService;
 
-    public AgentAppServiceImpl(UserService userService, AgentPowerService agentPowerService, AgentBuyCardService agentBuyCardService, AgentExamineService agentExamineService) {
+    public AgentAppServiceImpl(UserService userService, AgentPowerService agentPowerService, AgentBuyCardService agentBuyCardService) {
         this.userService = userService;
         this.agentPowerService = agentPowerService;
         this.agentBuyCardService = agentBuyCardService;
-        this.agentExamineService = agentExamineService;
     }
 
     @Override
@@ -100,7 +98,34 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         agentApp.setAgentUserAccount(entity.getAgentUserAccount());
         agentApp.setAgentGrade(1);
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
-        agentApp.setPids("[" + entity.getDeveloperUserId() + "]," + "[" + entity.getAgentUserId() + "],");
+        agentApp.setPids(entity.getPids());
+        this.save(agentApp);
+        AgentPower agentPower = new AgentPower();
+        agentPower.setAgentAppId(agentApp.getAgentAppId());
+        agentPower.setAppId(agentApp.getAppId());
+        agentPower.setCreateTime(new Date());
+        agentPower.setCreateUser(LoginContextHolder.getContext().getUserId());
+        agentPowerService.save(agentPower);
+    }
+
+    /**
+     * 新增二级代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    @Override
+    public void addSecondAgent(AgentExamine entity) {
+        AgentApp agentApp = new AgentApp();
+        agentApp.setAppId(entity.getAppId());
+        agentApp.setDeveloperUserId(entity.getDeveloperUserId());
+        agentApp.setPid(entity.getPid());
+        agentApp.setAgentUserId(entity.getAgentUserId());
+        agentApp.setAgentUserName(entity.getAgentUserName());
+        agentApp.setAgentUserAccount(entity.getAgentUserAccount());
+        agentApp.setAgentGrade(2);
+        agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
+        agentApp.setPids(entity.getPids());
         this.save(agentApp);
         AgentPower agentPower = new AgentPower();
         agentPower.setAgentAppId(agentApp.getAgentAppId());
@@ -153,8 +178,7 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
             agentApp.setBalance(agentAppRechargeParam.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()));
             param.setAmount(new BigDecimal(BigInteger.ZERO).subtract(agentAppRechargeParam.getRechargeBalance()));
             //设置明细
-            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_RECHARGE.getDetailed(),
-                    new BigDecimal(BigInteger.ZERO).subtract(agentAppRechargeParam.getRechargeBalance())));
+            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_DEDUCT.getDetailed(), agentAppRechargeParam.getRechargeBalance()));
         }
         this.updateById(agentApp);
         //生成充值

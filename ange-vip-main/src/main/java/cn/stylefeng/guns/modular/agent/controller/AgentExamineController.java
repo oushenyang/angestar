@@ -48,7 +48,7 @@ public class AgentExamineController extends BaseController {
     }
 
     /**
-     * 开发者端新增接口
+     * 开发者端新增代理接口
      *
      * @author shenyang.ou
      * @Date 2020-12-09
@@ -56,7 +56,26 @@ public class AgentExamineController extends BaseController {
     @RequestMapping("/developerAddItem")
     @ResponseBody
     public ResponseData developerAddItem(AgentExamineParam agentExamineParam) {
-        this.agentExamineService.developerAddItem(agentExamineParam);
+        //代理端端新增二级代理接口
+        if (agentExamineParam.getType() == 2){
+            this.agentExamineService.agentAddItem(agentExamineParam);
+        }else {
+            this.agentExamineService.developerAddItem(agentExamineParam);
+        }
+
+        return ResponseData.success();
+    }
+
+    /**
+     * 代理端端新增二级代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    @RequestMapping("/agentAddItem")
+    @ResponseBody
+    public ResponseData agentAddItem(AgentExamineParam agentExamineParam) {
+        this.agentExamineService.agentAddItem(agentExamineParam);
         return ResponseData.success();
     }
 

@@ -58,6 +58,24 @@ public class AgentExamine implements Serializable {
     private String agentUserAccount;
 
     /**
+     * 代理等级
+     */
+    @TableField("agent_grade")
+    private Integer agentGrade;
+
+    /**
+     * 父用户id
+     */
+    @TableField("pid")
+    private Long pid;
+
+    /**
+     * 父级ids
+     */
+    @TableField("pids")
+    private String pids;
+
+    /**
      * 申请理由
      */
     @TableField("apply_reason")
@@ -154,6 +172,30 @@ public class AgentExamine implements Serializable {
         this.agentUserAccount = agentUserAccount;
     }
 
+    public Integer getAgentGrade() {
+        return agentGrade;
+    }
+
+    public void setAgentGrade(Integer agentGrade) {
+        this.agentGrade = agentGrade;
+    }
+
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    public String getPids() {
+        return pids;
+    }
+
+    public void setPids(String pids) {
+        this.pids = pids;
+    }
+
     public String getApplyReason() {
         return applyReason;
     }
@@ -227,6 +269,9 @@ public class AgentExamine implements Serializable {
         ", agentUserId=" + agentUserId +
         ", agentUserName=" + agentUserName +
         ", agentUserAccount=" + agentUserAccount +
+        ", agentGrade=" + agentGrade +
+        ", pid=" + pid +
+        ", pids=" + pids +
         ", applyReason=" + applyReason +
         ", applyType=" + applyType +
         ", examineStatus=" + examineStatus +

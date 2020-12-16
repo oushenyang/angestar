@@ -29,6 +29,14 @@ public interface AgentExamineService extends IService<AgentExamine> {
     void developerAddItem(AgentExamineParam param);
 
     /**
+     * 代理端端新增二级代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    void agentAddItem(AgentExamineParam param);
+
+    /**
      * 查询单条数据，Specification模式
      *
      * @author shenyang.ou

@@ -81,6 +81,15 @@ public interface AppInfoService extends IService<AppInfo> {
     List<AppInfoParam> getAppInfoList(Long userId);
 
     /**
+     * 查找当前一级代理用户所有拥有总代权限软件列表
+     *
+     * @param agentUserId 用户id
+     * @author angedata
+     * @Date 2019-07-24
+     */
+    List<AppInfoParam> getAgentAppInfoList(Long agentUserId);
+
+    /**
      * 从redis获取软件信息
      * @param callCode 应用调用码
      * @return 应用信息

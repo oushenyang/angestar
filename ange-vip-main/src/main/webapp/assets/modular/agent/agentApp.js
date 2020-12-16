@@ -83,12 +83,11 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
      * 弹出添加对话框
      */
     AgentApp.openAddDlg = function () {
-        // admin.putTempData('formOk', false);
         admin.open({
             type: 1,
             title: '添加代理',
             area: '500px',
-            url: Feng.ctxPath + '/agentApp/add',
+            url: Feng.ctxPath + '/agentApp/add?type='+Feng.getUrlParam("type"),
             success: function (layero, dIndex) {
                 form.render('select');
                 form.val('agentAppForm', {
@@ -102,6 +101,9 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
                 });
                 //表单提交事件
                 form.on('submit(agentAppSubmit)', function (data) {
+                    data.field.type = Feng.getUrlParam("type");
+                    data.field.agentAppId = $("select[name=appId] option:selected").attr("data-agentAppId");
+                    data.field.developerUserId = $("select[name=appId] option:selected").attr("data-developerUserId");
                     var loadIndex = layer.load(2);
                     var ajax = new $ax(Feng.ctxPath + "/actExamine/developerAddItem", function (data) {
                         layer.close(loadIndex);

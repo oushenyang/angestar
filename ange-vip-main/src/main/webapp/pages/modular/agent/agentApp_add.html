@@ -12,7 +12,10 @@
                 <select name="appId" lay-search="" lay-verify="required" lay-filter="appId" lay-verType="tips" required>
                     <option value="">请选择软件</option>
                     @for(appInfo in appInfoParams) {
-                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    <option value="${appInfo.appId}"
+                            data-agentAppId = "${appInfo.agentAppId}"
+                            data-developerUserId = "${appInfo.developerUserId}"
+                    >${appInfo.appName}</option>
                     @}
                 </select>
             </div>

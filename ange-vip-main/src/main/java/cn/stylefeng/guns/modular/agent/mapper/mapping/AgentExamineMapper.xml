@@ -10,6 +10,9 @@
         <result column="agent_user_id" property="agentUserId" />
         <result column="agent_user_name" property="agentUserName" />
         <result column="agent_user_account" property="agentUserAccount" />
+        <result column="agent_grade" property="agentGrade" />
+        <result column="pid" property="pid" />
+        <result column="pids" property="pids" />
         <result column="apply_reason" property="applyReason" />
         <result column="apply_type" property="applyType" />
         <result column="examine_status" property="examineStatus" />
@@ -28,6 +31,9 @@
         aae.agent_user_id AS "agentUserId",
         aae.agent_user_name AS "agentUserName",
         aae.agent_user_account AS "agentUserAccount",
+        aae.agent_grade AS "agentGrade",
+        aae.pid AS "pid",
+        aae.pids AS "pids",
         aae.apply_reason AS "applyReason",
         aae.apply_type AS "applyType",
         aae.examine_status AS "examineStatus",

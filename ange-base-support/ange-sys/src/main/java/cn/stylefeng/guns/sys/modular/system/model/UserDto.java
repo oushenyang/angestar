@@ -15,6 +15,7 @@
  */
 package cn.stylefeng.guns.sys.modular.system.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -53,6 +54,8 @@ public class UserDto {
     private String phone;
 
     private String roleId;
+
+    private String roleCode;
 
     @NotNull
     private Long deptId;

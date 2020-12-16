@@ -50,6 +50,21 @@ public class AgentExamineResult implements Serializable {
     private String agentUserAccount;
 
     /**
+     * 代理等级
+     */
+    private Integer agentGrade;
+
+    /**
+     * 父用户id
+     */
+    private Long pid;
+
+    /**
+     * 父级ids
+     */
+    private String pids;
+
+    /**
      * 申请理由
      */
     private String applyReason;

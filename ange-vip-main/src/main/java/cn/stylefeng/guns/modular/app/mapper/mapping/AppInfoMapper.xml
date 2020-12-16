@@ -162,4 +162,17 @@
         </where>
         LIMIT 1
     </select>
+    <select id="getAgentAppInfoList" resultType="cn.stylefeng.guns.modular.app.model.params.AppInfoParam">
+        SELECT
+        aai.*,
+        aaa.agent_app_id,
+        aaa.developer_user_id
+        FROM
+        ag_app_info aai
+        LEFT JOIN ag_agent_app aaa ON aaa.app_id = aai.app_id
+        WHERE
+        aaa.agent_user_id = #{agentUserId}
+        AND aaa.agent_grade = 1
+        AND aaa.rose = 1
+    </select>
 </mapper>

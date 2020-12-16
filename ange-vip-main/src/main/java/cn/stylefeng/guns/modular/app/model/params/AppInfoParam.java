@@ -42,6 +42,16 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private Long userId;
 
     /**
+     * 开发者用户id
+     */
+    private Long developerUserId;
+
+    /**
+     * 代理应用id
+     */
+    private Long agentAppId;
+
+    /**
      * 应用名
      */
     private String appName;

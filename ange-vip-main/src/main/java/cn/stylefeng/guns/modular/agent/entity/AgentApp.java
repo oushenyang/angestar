@@ -71,7 +71,7 @@ public class AgentApp implements Serializable {
     private Integer agentGrade;
 
     /**
-     * 父代理应用id
+     * 父用户id
      */
     @TableField("pid")
     private Long pid;

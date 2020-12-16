@@ -85,6 +85,12 @@ public class User implements Serializable {
     private String roleId;
 
     /**
+     * 角色编码(多个逗号隔开)
+     */
+    @TableField("role_code")
+    private String roleCode;
+
+    /**
      * 部门id(多个逗号隔开)
      */
     @TableField("dept_id")
@@ -215,6 +221,14 @@ public class User implements Serializable {
         this.roleId = roleId;
     }
 
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
     public Long getDeptId() {
         return deptId;
     }
@@ -285,6 +299,7 @@ public class User implements Serializable {
         ", email=" + email +
         ", phone=" + phone +
         ", roleId=" + roleId +
+        ", roleCode=" + roleCode +
         ", deptId=" + deptId +
         ", status=" + status +
         ", createTime=" + createTime +

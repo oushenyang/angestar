@@ -27,8 +27,10 @@ import cn.stylefeng.guns.sys.core.constant.state.ManagerStatus;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.log.LogObjectHolder;
 import cn.stylefeng.guns.sys.core.util.SaltUtil;
+import cn.stylefeng.guns.sys.modular.system.entity.Role;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.model.UserDto;
+import cn.stylefeng.guns.sys.modular.system.service.RoleService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.guns.sys.modular.system.warpper.UserWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -69,6 +71,8 @@ public class UserMgrController extends BaseController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 跳转到查看管理员列表的页面
@@ -331,6 +335,8 @@ public class UserMgrController extends BaseController {
         }
         this.userService.assertAuth(userId);
         this.userService.setRoles(userId, roleIds);
+        Role role = roleService.getById(roleIds);
+        this.userService.setRoleCodes(userId, role.getDescription());
         return SUCCESS_TIP;
     }
 

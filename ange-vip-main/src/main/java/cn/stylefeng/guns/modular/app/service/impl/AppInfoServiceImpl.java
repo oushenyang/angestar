@@ -42,6 +42,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.management.Agent;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -64,6 +65,8 @@ import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HE
 public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> implements AppInfoService {
     @Autowired
     private AsyncService asyncService;
+    @Autowired
+    private AgentAppService agentAppService;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -163,6 +166,18 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     @Override
     public List<AppInfoParam> getAppInfoList(Long userId) {
         return baseMapper.findAppInfoList(userId);
+    }
+
+    /**
+     * 查找当前一级代理用户所有拥有总代权限软件列表
+     *
+     * @param agentUserId 用户id
+     * @author angedata
+     * @Date 2019-07-24
+     */
+    @Override
+    public List<AppInfoParam> getAgentAppInfoList(Long agentUserId) {
+        return baseMapper.getAgentAppInfoList(agentUserId);
     }
 
     @Override

@@ -54,9 +54,19 @@ public interface UserMapper extends BaseMapper<User> {
     int setRoles(@Param("userId") Long userId, @Param("roleIds") String roleIds);
 
     /**
+     * 设置用户的角色编码
+     */
+    int setRoleCodes(@Param("userId") Long userId, @Param("roleCodes") String roleCodes);
+
+    /**
      * 通过账号获取用户
      */
     User getByAccount(@Param("account") String account);
+
+    /**
+     * 通过账号获取代理用户
+     */
+    User getAgentByAccount(@Param("account") String account);
 
     /**
      * 选择办理人

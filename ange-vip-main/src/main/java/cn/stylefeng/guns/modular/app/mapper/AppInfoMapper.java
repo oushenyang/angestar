@@ -32,4 +32,13 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AppInfoParam param);
 
     AppInfoApi findAppInfoApi(@Param("callCode") String callCode);
+
+    /**
+     * 查找当前一级代理用户所有拥有总代权限软件列表
+     *
+     * @param agentUserId 用户id
+     * @author angedata
+     * @Date 2019-07-24
+     */
+    List<AppInfoParam> getAgentAppInfoList(@Param("agentUserId") Long agentUserId);
 }

@@ -58,8 +58,9 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
      * @Date 2020-12-09
      */
     @Override
+    @Transactional
     public void developerAddItem(AgentExamineParam param){
-        User user = userService.getByAccount(param.getAgentUserAccount());
+        User user = userService.getAgentByAccount(param.getAgentUserAccount());
         if (user == null) {
             throw new OperationException(USER_NOT_EXISTED);
         }
@@ -67,6 +68,7 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",LoginContextHolder.getContext().getUserId())
                 .eq("agent_user_id",user.getUserId())
+                .eq("agent_grade",1)
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
             throw new OperationException(INVITED_AGENT);
@@ -74,6 +76,7 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",LoginContextHolder.getContext().getUserId())
+                .eq("agent_grade",1)
                 .eq("agent_user_id",user.getUserId()));
         if (ObjectUtil.isNotNull(agentApp)){
             throw new OperationException(ALREADY_AGENT);
@@ -82,6 +85,61 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         param.setAgentUserId(user.getUserId());
         param.setAgentUserName(user.getName());
         param.setAgentUserAccount(user.getAccount());
+        param.setAgentGrade(1);
+        param.setPid(LoginContextHolder.getContext().getUserId());
+        param.setPids("[" + LoginContextHolder.getContext().getUserId() + "]," + "[" + user.getUserId() + "],");
+        //申请类型（邀请代理）
+        param.setApplyType(ApplyType.INVITE_AGENT.getCode());
+        //审核状态（等待代理审核）
+        param.setExamineStatus(ExamineStatus.WAITING_AGENT_REVIEW.getCode());
+        AgentExamine entity = getEntity(param);
+        this.save(entity);
+    }
+
+    /**
+     * 代理端端新增二级代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    @Override
+    @Transactional
+    public void agentAddItem(AgentExamineParam param){
+        User user = userService.getAgentByAccount(param.getAgentUserAccount());
+        if (user == null) {
+            throw new OperationException(USER_NOT_EXISTED);
+        }
+        //不能添加自己为代理
+        if (user.getUserId().equals(LoginContextHolder.getContext().getUserId())){
+            throw new OperationException(NO_SELF_AGENT);
+        }
+        AgentExamine agentExamine = baseMapper.selectOne(new QueryWrapper<AgentExamine>()
+                .eq("app_id",param.getAppId())
+                .eq("developer_user_id",param.getDeveloperUserId())
+                .eq("agent_user_id",user.getUserId())
+                .eq("pid",LoginContextHolder.getContext().getUserId())
+                .eq("agent_grade",2)
+                .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
+        if (ObjectUtil.isNotNull(agentExamine)){
+            throw new OperationException(INVITED_AGENT);
+        }
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",param.getAppId())
+                .eq("developer_user_id",param.getDeveloperUserId())
+                .eq("agent_user_id",user.getUserId())
+                .eq("agent_grade",2)
+                .eq("pid",LoginContextHolder.getContext().getUserId()));
+
+        if (ObjectUtil.isNotNull(agentApp)){
+            throw new OperationException(ALREADY_AGENT);
+        }
+        param.setDeveloperUserId(param.getDeveloperUserId());
+        param.setAgentUserId(user.getUserId());
+        param.setAgentUserName(user.getName());
+        param.setAgentUserAccount(user.getAccount());
+        param.setAgentGrade(2);
+        param.setPid(LoginContextHolder.getContext().getUserId());
+        param.setPids("[" + param.getDeveloperUserId() + "]," + "[" + LoginContextHolder.getContext().getUserId() + "],"+ "[" + user.getUserId() + "],");
         //申请类型（邀请代理）
         param.setApplyType(ApplyType.INVITE_AGENT.getCode());
         //审核状态（等待代理审核）
@@ -121,14 +179,29 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         entity.setExamineTime(new Date());
         entity.setUpdateTime(new Date());
         this.updateById(entity);
-        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
-                .eq("app_id",entity.getAppId())
-                .eq("developer_user_id",entity.getDeveloperUserId())
-                .eq("agent_user_id",entity.getAgentUserId()));
-        if (ObjectUtil.isNotNull(agentApp)){
-            throw new OperationException(AGREED_AGENT);
+        if (entity.getAgentGrade()==2){
+            AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                    .eq("app_id",entity.getAppId())
+                    .eq("agent_grade",2)
+                    .eq("pid",entity.getPid())
+                    .eq("developer_user_id",entity.getDeveloperUserId())
+                    .eq("agent_user_id",entity.getAgentUserId()));
+            if (ObjectUtil.isNotNull(agentApp)){
+                throw new OperationException(AGREED_AGENT);
+            }
+            agentAppService.addSecondAgent(entity);
+        }else {
+            AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                    .eq("app_id",entity.getAppId())
+                    .eq("agent_grade",1)
+                    .eq("developer_user_id",entity.getDeveloperUserId())
+                    .eq("agent_user_id",entity.getAgentUserId()));
+            if (ObjectUtil.isNotNull(agentApp)){
+                throw new OperationException(AGREED_AGENT);
+            }
+            agentAppService.addAgent(entity);
         }
-        agentAppService.addAgent(entity);
+
     }
 
     /**

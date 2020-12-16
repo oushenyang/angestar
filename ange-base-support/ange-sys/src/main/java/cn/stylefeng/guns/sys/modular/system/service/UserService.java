@@ -189,6 +189,16 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     /**
+     * 设置用户的角色编码
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:45
+     */
+    public int setRoleCodes(Long userId, String roleCodes) {
+        return this.baseMapper.setRoleCodes(userId, roleCodes);
+    }
+
+    /**
      * 通过账号获取用户
      *
      * @author fengshuonan
@@ -196,6 +206,16 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      */
     public User getByAccount(String account) {
         return this.baseMapper.getByAccount(account);
+    }
+
+    /**
+     * 通过账号获取代理用户
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:46
+     */
+    public User getAgentByAccount(String account) {
+        return this.baseMapper.getAgentByAccount(account);
     }
 
     /**

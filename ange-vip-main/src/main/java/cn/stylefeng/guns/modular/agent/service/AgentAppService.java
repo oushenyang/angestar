@@ -40,6 +40,14 @@ public interface AgentAppService extends IService<AgentApp> {
     void addAgent(AgentExamine entity);
 
     /**
+     * 新增一级代理
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-20
+     */
+    void addSecondAgent(AgentExamine entity);
+
+    /**
      * 删除
      *
      * @author shenyang.ou
