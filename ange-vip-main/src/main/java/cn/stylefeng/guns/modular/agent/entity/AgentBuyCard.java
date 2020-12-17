@@ -29,40 +29,10 @@ public class AgentBuyCard implements Serializable {
     private Long agentBuyCardId;
 
     /**
-     * 应用id
+     * 代理应用id
      */
-    @TableField("app_id")
-    private Long appId;
-
-    /**
-     * 开发者用户id
-     */
-    @TableField("developer_user_id")
-    private Long developerUserId;
-
-    /**
-     * 代理用户id
-     */
-    @TableField("agent_user_id")
-    private Long agentUserId;
-
-    /**
-     * 代理用户名称
-     */
-    @TableField("agent_user_name")
-    private String agentUserName;
-
-    /**
-     * 代理用户账号
-     */
-    @TableField("agent_user_account")
-    private String agentUserAccount;
-
-    /**
-     * 代理等级
-     */
-    @TableField("agent_grade")
-    private Integer agentGrade;
+    @TableField("agent_app_id")
+    private Long agentAppId;
 
     /**
      * 代理价格
@@ -157,52 +127,12 @@ public class AgentBuyCard implements Serializable {
         this.agentBuyCardId = agentBuyCardId;
     }
 
-    public Long getAppId() {
-        return appId;
+    public Long getAgentAppId() {
+        return agentAppId;
     }
 
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public Long getDeveloperUserId() {
-        return developerUserId;
-    }
-
-    public void setDeveloperUserId(Long developerUserId) {
-        this.developerUserId = developerUserId;
-    }
-
-    public Long getAgentUserId() {
-        return agentUserId;
-    }
-
-    public void setAgentUserId(Long agentUserId) {
-        this.agentUserId = agentUserId;
-    }
-
-    public String getAgentUserName() {
-        return agentUserName;
-    }
-
-    public void setAgentUserName(String agentUserName) {
-        this.agentUserName = agentUserName;
-    }
-
-    public String getAgentUserAccount() {
-        return agentUserAccount;
-    }
-
-    public void setAgentUserAccount(String agentUserAccount) {
-        this.agentUserAccount = agentUserAccount;
-    }
-
-    public Integer getAgentGrade() {
-        return agentGrade;
-    }
-
-    public void setAgentGrade(Integer agentGrade) {
-        this.agentGrade = agentGrade;
+    public void setAgentAppId(Long agentAppId) {
+        this.agentAppId = agentAppId;
     }
 
     public BigDecimal getAgentPrice() {
@@ -321,12 +251,7 @@ public class AgentBuyCard implements Serializable {
     public String toString() {
         return "AgentBuyCard{" +
         "agentBuyCardId=" + agentBuyCardId +
-        ", appId=" + appId +
-        ", developerUserId=" + developerUserId +
-        ", agentUserId=" + agentUserId +
-        ", agentUserName=" + agentUserName +
-        ", agentUserAccount=" + agentUserAccount +
-        ", agentGrade=" + agentGrade +
+        ", agentAppId=" + agentAppId +
         ", agentPrice=" + agentPrice +
         ", buyCardType=" + buyCardType +
         ", buyNum=" + buyNum +

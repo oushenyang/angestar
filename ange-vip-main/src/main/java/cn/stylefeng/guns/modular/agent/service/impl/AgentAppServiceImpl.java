@@ -68,8 +68,6 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
             throw new OperationException(USER_NOT_EXISTED);
         }
         param.setAgentUserId(user.getUserId());
-        param.setAgentUserName(user.getName());
-        param.setAgentUserAccount(user.getAccount());
         param.setAgentGrade(1);
         param.setPids("[" + LoginContextHolder.getContext().getUserId() + "]," + "[" + user.getUserId() + "],");
         AgentApp entity = getEntity(param);
@@ -94,8 +92,6 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         agentApp.setDeveloperUserId(entity.getDeveloperUserId());
         agentApp.setPid(entity.getDeveloperUserId());
         agentApp.setAgentUserId(entity.getAgentUserId());
-        agentApp.setAgentUserName(entity.getAgentUserName());
-        agentApp.setAgentUserAccount(entity.getAgentUserAccount());
         agentApp.setAgentGrade(1);
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
         agentApp.setPids(entity.getPids());
@@ -121,8 +117,6 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         agentApp.setDeveloperUserId(entity.getDeveloperUserId());
         agentApp.setPid(entity.getPid());
         agentApp.setAgentUserId(entity.getAgentUserId());
-        agentApp.setAgentUserName(entity.getAgentUserName());
-        agentApp.setAgentUserAccount(entity.getAgentUserAccount());
         agentApp.setAgentGrade(2);
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
         agentApp.setPids(entity.getPids());
@@ -182,12 +176,7 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         }
         this.updateById(agentApp);
         //生成充值
-        param.setAppId(agentApp.getAppId());
-        param.setDeveloperUserId(agentApp.getDeveloperUserId());
-        param.setAgentUserId(agentApp.getAgentUserId());
-        param.setAgentUserName(agentApp.getAgentUserName());
-        param.setAgentUserAccount(agentApp.getAgentUserAccount());
-        param.setAgentGrade(agentApp.getAgentGrade());
+        param.setAgentAppId(agentApp.getAgentAppId());
         param.setBuyCardType(BuyCardType.PRIMARY_AGENT_RECHARGE.getCode());
         param.setCreateTime(new Date());
         param.setCreateUser(LoginContextHolder.getContext().getUserId());

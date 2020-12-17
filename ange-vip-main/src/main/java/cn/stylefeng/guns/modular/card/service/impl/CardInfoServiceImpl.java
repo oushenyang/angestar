@@ -399,7 +399,6 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         AgentApp agentApp = agentAppService.getById(cardInfoParam.getAgentAppId());
         //代理卡密价格信息
         AgentCard agentCard = agentCardService.getOne(new QueryWrapper<AgentCard>()
-                .eq("app_id",cardInfoParam.getAppId())
                 .eq("card_type_id",cardInfoParam.getCardTypeId())
                 .eq("agent_app_id",agentApp.getAgentAppId()));
         //卡类信息
@@ -426,12 +425,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         //新增购卡记录
         String batchNo = SnowflakeUtil.getInstance().nextIdStr();
         AgentBuyCardParam param = new AgentBuyCardParam();
-        param.setAppId(cardInfoParam.getAppId());
-        param.setDeveloperUserId(cardInfoParam.getDeveloperUserId());
-        param.setAgentUserId(LoginContextHolder.getContext().getUserId());
-        param.setAgentUserName(LoginContextHolder.getContext().getUserName());
-        param.setAgentUserAccount(LoginContextHolder.getContext().getUserAccount());
-        param.setAgentGrade(agentApp.getAgentGrade());
+        param.setAgentAppId(agentApp.getAgentAppId());
         param.setAgentPrice(agentCard.getAgentPrice());
         param.setBuyCardType(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getCode());
         param.setBuyNum(cardInfoParam.getAddNum());

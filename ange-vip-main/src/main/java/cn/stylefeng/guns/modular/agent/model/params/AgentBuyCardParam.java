@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.agent.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -31,34 +32,9 @@ public class AgentBuyCardParam implements Serializable, BaseValidatingParam {
     private Integer type;
 
     /**
-     * 应用id
+     * 代理应用id
      */
-    private Long appId;
-
-    /**
-     * 开发者用户id
-     */
-    private Long developerUserId;
-
-    /**
-     * 代理用户id
-     */
-    private Long agentUserId;
-
-    /**
-     * 代理用户名称
-     */
-    private String agentUserName;
-
-    /**
-     * 代理用户账号
-     */
-    private String agentUserAccount;
-
-    /**
-     * 代理等级
-     */
-    private Integer agentGrade;
+    private Long agentAppId;
 
     /**
      * 代理价格

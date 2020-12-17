@@ -5,11 +5,11 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentApp">
         <id column="agent_app_id" property="agentAppId" />
+        <id column="parent_agent_app_id" property="parentAgentAppId" />
+        <result column="agent_app_no" property="agentAppNo" />
         <result column="app_id" property="appId" />
         <result column="developer_user_id" property="developerUserId" />
         <result column="agent_user_id" property="agentUserId" />
-        <result column="agent_user_name" property="agentUserName" />
-        <result column="agent_user_account" property="agentUserAccount" />
         <result column="rose" property="rose" />
         <result column="agent_grade" property="agentGrade" />
         <result column="pid" property="pid" />
@@ -27,6 +27,8 @@
         ai.app_name AS "appName",
         ap.agent_power_id AS "agentPowerId",
         aa.agent_app_id AS "agentAppId",
+        aa.parent_agent_app_id AS "parentAgentAppId",
+        aa.agent_app_no AS "agentAppNo",
         aa.app_id AS "appId",
         aa.developer_user_id AS "developerUserId",
         aa.agent_user_id AS "agentUserId",

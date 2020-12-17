@@ -8,8 +8,6 @@
         <result column="app_id" property="appId" />
         <result column="developer_user_id" property="developerUserId" />
         <result column="agent_user_id" property="agentUserId" />
-        <result column="agent_user_name" property="agentUserName" />
-        <result column="agent_user_account" property="agentUserAccount" />
         <result column="agent_grade" property="agentGrade" />
         <result column="pid" property="pid" />
         <result column="pids" property="pids" />
@@ -29,8 +27,6 @@
         aae.app_id AS "appId",
         aae.developer_user_id AS "developerUserId",
         aae.agent_user_id AS "agentUserId",
-        aae.agent_user_name AS "agentUserName",
-        aae.agent_user_account AS "agentUserAccount",
         aae.agent_grade AS "agentGrade",
         aae.pid AS "pid",
         aae.pids AS "pids",

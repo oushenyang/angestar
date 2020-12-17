@@ -83,8 +83,6 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         }
         param.setDeveloperUserId(LoginContextHolder.getContext().getUserId());
         param.setAgentUserId(user.getUserId());
-        param.setAgentUserName(user.getName());
-        param.setAgentUserAccount(user.getAccount());
         param.setAgentGrade(1);
         param.setPid(LoginContextHolder.getContext().getUserId());
         param.setPids("[" + LoginContextHolder.getContext().getUserId() + "]," + "[" + user.getUserId() + "],");
@@ -97,7 +95,7 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
     }
 
     /**
-     * 代理端端新增二级代理接口
+     * 代理端端新增下级代理接口
      *
      * @author shenyang.ou
      * @Date 2020-12-09
@@ -118,7 +116,6 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("developer_user_id",param.getDeveloperUserId())
                 .eq("agent_user_id",user.getUserId())
                 .eq("pid",LoginContextHolder.getContext().getUserId())
-                .eq("agent_grade",2)
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
             throw new OperationException(INVITED_AGENT);
@@ -127,7 +124,6 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",param.getDeveloperUserId())
                 .eq("agent_user_id",user.getUserId())
-                .eq("agent_grade",2)
                 .eq("pid",LoginContextHolder.getContext().getUserId()));
 
         if (ObjectUtil.isNotNull(agentApp)){
@@ -135,8 +131,6 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         }
         param.setDeveloperUserId(param.getDeveloperUserId());
         param.setAgentUserId(user.getUserId());
-        param.setAgentUserName(user.getName());
-        param.setAgentUserAccount(user.getAccount());
         param.setAgentGrade(2);
         param.setPid(LoginContextHolder.getContext().getUserId());
         param.setPids("[" + param.getDeveloperUserId() + "]," + "[" + LoginContextHolder.getContext().getUserId() + "],"+ "[" + user.getUserId() + "],");

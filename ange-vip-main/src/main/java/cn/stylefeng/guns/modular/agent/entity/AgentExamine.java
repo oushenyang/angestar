@@ -46,18 +46,6 @@ public class AgentExamine implements Serializable {
     private Long agentUserId;
 
     /**
-     * 代理用户名称
-     */
-    @TableField("agent_user_name")
-    private String agentUserName;
-
-    /**
-     * 代理用户账号
-     */
-    @TableField("agent_user_account")
-    private String agentUserAccount;
-
-    /**
      * 代理等级
      */
     @TableField("agent_grade")
@@ -156,22 +144,6 @@ public class AgentExamine implements Serializable {
         this.agentUserId = agentUserId;
     }
 
-    public String getAgentUserName() {
-        return agentUserName;
-    }
-
-    public void setAgentUserName(String agentUserName) {
-        this.agentUserName = agentUserName;
-    }
-
-    public String getAgentUserAccount() {
-        return agentUserAccount;
-    }
-
-    public void setAgentUserAccount(String agentUserAccount) {
-        this.agentUserAccount = agentUserAccount;
-    }
-
     public Integer getAgentGrade() {
         return agentGrade;
     }
@@ -267,8 +239,6 @@ public class AgentExamine implements Serializable {
         ", appId=" + appId +
         ", developerUserId=" + developerUserId +
         ", agentUserId=" + agentUserId +
-        ", agentUserName=" + agentUserName +
-        ", agentUserAccount=" + agentUserAccount +
         ", agentGrade=" + agentGrade +
         ", pid=" + pid +
         ", pids=" + pids +

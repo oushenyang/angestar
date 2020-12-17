@@ -29,6 +29,18 @@ public class AgentApp implements Serializable {
     private Long agentAppId;
 
     /**
+     * 父级代理应用id
+     */
+    @TableId(value = "parent_agent_app_id")
+    private Long parentAgentAppId;
+
+    /**
+     * 代理应用编号
+     */
+    @TableField("agent_app_no")
+    private String agentAppNo;
+
+    /**
      * 应用id
      */
     @TableField("app_id")
@@ -45,18 +57,6 @@ public class AgentApp implements Serializable {
      */
     @TableField("agent_user_id")
     private Long agentUserId;
-
-    /**
-     * 代理用户名称
-     */
-    @TableField("agent_user_name")
-    private String agentUserName;
-
-    /**
-     * 代理用户账号
-     */
-    @TableField("agent_user_account")
-    private String agentUserAccount;
 
     /**
      * 代理等级
@@ -127,6 +127,22 @@ public class AgentApp implements Serializable {
         this.agentAppId = agentAppId;
     }
 
+    public Long getParentAgentAppId() {
+        return parentAgentAppId;
+    }
+
+    public void setParentAgentAppId(Long parentAgentAppId) {
+        this.parentAgentAppId = parentAgentAppId;
+    }
+
+    public String getAgentAppNo() {
+        return agentAppNo;
+    }
+
+    public void setAgentAppNo(String agentAppNo) {
+        this.agentAppNo = agentAppNo;
+    }
+
     public Long getAppId() {
         return appId;
     }
@@ -149,22 +165,6 @@ public class AgentApp implements Serializable {
 
     public void setAgentUserId(Long agentUserId) {
         this.agentUserId = agentUserId;
-    }
-
-    public String getAgentUserName() {
-        return agentUserName;
-    }
-
-    public void setAgentUserName(String agentUserName) {
-        this.agentUserName = agentUserName;
-    }
-
-    public String getAgentUserAccount() {
-        return agentUserAccount;
-    }
-
-    public void setAgentUserAccount(String agentUserAccount) {
-        this.agentUserAccount = agentUserAccount;
     }
 
     public Boolean getRose() {
@@ -251,11 +251,11 @@ public class AgentApp implements Serializable {
     public String toString() {
         return "AgentApp{" +
         "agentAppId=" + agentAppId +
+        "parentAgentAppId=" + parentAgentAppId +
+        ", agentAppNo=" + agentAppNo +
         ", appId=" + appId +
         ", developerUserId=" + developerUserId +
         ", agentUserId=" + agentUserId +
-        ", agentUserName=" + agentUserName +
-        ", agentUserAccount=" + agentUserAccount +
         ", rose=" + rose +
         ", agentGrade=" + agentGrade +
         ", pid=" + pid +

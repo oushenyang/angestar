@@ -5,12 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.agent.entity.AgentBuyCard">
         <id column="agent_buy_card_id" property="agentBuyCardId" />
-        <result column="app_id" property="appId" />
-        <result column="developer_user_id" property="developerUserId" />
-        <result column="agent_user_id" property="agentUserId" />
-        <result column="agent_user_name" property="agentUserName" />
-        <result column="agent_user_account" property="agentUserAccount" />
-        <result column="agent_grade" property="agentGrade" />
+        <result column="agent_app_id" property="agentAppId" />
         <result column="agent_price" property="agentPrice" />
         <result column="buy_card_type" property="buyCardType" />
         <result column="buy_num" property="buyNum" />
@@ -30,12 +25,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         abc.agent_buy_card_id AS "agentBuyCardId",
-        abc.app_id AS "appId",
-        abc.developer_user_id AS "developerUserId",
-        abc.agent_user_id AS "agentUserId",
-        abc.agent_user_name AS "agentUserName",
-        abc.agent_user_account AS "agentUserAccount",
-        abc.agent_grade AS "agentGrade",
+        abc.agent_app_id AS "agentAppId",
         abc.agent_price AS "agentPrice",
         abc.buy_card_type AS "buyCardType",
         abc.buy_num AS "buyNum",

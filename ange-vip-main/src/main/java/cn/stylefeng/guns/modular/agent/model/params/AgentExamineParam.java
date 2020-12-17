@@ -47,11 +47,6 @@ public class AgentExamineParam implements Serializable, BaseValidatingParam {
     private Long agentUserId;
 
     /**
-     * 代理用户名称
-     */
-    private String agentUserName;
-
-    /**
      * 代理用户账号
      */
     private String agentUserAccount;
