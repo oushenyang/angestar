@@ -20,6 +20,10 @@ public class AgentPowerParam implements Serializable, BaseValidatingParam {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 菜单类型：1-开发者菜单；2-代理者菜单
+     */
+    private Integer type;
 
     /**
      * 代理权限id

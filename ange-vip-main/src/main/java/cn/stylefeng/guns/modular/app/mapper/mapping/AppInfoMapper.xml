@@ -172,7 +172,5 @@
         LEFT JOIN ag_agent_app aaa ON aaa.app_id = aai.app_id
         WHERE
         aaa.agent_user_id = #{agentUserId}
-        AND aaa.agent_grade = 1
-        AND aaa.rose = 1
     </select>
 </mapper>

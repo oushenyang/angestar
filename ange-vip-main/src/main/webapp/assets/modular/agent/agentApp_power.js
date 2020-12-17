@@ -49,6 +49,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         data.field.hasOwnProperty('accountTime')?'': data.field.accountTime = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('accountData')?'': data.field.accountData = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('accountQuery')?'': data.field.accountQuery = 'off'; //true 值为on,false 值给赋off
+        data.field.type = Feng.getUrlParam("type");
         var ajax = new $ax(Feng.ctxPath + "/agentPower/editItem", function (data) {
             Feng.success("更新成功！");
 

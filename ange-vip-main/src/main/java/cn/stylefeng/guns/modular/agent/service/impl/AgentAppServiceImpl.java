@@ -90,10 +90,12 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         AgentApp agentApp = new AgentApp();
         agentApp.setAppId(entity.getAppId());
         agentApp.setDeveloperUserId(entity.getDeveloperUserId());
-        agentApp.setPid(entity.getDeveloperUserId());
         agentApp.setAgentUserId(entity.getAgentUserId());
         agentApp.setAgentGrade(1);
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
+        agentApp.setAgentAppIdPid(0L);
+        agentApp.setAgentAppIdPids("[0],");
+        agentApp.setPid(entity.getDeveloperUserId());
         agentApp.setPids(entity.getPids());
         this.save(agentApp);
         AgentPower agentPower = new AgentPower();
@@ -105,20 +107,28 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
     }
 
     /**
-     * 新增二级代理
+     * 新增下级代理
      *
      * @author shenyang.ou
      * @Date 2020-05-20
      */
     @Override
-    public void addSecondAgent(AgentExamine entity) {
+    public void addSubordinateAgent(AgentExamine entity) {
+        //查找上级代理
+        AgentApp superiorAgentApp = baseMapper.selectOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",entity.getAppId())
+                .eq("agent_grade",entity.getAgentGrade()-1)
+                .eq("developer_user_id",entity.getDeveloperUserId())
+                .eq("agent_user_id",entity.getPid()));
         AgentApp agentApp = new AgentApp();
         agentApp.setAppId(entity.getAppId());
         agentApp.setDeveloperUserId(entity.getDeveloperUserId());
-        agentApp.setPid(entity.getPid());
         agentApp.setAgentUserId(entity.getAgentUserId());
-        agentApp.setAgentGrade(2);
+        agentApp.setAgentGrade(entity.getAgentGrade());
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
+        agentApp.setAgentAppIdPid(superiorAgentApp.getAgentAppIdPid());
+        agentApp.setAgentAppIdPids(superiorAgentApp.getAgentAppIdPids()+"["+superiorAgentApp.getAgentAppIdPid()+"],");
+        agentApp.setPid(entity.getPid());
         agentApp.setPids(entity.getPids());
         this.save(agentApp);
         AgentPower agentPower = new AgentPower();

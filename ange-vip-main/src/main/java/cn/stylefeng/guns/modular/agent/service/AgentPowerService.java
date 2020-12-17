@@ -59,6 +59,20 @@ public interface AgentPowerService extends IService<AgentPower> {
     AgentPowerResult findBySpec(AgentPowerParam param);
 
     /**
+     * 获取当前登陆代理的下级代理显示权限
+     * @param agentAppId 当前登陆代理的下级代理应用id
+     * @return
+     */
+    List<AgentPowerResult> getSubordinateAgentPowerByAgentAppId(Long agentAppId);
+
+    /**
+     * 获取当前登陆代理的下级代理显示权限
+     * @param agentAppId 当前登陆代理的下级代理应用id
+     * @return
+     */
+    AgentPowerResult getSubordinateAgentPowerShow(Long agentAppId);
+
+    /**
      * 查询列表，Specification模式
      *
      * @author shenyang.ou

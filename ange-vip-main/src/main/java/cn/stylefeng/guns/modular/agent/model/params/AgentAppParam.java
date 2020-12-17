@@ -29,7 +29,12 @@ public class AgentAppParam implements Serializable, BaseValidatingParam {
     /**
      * 父级代理应用id
      */
-    private Long parentAgentAppId;
+    private Long agentAppIdPid;
+
+    /**
+     * 父级代理应用ids
+     */
+    private String agentAppIdPids;
 
     /**
      * 菜单类型：1-开发者菜单；2-代理者菜单

@@ -5,17 +5,64 @@
         <fieldset class="layui-elem-field">
             <legend>单码模式</legend>
             <div class="layui-field-box">
+                @if(tool.isNotEmpty(type)){
+                @if(type==2){
+                @if(agentPower.cardCreate==true){
+                <input type="checkbox" name="cardCreate" title="卡密生成">
+                @}
+                @if(agentPower.cardDisable==true){
+                <input type="checkbox" name="cardDisable" title="卡密禁用">
+                @}
+                @if(agentPower.cardLook==true){
+                <input type="checkbox" name="cardLook" title="卡密查看">
+                @}
+                @if(agentPower.cardData==true){
+                <input type="checkbox" name="cardData" title="卡密数据">
+                @}
+                @if(agentPower.cardTime==true){
+                <input type="checkbox" name="cardTime" title="卡密加时">
+                @}
+                @if(agentPower.cardDelete==true){
+                <input type="checkbox" name="cardDelete" title="卡密删除">
+                @}
+                @}else{
                 <input type="checkbox" name="cardCreate" title="卡密生成">
                 <input type="checkbox" name="cardDisable" title="卡密禁用">
                 <input type="checkbox" name="cardLook" title="卡密查看">
                 <input type="checkbox" name="cardData" title="卡密数据">
                 <input type="checkbox" name="cardTime" title="卡密加时">
                 <input type="checkbox" name="cardDelete" title="卡密删除">
+                @}
+                @}
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
             <legend>账号模式</legend>
             <div class="layui-field-box">
+                @if(tool.isNotEmpty(type)){
+                @if(type==2){
+                @if(agentPower.accountCreate==true){
+                <input type="checkbox" name="accountCreate" title="充值卡生成">
+                @}
+                @if(agentPower.accountDisable==true){
+                <input type="checkbox" name="accountDisable" title="账号禁用">
+                @}
+                @if(agentPower.accountEditPassword==true){
+                <input type="checkbox" name="accountEditPassword" title="修改密码">
+                @}
+                @if(agentPower.accountDelete==true){
+                <input type="checkbox" name="accountDelete" title="账号删除">
+                @}
+                @if(agentPower.accountTime==true){
+                <input type="checkbox" name="accountTime" title="账号加时">
+                @}
+                @if(agentPower.accountData==true){
+                <input type="checkbox" name="accountData" title="账号数据">
+                @}
+                @if(agentPower.accountQuery==true){
+                <input type="checkbox" name="accountQuery" title="查询用户">
+                @}
+                @}else{
                 <input type="checkbox" name="accountCreate" title="充值卡生成">
                 <input type="checkbox" name="accountDisable" title="账号禁用">
                 <input type="checkbox" name="accountEditPassword" title="修改密码">
@@ -23,6 +70,8 @@
                 <input type="checkbox" name="accountTime" title="账号加时">
                 <input type="checkbox" name="accountData" title="账号数据">
                 <input type="checkbox" name="accountQuery" title="查询用户">
+                @}
+                @}
             </div>
         </fieldset>
     </div>

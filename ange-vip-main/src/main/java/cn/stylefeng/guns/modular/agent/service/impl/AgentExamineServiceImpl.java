@@ -68,18 +68,27 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",LoginContextHolder.getContext().getUserId())
                 .eq("agent_user_id",user.getUserId())
-                .eq("agent_grade",1)
+//                .eq("agent_grade",1)
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
-            throw new OperationException(INVITED_AGENT);
+            if (agentExamine.getPid().equals(LoginContextHolder.getContext().getUserId())){
+                throw new OperationException(INVITED_AGENT);
+            }else {
+                throw new OperationException(INVITED_OTHER_AGENT);
+            }
+
         }
         AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                 .eq("app_id",param.getAppId())
-                .eq("developer_user_id",LoginContextHolder.getContext().getUserId())
-                .eq("agent_grade",1)
                 .eq("agent_user_id",user.getUserId()));
         if (ObjectUtil.isNotNull(agentApp)){
-            throw new OperationException(ALREADY_AGENT);
+            if (agentApp.getPid().equals(LoginContextHolder.getContext().getUserId())){
+                //该用户已经是您的代理，请勿重复操作
+                throw new OperationException(ALREADY_AGENT);
+            }else {
+                //该用户已经代理过该软件，请勿重复操作
+                throw new OperationException(ALREADY_AGENT_APP);
+            }
         }
         param.setDeveloperUserId(LoginContextHolder.getContext().getUserId());
         param.setAgentUserId(user.getUserId());
@@ -115,25 +124,35 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",param.getDeveloperUserId())
                 .eq("agent_user_id",user.getUserId())
-                .eq("pid",LoginContextHolder.getContext().getUserId())
+//                .eq("pid",LoginContextHolder.getContext().getUserId())
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
-            throw new OperationException(INVITED_AGENT);
+            if (agentExamine.getPid().equals(LoginContextHolder.getContext().getUserId())){
+                throw new OperationException(INVITED_AGENT);
+            }else {
+                throw new OperationException(INVITED_OTHER_AGENT);
+            }
+
         }
         AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                 .eq("app_id",param.getAppId())
-                .eq("developer_user_id",param.getDeveloperUserId())
-                .eq("agent_user_id",user.getUserId())
-                .eq("pid",LoginContextHolder.getContext().getUserId()));
-
+                .eq("agent_user_id",user.getUserId()));
         if (ObjectUtil.isNotNull(agentApp)){
-            throw new OperationException(ALREADY_AGENT);
+            if (agentApp.getPid().equals(LoginContextHolder.getContext().getUserId())){
+                //该用户已经是您的代理，请勿重复操作
+                throw new OperationException(ALREADY_AGENT);
+            }else {
+                //该用户已经代理过该软件，请勿重复操作
+                throw new OperationException(ALREADY_AGENT_APP);
+            }
         }
+        //获取当前代理的代理信息
+        AgentApp agentApp1 = agentAppService.getById(param.getAgentAppId());
         param.setDeveloperUserId(param.getDeveloperUserId());
         param.setAgentUserId(user.getUserId());
-        param.setAgentGrade(2);
+        param.setAgentGrade(agentApp1.getAgentGrade()+1);
         param.setPid(LoginContextHolder.getContext().getUserId());
-        param.setPids("[" + param.getDeveloperUserId() + "]," + "[" + LoginContextHolder.getContext().getUserId() + "],"+ "[" + user.getUserId() + "],");
+        param.setPids(agentApp1.getPids()+ "[" + user.getUserId() + "],");
         //申请类型（邀请代理）
         param.setApplyType(ApplyType.INVITE_AGENT.getCode());
         //审核状态（等待代理审核）
@@ -173,17 +192,17 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         entity.setExamineTime(new Date());
         entity.setUpdateTime(new Date());
         this.updateById(entity);
-        if (entity.getAgentGrade()==2){
+        if (entity.getAgentGrade()>1){
             AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                     .eq("app_id",entity.getAppId())
-                    .eq("agent_grade",2)
+                    .eq("agent_grade",entity.getAgentGrade())
                     .eq("pid",entity.getPid())
                     .eq("developer_user_id",entity.getDeveloperUserId())
                     .eq("agent_user_id",entity.getAgentUserId()));
             if (ObjectUtil.isNotNull(agentApp)){
                 throw new OperationException(AGREED_AGENT);
             }
-            agentAppService.addSecondAgent(entity);
+            agentAppService.addSubordinateAgent(entity);
         }else {
             AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                     .eq("app_id",entity.getAppId())

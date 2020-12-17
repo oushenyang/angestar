@@ -56,7 +56,7 @@ public class AgentExamineController extends BaseController {
     @RequestMapping("/developerAddItem")
     @ResponseBody
     public ResponseData developerAddItem(AgentExamineParam agentExamineParam) {
-        //代理端端新增二级代理接口
+        //代理端端新增下级代理接口
         if (agentExamineParam.getType() == 2){
             this.agentExamineService.agentAddItem(agentExamineParam);
         }else {

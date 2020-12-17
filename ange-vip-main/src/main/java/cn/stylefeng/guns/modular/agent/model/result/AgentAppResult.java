@@ -27,7 +27,12 @@ public class AgentAppResult implements Serializable {
     /**
      * 父级代理应用id
      */
-    private Long parentAgentAppId;
+    private Long agentAppIdPid;
+
+    /**
+     * 父级代理应用ids
+     */
+    private String agentAppIdPids;
 
     /**
      * 代理应用编号

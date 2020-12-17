@@ -6,21 +6,19 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentPowerResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.remote.service.RemoteCodeService;
-import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -46,10 +44,13 @@ public class AgentAppController extends BaseController {
 
     private final UserService userService;
 
-    public AgentAppController(AppInfoService appInfoService, AgentAppService agentAppService, UserService userService) {
+    private final AgentPowerService agentPowerService;
+
+    public AgentAppController(AppInfoService appInfoService, AgentAppService agentAppService, UserService userService, AgentPowerService agentPowerService) {
         this.appInfoService = appInfoService;
         this.agentAppService = agentAppService;
         this.userService = userService;
+        this.agentPowerService = agentPowerService;
     }
 
     /**
@@ -76,9 +77,9 @@ public class AgentAppController extends BaseController {
     @RequestMapping("/add")
     public String add(Model model,Integer type) {
         List<AppInfoParam> appInfoParams = new ArrayList<>();
-        //新增二级代理
+        //新增下级代理
         if (type == 2){
-            //查找当前一级代理用户所有拥有总代权限软件列表
+            //查找当前代理用户所代理的软件
             appInfoParams = appInfoService.getAgentAppInfoList(LoginContextHolder.getContext().getUserId());
         }else {
             //获取当前用户应用列表
@@ -117,7 +118,13 @@ public class AgentAppController extends BaseController {
      * @Date 2020-05-20
      */
     @RequestMapping("/power")
-    public String power() {
+    public String power(Model model,Long agentAppId,Integer type) {
+        //代理页面
+        if (type == 2){
+            AgentPowerResult agentPowerResult= agentPowerService.getSubordinateAgentPowerShow(agentAppId);
+            model.addAttribute("agentPower",agentPowerResult);
+        }
+        model.addAttribute("type",type);
         return PREFIX + "/agentApp_power.html";
     }
 

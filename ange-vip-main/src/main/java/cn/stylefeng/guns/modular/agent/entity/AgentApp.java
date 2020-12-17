@@ -31,8 +31,14 @@ public class AgentApp implements Serializable {
     /**
      * 父级代理应用id
      */
-    @TableId(value = "parent_agent_app_id")
-    private Long parentAgentAppId;
+    @TableField("agent_app_id_pid")
+    private Long agentAppIdPid;
+
+    /**
+     * 父级代理应用ids
+     */
+    @TableField("agent_app_id_pids")
+    private String agentAppIdPids;
 
     /**
      * 代理应用编号
@@ -127,12 +133,20 @@ public class AgentApp implements Serializable {
         this.agentAppId = agentAppId;
     }
 
-    public Long getParentAgentAppId() {
-        return parentAgentAppId;
+    public Long getAgentAppIdPid() {
+        return agentAppIdPid;
     }
 
-    public void setParentAgentAppId(Long parentAgentAppId) {
-        this.parentAgentAppId = parentAgentAppId;
+    public void setAgentAppIdPid(Long agentAppIdPid) {
+        this.agentAppIdPid = agentAppIdPid;
+    }
+
+    public String getAgentAppIdPids() {
+        return agentAppIdPids;
+    }
+
+    public void setAgentAppIdPids(String agentAppIdPids) {
+        this.agentAppIdPids = agentAppIdPids;
     }
 
     public String getAgentAppNo() {
@@ -251,7 +265,8 @@ public class AgentApp implements Serializable {
     public String toString() {
         return "AgentApp{" +
         "agentAppId=" + agentAppId +
-        "parentAgentAppId=" + parentAgentAppId +
+        "agentAppIdPid=" + agentAppIdPid +
+        "agentAppIdPids=" + agentAppIdPids +
         ", agentAppNo=" + agentAppNo +
         ", appId=" + appId +
         ", developerUserId=" + developerUserId +

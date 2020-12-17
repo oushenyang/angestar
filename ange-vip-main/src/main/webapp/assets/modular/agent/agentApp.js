@@ -186,7 +186,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
             type: 2,
             title: '权限配置',
             area: '700px',
-            content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data.agentPowerId,
+            content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data.agentPowerId + '&agentAppId=' + data.agentAppId+ '&type=' + Feng.getUrlParam("type"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
