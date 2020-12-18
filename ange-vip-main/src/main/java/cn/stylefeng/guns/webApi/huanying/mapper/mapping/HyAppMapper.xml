@@ -12,11 +12,12 @@
         <result column="package" property="packAge" />
         <result column="fakedata" property="fakedata" />
         <result column="sign" property="sign" />
+        <result column="application_name" property="applicationName" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        appinfoid AS "appinfoid", ut_did AS "utDid",  appuserid AS "appuserid", app_name AS "appName", name AS "name", package AS "packAge", fakedata AS "fakedata", sign AS "sign", create_time AS "createTime"
+        appinfoid AS "appinfoid", ut_did AS "utDid",  appuserid AS "appuserid", app_name AS "appName", name AS "name", package AS "packAge", fakedata AS "fakedata", sign AS "sign", application_name AS "applicationName", create_time AS "createTime"
     </sql>
     <select id="findListBySpec" resultType="cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult">
         select

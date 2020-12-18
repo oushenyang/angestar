@@ -45,6 +45,9 @@ public class HyApp implements Serializable {
     @TableField("sign")
     private String sign;
 
+    @TableField("application_name")
+    private String applicationName;
+
     /**
      * 创建时间
      */
@@ -124,6 +127,14 @@ public class HyApp implements Serializable {
         this.sign = sign;
     }
 
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -144,6 +155,7 @@ public class HyApp implements Serializable {
         ", package=" + packAge +
         ", fakedata=" + fakedata +
         ", sign=" + sign +
+        ", applicationName=" + applicationName +
         ", createTime=" + createTime +
         "}";
     }

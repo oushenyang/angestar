@@ -31,6 +31,8 @@ public class HyAppParam implements Serializable, BaseValidatingParam {
 
     private String packAge;
 
+    private String applicationName;
+
     private Integer fakedata;
 
     private List<String> signList;
