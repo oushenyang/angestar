@@ -134,6 +134,32 @@ layui.use(['table', 'ax', 'func'], function () {
         DictType.search();
     });
 
+    // 搜索按钮点击事件
+    $('#decrypt').click(function () {
+        if (!$("#secretStr").val()){
+            Feng.error("输入待解密字符!");
+            return false;
+        }
+        if (!$("#secret").val()){
+            Feng.error("输入密匙!");
+            return false;
+        }
+        var ajax = new $ax(Feng.ctxPath + "/api/cat/decrypt", function (data) {
+            console.log(data)
+            layer.open({
+                area: ['500px', '300px'],
+                type: 1,
+                content: data.data
+            });
+            // Feng.success("解密成功!"+ data.data + "!");
+        }, function (data) {
+            Feng.error("解密失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("secretStr", $("#secretStr").val());
+        ajax.set("secret", $("#secret").val());
+        ajax.start();
+    });
+
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         DictType.openAddDlg();

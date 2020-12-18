@@ -21,6 +21,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             {align: 'center',field: 'num', title: '用户数量'},
             {align: 'center',field: 'appTypeCode', title: '应用分类编码'},
             {align: 'center',field: 'sign', title: '签名验证'},
+            {align: 'center',field: 'applicationName', title: '应用入口'},
             {align: 'center',field: 'whetherLegal', title: '是否授权', templet: '#whetherLegalTpl'},
             {align: 'center',field: 'whetherShow', title: '是否显示', templet: '#whetherShow'},
             {align: 'center',field: 'whetherSanction', title: '是否制裁',templet: '#whetherSanctionTpl'},
@@ -36,7 +37,7 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppPower.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appCode'] = $("#appCode").val();
         table.reload(AppPower.tableId, {where: queryData});
     };
 
@@ -140,12 +141,12 @@ layui.use(['table', 'admin', 'ax'], function () {
         elem: '#' + AppPower.tableId,
         url: Feng.ctxPath + '/appPower/list',
         page: true,
-        toolbar: '#' + AppPower.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
+        // toolbar: '#' + AppPower.tableId + '-toolbar',
+        //         defaultToolbar: [{
+        //             title:'刷新',
+        //             layEvent: 'refresh',
+        //             icon: 'layui-icon-refresh',
+        //         }, 'filter', 'print'],
         height: "full-158",
         cellMinWidth: 100,
         cols: AppPower.initColumn()

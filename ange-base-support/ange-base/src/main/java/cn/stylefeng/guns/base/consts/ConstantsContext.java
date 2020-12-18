@@ -108,6 +108,30 @@ public class ConstantsContext {
     }
 
     /**
+     * 获取盗版定位漂移显示开关
+     */
+    public static Boolean getPirateOpenLocation() {
+        String pirateOpen = (String) CONSTNTS_HOLDER.get("PIRATE_DISPLAY_LOCATION");
+        if (CommonStatus.ENABLE.getCode().equalsIgnoreCase(pirateOpen)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取盗版提示文字
+     */
+    public static String getPirateOpenText() {
+        String pirateOpen = (String) CONSTNTS_HOLDER.get("PIRATE_DISPLAY_TEXT");
+        if (ToolUtil.isEmpty(pirateOpen)) {
+            return "这是盗版";
+        } else {
+            return pirateOpen;
+        }
+    }
+
+    /**
      * 获取接口域名
      */
     public static String getApiUrl() {

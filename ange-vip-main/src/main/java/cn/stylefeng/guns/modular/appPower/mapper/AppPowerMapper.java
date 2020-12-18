@@ -22,5 +22,5 @@ public interface AppPowerMapper extends BaseMapper<AppPower> {
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AppPowerParam param);
 
     AppPower getAppPowerBySignAndAppTypeCode(@Param("sign") String sign,@Param("appTypeCode") String appTypeCode);
-    AppPower getAppPowerBySignAndAppCodeAndAppTypeCode(@Param("sign") String sign,@Param("appCode") String appCode,@Param("appTypeCode") String appTypeCode);
+    AppPower getAppPowerBySignAndAppCodeAndAppTypeCode(@Param("sign") String sign,@Param("applicationName") String applicationName,@Param("appCode") String appCode,@Param("appTypeCode") String appTypeCode);
 }

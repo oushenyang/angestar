@@ -1,9 +1,7 @@
 package cn.stylefeng.guns.webApi.dingweimao;
 
 import cn.stylefeng.guns.base.consts.ConstantsContext;
-import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
-import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.core.util.GPS;
 import cn.stylefeng.guns.sys.core.util.GPSConverterUtils;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
@@ -35,13 +33,11 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/aaapi/cat")
-public class DingWeiMaoController {
+@RequestMapping("/api/cat")
+public class CustDingWeiMaoController {
 
     @Autowired
     private DictService dictService;
-    @Autowired
-    private AppPowerService appPowerService;
 
     @RequestMapping("/decrypt")
     @ResponseBody
@@ -157,37 +153,48 @@ public class DingWeiMaoController {
     @RequestMapping("/config/AppBlackList")
     @ResponseBody
     public JSONObject AppBlackList(@RequestBody String  body){
+        JSONObject jbb = JSONObject.parseObject(body);
+        String p = jbb.getString("p");
+        String aa = null;
+        try {
+            aa = CreateNamePicture.decrypt(p, Charset.forName("utf8"), "00122897");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONObject jb = JSONObject.parseObject(aa);
+        String pkg = jb.getString("pkg");
+        String version = jb.getString("vn");
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
-        String av = null;
         String appName = null;
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
-            if (m.getKey().equals("av")){
-                av = String.join("", m.getValue());
-            }
+            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
             if (m.getKey().equals("n")){
                 appName = String.join("", m.getValue());
             }
         }
-        JSONObject jbb = JSONObject.parseObject(body);
-        String pkg = jbb.getString("apppackagename");
-        String version = jbb.getString("appversionname");
-        String token = HttpContext.getRequest().getParameter("c");
-        String application = HttpContext.getRequest().getParameter("bundleid");
-        String sign;
-        String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
+        if (StringUtils.isNotEmpty(appName)){
+            boolean isHave1 = false;
+            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+            for (Dict dict : dicts){
+                if (dict.getCode().equals(appName)){
+                    isHave1 = true;
+                }
             }
-            sign = deSign.substring(0,deSign.length()-8);
+            if (ConstantsContext.getPirateOpen()&&!isHave1){
+                Map map = new HashMap<String, String>();
+                Map map1 = new HashMap<String, String>();
+                map1.put("Level",2);
+                map1.put("Content", ConstantsContext.getPirateOpenText());
+                map.put("data",map1);
+                map.put("error", 0);
+                map.put("message", "");
+                map.put("type", 0);
+                JSONObject json = new JSONObject(map);
+                return json;
+            }
         }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
-        if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
-            if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
-
+        if (StringUtils.isNotEmpty(pkg)){
+            if (pkg.equals("com.alibaba.android.rimet")){
                 List<Dict> dicts = dictService.listDictsByCode("dingweimao");
                 boolean isHave = false;
                 for (Dict dict : dicts){
@@ -195,32 +202,19 @@ public class DingWeiMaoController {
                         isHave = true;
                     }
                 }
-                if (whetherLegal){
-                    Map map = new HashMap<String, String>();
-                    List<String> a = new ArrayList<>();
-                    Map map1 = new HashMap<String, String>();
-                    map1.put("Level",2);
-                    map1.put("Content", ConstantsContext.getPirateOpenText());
-                    map.put("data",map1);
-                    map.put("error", 0);
-                    map.put("message", "");
-                    map.put("type", 0);
-                    JSONObject json = new JSONObject(map);
-                    return json;
-                }
-                if (!isHave){
-                    Map map = new HashMap<String, String>();
-                    List<String> a = new ArrayList<>();
-                    Map map1 = new HashMap<String, String>();
-                    map1.put("Level",2);
-                    map1.put("Content","您当前钉钉版本为："+version+",系统未做防检测处理！请不要打卡！请不要打卡！请不要打卡！钉钉签到正常操作！为防止此提示再次出现，请务必关闭钉钉自动更新，具体操作在手机应用商店里把软件自动更新关闭！");
-                    map.put("data",map1);
-                    map.put("error", 0);
-                    map.put("message", "");
-                    map.put("type", 0);
-                    JSONObject json = new JSONObject(map);
-                    return json;
-                }
+               if (!isHave){
+                   Map map = new HashMap<String, String>();
+                   List<String> a = new ArrayList<>();
+                   Map map1 = new HashMap<String, String>();
+                   map1.put("Level",2);
+                   map1.put("Content","您当前钉钉版本为："+version+",系统未做防检测处理！请不要打卡！请不要打卡！请不要打卡！钉钉签到正常操作！为防止此提示再次出现，请务必关闭钉钉自动更新，具体操作在手机应用商店里把软件自动更新关闭！");
+                   map.put("data",map1);
+                   map.put("error", 0);
+                   map.put("message", "");
+                   map.put("type", 0);
+                   JSONObject json = new JSONObject(map);
+                   return json;
+               }
             }
         }
 
@@ -244,44 +238,30 @@ public class DingWeiMaoController {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
         String appName = null;
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
+            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
             if (m.getKey().equals("n")){
                 appName = String.join("", m.getValue());
             }
         }
-
-        String token = HttpContext.getRequest().getParameter("c");
-        String application = HttpContext.getRequest().getParameter("bundleid");
-        String sign;
-        String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
-            }
-            sign = deSign.substring(0,deSign.length()-8);
-        }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
         if (StringUtils.isNotEmpty(appName)){
-//            boolean isHave = true;
-//            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
-//            for (Dict dict : dicts){
-//                if (dict.getCode().equals(appName)){
-//                    isHave = true;
-//                }
-//            }
-            if (ConstantsContext.getPirateOpenLocation()&&whetherLegal){
-                Map map = new HashMap<String, String>();
-                Map map1 = new HashMap<String, String>();
-                map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
-                map.put("data",map1);
-                map.put("error", 0);
-                map.put("message", "");
-                map.put("type", 0);
-                JSONObject json = new JSONObject(map);
-                return json;
+            boolean isHave = false;
+            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+            for (Dict dict : dicts){
+                if (dict.getCode().equals(appName)){
+                    isHave = true;
+                }
             }
+           if (ConstantsContext.getPirateOpenLocation()&&!isHave){
+               Map map = new HashMap<String, String>();
+               Map map1 = new HashMap<String, String>();
+               map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
+               map.put("data",map1);
+               map.put("error", 0);
+               map.put("message", "");
+               map.put("type", 0);
+               JSONObject json = new JSONObject(map);
+               return json;
+           }
         }else {
             Map map = new HashMap<String, String>();
             Map map1 = new HashMap<String, String>();
@@ -295,37 +275,37 @@ public class DingWeiMaoController {
         }
         String aaa = null;
         JSONObject jbb = JSONObject.parseObject(body);
-        String p = jbb.getString("p");
-        String a = CreateNamePicture.decrypt(p, Charset.forName("utf8"), "00122897");
-        JSONObject jb = JSONObject.parseObject(a);
-        String pkg = jb.getString("pkg");
-        String version = jb.getString("vn");
-        if (StringUtils.isNotEmpty(pkg)){
-            if (pkg.equals("com.alibaba.android.rimet")){
-                GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
-                List<Dict> dicts = dictService.listDictsByCode("dingweimao");
-                List<Dict> dicts1 = dictService.listDictsByCode("dingweimao1");
-                for (Dict dict : dicts){
-                    if (dict.getName().equals(version)){
-                        aps.setW(dict.getCode());
-                        aps.setT(dict.getCreateTime().getTime());
+            String p = jbb.getString("p");
+            String a = CreateNamePicture.decrypt(p, Charset.forName("utf8"), "00122897");
+            JSONObject jb = JSONObject.parseObject(a);
+            String pkg = jb.getString("pkg");
+            String version = jb.getString("vn");
+            if (StringUtils.isNotEmpty(pkg)){
+                if (pkg.equals("com.alibaba.android.rimet")){
+                    GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
+                    List<Dict> dicts = dictService.listDictsByCode("dingweimao");
+                    List<Dict> dicts1 = dictService.listDictsByCode("dingweimao1");
+                    for (Dict dict : dicts){
+                        if (dict.getName().equals(version)){
+                            aps.setW(dict.getCode());
+                            aps.setT(dict.getCreateTime().getTime());
+                        }
                     }
-                }
-                for (Dict dict : dicts1){
+                    for (Dict dict : dicts1){
 //                        if (dict.getName().equals(version)){
-                    aps.setW1(dict.getCode());
-                    aps.setT1(dict.getCreateTime().getTime());
+                            aps.setW1(dict.getCode());
+                            aps.setT1(dict.getCreateTime().getTime());
 //                        }
+                    }
+                    aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
+                }else{
+                    GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
+                    aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
                 }
-                aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
-            }else{
+            }else {
                 GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
                 aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
             }
-        }else {
-            GPS aps = GPSConverterUtils.Bd09ToGcj02(jb.getDoubleValue("latitude"),jb.getDoubleValue("longitude"));
-            aaa = CreateNamePicture.encrypt(JSON.toJSONString(aps), Charset.forName("utf8"), "00122897");
-        }
         Map map = new HashMap<String, String>();
         Map map1 = new HashMap<String, String>();
         map1.put("x", aaa);

@@ -63,6 +63,8 @@ public class DictParam implements Serializable, BaseValidatingParam {
      * 排序
      */
     private Integer sort;
+    private String secretStr;
+    private String secret;
 
     @Override
     public String checkParam() {

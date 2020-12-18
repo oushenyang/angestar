@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +63,12 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
     @Override
     public void delete(AppPowerParam param){
         AppPower appPower = this.getById(param.getAppPowerId());
-        redisUtil.hdel(RedisType.APP_POWER.getCode() + appPower.getAppTypeCode(),appPower.getSign()+"-"+appPower.getCustomData());
+        if (StringUtils.isNotEmpty(appPower.getApplicationName())){
+            redisUtil.hdel(RedisType.APP_POWER.getCode() + appPower.getAppTypeCode(),appPower.getSign()+"-"+appPower.getCustomData()+"-"+appPower.getApplicationName());
+        }else {
+            redisUtil.hdel(RedisType.APP_POWER.getCode() + appPower.getAppTypeCode(),appPower.getSign()+"-"+appPower.getCustomData());
+        }
+
         this.removeById(getKey(param));
     }
 
@@ -87,7 +93,12 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
 //            throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
 //        }
         this.updateById(newEntity);
-        redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData(),newEntity, RedisExpireTime.MONTH.getCode());
+        if (StringUtils.isNotEmpty(param.getApplicationName())){
+            redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData()+"-"+param.getApplicationName(),newEntity, RedisExpireTime.MONTH.getCode());
+        }else {
+            redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData(),newEntity, RedisExpireTime.MONTH.getCode());
+        }
+
     }
 
     @Override
@@ -166,11 +177,22 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
      * @Date 2020-10-29
      */
     @Override
-    public boolean whetherLegalBySignAndAppCode(String sign,String appCode,String appTypeCode) {
+    public boolean whetherLegalBySignAndAppCode(String sign,String applicationName,String appCode,String appTypeCode) {
         boolean isLegal = false;
-        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
+        boolean isHave;
+        if (StringUtils.isNotEmpty(applicationName)){
+             isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode+"-"+applicationName);
+        }else {
+             isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
+        }
+
         if (isHave){
-            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
+            AppPower appPower;
+            if (StringUtils.isNotEmpty(applicationName)){
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode+"-"+applicationName);
+            }else {
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode);
+            }
             if (ObjectUtil.isNotNull(appPower)){
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
                     isLegal = true;
@@ -178,28 +200,38 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
             }
         }else {
             //不存在则创建
-            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,appTypeCode);
+            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,applicationName,appCode,appTypeCode);
             if (ObjectUtil.isNull(appPower)){
                 //并发情况防止重复插入数据
                 synchronized(this){
-                    AppPower appPower2 = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,appTypeCode);
+                    AppPower appPower2 = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,applicationName,appCode,appTypeCode);
                     if(ObjectUtil.isNull(appPower2)){
                         AppPower appPower1 = new AppPower();
                         appPower1.setSign(sign);
                         appPower1.setAppName(CustomEnAndDe.deCrypto(appCode));
+                        appPower1.setApplicationName(applicationName);
                         appPower1.setCustomData(appCode);
                         appPower1.setAppTypeCode(appTypeCode);
                         appPower1.setWhetherLegal(false);
                         appPower1.setWhetherSanction(false);
                         appPower1.setWhetherShow(false);
                         appPower1.setCreateTime(new Date());
-                        redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode,appPower1, RedisExpireTime.WEEK.getCode());
+                        if (StringUtils.isNotEmpty(applicationName)){
+                            redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode+"-"+applicationName,appPower1, RedisExpireTime.WEEK.getCode());
+                        }else {
+                            redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,sign+"-"+appCode,appPower1, RedisExpireTime.WEEK.getCode());
+                        }
                         this.save(appPower1);
                         isLegal = false;
                     }
                 }
             }else {
-                redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,appPower.getSign()+"-"+appCode,appPower, RedisExpireTime.WEEK.getCode());
+                if (StringUtils.isNotEmpty(applicationName)){
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,appPower.getSign()+"-"+appCode+"-"+applicationName,appPower, RedisExpireTime.WEEK.getCode());
+                }else {
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + appTypeCode,appPower.getSign()+"-"+appCode,appPower, RedisExpireTime.WEEK.getCode());
+                }
+
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
                     isLegal = true;
                 }
@@ -216,11 +248,21 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
      * @Date 2020-10-29
      */
     @Override
-    public boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String appCode) {
+    public boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String applicationName,String appCode) {
         boolean isLegal = false;
-        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        boolean isHave = false;
+        if (StringUtils.isNotEmpty(applicationName)){
+            isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode+"-"+applicationName);
+        }else {
+            isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        }
         if (isHave){
-            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            AppPower appPower;
+            if (StringUtils.isNotEmpty(applicationName)){
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode+"-"+applicationName);
+            }else {
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            }
             if (ObjectUtil.isNotNull(appPower)){
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherSanction()&&!appPower.getWhetherLegal()){
                     isLegal = true;
@@ -228,9 +270,13 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
             }
         }else {
             //不存在则创建
-            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,applicationName,appCode,"huanyin125");
             if (ObjectUtil.isNotNull(appPower)) {
-                redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", appPower.getSign() + "-" + appCode, appPower, RedisExpireTime.WEEK.getCode());
+                if (StringUtils.isNotEmpty(applicationName)){
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", appPower.getSign() + "-" + appCode+ "-" + applicationName, appPower, RedisExpireTime.WEEK.getCode());
+                }else {
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", appPower.getSign() + "-" + appCode, appPower, RedisExpireTime.WEEK.getCode());
+                }
                 if (ConstantsContext.getPirateOpen2() && appPower.getWhetherSanction() && !appPower.getWhetherLegal()) {
                     isLegal = true;
                 }
@@ -278,11 +324,21 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
      * @Date 2020-10-29
      */
     @Override
-    public boolean whetherShowBySignAndAppCode(String sign,String appCode) {
+    public boolean whetherShowBySignAndAppCode(String sign,String applicationName,String appCode) {
         boolean isLegal = false;
-        boolean isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        boolean isHave = false;
+        if (StringUtils.isNotEmpty(applicationName)){
+            isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode+"-"+applicationName);
+        }else {
+            isHave = redisUtil.hHasKey(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+        }
         if (isHave){
-            AppPower appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            AppPower appPower;
+            if (StringUtils.isNotEmpty(applicationName)){
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode+"-"+applicationName);
+            }else {
+                appPower = (AppPower)redisUtil.hget(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode);
+            }
             if (ObjectUtil.isNotNull(appPower)){
                 if (ConstantsContext.getPirateOpen2()&&appPower.getWhetherShow()&&!appPower.getWhetherLegal()){
                     isLegal = true;
@@ -290,9 +346,13 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
             }
         }else {
             //不存在则创建
-            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,appCode,"huanyin125");
+            AppPower appPower = baseMapper.getAppPowerBySignAndAppCodeAndAppTypeCode(sign,applicationName,appCode,"huanyin125");
             if (ObjectUtil.isNotNull(appPower)){
-                redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125",sign+"-"+appCode,appPower, RedisExpireTime.WEEK.getCode());
+                if (StringUtils.isNotEmpty(applicationName)){
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", sign + "-" + appCode+ "-" + applicationName, appPower, RedisExpireTime.WEEK.getCode());
+                }else {
+                    redisUtil.hset(RedisType.APP_POWER.getCode() + "huanyin125", sign + "-" + appCode, appPower, RedisExpireTime.WEEK.getCode());
+                }
                 if (ConstantsContext.getPirateOpen()&&appPower.getWhetherShow()&&!appPower.getWhetherLegal()){
                     isLegal = true;
                 }

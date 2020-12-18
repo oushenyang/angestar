@@ -61,11 +61,16 @@ public class NewHuanYingV2Controller {
         String model = HttpContext.getRequest().getParameter("ut_did");
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
         String sign;
+        String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
 //            String time =  deSign.substring(deSign.length() -7);
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
 //            Date date = new Date(System.currentTimeMillis());
@@ -80,9 +85,9 @@ public class NewHuanYingV2Controller {
 //            }
         }
 
-        boolean isShow = appPowerService.whetherShowBySignAndAppCode(sign,virtualId);
+        boolean isShow = appPowerService.whetherShowBySignAndAppCode(sign,applicationName,virtualId);
         boolean pirateOpen2 = ConstantsContext.getPirateOpen2();
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,virtualId,"huanyin125");
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,virtualId,"huanyin125");
 
         if (StringUtils.isNotEmpty(packAge)){
             QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
@@ -124,7 +129,7 @@ public class NewHuanYingV2Controller {
             map1.put("username", "15156061423");
             try {
                 if (whetherLegal){
-                    map1.put("name", "盗版应用,请立即卸载!正版微信:angestar88888");
+                    map1.put("name", ConstantsContext.getPirateOpenText());
                 }else {
                     map1.put("name", URLDecoder.decode(name, "UTF-8"));
                 }
@@ -147,7 +152,7 @@ public class NewHuanYingV2Controller {
         if (ConstantsContext.getPirateOpen()&&isShow){
             if (CollectionUtil.isNotEmpty(hyAppResults)){
                 hyAppResults.forEach(hyAppResult -> {
-                    hyAppResult.setName("盗版应用,正版微信:angestar88888");
+                    hyAppResult.setName(ConstantsContext.getPirateOpenText());
                 });
             }
         }

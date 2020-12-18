@@ -30,6 +30,11 @@ public class AppPowerResult implements Serializable {
     private String appName;
 
     /**
+     * 应用入口
+     */
+    private String applicationName;
+
+    /**
      * 应用分类编码
      */
     private String appTypeCode;

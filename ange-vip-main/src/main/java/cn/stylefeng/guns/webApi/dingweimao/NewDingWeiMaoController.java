@@ -35,8 +35,8 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/aaapi/cat")
-public class DingWeiMaoController {
+@RequestMapping("/new/api/cat")
+public class NewDingWeiMaoController {
 
     @Autowired
     private DictService dictService;
@@ -182,9 +182,23 @@ public class DingWeiMaoController {
             if (StringUtils.isNotEmpty(application)){
                 applicationName = CustomEnAndDe.deCrypto(application);
             }
+
             sign = deSign.substring(0,deSign.length()-8);
         }
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+        if (whetherLegal){
+            Map map = new HashMap<String, String>();
+            List<String> a = new ArrayList<>();
+            Map map1 = new HashMap<String, String>();
+            map1.put("Level",2);
+            map1.put("Content", ConstantsContext.getPirateOpenText());
+            map.put("data",map1);
+            map.put("error", 0);
+            map.put("message", "");
+            map.put("type", 0);
+            JSONObject json = new JSONObject(map);
+            return json;
+        }
         if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
             if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
 
@@ -195,19 +209,7 @@ public class DingWeiMaoController {
                         isHave = true;
                     }
                 }
-                if (whetherLegal){
-                    Map map = new HashMap<String, String>();
-                    List<String> a = new ArrayList<>();
-                    Map map1 = new HashMap<String, String>();
-                    map1.put("Level",2);
-                    map1.put("Content", ConstantsContext.getPirateOpenText());
-                    map.put("data",map1);
-                    map.put("error", 0);
-                    map.put("message", "");
-                    map.put("type", 0);
-                    JSONObject json = new JSONObject(map);
-                    return json;
-                }
+
                 if (!isHave){
                     Map map = new HashMap<String, String>();
                     List<String> a = new ArrayList<>();
@@ -272,6 +274,17 @@ public class DingWeiMaoController {
 //                }
 //            }
             if (ConstantsContext.getPirateOpenLocation()&&whetherLegal){
+                Map map = new HashMap<String, String>();
+                Map map1 = new HashMap<String, String>();
+                map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
+                map.put("data",map1);
+                map.put("error", 0);
+                map.put("message", "");
+                map.put("type", 0);
+                JSONObject json = new JSONObject(map);
+                return json;
+            }
+            if (whetherLegal){
                 Map map = new HashMap<String, String>();
                 Map map1 = new HashMap<String, String>();
                 map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");

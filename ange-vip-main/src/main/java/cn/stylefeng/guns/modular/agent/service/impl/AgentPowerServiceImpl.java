@@ -34,8 +34,8 @@ import java.util.List;
  */
 @Service
 public class AgentPowerServiceImpl extends ServiceImpl<AgentPowerMapper, AgentPower> implements AgentPowerService {
-    @Autowired
-    AgentAppService agentAppService;
+//    @Autowired
+//    AgentAppService agentAppService;
 
     @Override
     public void add(AgentPowerParam param){

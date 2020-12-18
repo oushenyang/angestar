@@ -90,7 +90,7 @@ public interface AppPowerService extends IService<AppPower> {
      * @author shenyang.ou
      * @Date 2020-10-29
      */
-    boolean whetherLegalBySignAndAppCode(String sign,String appCode,String appTypeCode);
+    boolean whetherLegalBySignAndAppCode(String sign,String applicationName,String appCode,String appTypeCode);
 
     /**
      * 判断是否制裁不插入
@@ -98,7 +98,7 @@ public interface AppPowerService extends IService<AppPower> {
      * @author shenyang.ou
      * @Date 2020-10-29
      */
-    boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String appCode);
+    boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String applicationName,String appCode);
 
     /**
      * 判断是否显示
@@ -114,6 +114,6 @@ public interface AppPowerService extends IService<AppPower> {
      * @author shenyang.ou
      * @Date 2020-10-29
      */
-    boolean whetherShowBySignAndAppCode(String sign,String appCode);
+    boolean whetherShowBySignAndAppCode(String sign,String applicationName,String appCode);
 
 }

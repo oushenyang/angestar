@@ -12,18 +12,18 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <select name="appId" id="appId" lay-search="" lay-verify="required" required>
+                                <select name="appCode" id="appCode" lay-search="" lay-verify="required" required>
                                     @for(appInfo in appPowerTypeResults) {
                                     <option value="${appInfo.appCode}">${appInfo.appName}</option>
                                     @}
                                 </select>
                             </div>
-                            <div class="layui-inline">
-                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
-                            </div>
+<!--                            <div class="layui-inline">-->
+<!--                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>-->
+<!--                            </div>-->
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>
+<!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
                             </div>
                         </div>
                     </div>

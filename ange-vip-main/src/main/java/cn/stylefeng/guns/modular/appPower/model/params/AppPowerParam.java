@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.appPower.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -29,6 +30,12 @@ public class AppPowerParam implements Serializable, BaseValidatingParam {
      * 应用名
      */
     private String appName;
+
+    /**
+     * 应用入口
+     */
+    private String applicationName;
+
     private String appCode;
 
     /**

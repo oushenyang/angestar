@@ -34,6 +34,12 @@ public class AppPower implements Serializable {
     private String appName;
 
     /**
+     * 应用入口
+     */
+    @TableField("application_name")
+    private String applicationName;
+
+    /**
      * 应用分类编码
      */
     @TableField("app_type_code")
@@ -114,6 +120,14 @@ public class AppPower implements Serializable {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
     }
 
     public String getAppTypeCode() {
@@ -209,6 +223,7 @@ public class AppPower implements Serializable {
         return "AppPower{" +
         "appPowerId=" + appPowerId +
         ", appName=" + appName +
+        ", applicationName=" + applicationName +
         ", appTypeCode=" + appTypeCode +
         ", sign=" + sign +
         ", whetherLegal=" + whetherLegal +

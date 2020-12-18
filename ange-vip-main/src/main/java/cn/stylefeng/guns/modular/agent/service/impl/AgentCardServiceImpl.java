@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -34,13 +35,11 @@ import java.util.*;
 @Service
 public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard> implements AgentCardService {
 
-    private final CodeCardTypeService codeCardTypeService;
-    private final AccountCardTypeService accountCardTypeService;
+    @Autowired
+    private CodeCardTypeService codeCardTypeService;
 
-    public AgentCardServiceImpl(CodeCardTypeService codeCardTypeService, AccountCardTypeService accountCardTypeService) {
-        this.codeCardTypeService = codeCardTypeService;
-        this.accountCardTypeService = accountCardTypeService;
-    }
+    @Autowired
+    private AccountCardTypeService accountCardTypeService;
 
     @Override
     public void add(AgentCardParam param){

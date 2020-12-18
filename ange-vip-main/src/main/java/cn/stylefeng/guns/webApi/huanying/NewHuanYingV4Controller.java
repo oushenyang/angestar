@@ -65,11 +65,16 @@ public class NewHuanYingV4Controller {
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
         String sign;
+        String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
 //            String time =  deSign.substring(deSign.length() -7);
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
 //            Date date = new Date(System.currentTimeMillis());
@@ -84,7 +89,7 @@ public class NewHuanYingV4Controller {
 //            }
         }
 
-        boolean isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,virtualId);
+        boolean isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
         if (ConstantsContext.getPirateOpen()&&isShow){
             Map<String, Object> map = new HashMap<>();
             map.put("data", "r52fVRuqRKZwpOlKry70HdVfpYuzMiujTHxkvoloZLDYJbZYQroqqwghonFtEyWoNbyR205ZbXtKxLXKqzZjh0eojOuyEYXn/UAlFJ3m4/HgC4AWiYrsLQ3hZnehbSC54rzqCCEgA/o4BLCnFp0Bo4vjQo+HKdAoJGl4N5i+DdA2F0mSdt0A5ucLEbuWA88CXrNGl5cKwIlDfUmsRO1LXKxF6i6fCPaJgLAjoR0UufWfdBtU6lLJTZpEgqZRr/oXyKOTa/wSYODT1UeiDR2ISmxW87Bah8Vhz765S6C6rDxBxMmO+LO5fC8mVCJxUYqao7uHCo+4az4iOyqEPyVP/S2VWT9xYAXQDyIbjPxZZ6PGuq/lBRkuGCLAxtHeMTGPIxT6tcG6AzN7VVxl7czvLDOmi25Zb9DHBHl1lRSotJcNjlXJbjO1aOulDhgvMbxodu+GNftwUmjH4ToNuo20Bu2YforldLBimquzE9uoVX3vV2u8QiRjQrc6iOcJJ91iqQly7RWkedP4c6va+YkV7UbB04xa6JvJAPrg16KkPQOaWjaZ3ZmTg3cmGqL7SDW0UZBrxPyCTep/ggiW4CKBXKjR5Q93Pe6A3EJlJ31anptQa04iOd5X7FcJ7W7YmFEyRbmH9gQ5aSJWiuYtQTdnmUj7Y09GUUeyUd0+Ttu839OIihfYDSPyfQAO633WW");

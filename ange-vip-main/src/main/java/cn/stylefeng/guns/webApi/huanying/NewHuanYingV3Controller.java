@@ -45,11 +45,16 @@ public class NewHuanYingV3Controller {
     public String user(@RequestHeader(value = "User-Token", required = false) String token){
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
         String sign;
+        String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
 //            String time =  deSign.substring(deSign.length() -7);
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
 //            Date date = new Date(System.currentTimeMillis());
@@ -63,7 +68,7 @@ public class NewHuanYingV3Controller {
                 sign = deSign.substring(0,deSign.length()-8);
 //            }
         }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,virtualId);
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
         Map<String, Object> map = new HashMap<>();
         if (whetherLegal){
             map.put("data","h9M9kQsr/d+/mG43m8PfkKl1eJGN4Jrr2/XvSj2zVs/aZpXPZgg73oJcUjlpK33BVIbdFMBuuRMr82QrX3uRBvXozAZVWs2k95uAzFGJmFNlbYXQTvhr+vzOtYaWOW0FOFrNgHV0JZDO28Fmcb8DY+l9n44wZN7syIaHl/SDFA58FBGMVZVTm9jM+ApjKInmchgxljBCEOcxyo7YsvjMFT1ILzrgMzvoaaIMuqP7B4NpPp4x2Hbf2tbKNT55CvLuL8E4ctWmIDHNmzefT7gvWgFEvQImldioI4UWdxaBcwV4Q8vv4/xv0aMBHXyuvkW1yg83i01pCEBaUDszCm7uq4ptk0GD1grdysRgW+NWsPIXSLSsmhvQTkJzMUW7jpJZN35gzerV9kUxMMSaJunU/fzGnfR1iJ/VGBw00HS0kiJoX3cZEoN15VBwYbvIIcaKepeyR9SCiVXQLGPOdxbqOEaAdbwQiMbb1l5ZELRyaeeGTirbVVlVxMnk8Zi3j91rs5Jfjka9dLQIcI3sc5vFpt57vQOX1hffOLq7U1t5FxNq7S/qIom1/tqXr03cvMLtCYjayE8CFxiplfNk2EdfkLHhvFaSLJwei6MGAWG3meGQs8TUUb3P1UUAEOWALAoFEPV0YRIAP7Cs86hapIKjy1W6NE4NZoj2xaLKs2oobUHzMKEJ02GHCXwLT7z9EJ6dTdtnJ9tht4OnUIm+tS5GLPAIX7zjxhnKnbKP3A4v7JZ6QIhUjDCAJfnWuDjtTqwXhg31f6XtRoyarn5LyiXDZFy824TweySPrSCk9NnwoteJQ/J1gtKcQgSlgqA1bcEIV3vLzd1gpeHd4zZJF0esIamdzMumIEBYCwmuSvpgRFt+siLJ6kMdKi3f90oRu4mILVWGG7mVAdWboraKa+qIgKz9Xfuo6ajmMEAB+lzkufgCXRkg+sZsWDhDkuQrRJWYw1G07puNpN0G/+gM0nWwCQ==");
@@ -108,11 +113,16 @@ public class NewHuanYingV3Controller {
     public String appactive(@RequestHeader(value = "User-Token", required = false) String token){
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
         String sign;
+        String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
 //            String time =  deSign.substring(deSign.length() -8);
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
 //            Date date = new Date(System.currentTimeMillis());
@@ -126,7 +136,7 @@ public class NewHuanYingV3Controller {
                 sign = deSign.substring(0,deSign.length()-8);
 //            }
         }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,virtualId);
+        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> map1 = new HashMap<>();
         map1.put("content", ConstantsContext.getPirateContact());

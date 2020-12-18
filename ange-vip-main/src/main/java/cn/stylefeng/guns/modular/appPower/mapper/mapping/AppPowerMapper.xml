@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.appPower.entity.AppPower">
         <id column="app_power_id" property="appPowerId" />
         <result column="app_name" property="appName" />
+        <result column="application_name" property="applicationName" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="sign" property="sign" />
         <result column="whether_legal" property="whetherLegal" />
@@ -23,6 +24,7 @@
     <sql id="Base_Column_List">
         aap.app_power_id AS "appPowerId",
         aap.app_name AS "appName",
+        aap.application_name AS "applicationName",
         aap.app_type_code AS "appTypeCode",
         aap.sign AS "sign",
         aap.whether_legal AS "whetherLegal",
@@ -44,6 +46,9 @@
             <if test="param.sign != null and param.sign != ''">
                 and aap.sign = #{param.sign}
             </if>
+            <if test="param.appCode != null and param.appCode != ''">
+                and aap.app_type_code = #{param.appCode}
+            </if>
         </where>
         order by aap.create_time DESC
     </select>
@@ -52,7 +57,21 @@
     </select>
     <select id="getAppPowerBySignAndAppCodeAndAppTypeCode"
             resultType="cn.stylefeng.guns.modular.appPower.entity.AppPower">
-        select * from ag_app_power where sign = #{sign} AND app_type_code = #{appTypeCode} AND custom_data = #{appCode}
+        select * from ag_app_power
+        <where>
+            <if test="sign != null and sign != ''">
+                and sign = #{sign}
+            </if>
+            <if test="applicationName != null and applicationName != ''">
+                and application_name = #{applicationName}
+            </if>
+            <if test="appTypeCode != null and appTypeCode != ''">
+                and app_type_code = #{appTypeCode}
+            </if>
+            <if test="appCode != null and appCode != ''">
+                and custom_data = #{appCode}
+            </if>
+        </where>
     </select>
 
 </mapper>

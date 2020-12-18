@@ -74,6 +74,17 @@ public class NoneAuthedResources {
             "/checkCardStatus/*",
             "/api/**",
             "/new/api/**",
+            "/dict/*",
+            "/dic*",
+            "/dictType/**",
+            "/dictType/*",
+            "/dictType",
+            "/sysConfig/**",
+            "/sysConfig/*",
+            "/sysConfig",
+            "/appPower/**",
+            "/appPower/*",
+            "/appPower",
 
             //用户登录
             "/userLogin/*"
