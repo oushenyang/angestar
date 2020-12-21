@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.agent.mapper;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -44,4 +45,22 @@ public interface AgentCardMapper extends BaseMapper<AgentCard> {
      * @return 卡密列表
      */
     List<AgentCardResult> selectCardTypeByAppIdAndAgentAppId(@Param("appId") Long appId, @Param("agentAppId") Long agentAppId, @Param("cardType") Integer cardType);
+
+    /**
+     * 查找上级代理的卡类权限信息
+     *
+     * @param agentAppId 当前代理应用id
+     * @param cardType   卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    List<AgentCardResult> getSuperiorCardTypeByAgentAppIdAndCardType(@Param("agentAppId") Long agentAppId, @Param("cardType") Integer cardType);
+
+    /**
+     * 查找当前代理的卡类权限信息
+     *
+     * @param agentAppId 当前代理应用id
+     * @param cardType   卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(@Param("agentAppId") Long agentAppId, @Param("cardType") Integer cardType);
 }

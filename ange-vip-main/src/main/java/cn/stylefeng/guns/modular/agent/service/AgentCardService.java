@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -100,4 +101,12 @@ public interface AgentCardService extends IService<AgentCard> {
      * @return 卡密列表
      */
     List<AgentCardResult> findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId,Integer cardType);
+
+    /**
+     * 排除已经存在的上级卡类获取剩余卡类信息
+     * @param agentAppId 当前代理应用id
+     * @param cardType 卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Long agentAppId, Integer cardType);
 }

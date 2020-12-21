@@ -82,4 +82,28 @@
         select * from ag_agent_card where agent_app_id = #{agentAppId} AND app_id = #{appId} AND card_type = #{cardType} AND market_price IS NOT NULL AND agent_price IS NOT NULL
     </select>
 
+    <select id="getSuperiorCardTypeByAgentAppIdAndCardType"
+            resultType="cn.stylefeng.guns.modular.agent.model.result.AgentCardResult">
+    SELECT
+	aac.*
+    FROM
+	ag_agent_app paa
+    LEFT JOIN ag_agent_card aac ON paa.agent_app_id = aac.agent_app_id
+    LEFT JOIN ag_agent_app aaa ON aaa.agent_app_id_pid = paa.agent_app_id
+    WHERE
+	aaa.agent_app_id = #{agentAppId}
+    AND aac.card_type = #{cardType}
+    </select>
+
+    <select id="getCardTypeByAgentAppIdAndCardType"
+            resultType="cn.stylefeng.guns.modular.agent.model.result.AgentCardResult">
+    SELECT
+	aac.*
+    FROM
+	ag_agent_card aac
+    WHERE
+	aac.agent_app_id = #{agentAppId}
+    AND aac.card_type = #{cardType}
+    </select>
+
 </mapper>

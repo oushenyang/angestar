@@ -177,6 +177,28 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         return baseMapper.selectCardTypeByAppIdAndAgentAppId(appId,agentAppId, cardType);
     }
 
+    /**
+     * 排除已经存在的上级卡类获取剩余卡类信息
+     *
+     * @param agentAppId 当前代理应用id
+     * @param cardType   卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
+     * @return 卡类信息
+     */
+    @Override
+    public List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Long agentAppId, Integer cardType) {
+        List<AgentCardResult> superiorCodeCardTypes = baseMapper.getSuperiorCardTypeByAgentAppIdAndCardType(agentAppId, cardType);
+        List<AgentCardResult> codeCardTypes = baseMapper.getCardTypeByAgentAppIdAndCardType(agentAppId, cardType);
+        List<AgentCardResult> newCodeCardTypes = new ArrayList<>(superiorCodeCardTypes);
+        for (AgentCardResult superiorAgentCardResult : superiorCodeCardTypes){
+            for (AgentCardResult agentCardResult : codeCardTypes){
+                if (agentCardResult.getCardTypeId().equals(superiorAgentCardResult.getCardTypeId())){
+                    newCodeCardTypes.remove(superiorAgentCardResult);
+                }
+            }
+        }
+        return newCodeCardTypes;
+    }
+
     private Serializable getKey(AgentCardParam param){
         return param.getAgentCardId();
     }

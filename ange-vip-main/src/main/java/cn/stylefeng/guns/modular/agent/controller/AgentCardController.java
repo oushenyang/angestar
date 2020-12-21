@@ -5,6 +5,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
@@ -58,12 +59,19 @@ public class AgentCardController extends BaseController {
      * @Date 2020-05-22
      */
     @RequestMapping("/add")
-    public String add(Model model,String agentAppId, Integer cardType,String appId) {
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
+    public String add(Model model,String agentAppId, Integer cardType, Integer type,String appId) {
+        if (type==2){
+            List<AgentCardResult> agentCardResultList = agentCardService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
+            model.addAttribute("codeCardTypes", agentCardResultList);
+        }else {
+            List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
+            model.addAttribute("codeCardTypes", codeCardTypes);
+        }
         model.addAttribute("agentAppId", agentAppId);
         model.addAttribute("cardType", cardType);
         model.addAttribute("appId", appId);
-        model.addAttribute("codeCardTypes", codeCardTypes);
+
+        model.addAttribute("type", type);
         return PREFIX + "/agentApp_card_add.html";
     }
 
