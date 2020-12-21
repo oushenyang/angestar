@@ -41,6 +41,7 @@ import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
+import cn.stylefeng.guns.sys.core.util.NumToChUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -385,7 +386,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      */
     @Override
     @Transactional
-    public List<String> oneLevelActAddItem(CardInfoParam cardInfoParam) {
+    public List<String> actAddItem(CardInfoParam cardInfoParam) {
         cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
         cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
         cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
@@ -427,18 +428,40 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         AgentBuyCardParam param = new AgentBuyCardParam();
         param.setAgentAppId(agentApp.getAgentAppId());
         param.setAgentPrice(agentCard.getAgentPrice());
-        param.setBuyCardType(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getCode());
         param.setBuyNum(cardInfoParam.getAddNum());
         param.setBatchNo(batchNo);
         param.setCardTypeId(cardInfoParam.getCardTypeId());
         param.setCardType(CardType.SINGLE_CARD.getCode());
         param.setAmount(deductionAmount);
         //设置明细
-        param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getDetailed(),
-                cardInfoParam.getAddNum(),
-                cardType.getCardTypeName(),
-                agentCard.getAgentPrice(),
-                deductionAmount));
+        if (agentApp.getAgentGrade()>1){
+            //上级代理卡密价格信息
+            AgentCard superiorAgentCard = agentCardService.getOne(new QueryWrapper<AgentCard>()
+                    .eq("card_type_id",cardInfoParam.getCardTypeId())
+                    .eq("agent_app_id",agentApp.getAgentAppIdPid()));
+            //查找上级代理应用信息
+            AgentApp superiorAgentApp = agentAppService.getById(agentApp.getAgentAppIdPid());
+            //返差价
+            BigDecimal priceDifference = (agentCard.getAgentPrice().subtract(superiorAgentCard.getAgentPrice())).multiply(BigDecimal.valueOf(cardInfoParam.getAddNum()));
+            //设置上级代理余额
+            superiorAgentApp.setBalance(superiorAgentApp.getBalance().add(priceDifference));
+            agentAppService.updateById(superiorAgentApp);
+            param.setBuyCardType(BuyCardType.SUBORDINATE_AGENT_CARD_REBATE.getCode());
+            param.setDetailed(StrUtil.format(BuyCardType.SUBORDINATE_AGENT_CARD_REBATE.getDetailed(),
+                    NumToChUtil.to(agentApp.getAgentGrade()),
+                    cardInfoParam.getAddNum(),
+                    cardType.getCardTypeName(),
+                    agentCard.getAgentPrice(),
+                    superiorAgentCard.getAgentPrice(),
+                    priceDifference));
+        }else {
+            param.setBuyCardType(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getCode());
+            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_CARD_PURCHASING.getDetailed(),
+                    cardInfoParam.getAddNum(),
+                    cardType.getCardTypeName(),
+                    agentCard.getAgentPrice(),
+                    deductionAmount));
+        }
         param.setCreateTime(new Date());
         param.setCreateUser(LoginContextHolder.getContext().getUserId());
         agentBuyCardService.add(param);

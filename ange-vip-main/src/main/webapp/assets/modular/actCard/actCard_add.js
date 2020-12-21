@@ -51,7 +51,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
         data.field.agentAppId = Feng.getUrlParam("agentAppId");
         //是否自定义时间
         data.field.isCustomTime = false;
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/oneLevelActAddItem", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/cardInfo/actAddItem", function (data) {
             notice.msg("新增卡密成功！",{icon:1});
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);

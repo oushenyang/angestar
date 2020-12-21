@@ -163,17 +163,15 @@ public class CardInfoController extends BaseController {
     }
 
     /**
-     * 一级代理新增卡密接口
+     * 代理新增卡密接口
      *
      * @author shenyang.ou
      * @Date 2020-04-20
      */
-    @RequestMapping("/oneLevelActAddItem")
+    @RequestMapping("/actAddItem")
     @ResponseBody
-    public ResponseData oneLevelActAddItem(CardInfoParam cardInfoParam) {
-
-        List<String> cardInfos = this.cardInfoService.oneLevelActAddItem(cardInfoParam);
-//        List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
+    public ResponseData actAddItem(CardInfoParam cardInfoParam) {
+        List<String> cardInfos = this.cardInfoService.actAddItem(cardInfoParam);
         return ResponseData.success(cardInfos);
     }
 

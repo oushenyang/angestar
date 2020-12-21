@@ -102,5 +102,5 @@ public interface CardInfoService extends IService<CardInfo> {
     /**
      * 一级代理新增卡密
      */
-    List<String> oneLevelActAddItem(CardInfoParam cardInfoParam);
+    List<String> actAddItem(CardInfoParam cardInfoParam);
 }

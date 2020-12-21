@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.USER_NOT_EXISTED;
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
 
 /**
  * <p>
@@ -177,13 +177,42 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
             agentApp.setBalance(agentAppRechargeParam.getBalance().add(agentAppRechargeParam.getRechargeBalance()));
             param.setAmount(agentAppRechargeParam.getRechargeBalance());
             //设置明细
-            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_RECHARGE.getDetailed(),
-                    agentAppRechargeParam.getRechargeBalance()));
+            if (agentApp.getAgentGrade()>1){
+                AgentApp superiorAgentApp =this.getById(agentApp.getAgentAppIdPid());
+                //上级代理扣款
+                if (superiorAgentApp.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()).signum()==-1){
+                    throw new OperationException(SUBORDINATE_INSUFFICIENT_BALANCE_AGENT);
+                }
+                superiorAgentApp.setBalance(superiorAgentApp.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()));
+                this.updateById(superiorAgentApp);
+                param.setDetailed(StrUtil.format(BuyCardType.SUBORDINATE_AGENT_RECHARGE.getDetailed(),
+                        NumToChUtil.to(agentApp.getAgentGrade()),
+                        agentAppRechargeParam.getRechargeBalance(),
+                        agentAppRechargeParam.getRechargeBalance()));
+            }else {
+                param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_RECHARGE.getDetailed(),
+                        agentAppRechargeParam.getRechargeBalance()));
+            }
         }else {
+            //上级代理扣款
+            if (agentAppRechargeParam.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()).signum()==-1){
+                throw new OperationException(GREATER_THAN_SUBORDINATE_INSUFFICIENT_BALANCE_AGENT);
+            }
             agentApp.setBalance(agentAppRechargeParam.getBalance().subtract(agentAppRechargeParam.getRechargeBalance()));
             param.setAmount(new BigDecimal(BigInteger.ZERO).subtract(agentAppRechargeParam.getRechargeBalance()));
             //设置明细
-            param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_DEDUCT.getDetailed(), agentAppRechargeParam.getRechargeBalance()));
+            if (agentApp.getAgentGrade()>1){
+                AgentApp superiorAgentApp =this.getById(agentApp.getAgentAppIdPid());
+                //上级代理充值
+                superiorAgentApp.setBalance(superiorAgentApp.getBalance().add(agentAppRechargeParam.getRechargeBalance()));
+                this.updateById(superiorAgentApp);
+                param.setDetailed(StrUtil.format(BuyCardType.SUBORDINATE_AGENT_DEDUCT.getDetailed(),
+                        NumToChUtil.to(agentApp.getAgentGrade()),
+                        agentAppRechargeParam.getRechargeBalance(),
+                        agentAppRechargeParam.getRechargeBalance()));
+            }else {
+                param.setDetailed(StrUtil.format(BuyCardType.PRIMARY_AGENT_DEDUCT.getDetailed(), agentAppRechargeParam.getRechargeBalance()));
+            }
         }
         this.updateById(agentApp);
         //生成充值
