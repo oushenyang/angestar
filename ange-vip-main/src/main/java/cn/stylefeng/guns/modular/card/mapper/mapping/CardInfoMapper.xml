@@ -39,7 +39,6 @@
         cci.card_id AS "cardId",
         cci.app_id AS "appId",
         cci.batch_no AS "batchNo",
-        cci.card_type_name AS "cardTypeName",
         cci.card_type_id AS "cardTypeId",
         cci.user_id AS "userId",
         cci.user_name AS "userName",
@@ -238,9 +237,11 @@
     <select id="findListBySpec" resultType="java.util.Map">
         select
         (select `name` from sys_user where user_id = cci.user_id) AS userName,
+        cct.card_type_name AS cardTypeName,
         <include refid="Base_Column_List"/>
         from ag_card_info cci
         left join ag_app_info ai on ai.app_id = cci.app_id
+        left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
         <where>
             <if test="param.createUser != null and param.createUser != ''">
                 and cci.create_user = #{param.createUser}

@@ -85,5 +85,14 @@
             </foreach>
         </if>
     </select>
+    <select id="findAgentCardResultByAppIdAndCardTypeIds"
+            resultType="cn.stylefeng.guns.modular.agent.model.result.AgentCardResult">
+        select
+        cct.*
+        from ag_code_card_type cct
+        where
+        cct.create_user = #{userId}
+        order by cct.sort ASC
+    </select>
 
 </mapper>

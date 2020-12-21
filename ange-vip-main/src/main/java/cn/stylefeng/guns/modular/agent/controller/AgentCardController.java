@@ -60,17 +60,11 @@ public class AgentCardController extends BaseController {
      */
     @RequestMapping("/add")
     public String add(Model model,String agentAppId, Integer cardType, Integer type,String appId) {
-        if (type==2){
-            List<AgentCardResult> agentCardResultList = agentCardService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
-            model.addAttribute("codeCardTypes", agentCardResultList);
-        }else {
-            List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAgentAppIdAndCardType(Long.valueOf(agentAppId),cardType);
-            model.addAttribute("codeCardTypes", codeCardTypes);
-        }
+        List<AgentCardResult> agentCardResultList = agentCardService.getCardTypeByAgentAppIdAndCardType(type,Long.valueOf(agentAppId),cardType);
+        model.addAttribute("codeCardTypes", agentCardResultList);
         model.addAttribute("agentAppId", agentAppId);
         model.addAttribute("cardType", cardType);
         model.addAttribute("appId", appId);
-
         model.addAttribute("type", type);
         return PREFIX + "/agentApp_card_add.html";
     }

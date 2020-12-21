@@ -108,5 +108,5 @@ public interface AgentCardService extends IService<AgentCard> {
      * @param cardType 卡类类型 0-单码卡密；1-通用卡密；2-注册卡密
      * @return 卡类信息
      */
-    List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Long agentAppId, Integer cardType);
+    List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Integer type,Long agentAppId, Integer cardType);
 }

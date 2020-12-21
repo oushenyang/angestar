@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.card.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.modular.card.model.result.CodeCardTypeResult;
@@ -93,6 +94,13 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @return 卡类信息
      */
     List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId);
+
+    /**
+     * 排除已经存在的卡类获取剩余卡类信息
+     * @param userId 用户id
+     * @return 卡类信息
+     */
+    List<AgentCardResult> getAgentCardResultByAppIdAndCardTypeIds(Long userId);
 
     /**
      * 排除已经存在的卡类获取剩余卡类信息

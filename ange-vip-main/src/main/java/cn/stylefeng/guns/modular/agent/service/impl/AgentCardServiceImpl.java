@@ -9,7 +9,7 @@ import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.mapper.AgentCardMapper;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
-import  cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -42,7 +42,7 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
     private AccountCardTypeService accountCardTypeService;
 
     @Override
-    public void add(AgentCardParam param){
+    public void add(AgentCardParam param) {
         AgentCardParam param1 = new AgentCardParam();
 
         AgentCard entity = getEntity(param);
@@ -50,18 +50,18 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
     }
 
     @Override
-    public void delete(AgentCardParam param){
+    public void delete(AgentCardParam param) {
         this.removeById(getKey(param));
     }
 
     @Override
-    public void batchRemove(String ids){
+    public void batchRemove(String ids) {
         List<String> idList = Arrays.asList(ids.split(","));
         this.removeByIds(idList);
     }
 
     @Override
-    public void update(AgentCardParam param){
+    public void update(AgentCardParam param) {
         AgentCard oldEntity = getOldEntity(param);
         AgentCard newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
@@ -69,22 +69,22 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
     }
 
     @Override
-    public AgentCardResult findBySpec(AgentCardParam param){
+    public AgentCardResult findBySpec(AgentCardParam param) {
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> findCodeCardTypeListBySpec(Page page,AgentCardParam param){
-        return baseMapper.findCodeCardTypeListBySpec(page,param);
+    public List<Map<String, Object>> findCodeCardTypeListBySpec(Page page, AgentCardParam param) {
+        return baseMapper.findCodeCardTypeListBySpec(page, param);
     }
 
     @Override
-    public List<Map<String, Object>> findAccountCardTypeListBySpec(Page page,AgentCardParam param){
-        return baseMapper.findAccountCardTypeListBySpec(page,param);
+    public List<Map<String, Object>> findAccountCardTypeListBySpec(Page page, AgentCardParam param) {
+        return baseMapper.findAccountCardTypeListBySpec(page, param);
     }
 
     @Override
-    public LayuiPageInfo findPageBySpec(AgentCardParam param){
+    public LayuiPageInfo findPageBySpec(AgentCardParam param) {
         Page pageContext = getPageContext();
         QueryWrapper<AgentCard> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
@@ -106,11 +106,11 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         //已经存在的卡类集合
         List<Long> cardTypeIds = new ArrayList<>();
         List<AgentCard> agentCardsList = new ArrayList<>();
-        agentCards.forEach(agentCard->{
+        agentCards.forEach(agentCard -> {
             cardTypeIds.add(agentCard.getCardTypeId());
         });
-        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
-        if (CollectionUtils.isNotEmpty(codeCardTypes)){
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds, agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
+        if (CollectionUtils.isNotEmpty(codeCardTypes)) {
             codeCardTypes.forEach(codeCardType -> {
                 AgentCard agentCard = new AgentCard();
                 agentCard.setAgentAppId(agentCardParam.getAgentAppId());
@@ -143,11 +143,11 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         //已经存在的卡类集合
         List<Long> cardTypeIds = new ArrayList<>();
         List<AgentCard> agentCardsList = new ArrayList<>();
-        agentCards.forEach(agentCard->{
+        agentCards.forEach(agentCard -> {
             cardTypeIds.add(agentCard.getCardTypeId());
         });
-        List<AccountCardType> accountCardTypes = accountCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds,agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
-        if (CollectionUtils.isNotEmpty(accountCardTypes)){
+        List<AccountCardType> accountCardTypes = accountCardTypeService.getCardTypeByAppIdAndCardTypeIds(cardTypeIds, agentCardParam.getCardType(), LoginContextHolder.getContext().getUserId());
+        if (CollectionUtils.isNotEmpty(accountCardTypes)) {
             accountCardTypes.forEach(accountCardType -> {
                 AgentCard agentCard = new AgentCard();
                 agentCard.setAgentAppId(agentCardParam.getAgentAppId());
@@ -173,8 +173,8 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
      * @return 卡密列表
      */
     @Override
-    public List<AgentCardResult> findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId,Integer cardType) {
-        return baseMapper.selectCardTypeByAppIdAndAgentAppId(appId,agentAppId, cardType);
+    public List<AgentCardResult> findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId, Integer cardType) {
+        return baseMapper.selectCardTypeByAppIdAndAgentAppId(appId, agentAppId, cardType);
     }
 
     /**
@@ -185,13 +185,19 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
      * @return 卡类信息
      */
     @Override
-    public List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Long agentAppId, Integer cardType) {
-        List<AgentCardResult> superiorCodeCardTypes = baseMapper.getSuperiorCardTypeByAgentAppIdAndCardType(agentAppId, cardType);
+    public List<AgentCardResult> getCardTypeByAgentAppIdAndCardType(Integer type, Long agentAppId, Integer cardType) {
+        List<AgentCardResult> superiorCodeCardTypes = new ArrayList<>();
+        if (type == 2) {
+            superiorCodeCardTypes = baseMapper.getSuperiorCardTypeByAgentAppIdAndCardType(agentAppId, cardType);
+        } else {
+            superiorCodeCardTypes = codeCardTypeService.getAgentCardResultByAppIdAndCardTypeIds(LoginContextHolder.getContext().getUserId());
+        }
+
         List<AgentCardResult> codeCardTypes = baseMapper.getCardTypeByAgentAppIdAndCardType(agentAppId, cardType);
         List<AgentCardResult> newCodeCardTypes = new ArrayList<>(superiorCodeCardTypes);
-        for (AgentCardResult superiorAgentCardResult : superiorCodeCardTypes){
-            for (AgentCardResult agentCardResult : codeCardTypes){
-                if (agentCardResult.getCardTypeId().equals(superiorAgentCardResult.getCardTypeId())){
+        for (AgentCardResult superiorAgentCardResult : superiorCodeCardTypes) {
+            for (AgentCardResult agentCardResult : codeCardTypes) {
+                if (agentCardResult.getCardTypeId().equals(superiorAgentCardResult.getCardTypeId())) {
                     newCodeCardTypes.remove(superiorAgentCardResult);
                 }
             }
@@ -199,7 +205,7 @@ public class AgentCardServiceImpl extends ServiceImpl<AgentCardMapper, AgentCard
         return newCodeCardTypes;
     }
 
-    private Serializable getKey(AgentCardParam param){
+    private Serializable getKey(AgentCardParam param) {
         return param.getAgentCardId();
     }
 

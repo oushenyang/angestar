@@ -7,6 +7,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CodeCardTypeMapper;
@@ -136,6 +137,11 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     @Override
     public List<CodeCardType> getCardTypeByAppIdAndCardTypeIds(List<Long> cardTypeIds,Integer cardType,Long userId){
         return baseMapper.findCardTypeByAppIdAndCardTypeIds(cardTypeIds,cardType,userId);
+    }
+
+    @Override
+    public List<AgentCardResult> getAgentCardResultByAppIdAndCardTypeIds(Long userId) {
+        return baseMapper.findAgentCardResultByAppIdAndCardTypeIds(userId);
     }
 
     /**
