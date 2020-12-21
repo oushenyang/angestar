@@ -45,8 +45,10 @@
         aa.update_user AS "updateUser",
         aa.update_time AS "updateTime"
     </sql>
-    <select id="findListBySpec" resultType="java.util.Map">
+    <select id="findListBySpec" resultType="cn.stylefeng.guns.modular.agent.model.result.AgentAppResult">
         select
+        (select `name` from sys_user where user_id = aa.agent_user_id) AS agentUserName,
+        (select `account` from sys_user where user_id = aa.agent_user_id) AS agentUserAccount,
         <include refid="Base_Column_List"/>
         from ag_agent_app aa
         left join ag_agent_power ap on ap.agent_app_id = aa.agent_app_id
@@ -69,6 +71,15 @@
             </if>
         </where>
         order by aa.create_time DESC
+    </select>
+    <select id="getDetailById" resultType="cn.stylefeng.guns.modular.agent.model.result.AgentAppResult">
+        select
+        (select `name` from sys_user where user_id = aa.agent_user_id) AS agentUserName,
+        <include refid="Base_Column_List"/>
+        from ag_agent_app aa
+        left join ag_agent_power ap on ap.agent_app_id = aa.agent_app_id
+        left join ag_app_info ai on ai.app_id = aa.app_id
+        where aa.agent_app_id = #{agentAppId}
     </select>
 
 </mapper>

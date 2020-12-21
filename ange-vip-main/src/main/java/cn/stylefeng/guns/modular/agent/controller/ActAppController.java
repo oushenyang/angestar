@@ -6,6 +6,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -217,7 +218,7 @@ public class ActAppController extends BaseController {
         Page page = LayuiPageFactory.defaultPage();
         agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
-        List<Map<String, Object>> result = agentAppService.findListBySpec(page, agentAppParam);
+        List<AgentAppResult> result = agentAppService.findListBySpec(page, agentAppParam);
         page.setRecords(result);
         return LayuiPageFactory.createPageInfo(page);
     }

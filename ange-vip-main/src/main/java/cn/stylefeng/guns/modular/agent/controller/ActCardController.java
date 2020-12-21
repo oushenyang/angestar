@@ -7,6 +7,7 @@ import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
@@ -61,7 +62,7 @@ public class ActCardController extends BaseController {
         AgentAppParam agentAppParam = new AgentAppParam();
         agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
-        List<Map<String, Object>> agentApps = agentAppService.findListBySpec(page, agentAppParam);
+        List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
         model.addAttribute("agentApps", agentApps);
         model.addAttribute("agentAppsSize", agentApps.size());
         return PREFIX + "/actCard.html";
@@ -165,12 +166,12 @@ public class ActCardController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/appList")
-    public List<Map<String, Object>> appList(AgentAppParam param) {
+    public List<AgentAppResult> appList(AgentAppParam param) {
         //获取分页参数
         Page page = new Page(1, 100);
         param.setAgentUserId(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
-        List<Map<String, Object>> result = agentAppService.findListBySpec(page, param);
+        List<AgentAppResult> result = agentAppService.findListBySpec(page, param);
         return result;
     }
 

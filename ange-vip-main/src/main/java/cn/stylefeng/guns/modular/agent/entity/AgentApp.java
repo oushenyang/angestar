@@ -65,7 +65,7 @@ public class AgentApp implements Serializable {
     private Long agentUserId;
 
     /**
-     * 代理等级
+     * 是否总代 0-否；1-是；
      */
     @TableField("rose")
     private Boolean rose;

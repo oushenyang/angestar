@@ -37,6 +37,16 @@ public class AgentBuyCardParam implements Serializable, BaseValidatingParam {
     private Long agentAppId;
 
     /**
+     * 开发者用户id
+     */
+    private Long developerUserId;
+
+    /**
+     * 代理用户id
+     */
+    private Long agentUserId;
+
+    /**
      * 代理价格
      */
     private BigDecimal agentPrice;

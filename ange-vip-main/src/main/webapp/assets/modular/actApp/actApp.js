@@ -21,7 +21,7 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
             {field: 'agentPowerId', hide: true},
             {field: 'appId', hide: true},
             {align: 'center', field: 'appName', title: '所属应用'},
-            {align: 'center', field: 'agentGrade', sort: true, title: '代理等级'},
+            {align: 'center', field: 'agentGradeName', sort: true, title: '代理等级'},
             // {align: 'center', field: 'agentUserAccount', rowspan: 2, title: '代理账号'},
             {align: 'center', field: 'createTime', sort: true, title: '合作时间'},
             {align: 'center', field: 'balance',title: '余额'},

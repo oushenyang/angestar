@@ -88,12 +88,19 @@ public interface AgentAppService extends IService<AgentApp> {
     AgentAppResult findBySpec(AgentAppParam param);
 
     /**
+     * 根据id获取代理应用详情
+     * @param agentAppId 代理应用id
+     * @return
+     */
+    AgentAppResult getDetailById(Long agentAppId);
+
+    /**
      * 查询列表，Specification模式
      *
      * @author shenyang.ou
      * @Date 2020-05-20
      */
-    List<Map<String, Object>> findListBySpec(Page page, AgentAppParam param);
+    List<AgentAppResult> findListBySpec(Page page, AgentAppParam param);
 
     /**
      * 查询分页数据，Specification模式

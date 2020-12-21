@@ -45,24 +45,29 @@
         select
         ai.app_name AS "appName",
         cct.card_type_name AS "cardTypeName",
-        (select `name` from sys_user where user_id = abc.developer_user_id) AS developerUserName,
-        (select `name` from sys_user where user_id = abc.agent_user_id) AS agentUserName,
+        (select `name` from sys_user where user_id = aaa.developer_user_id) AS developerUserName,
+        (select `name` from sys_user where user_id = aaa.agent_user_id) AS agentUserName,
+        (select `account` from sys_user where user_id = aaa.agent_user_id) AS agentUserAccount,
         <include refid="Base_Column_List"/>
         from ag_agent_buy_card abc
-        left join ag_app_info ai on ai.app_id = abc.app_id
+        left join ag_agent_app aaa on aaa.agent_app_id = abc.agent_app_id
+        left join ag_app_info ai on ai.app_id = aaa.app_id
         left join ag_code_card_type cct on cct.card_type_id = abc.card_type_id
         <where>
             <if test="param.developerUserId != null and param.developerUserId !=''">
-                and abc.developer_user_id = #{param.developerUserId}
+                and aaa.developer_user_id = #{param.developerUserId}
             </if>
             <if test="param.agentUserId != null and param.agentUserId !=''">
-                and abc.agent_user_id = #{param.agentUserId}
+                and aaa.agent_user_id = #{param.agentUserId}
             </if>
             <if test="param.type!= null and param.type == 1">
-                and abc.developer_user_id = #{param.createUser}
+                and aaa.developer_user_id = #{param.createUser}
             </if>
             <if test="param.type!= null and param.type == 2">
-                and abc.agent_user_id = #{param.createUser}
+                and aaa.agent_user_id = #{param.createUser}
+            </if>
+            <if test="param.type!= null and param.type == 3">
+                and aaa.agent_user_id = #{param.createUser}
             </if>
         </where>
         order by abc.create_time ASC

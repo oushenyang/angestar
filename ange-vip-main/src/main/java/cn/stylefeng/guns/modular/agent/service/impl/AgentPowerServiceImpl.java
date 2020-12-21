@@ -107,7 +107,7 @@ public class AgentPowerServiceImpl extends ServiceImpl<AgentPowerMapper, AgentPo
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
         //更新下级代理的所有权限信息
-        this.updateBatchById(getEntityList(agentPowerResults));
+        if (CollectionUtil.isNotEmpty(agentPowerResults)) this.updateBatchById(getEntityList(agentPowerResults));
     }
 
     @Override

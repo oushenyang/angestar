@@ -19,6 +19,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
+import cn.stylefeng.guns.sys.core.util.NumToChUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -126,8 +127,8 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         agentApp.setAgentUserId(entity.getAgentUserId());
         agentApp.setAgentGrade(entity.getAgentGrade());
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
-        agentApp.setAgentAppIdPid(superiorAgentApp.getAgentAppIdPid());
-        agentApp.setAgentAppIdPids(superiorAgentApp.getAgentAppIdPids()+"["+superiorAgentApp.getAgentAppIdPid()+"],");
+        agentApp.setAgentAppIdPid(superiorAgentApp.getAgentAppId());
+        agentApp.setAgentAppIdPids(superiorAgentApp.getAgentAppIdPids()+"["+superiorAgentApp.getAgentAppId()+"],");
         agentApp.setPid(entity.getPid());
         agentApp.setPids(entity.getPids());
         this.save(agentApp);
@@ -198,9 +199,24 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         return null;
     }
 
+    /**
+     * 根据id获取代理应用详情
+     *
+     * @param agentAppId 代理应用id
+     * @return
+     */
     @Override
-    public List<Map<String, Object>> findListBySpec(Page page, AgentAppParam param) {
-        return baseMapper.findListBySpec(page,param);
+    public AgentAppResult getDetailById(Long agentAppId) {
+        return baseMapper.getDetailById(agentAppId);
+    }
+
+    @Override
+    public List<AgentAppResult> findListBySpec(Page page, AgentAppParam param) {
+        List<AgentAppResult> list = baseMapper.findListBySpec(page,param);
+        list.forEach(agentAppResult -> {
+            agentAppResult.setAgentGradeName(StrUtil.format("{}级代理",NumToChUtil.to(agentAppResult.getAgentGrade())));
+        });
+        return list;
     }
 
     @Override

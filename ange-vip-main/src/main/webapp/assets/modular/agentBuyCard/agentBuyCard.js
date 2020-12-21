@@ -164,6 +164,9 @@ layui.use(['table', 'admin', 'ax'], function () {
         page: true,
         height: "full-158",
         cellMinWidth: 100,
+        where:{
+            type:$("#type").val()
+        },
         cols: AgentBuyCard.initColumn()
     });
 

@@ -113,13 +113,9 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
     @Transactional
     public void agentAddItem(AgentExamineParam param){
         User user = userService.getAgentByAccount(param.getAgentUserAccount());
-        if (user == null) {
-            throw new OperationException(USER_NOT_EXISTED);
-        }
+        if (user == null) throw new OperationException(USER_NOT_EXISTED);
         //不能添加自己为代理
-        if (user.getUserId().equals(LoginContextHolder.getContext().getUserId())){
-            throw new OperationException(NO_SELF_AGENT);
-        }
+        if (user.getUserId().equals(LoginContextHolder.getContext().getUserId())) throw new OperationException(NO_SELF_AGENT);
         AgentExamine agentExamine = baseMapper.selectOne(new QueryWrapper<AgentExamine>()
                 .eq("app_id",param.getAppId())
                 .eq("developer_user_id",param.getDeveloperUserId())
@@ -127,27 +123,21 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
 //                .eq("pid",LoginContextHolder.getContext().getUserId())
                 .eq("examine_status",ExamineStatus.WAITING_AGENT_REVIEW.getCode()));
         if (ObjectUtil.isNotNull(agentExamine)){
-            if (agentExamine.getPid().equals(LoginContextHolder.getContext().getUserId())){
-                throw new OperationException(INVITED_AGENT);
-            }else {
-                throw new OperationException(INVITED_OTHER_AGENT);
-            }
-
+            if (agentExamine.getPid().equals(LoginContextHolder.getContext().getUserId())) throw new OperationException(INVITED_AGENT);
+            else throw new OperationException(INVITED_OTHER_AGENT);
         }
         AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
                 .eq("app_id",param.getAppId())
                 .eq("agent_user_id",user.getUserId()));
         if (ObjectUtil.isNotNull(agentApp)){
-            if (agentApp.getPid().equals(LoginContextHolder.getContext().getUserId())){
-                //该用户已经是您的代理，请勿重复操作
-                throw new OperationException(ALREADY_AGENT);
-            }else {
+            //该用户已经是您的代理，请勿重复操作
+            if (agentApp.getPid().equals(LoginContextHolder.getContext().getUserId())) throw new OperationException(ALREADY_AGENT);
                 //该用户已经代理过该软件，请勿重复操作
-                throw new OperationException(ALREADY_AGENT_APP);
-            }
+                else throw new OperationException(ALREADY_AGENT_APP);
         }
         //获取当前代理的代理信息
         AgentApp agentApp1 = agentAppService.getById(param.getAgentAppId());
+        if (!agentApp1.getRose()) throw new OperationException(NO_ROSE_AGENT);
         param.setDeveloperUserId(param.getDeveloperUserId());
         param.setAgentUserId(user.getUserId());
         param.setAgentGrade(agentApp1.getAgentGrade()+1);

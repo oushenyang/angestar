@@ -44,6 +44,7 @@
         ai.app_name AS "appName",
         (select `name` from sys_user where user_id = aae.developer_user_id) AS developerUserName,
         (select `name` from sys_user where user_id = aae.agent_user_id) AS agentUserName,
+        (select `account` from sys_user where user_id = aae.agent_user_id) AS agentUserAccount,
         <include refid="Base_Column_List"/>
         from ag_agent_examine aae
         left join ag_app_info ai on ai.app_id = aae.app_id
@@ -65,6 +66,9 @@
             </if>
             <if test="param.type!= null and param.type == 2">
                 and aae.agent_user_id = #{param.createUser}
+            </if>
+            <if test="param.type!= null and param.type == 3">
+                and aae.pid = #{param.createUser}
             </if>
         </where>
         order by aae.create_time ASC

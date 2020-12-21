@@ -11,6 +11,7 @@ import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,7 +41,8 @@ public class AgentBuyCardController extends BaseController {
      * @Date 2020-12-11
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model, Integer type) {
+        model.addAttribute("type", type);
         return PREFIX + "/agentBuyCard.html";
     }
 

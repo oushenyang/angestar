@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.agent.mapper;
 
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -25,5 +26,13 @@ public interface AgentAppMapper extends BaseMapper<AgentApp> {
      * @param param 查询参数
      * @return 结果
      */
-    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AgentAppParam param);
+    List<AgentAppResult> findListBySpec(@Param("page") Page page, @Param("param") AgentAppParam param);
+
+    /**
+     * 根据id获取代理应用详情
+     *
+     * @param agentAppId 代理应用id
+     * @return
+     */
+    AgentAppResult getDetailById(@Param("agentAppId") Long agentAppId);
 }

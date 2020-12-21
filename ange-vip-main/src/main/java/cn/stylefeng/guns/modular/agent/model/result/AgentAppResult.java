@@ -25,6 +25,11 @@ public class AgentAppResult implements Serializable {
     private Long agentAppId;
 
     /**
+     * 代理权限id
+     */
+    private Long agentPowerId;
+
+    /**
      * 父级代理应用id
      */
     private Long agentAppIdPid;
@@ -45,6 +50,11 @@ public class AgentAppResult implements Serializable {
     private Long appId;
 
     /**
+     * 应用名称
+     */
+    private String appName;
+
+    /**
      * 开发者用户id
      */
     private Long developerUserId;
@@ -55,6 +65,16 @@ public class AgentAppResult implements Serializable {
     private Long agentUserId;
 
     /**
+     * 代理用户名称
+     */
+    private String agentUserName;
+
+    /**
+     * 代理用户名称
+     */
+    private String agentUserAccount;
+
+    /**
      * 代理等级
      */
     private Boolean rose;
@@ -63,6 +83,7 @@ public class AgentAppResult implements Serializable {
      * 代理等级
      */
     private Integer agentGrade;
+    private String agentGradeName;
 
     /**
      * 父代理应用id
