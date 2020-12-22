@@ -13,6 +13,9 @@
         <result column="card_data" property="cardData" />
         <result column="card_time" property="cardTime" />
         <result column="card_delete" property="cardDelete" />
+        <result column="card_edit" property="cardEdit" />
+        <result column="card_config" property="cardConfig" />
+        <result column="card_relieve" property="cardRelieve" />
         <result column="account_create" property="accountCreate" />
         <result column="account_disable" property="accountDisable" />
         <result column="account_edit_password" property="accountEditPassword" />
@@ -29,7 +32,30 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        agent_power_id AS "agentPowerId", agent_app_id AS "agentAppId", app_id AS "appId", card_create AS "cardCreate", card_disable AS "cardDisable", card_look AS "cardLook", card_data AS "cardData", card_time AS "cardTime", card_delete AS "cardDelete", account_create AS "accountCreate", account_disable AS "accountDisable", account_edit_password AS "accountEditPassword", account_delete AS "accountDelete", account_time AS "accountTime", account_data AS "accountData", account_query AS "accountQuery", revision AS "revision", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        agent_power_id AS "agentPowerId",
+        agent_app_id AS "agentAppId",
+        app_id AS "appId",
+        card_create AS "cardCreate",
+        card_disable AS "cardDisable",
+        card_look AS "cardLook",
+        card_data AS "cardData",
+        card_time AS "cardTime",
+        card_delete AS "cardDelete",
+        card_edit AS "cardEdit",
+        card_config AS "cardConfig",
+        card_relieve AS "cardRelieve",
+        account_create AS "accountCreate",
+        account_disable AS "accountDisable",
+        account_edit_password AS "accountEditPassword",
+        account_delete AS "accountDelete",
+        account_time AS "accountTime",
+        account_data AS "accountData",
+        account_query AS "accountQuery",
+        revision AS "revision",
+        create_user AS "createUser",
+        create_time AS "createTime",
+        update_user AS "updateUser",
+        update_time AS "updateTime"
     </sql>
     <select id="getSubordinateAgentPowerShow"
             resultType="cn.stylefeng.guns.modular.agent.model.result.AgentPowerResult">

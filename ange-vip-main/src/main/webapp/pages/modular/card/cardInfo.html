@@ -149,14 +149,17 @@
     <!-- 下拉菜单 -->
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser{{d.LAY_INDEX}}">
         <div class="dropdown-anchor"></div>
-        <li><a lay-event="edit2"><i class="fa fa-right fa-edit fa-fw"></i>卡密编辑</a></li>
-        <li><a lay-event="edit2"><i class="fa fa-right fa-ban fa-fw"></i>卡密禁用</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-clock-o fa-fw"></i>卡密加时</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-lock fa-fw"></i>卡密配置</a></li>
-        <li><a lay-event="del2"><i class="fa fa-right fa-lock fa-fw"></i>卡密数据</a></li>
+        <li><a lay-event="itemEdit"><i class="fa fa-right fa-edit fa-fw"></i>卡密编辑</a></li>
+        {{# if(d.cardStatus == 3){ }}
+        <li><a lay-event="itemUnsealing"><i class="fa fa-right fa-check-circle fa-fw"></i>卡密解封</a></li>
+        {{# } else { }}
+        <li><a lay-event="itemProhibition"><i class="fa fa-right fa-ban fa-fw"></i>卡密封禁</a></li>
+        {{# } }}
+        <li><a lay-event="itemOvertime"><i class="fa fa-right fa-clock-o fa-fw"></i>卡密加时</a></li>
+        <li><a lay-event="itemConfig"><i class="fa fa-right fa-cog fa-fw"></i>卡密配置</a></li>
+        <li><a lay-event="itemData"><i class="fa fa-right fa-database fa-fw"></i>卡密数据</a></li>
         <li><a lay-event="delete" style="color: red"><i class="fa fa-right fa-trash-o fa-fw"></i>卡密删除</a></li>
     </ul>
-    <!--    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>-->
 </script>
 
 <script type="text/html" id="cardInfoTable-toolbar">
@@ -179,7 +182,6 @@
         <li><a lay-event="editRemark"><i class="fa fa-right fa-tag fa-fw"></i>修改备注</a></li>
         <li><a lay-event="batchRemove" style="color: red"><i class="fa fa-right fa-trash-o fa-fw"></i>批量删除</a></li>
     </ul>
-    <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除-->
     </button>
 </script>
 @}

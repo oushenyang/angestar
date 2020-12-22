@@ -71,6 +71,21 @@ public class AgentPowerParam implements Serializable, BaseValidatingParam {
     private Boolean cardDelete;
 
     /**
+     * 卡密编辑 0-否；1-是；
+     */
+    private Boolean cardEdit;
+
+    /**
+     * 卡密配置 0-否；1-是；
+     */
+    private Boolean cardConfig;
+
+    /**
+     * 卡密解绑 0-否；1-是；
+     */
+    private Boolean cardRelieve;
+
+    /**
      * 充值卡生成 0-否；1-是；
      */
     private Boolean accountCreate;

@@ -42,6 +42,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         data.field.hasOwnProperty('cardData')?'': data.field.cardData = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('cardTime')?'': data.field.cardTime = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('cardDelete')?'': data.field.cardDelete = 'off'; //true 值为on,false 值给赋off
+        data.field.hasOwnProperty('cardEdit')?'': data.field.cardEdit = 'off'; //true 值为on,false 值给赋off
+        data.field.hasOwnProperty('cardConfig')?'': data.field.cardConfig = 'off'; //true 值为on,false 值给赋off
+        data.field.hasOwnProperty('cardRelieve')?'': data.field.cardRelieve = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('accountCreate')?'': data.field.accountCreate = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('accountDisable')?'': data.field.accountDisable = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('accountEditPassword')?'': data.field.accountEditPassword = 'off'; //true 值为on,false 值给赋off

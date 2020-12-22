@@ -319,7 +319,8 @@ layui.define(['layer'], function (exports) {
         var loader = [
             '<div class="ball-loader ' + size + '"><span></span><span></span><span></span><span></span></div>',
             '<div class="rubik-loader ' + size + '"></div>',
-            '<div class="signal-loader ' + size + '"><span></span><span></span><span></span><span></span></div>'
+            '<div class="signal-loader ' + size + '"><span></span><span></span><span></span><span></span></div>',
+            '<div class="layui-loader ' + size + '"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i></div>'
         ];
         $(elem).addClass('page-no-scroll');  // 禁用滚动条
         $(elem).scrollTop(0);
@@ -562,7 +563,7 @@ layui.define(['layer'], function (exports) {
             loading = text;
             text = undefined;
         }
-        if (text === undefined) text = '&nbsp;加载中';
+        if (text === undefined) text = '&nbsp;处理中';
         if (loading === undefined) loading = true;
         var $elem = $(elem);
         if (loading) {
@@ -574,6 +575,13 @@ layui.define(['layer'], function (exports) {
             $elem.children('.ew-btn-loading-text').remove();
             $elem.removeProp('disabled', 'disabled');
         }
+    };
+
+    admin.removeBtnLoading = function (elem) {
+        var $elem = $(elem);
+            $elem.removeClass('ew-btn-loading');
+            $elem.children('.ew-btn-loading-text').remove();
+            $elem.removeProp('disabled', 'disabled');
     };
 
     /* 鼠标移入侧边栏自动展开 */

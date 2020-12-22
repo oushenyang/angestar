@@ -145,6 +145,24 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 编辑页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/itemEdit")
+    public String itemEdit(Model model,Integer type) {
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("appInfoParams", appInfoParams);
+        model.addAttribute("appId", 0);
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("codeCardTypes", codeCardTypes);
+        model.addAttribute("type", type);
+        return PREFIX + "/cardInfo_item_edit.html";
+    }
+
+    /**
      * 开发者新增接口
      *
      * @author shenyang.ou

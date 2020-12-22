@@ -26,6 +26,15 @@
                 @if(agentPower.cardDelete==true){
                 <input type="checkbox" name="cardDelete" title="卡密删除">
                 @}
+                @if(agentPower.cardEdit==true){
+                <input type="checkbox" name="cardEdit" title="卡密编辑">
+                @}
+                @if(agentPower.cardConfig==true){
+                <input type="checkbox" name="cardConfig" title="卡密配置">
+                @}
+                @if(agentPower.cardRelieve==true){
+                <input type="checkbox" name="cardRelieve" title="卡密解绑">
+                @}
                 @}else{
                 <input type="checkbox" name="cardCreate" title="卡密生成">
                 <input type="checkbox" name="cardDisable" title="卡密禁用">
@@ -33,6 +42,9 @@
                 <input type="checkbox" name="cardData" title="卡密数据">
                 <input type="checkbox" name="cardTime" title="卡密加时">
                 <input type="checkbox" name="cardDelete" title="卡密删除">
+                <input type="checkbox" name="cardEdit" title="卡密编辑">
+                <input type="checkbox" name="cardConfig" title="卡密配置">
+                <input type="checkbox" name="cardRelieve" title="卡密解绑">
                 @}
                 @}
             </div>

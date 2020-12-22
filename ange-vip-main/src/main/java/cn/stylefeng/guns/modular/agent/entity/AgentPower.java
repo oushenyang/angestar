@@ -76,6 +76,24 @@ public class AgentPower implements Serializable {
     private Boolean cardDelete;
 
     /**
+     * 卡密编辑 0-否；1-是；
+     */
+    @TableField("card_edit")
+    private Boolean cardEdit;
+
+    /**
+     * 卡密配置 0-否；1-是；
+     */
+    @TableField("card_config")
+    private Boolean cardConfig;
+
+    /**
+     * 卡密解绑 0-否；1-是；
+     */
+    @TableField("card_relieve")
+    private Boolean cardRelieve;
+
+    /**
      * 充值卡生成 0-否；1-是；
      */
     @TableField("account_create")
@@ -220,6 +238,30 @@ public class AgentPower implements Serializable {
         this.cardDelete = cardDelete;
     }
 
+    public Boolean getCardEdit() {
+        return cardEdit;
+    }
+
+    public void setCardEdit(Boolean cardEdit) {
+        this.cardEdit = cardEdit;
+    }
+
+    public Boolean getCardConfig() {
+        return cardConfig;
+    }
+
+    public void setCardConfig(Boolean cardConfig) {
+        this.cardConfig = cardConfig;
+    }
+
+    public Boolean getCardRelieve() {
+        return cardRelieve;
+    }
+
+    public void setCardRelieve(Boolean cardRelieve) {
+        this.cardRelieve = cardRelieve;
+    }
+
     public Boolean getAccountCreate() {
         return accountCreate;
     }
@@ -328,6 +370,9 @@ public class AgentPower implements Serializable {
         ", cardData=" + cardData +
         ", cardTime=" + cardTime +
         ", cardDelete=" + cardDelete +
+        ", cardEdit=" + cardEdit +
+        ", cardConfig=" + cardConfig +
+        ", cardRelieve=" + cardRelieve +
         ", accountCreate=" + accountCreate +
         ", accountDisable=" + accountDisable +
         ", accountEditPassword=" + accountEditPassword +

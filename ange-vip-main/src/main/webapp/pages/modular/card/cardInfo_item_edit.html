@@ -1,0 +1,60 @@
+<form id="cardEditForm" lay-filter="cardEditForm" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        {{# if(d.event == 'itemProhibition'){ }}
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">封禁备注</label>
+            <div class="layui-input-block">
+                <textarea id="prohibitRemark" name="prohibitRemark" placeholder="请输入封禁备注" maxlength="128" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        {{# } else if(d.event == 'itemOvertime'){ }}
+        <div class="layui-form-item" >
+            <label class="layui-form-label">指定日期</label>
+            <div class="layui-input-block">
+                <input id="addTime" name="addTime" placeholder="请选择指定日期" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">天数</label>
+            <div class="layui-input-block">
+                <input id="addDayNum" name="addDayNum" lay-filter="addDayNum"  placeholder="请输入天数" type="number" min="0" max="9999" oninput="if(value>9999)value=9999;if(value<0)value=0" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">小时</label>
+            <div class="layui-input-block">
+                <input id="addHourNum" name="addHourNum" lay-filter="addHourNum"  placeholder="请输入小时" type="number" min="0" max="9999" oninput="if(value>9999)value=9999;if(value<0)value=0" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">分钟</label>
+            <div class="layui-input-block">
+                <input id="addMinuteNum" name="addMinuteNum" lay-filter="addMinuteNum"  placeholder="请输入分钟" type="number" min="0" max="9999" oninput="if(value>9999)value=9999;if(value<0)value=0" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        {{# } else if(d.event == 'itemConfig'){ }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardStatus" class="cardStatus" lay-search="" lay-verType="tips" disabled>
+                    <option value="1" selected="selected">全部</option>
+                    <option value="2">未激活</option>
+                    <option value="3">已激活</option>
+                    <option value="4">已过期</option>
+                </select>
+            </div>
+        </div>
+        {{# } else if(d.event == 'itemData'){ }}
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">卡密数据</label>
+            <div class="layui-input-block">
+                <textarea id="cardData" name="cardData" placeholder="请输入卡密数据" maxlength="128" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        {{# } }}
+    </div>
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="cardItemEditSubmit" lay-submit>提交</button>
+    </div>
+</form>
