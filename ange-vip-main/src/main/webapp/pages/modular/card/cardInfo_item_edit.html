@@ -1,6 +1,25 @@
 <form id="cardEditForm" lay-filter="cardEditForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;">
-        {{# if(d.event == 'itemProhibition'){ }}
+        {{# if(d.event == 'itemEdit'){ }}
+        <div class="layui-form-item" >
+            <label class="layui-form-label">绑定机器码</label>
+            <div class="layui-input-block">
+                <input id="mac" name="mac" placeholder="请输入绑定机器码" maxlength="128" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">绑定IP地址</label>
+            <div class="layui-input-block">
+                <input id="ip" name="ip" placeholder="请输入绑定IP地址" maxlength="128" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">卡密备注</label>
+            <div class="layui-input-block">
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        {{# } else if(d.event == 'itemProhibition'){ }}
         <div class="layui-form-item layui-form-text" >
             <label class="layui-form-label">封禁备注</label>
             <div class="layui-input-block">
