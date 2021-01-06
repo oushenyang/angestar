@@ -33,7 +33,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/api/cat")
+@RequestMapping("/aaapi/cat")
 public class CustDingWeiMaoController {
 
     @Autowired

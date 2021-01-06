@@ -35,7 +35,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/aaapi/cat")
+@RequestMapping("/api/cat")
 public class DingWeiMaoController {
 
     @Autowired

@@ -94,6 +94,20 @@ layui.use(['table', 'ax', 'func'], function () {
     };
 
     /**
+     * 点击复制
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    DictType.openCopyDlg = function (data) {
+        func.open({
+            height: 630,
+            title: '复制字典类型',
+            content: Feng.ctxPath + '/dictType/copy?dictTypeId=' + data.dictTypeId,
+            tableId: DictType.tableId
+        });
+    };
+
+    /**
      * 点击删除
      *
      * @param data 点击按钮时候的行数据
@@ -172,6 +186,8 @@ layui.use(['table', 'ax', 'func'], function () {
 
         if (layEvent === 'edit') {
             DictType.openEditDlg(data);
+        } else if (layEvent === 'copy') {
+            DictType.openCopyDlg(data);
         } else if (layEvent === 'delete') {
             DictType.onDeleteItem(data);
         }

@@ -105,6 +105,35 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
     }
 
     /**
+     * 复制
+     *
+     * @author stylefeng
+     * @Date 2019-03-13
+     */
+    @Transactional
+    public void copy(DictTypeParam param) {
+        DictType oldEntity = getOldEntity(param);
+        DictType newEntity = getEntity(param);
+        ToolUtil.copyProperties(newEntity, oldEntity);
+
+        //判断编码是否重复
+        QueryWrapper<DictType> wrapper = new QueryWrapper<DictType>()
+                .and(i -> i.eq("code", newEntity.getCode()));
+        int dicts = this.count(wrapper);
+        if (dicts > 0) {
+            throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
+        }
+        List<Dict> dictList = dictService.list(new QueryWrapper<Dict>().eq("dict_type_id",newEntity.getDictTypeId()));
+        newEntity.setDictTypeId(null);
+        this.save(newEntity);
+        for (Dict dict : dictList){
+            dict.setDictId(null);
+            dict.setDictTypeId(newEntity.getDictTypeId());
+        }
+        dictService.saveBatch(dictList);
+    }
+
+    /**
      * 查询单条数据，Specification模式
      *
      * @author stylefeng

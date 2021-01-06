@@ -54,11 +54,14 @@ public class NewHuanYingV2Controller {
 
     @RequestMapping("/appdatainfo")
     @ResponseBody
-    public String appdatainfo(@RequestHeader(value = "User-Token", required = false) String token){
+    public String appdatainfo(@RequestHeader(value = "User-Token", required = false) String token,@RequestHeader(value = "X-UT-DID", required = false) String utDid){
         String packAge = HttpContext.getRequest().getParameter("package");
         String appuserid = HttpContext.getRequest().getParameter("appuserid");
         String name = HttpContext.getRequest().getParameter("name");
         String model = HttpContext.getRequest().getParameter("ut_did");
+        if (StringUtils.isEmpty(model)){
+            model = utDid;
+        }
         //应用名称
         String virtualId = HttpContext.getRequest().getParameter("virtual_id");
         String application = HttpContext.getRequest().getParameter("an");
@@ -228,6 +231,20 @@ public class NewHuanYingV2Controller {
         map1.put("splashad", "huan90s");
         map1.put("exchangepoint", 1200);
         map1.put("showchina", 2);
+        map.put("data",map1);
+        map.put("message", "ok");
+        map.put("code", 0);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
+    //1.2.9版本更新
+    @RequestMapping("/now")
+    @ResponseBody
+    public String now(){
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("now", new Date().getTime());
         map.put("data",map1);
         map.put("message", "ok");
         map.put("code", 0);

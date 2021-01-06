@@ -65,6 +65,17 @@ public class DictTypeController extends BaseController {
     }
 
     /**
+     * 复制页面
+     *
+     * @author stylefeng
+     * @Date 2019-03-13
+     */
+    @RequestMapping("/copy")
+    public String copy() {
+        return PREFIX + "/dictType_copy.html";
+    }
+
+    /**
      * 新增接口
      *
      * @author stylefeng
@@ -87,6 +98,19 @@ public class DictTypeController extends BaseController {
     @ResponseBody
     public ResponseData editItem(DictTypeParam dictTypeParam) {
         this.dictTypeService.update(dictTypeParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 复制接口
+     *
+     * @author stylefeng
+     * @Date 2019-03-13
+     */
+    @RequestMapping("/copyItem")
+    @ResponseBody
+    public ResponseData copyItem(DictTypeParam dictTypeParam) {
+        this.dictTypeService.copy(dictTypeParam);
         return ResponseData.success();
     }
 

@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p></p>
@@ -100,7 +97,13 @@ public class NewHuanYingV4Controller {
         }
         Map<String, Object> map = new HashMap<>();
         if ("com.alibaba.android.rimet".equals(app_pkg)){
-            List<Dict> dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
+            List<Dict> dicts = new ArrayList<>();
+            if (appversioncode.equals("129")){
+                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
+            }else {
+                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
+            }
+
             boolean isChu = false;
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
