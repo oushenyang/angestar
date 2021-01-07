@@ -121,9 +121,9 @@ public class AESCBCUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "xUvUKsseUguS/EIHVaqRv9WQkGaNmBxyKNoWPSofgR84xC7JDb2aIv98T1em0KST419fWB9ms+Fg059cuN7++E9w0FcxYFkeyQSns0ssjKmTzuhlqXHSdpCGv8Teqnl5Pq+Uu8q3vT+6cmW+GnS7+tXQh8lSS99tYJjJu/DyHy8pJNTri8DdIjovvTOY5yY5/mUlZt1qym4MFor51cRpgejOn7YguaMW3H+j6rLCqwjyd9ImAuNlmB5iI4Pqc3i4GBrU1EFatkREvpMLH/BreZ/BjiWL6qctASOyI4Ad9Tr8EQxASuDp+HuwPtEYV9PO9nln8ZTBBh5wCCArz0hwlcWCzQYTqArVDvYuqgh+uOZFBP23h5natRo0mnx7113dAbKNjKi1Iau5go4RJK1izTiQpjaTJNNqmFmUGLZK+qKk7YAjKEvH+wcTJFaTLPrioNn90BNOYUtf8RxAU9qkbBno62DtPEcCXdzF406AgHzZnAmzCD7syElh5ufErVRaKuTdyjoCC/mC5fc9K2kIgnkxDjcaR9o6lVEy0Xgyo9pb7MN1kCfEdetoPE3QzgSKV/O2Mez2eCNJ5SK8VfH7FiYrP4wb68UbwtZzY8jmr9sZb911McGk8VxURIusKH8B64dnZpxZILrpmwya9uzBBtXmNuRJ+uhVInMFKLIzdXW5BrMu55BWfywuAtkUEb1I";
+        String str = "Fk0ohGl0x899L61axE/40qcMSsKy6Xjwj5EaPOY4trx5qJLUIAHKt2hbY8/dFWqw+kGngOCNQouBLlr301OlE0nqwVHGC4xi8Yd9N9Ipcvsv5bdhuQplIoDsGpF8MIIjOz9lfz2zxM40l/tRYCOJ29e3A1SRdsySNk1ru+38jIY648N55N2sqPYxEJbqlTwL47WxxwWZNeweLiooJdvL+xfBOoLQZa+4TyVo/OobHclLJICeaJ2yO9LvEUpMVG4zRIp30P6yP0JEsTEnqQVwG1neTAkOwk7y6usNsjiYVU4SYfydRApU7qdZsfLwVXRUd8d1Uyy0u87EgpMPVv0lLJ9ZzThYhLkS6+NPlE4SyIhuFHmkaf1qV2EEttP/6bxPbHPH80Ed457sb3uXlIeOXT1aip0bDm/+1Q27hi/DWaH2OQQQ+1rlO9ZPjmptArpWMBrR0NexlUcTzPW3Z+8WygwUF96RNR8QP+TvbUe24cmpt72NFQziFVU8QJY+EI5uCn0/xukbgSNdDGiKWJClNl9SoNpwNpQ8879QF0YeCnsWOtI4xb68WqAwXASGOlx0V9SfCUMeKp55l4JLf3Ti8gBIjoH19VxkyimjtdhB0CAQ+CfXc3o7yGCi8SA6kNPvFtDNZkrphWWTl5w45HYYIe+nT0UEslygAXx+FfDAPdXHEbc8iwJg3eNZ5FgpIy4P";
         //必须为16位
-        String key = "3738400000000000";
+        String key = "0b31c497990cc6ee";
         //生成加密密钥
         String key2 = byte2hex(key.getBytes());
         System.out.println(key2);

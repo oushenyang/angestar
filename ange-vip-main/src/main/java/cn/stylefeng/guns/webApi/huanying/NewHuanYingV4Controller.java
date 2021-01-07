@@ -4,10 +4,13 @@ import cn.hutool.core.io.file.FileReader;
 import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.util.AESECBUtil;
 import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
+import cn.stylefeng.guns.webApi.huanying.model.result.AppTokenResult;
 import cn.stylefeng.roses.core.util.HttpContext;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +110,12 @@ public class NewHuanYingV4Controller {
             boolean isChu = false;
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
-                    map.put("data", dict.getCode());
+                    if (appversioncode.equals("129")){
+                        AppTokenResult appTokenResult = new AppTokenResult("Abandoned",dict.getSort(),dict.getCode(),System.currentTimeMillis());
+                        map.put("data", AESECBUtil.Encrypt(JSON.toJSONString(appTokenResult), "0b31c497990cc6ee"));
+                    }else {
+                        map.put("data", dict.getCode());
+                    }
                     isChu = true;
                     break;
                 }

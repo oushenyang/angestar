@@ -179,9 +179,9 @@ public class DingWeiMaoController {
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
-            }
+//            if (StringUtils.isNotEmpty(application)){
+//                applicationName = CustomEnAndDe.deCrypto(application);
+//            }
             sign = deSign.substring(0,deSign.length()-8);
         }
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
@@ -257,9 +257,9 @@ public class DingWeiMaoController {
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
-            }
+//            if (StringUtils.isNotEmpty(application)){
+//                applicationName = CustomEnAndDe.deCrypto(application);
+//            }
             sign = deSign.substring(0,deSign.length()-8);
         }
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");

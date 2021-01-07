@@ -45,7 +45,7 @@ public class NewHuanYingV1Controller {
     public String appkey(){
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> map1 = new HashMap<>();
-        map1.put("appkey", "0b425565963e4a8f");
+        map1.put("appkey", "0b31c497990cc6ee");
         map.put("data",map1);
         map.put("message", "ok");
         map.put("code", 0);

@@ -6,12 +6,14 @@ import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
-import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
+import cn.stylefeng.guns.sys.core.util.*;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
+import cn.stylefeng.guns.webApi.huanying.model.result.GPSHyResult;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
 import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
 import cn.stylefeng.roses.core.util.HttpContext;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +88,19 @@ public class NewHuanYingV3Controller {
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
         Map<String, Object> map = new HashMap<>();
         if (appversioncode.equals("129")){
-            map.put("data", "I1tNlF6QauI+wyM6yJ37N0ZpgY1P+3RAr0XAfDZ5TnFU5Tl+PkcyEY1FdZjafD5nH0etFxacHpaBLEiPSf6DcEGVq4zC7CVEkx6iO1FnzM9P/kTTXVJJm6VQ5ZLT88uNRZn//F5VhIcQaFIiPzKJopk1XcN76geXoDdSVKYaUMZiVtCjLgzLfifeFcVWjpRwTn2C2eK8GlrC/ahMeaFo2FXCG2pWsnEtTx+7bMVho1iavEDQ8855qZolu7ZAN6BIXsui0JwaQbco5DlegOOY0vQv4jKZ7urBOPzXwuSe9rL1imfaHEiXcWjf5Bgo+hM/TOmuKpZzEMB/BhDWAXjSBnuYneLQv0EtBENuPGHrcgsBGXZ8pJXR4tRXlhsBV2ZWYNVfa1jCutlHH4kwSIbg9+JLjVdOwDC/CvaeKf2Ra4cC5o89b3oVnu3qQ0louPYnZnZzCX6CAOsI2T9vN+XPnT1EO8ZlWdROpgrSFIRBbsm6L970vyl02H8tz6mCI9BbYRhp8u0taUrF31svJ8RHnJjBlpPnGqtPIEti2Im3BnTdxteszTMvBZRfA2x9IK8EafZyFmkxr3pEIC7gpPdwlbIeQt3Gpx1q9KMi4iQMsbi5wAMOJPWrBf3jSOFVsSJP7ypMVWnxGhubz1M/+y3paNp7Tiru0wK4Sg3F8NlAIyNX42BoEjjv4LjUrZIrX3u+42SXxOeNa7lp6+0e4Lh4lsTxVzxR43NGOtDP8fclE22cfdhQVQPg2I0l+RaNFdifrtx8tpnNnu3CmNB+Gw/426CX/sCawoOZqVIoiwVE1PmIN0zch44gccCq/Ss2x4NqVBakZ/xSb0IHob8efqvLFnLb8CjbZ18/RrcJg+v8ukhYedxqtPky1XvfgD3zYIQBCacO2uxdk2Rnac2FIfrSZiAns1z7UARN58/y2bDQgv1pQEQawzqWw8LfgxXXDD8d8mCMAWgFhf0AV8Jx6PwLag==");
+            map.put("data", "NUz9cKV14+jz7sdajasRsTiztQ1MkDkSPnBmPTsSp8P2fqlKaqtYlXEHs8swgKb2MERNcxpBJkP9" +
+                    "VvGnl+tHSugjkpYvjZCRdoZxWPeXhQ+b+SZXvAvibESFu7FQ895LT4v6leZ+eX6ZUSAHmCL0rSYu" +
+                    "Hcj4W+Gm1UDpmwsWiN2q1hX+KpYyrSeJ2Qw188s8fpzulDYM626/xMLM/ilGd47HwyIoDft366SN" +
+                    "12Zb6sZCMMhXggrmGBwpJHV0rxOZq0PJqhnrWpIkGhvkvjkVfGuj+H+85fYVn6z1krak+rGb/kxD" +
+                    "KOgIhA5yGzmB1aMWa4ddBr2y+IAxYUzBvKC9Po4uQDRjBbrZG++D4KIBSwYcbcTey1VFTCBJbw/U" +
+                    "53Yj7N9ZBmKwSZ9ajcF0gxjluDPzgj3gf4R1Ps89KH3dtNPiOnxiMMc3RBQWo167r1sO7xatOzOW" +
+                    "orEIOdIzHWBr9LL4WbhKJUrtgpyJurA9OaUszaBr4YItiLH8l3uR5lbOlnaJHaITo9hlALCn9q2H" +
+                    "9rfVHVqwZo1Emr6+9JkPgvhHNatPJbg8BTqEu21lD+RLCvGhJ9bmEVkceKc3qGvk0IuOq+8oQNkC" +
+                    "I+6MAw78nNTr8d7SdE2fiENpV1E0+qs8lvrmGZC4+T6r4tWoQ5Ns9pe/NjMPtHLroBxJHkXWc3Fn" +
+                    "w0F5YPh1Oi4uE0SDbNVTGrADyLFTKP8y/GT31UkrwnPNIcA00Bdk9AysR3+9Dth14BFtVDf/RAro" +
+                    "1+cG6rgC+tJMFFPyjL/D2aFMT7VK5J6h8DSIyaMKuuuaKcN0D8jCNQ/C0wu18Tah12ShyORTCjtz" +
+                    "W5Ko1AhnUliZ4s3bzW7q5eI+HqN0cUOanflu2jCnT/tvslNru4J5c0DaLfCpUlxuaod4mHJH19yB" +
+                    "Beda3MnLDr9Tsx6VVENLio3EjxNaPWy3Ja5dJQhFy3SlEx7qNSYgfwiXKSAqWVtS0EnpJg==");
         }else {
             map.put("data","h9M9kQsr/d+/mG43m8PfkKl1eJGN4Jrr2/XvSj2zVs/aZpXPZgg73oJcUjlpK33BVIbdFMBuuRMr82QrX3uRBvXozAZVWs2k95uAzFGJmFNlbYXQTvhr+vzOtYaWOW0FOFrNgHV0JZDO28Fmcb8DY+l9n44wZN7syIaHl/SDFA58FBGMVZVTm9jM+ApjKInmchgxljBCEOcxyo7YsvjMFT1ILzrgMzvoaaIMuqP7B4NpPp4x2Hbf2tbKNT55CvLuL8E4ctWmIDHNmzefT7gvWgFEvQImldioI4UWdxaBcwV4Q8vv4/xv0aMBHXyuvkW1yg83i01pCEBaUDszCm7uq4ptk0GD1grdysRgW+NWsPIXSLSsmhvQTkJzMUW7jpJZN35gzerV9kUxMMSaJunU/fzGnfR1iJ/VGBw00HS0kiJoX3cZEoN15VBwYbvIIcaKepeyR9SCiVXQLGPOdxbqOEaAdbwQiMbb1l5ZELRyaeeGTirbVVlVxMnk8Zi3j91rs5Jfjka9dLQIcI3sc5vFpt57vQOX1hffOLq7U1t5FxNq7S/qIom1/tqXr03cvMLtCYjayE8CFxiplfNk2EdfkLHhvFaSLJwei6MGAWG3meGQs8TUUb3P1UUAEOWALAoFEPV0YRIAP7Cs86hapIKjy1W6NE4NZoj2xaLKs2oobUHzMKEJ02GHCXwLT7z9EJ6dTdtnJ9tht4OnUIm+tS5GLPAIX7zjxhnKnbKP3A4v7JZ6QIhUjDCAJfnWuDjtTqwXhg31f6XtRoyarn5LyiXDZFy824TweySPrSCk9NnwoteJQ/J1gtKcQgSlgqA1bcEIV3vLzd1gpeHd4zZJF0esIamdzMumIEBYCwmuSvpgRFt+siLJ6kMdKi3f90oRu4mILVWGG7mVAdWboraKa+qIgKz9Xfuo6ajmMEAB+lzkufgCXRkg+sZsWDhDkuQrRJWYw1G07puNpN0G/+gM0nWwCQ==");
         }
@@ -200,6 +215,23 @@ public class NewHuanYingV3Controller {
         map1.put("vip8", "-29.9");
         map1.put("vip10", "-89.9");
         map.put("data",map1);
+        map.put("message", "ok");
+        map.put("code", 0);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
+    //1.2.9版本新增
+    @RequestMapping("/regps")
+    @ResponseBody
+    public String regps(){
+        double lat = Double.parseDouble(HttpContext.getRequest().getParameter("lat"));
+        double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
+        GPS aps = GPSConverterUtils.Bd09ToGcj02(lat,lon);
+        GPSHyResult gpsHyResult = new GPSHyResult(aps.getLatitude(),aps.getLongitude());
+        String aaa = AESECBUtil.Encrypt(JSON.toJSONString(gpsHyResult), "0b31c497990cc6ee");
+        Map<String, Object> map = new HashMap<>();
+        map.put("data",aaa);
         map.put("message", "ok");
         map.put("code", 0);
         JSONObject json = new JSONObject(map);
