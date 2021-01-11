@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -238,6 +239,48 @@ public class NewHuanYingV3Controller {
         map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
+    }
+    //1.2.9版本新增
+    @DeleteMapping("/appdatainfo")
+    @ResponseBody
+    public String deleteAppdatainfo(@RequestHeader(value = "User-Token", required = false) String token,@RequestHeader(value = "X-UT-DID", required = false) String utDid){
+        String packAge = HttpContext.getRequest().getParameter("package");
+//        Integer is64 = Integer.valueOf(HttpContext.getRequest().getParameter("is_64"));
+        String appuserid = HttpContext.getRequest().getParameter("appuserid");
+        String name = HttpContext.getRequest().getParameter("name");
+        String model = HttpContext.getRequest().getParameter("ut_did");
+        if (StringUtils.isEmpty(model)){
+            model = utDid;
+        }
+        //应用名称
+        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
+        String sign;
+        String applicationName = null;
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
+            return null;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
+            sign = deSign.substring(0,deSign.length()-8);
+        }
+        QueryWrapper<HyApp> wrapper = new QueryWrapper<>();
+        wrapper.eq("ut_did", model);
+        wrapper.eq("appuserid", appuserid);
+        wrapper.eq("package", packAge);
+        wrapper.eq("app_code", virtualId);
+        wrapper.eq("sign", sign);
+        if(StringUtils.isNotEmpty(applicationName)){
+            wrapper.eq("application_name", applicationName);
+        }
+        boolean su = hyAppService.remove(wrapper);
+        redisUtil.del(RedisType.HUANYIN.getCode() + model +"-"+ sign +"-"+ virtualId);
+//        if (su){
+            String a = "{\"message\": \"ok\", \"code\": 0, \"data\": [\"delete %s success\", \""+packAge+"\"]}";
+           return a;
+//        }
     }
 
     //1.2.9版本新增
