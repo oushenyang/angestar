@@ -27,7 +27,10 @@ public class HyAppResult implements Serializable {
 
     private String name;
 
+    private String username;
+
     private String packAge;
+    private String packName;
 
     private Integer fakedata;
 

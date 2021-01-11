@@ -27,10 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p></p>
@@ -227,13 +224,18 @@ public class NewHuanYingV3Controller {
     public String regps(){
         double lat = Double.parseDouble(HttpContext.getRequest().getParameter("lat"));
         double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
-        GPS aps = GPSConverterUtils.Bd09ToGcj02(lat,lon);
+        GPS aps = GPSAllUtils.g(lat,lon);
         GPSHyResult gpsHyResult = new GPSHyResult(aps.getLatitude(),aps.getLongitude());
-        String aaa = AESECBUtil.Encrypt(JSON.toJSONString(gpsHyResult), "0b31c497990cc6ee");
+        List<GPSHyResult> gpsHyResultList = new ArrayList<>();
+        gpsHyResultList.add(gpsHyResult);
+        String a = JSON.toJSONString(gpsHyResultList);
+        String aaa = AESECBUtil.Encrypt(a, "0b31c497990cc6ee");
+        assert aaa != null;
+        aaa = aaa.replaceAll("\r|\n", "");
         Map<String, Object> map = new HashMap<>();
         map.put("data",aaa);
-        map.put("message", "ok");
-        map.put("code", 0);
+        map.put("message", "success");
+        map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
@@ -243,6 +245,7 @@ public class NewHuanYingV3Controller {
     @ResponseBody
     public String appdatainfo(@RequestHeader(value = "User-Token", required = false) String token,@RequestHeader(value = "X-UT-DID", required = false) String utDid){
         String packAge = HttpContext.getRequest().getParameter("package");
+//        Integer is64 = Integer.valueOf(HttpContext.getRequest().getParameter("is_64"));
         String appuserid = HttpContext.getRequest().getParameter("appuserid");
         String name = HttpContext.getRequest().getParameter("name");
         String model = HttpContext.getRequest().getParameter("ut_did");
@@ -331,6 +334,16 @@ public class NewHuanYingV3Controller {
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+            }
+            if (packAge.equals("com.tencent.mm")){
+//                if (is64==0){
+                    map1.put("appinfoid", "https://dldir1.qq.com/weixin/android/weixin7022android1820.apk");
+//                }
+            }
+            if (packAge.equals("com.ss.android.ugc.aweme")){
+//                if (is64==0){
+                    map1.put("appinfoid", "https://www-public-static.oss-cn-beijing.aliyuncs.com/douyin.apk");
+//                }
             }
             map1.put("package",packAge);
             map1.put("packName",name);

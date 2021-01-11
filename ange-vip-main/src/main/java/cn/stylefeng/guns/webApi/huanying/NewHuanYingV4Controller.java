@@ -9,6 +9,7 @@ import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.model.result.AppTokenResult;
+import cn.stylefeng.guns.webApi.huanying.model.result.AppUrlResult;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -53,6 +54,33 @@ public class NewHuanYingV4Controller {
         map.put("message", "success");
         map.put("code", 200);
         map.put("data",result);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
+    @RequestMapping("/appurl")
+    @ResponseBody
+    public String appurl(){
+        String pkgId = HttpContext.getRequest().getParameter("pkgid");
+        Map<String, Object> map = new HashMap<>();
+        //微信
+        if ("E19156B0683CD93E".equals(pkgId)){
+            AppUrlResult appUrlResult = new AppUrlResult("e19156b0683cd93e","https://dldir1.qq.com/weixin/android/weixin7022android1820.apk",1);
+            String aaa = AESECBUtil.Encrypt(JSON.toJSONString(appUrlResult), "0b31c497990cc6ee");
+            assert aaa != null;
+            aaa = aaa.replaceAll("\r|\n", "");
+            map.put("data",aaa);
+        }
+        //抖音
+        if ("27B851B548BA47A9".equals(pkgId)){
+            AppUrlResult appUrlResult = new AppUrlResult("27b851b548ba47a9","https://www-public-static.oss-cn-beijing.aliyuncs.com/douyin.apk",2);
+            String aaa = AESECBUtil.Encrypt(JSON.toJSONString(appUrlResult), "0b31c497990cc6ee");
+            assert aaa != null;
+            aaa = aaa.replaceAll("\r|\n", "");
+            map.put("data",aaa);
+        }
+        map.put("message", "success");
+        map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
@@ -112,7 +140,10 @@ public class NewHuanYingV4Controller {
                 if (dict.getName().equals(app_version)){
                     if (appversioncode.equals("129")){
                         AppTokenResult appTokenResult = new AppTokenResult("Abandoned",dict.getSort(),dict.getCode(),System.currentTimeMillis());
-                        map.put("data", AESECBUtil.Encrypt(JSON.toJSONString(appTokenResult), "0b31c497990cc6ee"));
+                        String aaa = AESECBUtil.Encrypt(JSON.toJSONString(appTokenResult), "0b31c497990cc6ee");
+                        assert aaa != null;
+                        aaa = aaa.replaceAll("\r|\n", "");
+                        map.put("data", aaa);
                     }else {
                         map.put("data", dict.getCode());
                     }
