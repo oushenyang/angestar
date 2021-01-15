@@ -139,7 +139,11 @@ public class NewHuanYingV4Controller {
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
                     if (appversioncode.equals("129")){
-                        AppTokenResult appTokenResult = new AppTokenResult("Abandoned",dict.getSort(),dict.getCode(),System.currentTimeMillis());
+                        String appkey = dict.getDescription();
+                        if (StringUtils.isEmpty(appkey)){
+                            appkey = "Abandoned";
+                        }
+                        AppTokenResult appTokenResult = new AppTokenResult(appkey,dict.getSort(),dict.getCode(),System.currentTimeMillis());
                         String aaa = AESECBUtil.Encrypt(JSON.toJSONString(appTokenResult), "0b31c497990cc6ee");
                         assert aaa != null;
                         aaa = aaa.replaceAll("\r|\n", "");

@@ -39,7 +39,6 @@
     </sql>
     <select id="findListBySpec" resultType="java.util.Map">
         select
-        (select COUNT(distinct ph.ut_did) from pj_hy_app ph where ph.sign = aap.sign AND ph.app_name = aap.app_name) AS num,
         <include refid="Base_Column_List"/>
         from ag_app_power aap
         <where>
@@ -70,6 +69,22 @@
             </if>
             <if test="appCode != null and appCode != ''">
                 and custom_data = #{appCode}
+            </if>
+        </where>
+    </select>
+    <select id="findUserNum" resultType="java.lang.Integer">
+        select
+        COUNT(distinct ph.ut_did)
+        from pj_hy_app ph
+        <where>
+            <if test="sign != null and sign != ''">
+                and ph.sign = #{sign}
+            </if>
+            <if test="applicationName != null and applicationName != ''">
+                and ph.application_name = #{applicationName}
+            </if>
+            <if test="appName != null and appName != ''">
+                and ph.app_name = #{appName}
             </if>
         </where>
     </select>

@@ -108,7 +108,12 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
 
     @Override
     public List<Map<String, Object>> findListBySpec(Page page, AppPowerParam param){
-        return baseMapper.findListBySpec(page,param);
+         List<Map<String, Object>> list = baseMapper.findListBySpec(page,param);
+         for (Map<String, Object> map : list){
+             Integer num = baseMapper.findUserNum((String)map.get("sign"),(String)map.get("appName"),(String)map.get("applicationName"));
+             map.put("num",num);
+         }
+        return list;
     }
 
     @Override

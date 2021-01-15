@@ -121,6 +121,12 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
             throw new ServiceException(BizExceptionEnum.DICT_EXISTED);
         }
 
+        //删除缓存
+        DictType dictType = dictTypeService.getById(param.getDictTypeId());
+        if (ObjectUtil.isNotNull(dictType)){
+            redisUtil.del("dict" + dictType.getCode());
+        }
+
         //设置pids
         dictSetPids(newEntity);
 
