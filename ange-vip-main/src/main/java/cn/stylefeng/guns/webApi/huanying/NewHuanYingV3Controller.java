@@ -382,14 +382,14 @@ public class NewHuanYingV3Controller {
 //                if (is64==0){
                     map1.put("appinfoid", "https://dldir1.qq.com/weixin/android/weixin7022android1820.apk");
 //                }
-            }
-            if (packAge.equals("com.ss.android.ugc.aweme")){
+            }else if (packAge.equals("com.ss.android.ugc.aweme")){
 //                if (is64==0){
                     map1.put("appinfoid", "https://www-public-static.oss-cn-beijing.aliyuncs.com/douyin.apk");
 //                }
+            }else {
+                map1.put("packName",name);
             }
             map1.put("package",packAge);
-            map1.put("packName",name);
             map1.put("fakedata", 0);
             map1.put("appuserid", appuserid);
             map.put("data",map1);
