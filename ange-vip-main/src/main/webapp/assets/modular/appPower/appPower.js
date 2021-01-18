@@ -38,6 +38,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     AppPower.search = function () {
         var queryData = {};
         queryData['appCode'] = $("#appCode").val();
+        queryData['appName'] = $("#appName").val();
         table.reload(AppPower.tableId, {where: queryData});
     };
 

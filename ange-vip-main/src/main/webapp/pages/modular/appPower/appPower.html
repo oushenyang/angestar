@@ -13,14 +13,15 @@
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <select name="appCode" id="appCode" lay-search="" lay-verify="required" required>
+                                    <option value="">全部</option>
                                     @for(appInfo in appPowerTypeResults) {
                                     <option value="${appInfo.appCode}">${appInfo.appName}</option>
                                     @}
                                 </select>
                             </div>
-<!--                            <div class="layui-inline">-->
-<!--                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>-->
-<!--                            </div>-->
+                            <div class="layui-inline">
+                                <input id="appName" class="layui-input" type="text" placeholder="应用名"/>
+                            </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
 <!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->

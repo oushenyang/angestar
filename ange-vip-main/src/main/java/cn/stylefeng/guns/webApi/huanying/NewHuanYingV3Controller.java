@@ -257,7 +257,7 @@ public class NewHuanYingV3Controller {
         String application = HttpContext.getRequest().getParameter("an");
         String sign;
         String applicationName = null;
-        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)||StringUtils.isEmpty(application)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);

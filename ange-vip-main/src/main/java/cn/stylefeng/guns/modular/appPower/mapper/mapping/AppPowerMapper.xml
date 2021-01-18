@@ -48,6 +48,9 @@
             <if test="param.appCode != null and param.appCode != ''">
                 and aap.app_type_code = #{param.appCode}
             </if>
+            <if test="param.appName != null and param.appName != ''">
+                and aap.app_name like CONCAT('%',#{param.appName},'%')
+            </if>
         </where>
         order by aap.create_time DESC
     </select>
