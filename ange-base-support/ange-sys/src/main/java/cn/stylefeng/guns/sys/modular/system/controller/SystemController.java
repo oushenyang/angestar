@@ -77,7 +77,7 @@ public class SystemController extends BaseController {
      */
     @RequestMapping("/console")
     public String console() {
-        return "/modular/frame/console.html";
+        return "/modular/frame/console3.html";
     }
 
     /**

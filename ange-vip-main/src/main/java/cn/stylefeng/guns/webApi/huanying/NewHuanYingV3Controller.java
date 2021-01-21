@@ -62,6 +62,9 @@ public class NewHuanYingV3Controller {
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         String sign;
         String applicationName = null;
+        if (appversioncode.equals("129")&&StringUtils.isEmpty(application)){
+            return null;
+        }
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
