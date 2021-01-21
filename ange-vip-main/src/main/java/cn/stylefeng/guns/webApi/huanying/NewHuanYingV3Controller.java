@@ -63,6 +63,9 @@ public class NewHuanYingV3Controller {
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         String sign;
         String applicationName = null;
+        if (appversioncode.equals("129")&&StringUtils.isEmpty(application)){
+            return null;
+        }
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
@@ -300,7 +303,7 @@ public class NewHuanYingV3Controller {
         String application = HttpContext.getRequest().getParameter("an");
         String sign;
         String applicationName = null;
-        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)||StringUtils.isEmpty(application)){
             return null;
         }else {
             String deSign = CustomEnAndDe.deCrypto(token);
