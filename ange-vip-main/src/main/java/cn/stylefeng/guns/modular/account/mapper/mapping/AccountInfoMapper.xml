@@ -75,5 +75,11 @@
         </where>
         order by aci.create_time DESC
     </select>
+    <select id="accountNum" resultType="java.lang.Integer">
+        select
+        count(account_id)
+        from ag_account_info
+        where create_user = #{userId}
+    </select>
 
 </mapper>

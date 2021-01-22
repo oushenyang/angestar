@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.stylefeng.guns.sys.modular.system.controller;
+package cn.stylefeng.guns.modular.system;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.guns.base.oshi.SystemHardwareInfo;
+import cn.stylefeng.guns.modular.account.mapper.AccountInfoMapper;
+import cn.stylefeng.guns.modular.account.service.AccountInfoService;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.core.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.sys.core.log.LogObjectHolder;
 import cn.stylefeng.guns.sys.core.util.DefaultImages;
+import cn.stylefeng.guns.sys.core.util.SpringUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Notice;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.model.UploadResult;
@@ -37,6 +43,7 @@ import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +76,18 @@ public class SystemController extends BaseController {
     @Autowired
     private NoticeService noticeService;
 
+    @Autowired
+    private AppInfoService appInfoService;
+
+    @Autowired
+    private CardInfoService cardInfoService;
+
+    @Autowired
+    private AccountInfoService accountInfoService;
+
+    @Autowired
+    private AgentAppService agentAppService;
+
     /**
      * 控制台页面
      *
@@ -76,7 +95,23 @@ public class SystemController extends BaseController {
      * @Date 2018/12/24 22:43
      */
     @RequestMapping("/console")
-    public String console() {
+    public String console(Model model) {
+        Long userId = LoginContextHolder.getContext().getUserId();
+        Integer appNum = appInfoService.appNum(userId);
+        Integer allCardNum = cardInfoService.allCardNum(userId);
+        Integer expireCardNum = cardInfoService.expireCardNum(userId);
+        Integer accountNum = accountInfoService.accountNum(userId);
+        Integer agentNum = agentAppService.agentNum(LoginContextHolder.getContext().getUserId());
+        User user = this.userService.getById(userId);
+        model.addAttribute("appNum", appNum);
+        model.addAttribute("allCardNum", allCardNum);
+        model.addAttribute("expireCardNum", expireCardNum);
+        model.addAttribute("accountNum", accountNum);
+        model.addAttribute("agentNum", agentNum);
+        model.addAllAttributes(BeanUtil.beanToMap(user));
+        model.addAttribute("roleName", ConstantFactory.me().getRoleName(user.getRoleId()));
+        model.addAttribute("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
+        model.addAttribute("avatar", DefaultImages.defaultAvatarUrl());
         return "/modular/frame/console3.html";
     }
 

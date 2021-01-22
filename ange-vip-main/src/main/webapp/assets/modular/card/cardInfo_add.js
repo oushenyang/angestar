@@ -29,11 +29,12 @@ var CardInfoInfoDlg = {
     }
 };
 
-layui.use(['form', 'formX','admin', 'ax'], function () {
+layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var notice = layui.notice;
     //表单初始赋值
     layui.form.val('cardInfoForm', {
         "addNum":1
@@ -102,26 +103,36 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off'; //true 值为on,false 值给赋off
         var cardTypeId = $("[name='cardTypeId']").val();
         data.field.cardTypeName = $("[name='cardTypeId']").children("[value=" + cardTypeId + "]").text();
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (result) {
             Feng.success("添加成功！");
-            console.log(JSON.stringify(data.data));
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
             //关掉对话框
             admin.closeThisDialog();
             let cards = "";
-            for (let i = 0; i < data.data.length; i++) {
-                cards += data.data[i] + ",";
+            for (let i = 0; i < result.data.length; i++) {
+                cards += result.data[i] + ",";
             }
-            top.layui.admin.open({
+           top.layui.admin.open({
                 type: 2,
                 title: '结果导出',
                 area: '600px',
                 content: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards
             });
             return false;
-        }, function (data) {
-            Feng.error("添加失败！" + data.responseJSON.message)
+        }, function (result) {
+            if (result.responseJSON.code==420){
+                notice.msg("添加失败！" + result.responseJSON.message + "，请维护该卡密价格信息！", {icon: 2});
+                layui.admin.open({
+                    type: 2,
+                    title: data.field.cardTypeName,
+                    area: '500px',
+                    content: Feng.ctxPath + '/cardInfo/addPriceEdit?cardTypeId=' + cardTypeId
+                });
+                return false;
+            }else {
+                notice.msg("添加失败!" + result.responseJSON.message + "!", {icon: 2});
+            }
         });
         ajax.set(data.field);
         ajax.start();

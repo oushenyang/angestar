@@ -41,4 +41,13 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
      * @Date 2019-07-24
      */
     List<AppInfoParam> getAgentAppInfoList(@Param("agentUserId") Long agentUserId);
+
+    /**
+     * 获取用户的应用数量
+     *
+     * @param userId 用户id
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    Integer appNum(@Param("userId") Long userId);
 }

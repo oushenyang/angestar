@@ -35,4 +35,12 @@ public interface AgentAppMapper extends BaseMapper<AgentApp> {
      * @return
      */
     AgentAppResult getDetailById(@Param("agentAppId") Long agentAppId);
+
+    /**
+     * 获取代理数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer agentNum(@Param("userId") Long userId);
 }

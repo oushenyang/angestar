@@ -95,4 +95,12 @@ public interface AppInfoService extends IService<AppInfo> {
      * @return 应用信息
      */
     AppInfoApi getAppInfoByRedis(String callCode);
+
+    /**
+     * 获取用户的应用数量
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    Integer appNum(Long userId);
 }

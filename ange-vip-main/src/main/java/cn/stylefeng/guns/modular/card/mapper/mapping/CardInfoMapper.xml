@@ -307,5 +307,11 @@
         where cci.app_id = 0 and cci.card_code = #{singleCode}
         limit 1
     </select>
+    <select id="allCardNum" resultType="java.lang.Integer">
+        select count(card_id) from ag_card_info where create_user = #{userId}
+    </select>
+    <select id="expireCardNum" resultType="java.lang.Integer">
+         select count(card_id) from ag_card_info where card_status = 2 and create_user = #{userId}
+    </select>
 
 </mapper>

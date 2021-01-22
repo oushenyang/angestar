@@ -138,6 +138,7 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 卡类相关的异常
      */
     CARD_TYPE_NAME_EXISTED(400, "卡类名称已经存在"),
+    CARD_TYPE_PRICE_NULL(420, "卡类价格为空"),
 
     /**
      * 代理审核相关异常

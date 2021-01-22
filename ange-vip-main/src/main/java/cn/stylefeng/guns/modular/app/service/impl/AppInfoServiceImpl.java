@@ -194,4 +194,16 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         }
         return appInfoApi;
     }
+
+    /**
+     * 获取用户的应用数量
+     *
+     * @param userId 用户id
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @Override
+    public Integer appNum(Long userId) {
+        return baseMapper.appNum(userId);
+    }
 }

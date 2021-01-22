@@ -26,4 +26,11 @@ public interface AccountInfoMapper extends BaseMapper<AccountInfo> {
      * @return 结果
      */
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AccountInfoParam param);
+
+    /**
+     * 获取账号数量
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer accountNum(@Param("userId") Long userId);
 }

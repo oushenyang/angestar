@@ -41,4 +41,20 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
      * @return 卡密信息
      */
     CardInfoApi getCardInfoApiByAppIdAndCardCode(@Param("appId") Long appId, @Param("singleCode") String singleCode);
+
+    /**
+     * 获取该用户所有卡密数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer allCardNum(@Param("userId") Long userId);
+
+    /**
+     * 获取该用户所有过期卡密数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer expireCardNum(Long userId);
 }

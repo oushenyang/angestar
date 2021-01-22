@@ -256,6 +256,17 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         return LayuiPageFactory.createPageInfo(page);
     }
 
+    /**
+     * 获取代理数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    @Override
+    public Integer agentNum(Long userId) {
+        return baseMapper.agentNum(userId);
+    }
+
     private Serializable getKey(AgentAppParam param) {
         return param.getAgentAppId();
     }

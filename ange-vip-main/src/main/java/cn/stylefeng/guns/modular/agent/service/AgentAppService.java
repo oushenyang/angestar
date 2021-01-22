@@ -110,4 +110,10 @@ public interface AgentAppService extends IService<AgentApp> {
      */
      LayuiPageInfo findPageBySpec(AgentAppParam param);
 
+    /**
+     * 获取代理数量
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer agentNum(Long userId);
 }
