@@ -186,7 +186,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         if (ObjectUtil.isNull(appInfoApi)){
             appInfoApi = baseMapper.findAppInfoApi(callCode);
             if (ObjectUtil.isNotNull(appInfoApi)){
-                redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.MONTH.getCode());
+                redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.WEEK.getCode());
             }else {
                 //接口错误
                 throw new SystemApiException(-1, "数据错误","",false);

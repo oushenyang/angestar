@@ -3,6 +3,7 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -73,6 +74,12 @@ public class CardLoginController {
         String sign = HttpContext.getRequest().getParameter(apiManage.getParameterSix());
         if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(edition)||StringUtils.isEmpty(mac)){
             throw new SystemApiException(-2, "必传参数存在空值","",false);
+        }
+        if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
+            String md5 = SecureUtil.md5(singleCode+edition+mac+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
+            if (!md5.equals(sign)){
+                throw new SystemApiException(-2, "签名不正确","",false);
+            }
         }
         if (appInfoApi.getCydiaFlag()==2){
             //应用已关闭

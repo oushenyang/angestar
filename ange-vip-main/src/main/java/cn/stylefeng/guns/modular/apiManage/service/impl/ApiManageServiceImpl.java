@@ -95,22 +95,15 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
      */
     @Override
     public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
-        ApiManageApi apiManageApi = new ApiManageApi();
         //是否存在该hash表
-        boolean isHave = redisUtil.hHasKey(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
-        if (isHave){
-             apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
-            if (ObjectUtil.isNull(apiManageApi)){
-                //接口错误
-                throw new SystemApiException(-1, "接口不正确","",false);
-            }
-        }else {
+        ApiManageApi apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
+        if (ObjectUtil.isNull(apiManageApi)) {
             //不存在则查询
-            apiManageApi = baseMapper.findApiManageApi(apiCode,callCode);
-            if (ObjectUtil.isNull(apiManageApi)){
-                throw new SystemApiException(-1, "接口不正确","",false);
-            }else {
-                redisUtil.hset(RedisType.API_MANAGE.getCode()+ callCode, apiCode, apiManageApi, RedisExpireTime.MONTH.getCode());
+            apiManageApi = baseMapper.findApiManageApi(apiCode, callCode);
+            if (ObjectUtil.isNull(apiManageApi)) {
+                throw new SystemApiException(-1, "接口不正确", "", false);
+            } else {
+                redisUtil.hset(RedisType.API_MANAGE.getCode() + callCode, apiCode, apiManageApi, RedisExpireTime.WEEK.getCode());
             }
         }
         return apiManageApi;
