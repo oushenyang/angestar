@@ -13,20 +13,22 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div class="layui-form toolbar layui-form-pane">
+
+                        @if(tool.isNotEmpty(type)){
+                        @if(type==1){
                         <div class="layui-form-item layui-inline">
                             <label class="layui-form-label">所属应用</label>
-                            @if(tool.isNotEmpty(type)){
-                            @if(type==1){
                             <div class="layui-inline">
                                 <select name="appId" class="selectApp" lay-search="" lay-filter="appId"><option value="">所属应用</option></select>
                             </div>
-                            @}
-                            @if(type==0){
-                            <input name="appId" value="0" type="hidden">
-                            @}
-                            @}
                         </div>
+                        @}
+                        @if(type==0){
+                        <input name="appId" value="0" type="hidden">
+                        @}
+                        @}
                         <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">卡密类型</label>
                             <div class="layui-inline">
                                 <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
                                     <option value="">卡密类型</option>
@@ -46,15 +48,24 @@
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">卡密</label>
                             <div class="layui-inline">
                                 <input id="cardCode" class="layui-input" type="text" placeholder="卡密"/>
                             </div>
+                        </div>
+                        <div class="layui-form-item layui-inline form-search-show-expand">
+                            <label class="layui-form-label">卡密状态</label>
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
-                                <!--                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>-->
-                                <!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
+                                <input id="cardStatus" class="layui-input" type="text" placeholder="卡密状态"/>
                             </div>
                         </div>
+                            <div class="layui-form-item layui-inline">
+                                <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
+                                    <a class="layui-btn form-search-expand" search-expand>
+                                        展开 <i class="layui-icon layui-icon-down"></i></a>
+                                </div>
+                            </div>
                     </div>
                     <table class="layui-table" id="cardInfoTable" lay-filter="cardInfoTable" lay-size="sm"></table>
                 </div>
