@@ -34,7 +34,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     ApiManage.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
-        table.reload(ApiManage.tableId, {where: queryData});
+        table.reload(ApiManage.tableId, {page:{curr:1},where: queryData});
     };
 
     /**

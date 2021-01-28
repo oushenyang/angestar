@@ -72,7 +72,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     SerialInfo.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
-        table.reload(SerialInfo.tableId, {where: queryData});
+        table.reload(SerialInfo.tableId, {page:{curr:1},where: queryData});
     };
 
     /**

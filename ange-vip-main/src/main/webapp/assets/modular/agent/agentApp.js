@@ -77,7 +77,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         var queryData = {};
         queryData['condition'] = $("#condition").val();
         queryData['type'] = Feng.getUrlParam("type");
-        table.reload(AgentApp.tableId, {where: queryData});
+        table.reload(AgentApp.tableId, {page:{curr:1},where: queryData});
     };
 
     /**

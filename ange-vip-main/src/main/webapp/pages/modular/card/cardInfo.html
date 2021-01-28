@@ -12,8 +12,9 @@
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
             <div class="layui-card">
                 <div class="layui-card-body">
-                    <div class="layui-form toolbar">
-                        <div class="layui-form-item">
+                    <div class="layui-form toolbar layui-form-pane">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">所属应用</label>
                             @if(tool.isNotEmpty(type)){
                             @if(type==1){
                             <div class="layui-inline">
@@ -24,6 +25,8 @@
                             <input name="appId" value="0" type="hidden">
                             @}
                             @}
+                        </div>
+                        <div class="layui-form-item layui-inline">
                             <div class="layui-inline">
                                 <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
                                     <option value="">卡密类型</option>
@@ -41,6 +44,8 @@
                                     @}
                                 </select>
                             </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
                             <div class="layui-inline">
                                 <input id="cardCode" class="layui-input" type="text" placeholder="卡密"/>
                             </div>

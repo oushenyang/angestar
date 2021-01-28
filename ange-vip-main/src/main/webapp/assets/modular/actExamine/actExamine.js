@@ -50,7 +50,7 @@ layui.use(['table', 'admin', 'ax', 'notice'], function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
         queryData['type'] = $("#type").val();
-        table.reload(AgentExamine.tableId, {where: queryData});
+        table.reload(AgentExamine.tableId, {page:{curr:1},where: queryData});
     };
 
     /**
