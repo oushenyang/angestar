@@ -372,6 +372,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     //异步调用更新卡密信息
                     asyncService.updateCard(cardInfo);
                 }
+                cardInfoApi.setRedisTime(new Date());
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.WEEK.getCode());
             }
         }

@@ -99,7 +99,6 @@
     </sql>
     <insert id="saveCardBatch">
         INSERT INTO `ag_card_info` (
-        `card_id`,
         `app_id`,
         `batch_no`,
         `card_type_name`,
@@ -122,8 +121,7 @@
         )
         VALUES
         <foreach collection ="cardInfos" item="cardInfo" separator =",">
-            (#{cardInfo.cardId},
-            #{cardInfo.appId},
+            (#{cardInfo.appId},
             #{cardInfo.batchNo},
             #{cardInfo.cardTypeName},
             #{cardInfo.cardTypeId},
