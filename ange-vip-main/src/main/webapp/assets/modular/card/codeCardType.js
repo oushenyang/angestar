@@ -86,7 +86,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         queryData['cardTypeName'] = $("#cardTypeName").val();
         $('.toolbar').reset();
         layui.form.render();
-        table.reload(CodeCardType.tableId, {where: queryData});
+        table.reload(CodeCardType.tableId, {page:{curr:1},where: queryData});
     };
 
     /**

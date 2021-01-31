@@ -81,5 +81,10 @@
         left join ag_app_info ai on ai.app_id = aa.app_id
         where aa.agent_app_id = #{agentAppId}
     </select>
+    <select id="agentNum" resultType="java.lang.Integer">
+        select
+        count(agent_app_id)
+        from ag_agent_app where developer_user_id = #{userId} and agent_app_id_pid = 0
+    </select>
 
 </mapper>

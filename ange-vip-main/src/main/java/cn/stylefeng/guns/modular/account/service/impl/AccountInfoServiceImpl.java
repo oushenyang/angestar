@@ -94,6 +94,17 @@ public class AccountInfoServiceImpl extends ServiceImpl<AccountInfoMapper, Accou
         return CollectionUtils.isNotEmpty(list);
     }
 
+    /**
+     * 获取账号数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    @Override
+    public Integer accountNum(Long userId) {
+        return baseMapper.accountNum(userId);
+    }
+
     private Serializable getKey(AccountInfoParam param){
         return param.getAccountId();
     }

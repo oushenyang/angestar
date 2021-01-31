@@ -99,7 +99,6 @@
     </sql>
     <insert id="saveCardBatch">
         INSERT INTO `ag_card_info` (
-        `card_id`,
         `app_id`,
         `batch_no`,
         `card_type_name`,
@@ -122,8 +121,7 @@
         )
         VALUES
         <foreach collection ="cardInfos" item="cardInfo" separator =",">
-            (#{cardInfo.cardId},
-            #{cardInfo.appId},
+            (#{cardInfo.appId},
             #{cardInfo.batchNo},
             #{cardInfo.cardTypeName},
             #{cardInfo.cardTypeId},
@@ -306,6 +304,12 @@
         left join ag_code_card_type cct on cct.card_type_id = cci.card_type_id
         where cci.app_id = 0 and cci.card_code = #{singleCode}
         limit 1
+    </select>
+    <select id="allCardNum" resultType="java.lang.Integer">
+        select count(card_id) from ag_card_info where create_user = #{userId}
+    </select>
+    <select id="expireCardNum" resultType="java.lang.Integer">
+         select count(card_id) from ag_card_info where card_status = 2 and create_user = #{userId}
     </select>
 
 </mapper>

@@ -36,6 +36,10 @@ layui.use(['form','formX','admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        if (Number(data.field.cardTypePrice)<Number(data.field.cardTypeAgentPrice)){
+            Feng.error("代理价格不能大于市场价格！");
+            return false;
+        }
         var ajax = new $ax(Feng.ctxPath + "/codeCardType/editItem", function (data) {
             Feng.success("更新成功！");
 

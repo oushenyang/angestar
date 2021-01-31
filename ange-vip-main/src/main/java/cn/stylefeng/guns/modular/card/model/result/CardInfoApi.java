@@ -176,17 +176,6 @@ public class CardInfoApi implements Serializable {
     private Date createTime;
 
     /**
-     * 更新人
-     */
-    private Long updateUser;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-
-    /**
      * 卡类时间类型  0-分；1-时；2-天；3-周；4-月；5-年
      */
     private Integer cardTimeType;
@@ -195,5 +184,10 @@ public class CardInfoApi implements Serializable {
      * 卡值
      */
     private Integer cardTypeData;
+
+    /**
+     * Redis插入时间
+     */
+    private Date RedisTime;
 
 }

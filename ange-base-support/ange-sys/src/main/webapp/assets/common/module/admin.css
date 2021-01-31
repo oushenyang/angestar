@@ -251,8 +251,10 @@ body {
 }
 /*label高度*/
 .toolbar .layui-form-label{
+    width: 90px!important;
     height: 28px!important;
     line-height: 14px!important;
+    border-right-style: none!important;
 }
 /*表单高度*/
 .toolbar .layui-input, .layui-select, .layui-textarea{
@@ -2251,6 +2253,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     background-color: transparent;
 }
 
+/* 鼠标指向表格时,行背景颜色 */
+.theme-blue .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #d7f1fa;
+}
+
 /* header */
 .theme-blue .layui-layout-admin .layui-header {
     background-color: #3C8DBC;
@@ -2547,6 +2554,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     color: #fff;
     box-shadow: none;
     background-color: transparent;
+}
+
+/* 鼠标指向表格时,行背景颜色 */
+.theme-green .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #ebf6df;
 }
 
 /* header */
@@ -2847,6 +2859,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     background-color: transparent;
 }
 
+/* 鼠标指向表格时,行背景颜色 */
+.theme-purple .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #FFE6FF;
+}
+
 /* header */
 .theme-purple .layui-layout-admin .layui-header {
     background-color: #722ed1;
@@ -3145,6 +3162,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     background-color: transparent;
 }
 
+/* 鼠标指向表格时,行背景颜色 */
+.theme-red .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #FFD2D2;
+}
+
 /* header */
 .theme-red .layui-layout-admin .layui-header {
     background-color: #DD4B39;
@@ -3434,6 +3456,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 /* logo */
 .theme-cyan .layui-layout-admin .layui-header .layui-logo {
     background-color: #001529;
+}
+
+/* 鼠标指向表格时,行背景颜色 */
+.theme-cyan .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #ECF5FF;
 }
 
 /* header */
@@ -3777,6 +3804,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     color: #262626;
     background-color: transparent;
     box-shadow: 2px 8px 8px 0 rgba(29, 35, 41, .05);
+}
+
+/* 鼠标指向表格时,行背景颜色 */
+.theme-white .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #ECF5FF;
 }
 
 /* header */
@@ -4277,6 +4309,12 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 }
 
+/* 鼠标指向表格时,行背景颜色 */
+.theme-pink .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #FFECF5;
+}
+
+
 .theme-pink .layui-layout-admin .layui-header .layui-nav .layui-this:after,
 .theme-pink .layui-layout-admin .layui-header .layui-nav-bar {
     background-color: #FB7299;
@@ -4763,6 +4801,11 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
     color: #262626;
     background-color: transparent;
     box-shadow: 2px 8px 8px 0 rgba(29, 35, 41, .05);
+}
+
+/* 鼠标指向表格时,行背景颜色 */
+.theme-colorful .layui-table tbody tr:hover,.layui-table-hover {
+    background-color: #ECF5FF;
 }
 
 /* header */

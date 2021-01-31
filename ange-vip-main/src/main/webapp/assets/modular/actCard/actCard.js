@@ -20,7 +20,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     form.on('select(appId)', function (data) {
         var queryData = {};
         queryData['actCardAppId'] = $("select[name=appId]").val();
-        table.reload(actCard.tableId, {where: queryData});
+        table.reload(actCard.tableId, {page:{curr:1},where: queryData});
     });
 
     // //tab事件监听
@@ -117,7 +117,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     actCard.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
-        table.reload(actCard.tableId, {where: queryData});
+        table.reload(actCard.tableId, {page:{curr:1},where: queryData});
     };
 
 

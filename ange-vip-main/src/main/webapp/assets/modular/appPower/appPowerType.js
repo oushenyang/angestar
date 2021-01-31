@@ -35,7 +35,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     AppPowerType.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
-        table.reload(AppPowerType.tableId, {where: queryData});
+        table.reload(AppPowerType.tableId, {page:{curr:1},where: queryData});
     };
 
     /**

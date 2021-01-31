@@ -173,4 +173,7 @@
         WHERE
         aaa.agent_user_id = #{agentUserId}
     </select>
+    <select id="appNum" resultType="java.lang.Integer">
+        SELECT COUNT(app_id) FROM ag_app_info where create_user = #{userId}
+    </select>
 </mapper>

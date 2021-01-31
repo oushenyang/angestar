@@ -186,12 +186,24 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         if (ObjectUtil.isNull(appInfoApi)){
             appInfoApi = baseMapper.findAppInfoApi(callCode);
             if (ObjectUtil.isNotNull(appInfoApi)){
-                redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.MONTH.getCode());
+                redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.WEEK.getCode());
             }else {
                 //接口错误
                 throw new SystemApiException(-1, "数据错误","",false);
             }
         }
         return appInfoApi;
+    }
+
+    /**
+     * 获取用户的应用数量
+     *
+     * @param userId 用户id
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @Override
+    public Integer appNum(Long userId) {
+        return baseMapper.appNum(userId);
     }
 }

@@ -1,0 +1,24 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/codeCardType_edit.js"]}){
+<form id="codeCardTypeForm" lay-filter="codeCardTypeForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="cardTypeId" type="hidden"/>
+        <input name="appId" id="appId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">售价<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardTypePrice" name="cardTypePrice" placeholder="请输入售价" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理售价<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardTypeAgentPrice" name="cardTypeAgentPrice" placeholder="请输入代理售价" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

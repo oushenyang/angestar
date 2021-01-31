@@ -24,7 +24,7 @@ public class CardInfo implements Serializable {
     /**
      * 卡密ID
      */
-    @TableId(value = "card_id", type = IdType.ID_WORKER)
+    @TableId(value = "card_id", type = IdType.AUTO)
     private Long cardId;
 
     /**

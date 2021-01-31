@@ -83,4 +83,11 @@ public interface AccountInfoService extends IService<AccountInfo> {
      * @return 是否
      */
     boolean addAccountWhetherAlready(Long appId, String account);
+
+    /**
+     * 获取账号数量
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer accountNum(Long userId);
 }

@@ -103,4 +103,18 @@ public interface CardInfoService extends IService<CardInfo> {
      * 一级代理新增卡密
      */
     List<String> actAddItem(CardInfoParam cardInfoParam);
+
+    /**
+     * 获取该用户所有卡密数量
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer allCardNum(Long userId);
+
+    /**
+     * 获取该用户所有过期卡密数量
+     * @param userId 用户id
+     * @return 数量
+     */
+    Integer expireCardNum(Long userId);
 }

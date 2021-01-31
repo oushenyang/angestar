@@ -39,6 +39,7 @@ import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.guns.sys.core.util.NumToChUtil;
@@ -117,6 +118,10 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         List<String> cards = new ArrayList<>();
         //获取卡类信息
         CodeCardType codeCardType = codeCardTypeService.getById(param.getCardTypeId());
+        //如果卡类价格为空
+        if (null==codeCardType.getCardTypePrice()||null==codeCardType.getCardTypeAgentPrice()){
+            throw new OperationException(BizExceptionEnum.CARD_TYPE_PRICE_NULL);
+        }
         //自定义时间
         if (param.getIsCustomTime()){
             param.setCardTypeId(0L);
@@ -367,6 +372,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     //异步调用更新卡密信息
                     asyncService.updateCard(cardInfo);
                 }
+                cardInfoApi.setRedisTime(new Date());
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.WEEK.getCode());
             }
         }
@@ -469,6 +475,28 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         cardInfoParam.setBatchNo(batchNo);
         List<String> cardInfos = this.add(cardInfoParam);
         return cardInfos;
+    }
+
+    /**
+     * 获取该用户所有卡密数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    @Override
+    public Integer allCardNum(Long userId) {
+        return baseMapper.allCardNum(userId);
+    }
+
+    /**
+     * 获取该用户所有过期卡密数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    @Override
+    public Integer expireCardNum(Long userId) {
+        return baseMapper.expireCardNum(userId);
     }
 
     private Serializable getKey(CardInfoParam param){

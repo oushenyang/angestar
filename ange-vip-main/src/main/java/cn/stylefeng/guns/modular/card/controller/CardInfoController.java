@@ -115,6 +115,18 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 新增结果价格维护页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/addPriceEdit")
+    public String addPriceEdit(Model model,String cardTypeId) {
+        model.addAttribute("cardTypeId", cardTypeId);
+        return PREFIX + "/cardInfo_add_priceEdit.html";
+    }
+
+    /**
      * 新增结果导出txt
      *
      * @author shenyang.ou

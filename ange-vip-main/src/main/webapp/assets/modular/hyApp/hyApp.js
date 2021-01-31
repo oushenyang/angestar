@@ -32,7 +32,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     HyApp.search = function () {
         var queryData = {};
         queryData['condition'] = $("#condition").val();
-        table.reload(HyApp.tableId, {where: queryData});
+        table.reload(HyApp.tableId, {page:{curr:1},where: queryData});
     };
 
     /**
