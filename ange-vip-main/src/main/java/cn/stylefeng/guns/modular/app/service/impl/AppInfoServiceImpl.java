@@ -123,7 +123,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
-        redisUtil.del(RedisType.APP_INFO.getCode() + newEntity.getAppNum());
+        redisUtil.del(RedisType.APP_INFO.getCode() + oldEntity.getAppNum());
         this.updateById(newEntity);
     }
 
@@ -205,5 +205,15 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     @Override
     public Integer appNum(Long userId) {
         return baseMapper.appNum(userId);
+    }
+
+    /**
+     * 获取所有应用id
+     *
+     * @return 应用id集合
+     */
+    @Override
+    public List<Long> getAppIdList() {
+        return baseMapper.getAppIdList();
     }
 }

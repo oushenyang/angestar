@@ -117,4 +117,10 @@ public interface CardInfoService extends IService<CardInfo> {
      * @return 数量
      */
     Integer expireCardNum(Long userId);
+
+    /**
+     * 删除redis卡密缓存
+     * @return 刪除卡密信息
+     */
+    List<String> deleteRedisCard();
 }

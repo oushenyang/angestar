@@ -103,4 +103,10 @@ public interface AppInfoService extends IService<AppInfo> {
      * @Date 2020-04-01
      */
     Integer appNum(Long userId);
+
+    /**
+     * 获取所有应用id
+     * @return 应用id集合
+     */
+    List<Long> getAppIdList();
 }

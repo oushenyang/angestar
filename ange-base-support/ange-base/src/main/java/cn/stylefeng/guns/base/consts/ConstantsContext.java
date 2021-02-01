@@ -258,6 +258,35 @@ public class ConstantsContext {
     }
 
     /**
+     * 获取日志上传路径(用于头像和富文本编辑器)
+     */
+    public static String getLogFileUploadPath() {
+        String gunsFileUploadPath = (String) CONSTNTS_HOLDER.get("LOG_FILE_UPLOAD_PATH");
+        if (ToolUtil.isEmpty(gunsFileUploadPath)) {
+            log.error("系统常量存在空值！常量名称：LOG_FILE_UPLOAD_PATH，采用默认值：系统tmp目录" + TIPS_END);
+            return getTempPath();
+        } else {
+            //判断有没有结尾符
+            if (!gunsFileUploadPath.endsWith(File.separator)) {
+                gunsFileUploadPath = gunsFileUploadPath + File.separator;
+            }
+            //判断目录存不存在
+            File file = new File(gunsFileUploadPath);
+            if (!file.exists()) {
+                boolean mkdirs = file.mkdirs();
+                if (mkdirs) {
+                    return gunsFileUploadPath;
+                } else {
+                    log.error("系统常量存在空值！常量名称：LOG_FILE_UPLOAD_PATH，采用默认值：系统tmp目录" + TIPS_END);
+                    return getTempPath();
+                }
+            } else {
+                return gunsFileUploadPath;
+            }
+        }
+    }
+
+    /**
      * 获取破解文件上传路径
      */
     public static String getPojieUploadPath() {

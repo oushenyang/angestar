@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public interface LoginLogMapper extends BaseMapper<LoginLog> {
 
+    void deleteLog();
+
     /**
      * 获取登录日志
      */

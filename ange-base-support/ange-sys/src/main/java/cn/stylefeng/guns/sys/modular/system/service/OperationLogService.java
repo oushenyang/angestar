@@ -30,4 +30,8 @@ public class OperationLogService extends ServiceImpl<OperationLogMapper, Operati
         return this.baseMapper.getOperationLogs(page, beginTime, endTime, logName, s);
     }
 
+    public void deleteLog() {
+        this.baseMapper.deleteLog();
+    }
+
 }

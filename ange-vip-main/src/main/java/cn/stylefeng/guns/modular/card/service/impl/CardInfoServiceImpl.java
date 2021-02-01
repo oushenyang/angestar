@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -24,6 +26,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -497,6 +500,42 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     @Override
     public Integer expireCardNum(Long userId) {
         return baseMapper.expireCardNum(userId);
+    }
+
+    /**
+     * 删除redis卡密缓存
+     *
+     * @return 刪除卡密信息
+     */
+    @Override
+    @Transactional
+    public List<String> deleteRedisCard() {
+        //获取所有应用id
+        List<Long> appIdList = appInfoService.getAppIdList();
+        List<CardInfoApi> cardInfoApiList = new ArrayList<>();
+        List<String> deleteCardCodeList = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(appIdList)){
+            appIdList.forEach(appId -> {
+                boolean isHave = redisUtil.hasKey(RedisType.CARD_INFO.getCode()+ appId);
+                if (isHave){
+                    Map<Object, Object> objects = redisUtil.hmget(RedisType.CARD_INFO.getCode() + appId);
+                    if (CollectionUtil.isNotEmpty(objects)) {
+                        for (Map.Entry<Object, Object> m : objects.entrySet()) {
+                            cardInfoApiList.add((CardInfoApi) m.getValue());
+                        }
+                    }
+                }
+            });
+        }
+        if (CollectionUtil.isNotEmpty(cardInfoApiList)){
+            for (CardInfoApi cardInfoApi : cardInfoApiList){
+                if (DateUtil.between(new Date(),cardInfoApi.getRedisTime(), DateUnit.SECOND)>=604800){
+                    deleteCardCodeList.add(cardInfoApi.getCardCode());
+                    redisUtil.hdel(RedisType.CARD_INFO.getCode()+ cardInfoApi.getAppId(),cardInfoApi.getCardCode());
+                }
+            }
+        }
+        return deleteCardCodeList;
     }
 
     private Serializable getKey(CardInfoParam param){

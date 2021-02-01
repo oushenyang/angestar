@@ -20,6 +20,7 @@ import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -93,7 +94,7 @@ public class CardLoginController {
         if (ObjectUtil.isNull(cardInfoApi)){
             //从易游查
             if (appInfoApi.getOtherSign()==1&&singleCode.length()>=32){
-                getYiYouByCard(appInfoApi,singleCode,holdCheck);
+                getYiYouByCard(apiManage,appInfoApi,singleCode,mac,model,holdCheck);
                 //从万捷查
             }else {
                 throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
@@ -204,7 +205,7 @@ public class CardLoginController {
                 //生成token
                 tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
-                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindNum(),mac,model,expireTime);
+                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindOption(),mac,model,expireTime);
                 if (successful){
                     //返回成功信息
                     tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
@@ -225,10 +226,10 @@ public class CardLoginController {
     /**
      * 从易游查询卡密信息
      */
-    public void getYiYouByCard(AppInfoApi appInfoApi, String singleCode,String holdCheck){
+    public void getYiYouByCard(ApiManageApi apiManage,AppInfoApi appInfoApi, String singleCode,String mac,String model,String holdCheck){
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("k", singleCode);
-        String result= HttpClientUtil.postParams(appInfoApi.getProvingUrl(), paramMap);
+        String result= HttpClientUtil.postParams(appInfoApi.getProvingUrl(), paramMap,appInfoApi.getAppId(),holdCheck);
         if(StringUtils.contains(result, "无此卡密")){
             throw new CardLoginException(-200, appInfoApi.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
         }
@@ -260,7 +261,9 @@ public class CardLoginController {
             cardInfo.setCardRemark("从易游导入");
             cardInfoService.save(cardInfo);
             //生成token
-            throw new CardLoginException(200, appInfoApi.getAppId(),IdUtil.simpleUUID(),DateUtil.parse(expireTime),holdCheck,true);
+            CardInfoApi cardInfoApi = new CardInfoApi();
+            ToolUtil.copyProperties(cardInfo, cardInfoApi);
+            tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,DateUtil.parse(expireTime));
         }
         //说明未激活
         if(StringUtils.contains(result, "未激活")){
@@ -286,8 +289,10 @@ public class CardLoginController {
             cardInfo.setExpireTime(expireTime);
             cardInfo.setCardRemark("从易游导入");
             cardInfoService.save(cardInfo);
-            //生成token
-            throw new CardLoginException(200, appInfoApi.getAppId(),IdUtil.simpleUUID(),expireTime,holdCheck,true);
+            //返回成功信息
+            CardInfoApi cardInfoApi = new CardInfoApi();
+            ToolUtil.copyProperties(cardInfo, cardInfoApi);
+            tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
         }
     }
 

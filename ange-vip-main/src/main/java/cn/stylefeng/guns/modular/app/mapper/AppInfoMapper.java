@@ -50,4 +50,11 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
      * @Date 2020-04-01
      */
     Integer appNum(@Param("userId") Long userId);
+
+    /**
+     * 获取所有应用id
+     *
+     * @return 应用id集合
+     */
+    List<Long> getAppIdList();
 }

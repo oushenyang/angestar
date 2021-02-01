@@ -20,6 +20,11 @@ import java.util.Map;
 @Service
 public class LoginLogService extends ServiceImpl<LoginLogMapper, LoginLog> {
 
+
+    public void deleteLog() {
+        this.baseMapper.deleteLog();
+    }
+
     /**
      * 获取登录日志列表
      *

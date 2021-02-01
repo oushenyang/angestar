@@ -1,0 +1,55 @@
+@layout("/common/_container.html",{js:["/assets/modular/job/job.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">定时任务</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="jobName" class="layui-input" type="text" placeholder="任务名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="jobTable" lay-filter="jobTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="suspendeTpl">
+    {{# if(d.suspende == 1){ }}
+    <span class="layui-badge layui-badge-yellow">任务暂停</span>
+    {{# } else if(d.suspende == 2){ }}
+    <span class="layui-badge layui-badge-green">任务正常</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{# if(d.status == 0){ }}
+    <span class="layui-badge layui-badge-green">正常</span>
+    {{# } else if(d.status == 1){ }}
+    <span class="layui-badge layui-badge-yellow">停止</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="execution">立即执行</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="log">日志</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="start">激活任务</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="stop">停止任务</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="recovery">暂停/恢复</a>
+</script>
+
+@}

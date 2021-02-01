@@ -19,11 +19,13 @@
         <result column="code_bind_type" property="codeBindType" />
         <result column="code_bind_option" property="codeBindOption" />
         <result column="code_bind_num" property="codeBindNum" />
-        <result column="code_bind_time" property="codeBindTime" />
+        <result column="code_afresh_bind_num" property="codeAfreshBindNum" />
+        <result column="code_afresh_bind_time" property="codeAfreshBindTime" />
         <result column="account_bind_type" property="accountBindType" />
         <result column="account_bind_option" property="accountBindOption" />
         <result column="account_bind_num" property="accountBindNum" />
-        <result column="account_bind_time" property="accountBindTime" />
+        <result column="account_again_bind_num" property="accountAfreshBindNum" />
+        <result column="account_again_bind_time" property="accountAfreshBindTime" />
         <result column="code_open_range" property="codeOpenRange" />
         <result column="code_sign_type" property="codeSignType" />
         <result column="code_clear_space" property="codeClearSpace" />
@@ -67,11 +69,13 @@
         code_bind_type AS "codeBindType",
         code_bind_option AS "codeBindOption",
         code_bind_num AS "codeBindNum",
-        code_bind_time AS "codeBindTime",
+        code_afresh_bind_num AS "codeAfreshBindNum",
+        code_afresh_bind_time AS "codeAfreshBindTime",
         account_bind_type AS "accountBindType",
         account_bind_option AS "accountBindOption",
         account_bind_num AS "accountBindNum",
-        account_bind_time AS "accountBindTime",
+        account_again_bind_num AS "accountAfreshBindNum",
+        account_again_bind_time AS "accountAfreshBindTime",
         code_open_range AS "codeOpenRange",
         code_sign_type AS "codeSignType",
         code_clear_space AS "codeClearSpace",
@@ -126,11 +130,12 @@
         code_bind_type AS "codeBindType",
         code_bind_option AS "codeBindOption",
         code_bind_num AS "codeBindNum",
-        code_bind_time AS "codeBindTime",
-        account_bind_type AS "accountBindType",
+        code_afresh_bind_num AS "codeAfreshBindNum",
+        code_afresh_bind_time AS "codeAfreshBindTime",
         account_bind_option AS "accountBindOption",
         account_bind_num AS "accountBindNum",
-        account_bind_time AS "accountBindTime",
+        account_again_bind_num AS "accountAfreshBindNum",
+        account_again_bind_time AS "accountAfreshBindTime",
         code_open_range AS "codeOpenRange",
         code_sign_type AS "codeSignType",
         code_clear_space AS "codeClearSpace",
@@ -175,5 +180,8 @@
     </select>
     <select id="appNum" resultType="java.lang.Integer">
         SELECT COUNT(app_id) FROM ag_app_info where create_user = #{userId}
+    </select>
+    <select id="getAppIdList" resultType="java.lang.Long">
+        select app_id from ag_app_info
     </select>
 </mapper>

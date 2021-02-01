@@ -24,4 +24,5 @@ public interface OperationLogMapper extends BaseMapper<OperationLog> {
     List<Map<String, Object>> getOperationLogs(@Param("page") Page page, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("logName") String logName, @Param("logType") String logType);
 
 
+    void deleteLog();
 }

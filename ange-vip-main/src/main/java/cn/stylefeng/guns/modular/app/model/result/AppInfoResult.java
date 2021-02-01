@@ -91,14 +91,19 @@ public class AppInfoResult implements Serializable {
     private Integer codeBindOption;
 
     /**
-     * 单码重绑次数
+     * 单码绑机数量
      */
     private Integer codeBindNum;
 
     /**
+     * 单码重绑次数
+     */
+    private Integer codeAfreshBindNum;
+
+    /**
      * 单码重绑扣时
      */
-    private Integer codeBindTime;
+    private Integer codeAfreshBindTime;
 
     /**
      * 账号绑机策略 0-关闭；1-MAC；2-IP；3-混合
@@ -111,14 +116,19 @@ public class AppInfoResult implements Serializable {
     private Integer accountBindOption;
 
     /**
-     * 账号重绑次数
+     * 账号绑机数量
      */
     private Integer accountBindNum;
 
     /**
+     * 账号重绑次数
+     */
+    private Integer accountAfreshBindNum;
+
+    /**
      * 账号重绑扣时
      */
-    private Integer accountBindTime;
+    private Integer accountAfreshBindTime;
 
     /**
      * 单码多开范围 0-关闭；1-单设备；2-单IP；3-所有设备

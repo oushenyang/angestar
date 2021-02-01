@@ -1,52 +1,77 @@
 package cn.stylefeng.guns.config;
 
-import cn.stylefeng.guns.core.schedue.quartz.StartQuartzExample;
-import cn.stylefeng.guns.core.schedue.spring.SpringTasks;
 import org.quartz.Scheduler;
+import org.quartz.spi.JobFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * 定时任务自动配置(需要定时任务的可以放开注释)
  *
- * @author fengshuonan
+ * @author shenyang.ou
  * @Date 2019/2/24 16:23
  */
-//@Configuration
-//@EnableScheduling
+@Configuration
+@EnableScheduling
 public class SchedulingConfig {
 
-    /**
-     * 定时任务执行测试,注意在Application上加@EnableScheduling
-     *
-     * @author fengshuonan
-     * @Date 2019/3/27 2:48 PM
-     */
-    @Bean
-    public SpringTasks scheduledTasks() {
-        return new SpringTasks();
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private JobFactory jobFactory;
+
+//    @Bean(name="SchedulerFactory")
+//    public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
+//        //获取配置属性
+//        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+//        propertiesFactoryBean.setLocation(new ClassPathResource("/quartz.properties"));
+//        //在quartz.properties中的属性被读取并注入后再初始化对象
+//        propertiesFactoryBean.afterPropertiesSet();
+//        //创建SchedulerFactoryBean
+//        SchedulerFactoryBean factory = new SchedulerFactoryBean();
+//        factory.setQuartzProperties(propertiesFactoryBean.getObject());
+//        //使用数据源
+////        factory.setDataSource(dataSource);
+//        factory.setJobFactory(jobFactory);
+//        return factory;
+//    }
+
+    @Bean(name="SchedulerFactory")
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+//        schedulerFactoryBean.setDataSource(dataSource);
+        //使用数据源
+        schedulerFactoryBean.setDataSource(dataSource);
+        schedulerFactoryBean.setJobFactory(jobFactory);
+
+        return schedulerFactoryBean;
     }
 
-    /**
-     * quartz方式，配置Scheduler实例
-     *
-     * @author fengshuonan
-     * @Date 2019/2/24 19:03
-     */
     @Bean
-    public Scheduler scheduler(SchedulerFactoryBean schedulerFactoryBean) {
-        return schedulerFactoryBean.getScheduler();
+    public Properties quartzProperties() throws IOException {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        propertiesFactoryBean.setLocation(new ClassPathResource("/quartz.properties"));
+        //在quartz.properties中的属性被读取并注入后再初始化对象
+        propertiesFactoryBean.afterPropertiesSet();
+        return propertiesFactoryBean.getObject();
     }
 
-    /**
-     * 启动quartz的示例
-     *
-     * @author fengshuonan
-     * @Date 2019/3/27 3:34 PM
+    /*
+     * 通过SchedulerFactoryBean获取Scheduler的实例
      */
-    @Bean
-    public StartQuartzExample startQuartzExample() {
-        return new StartQuartzExample();
+    @Bean(name="scheduler")
+    public Scheduler scheduler() throws IOException {
+        return schedulerFactoryBean().getScheduler();
     }
 
 }
