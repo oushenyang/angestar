@@ -26,6 +26,7 @@
         <result column="card_open_num" property="cardOpenNum" />
         <result column="card_remark" property="cardRemark" />
         <result column="prohibit_remark" property="prohibitRemark" />
+        <result column="login_num" property="loginNum" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />
@@ -59,6 +60,7 @@
         cci.card_open_num AS "cardOpenNum",
         cci.card_remark AS "cardRemark",
         cci.prohibit_remark AS "prohibitRemark",
+        cci.login_num AS "loginNum",
         cci.create_user AS "createUser",
         cci.create_time AS "createTime",
         cci.update_user AS "updateUser",
@@ -231,6 +233,9 @@
         <foreach collection="cardInfos" index="index" item="item" separator="," open="(" close=")">
             #{item.cardId,jdbcType=BIGINT}
         </foreach>
+    </update>
+    <update id="updateCardLoginNumByCardId">
+         update ag_card_info set login_num = login_num+1 where card_id = #{cardId}
     </update>
     <select id="findListBySpec" resultType="java.util.Map">
         select

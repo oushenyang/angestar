@@ -56,5 +56,12 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
      * @param userId 用户id
      * @return 数量
      */
-    Integer expireCardNum(Long userId);
+    Integer expireCardNum(@Param("userId") Long userId);
+
+    /**
+     * 更新卡密登录次数
+     *
+     * @param cardId 卡密id
+     */
+    void updateCardLoginNumByCardId(@Param("cardId") Long cardId);
 }

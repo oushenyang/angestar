@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.device.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -64,6 +65,11 @@ public class DeviceParam implements Serializable, BaseValidatingParam {
      * ip详细地址
      */
     private String ipAddress;
+
+    /**
+     * 登录次数
+     */
+    private Integer loginNum;
 
     /**
      * 创建人

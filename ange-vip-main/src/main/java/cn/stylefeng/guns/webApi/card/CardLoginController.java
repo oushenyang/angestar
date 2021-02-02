@@ -259,6 +259,12 @@ public class CardLoginController {
             cardInfo.setActiveTime(DateUtil.parse(activeTime));
             cardInfo.setExpireTime(DateUtil.parse(expireTime));
             cardInfo.setCardRemark("从易游导入");
+            //已经过期
+            if (DateUtil.parse(expireTime).compareTo(DateUtil.date())<0) {
+                cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                cardInfoService.save(cardInfo);
+                throw new CardLoginException(-205, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,false);
+            }
             cardInfoService.save(cardInfo);
             //生成token
             CardInfoApi cardInfoApi = new CardInfoApi();

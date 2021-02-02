@@ -1,5 +1,10 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
+import cn.afterturn.easypoi.entity.vo.MapExcelConstants;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
+import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import cn.afterturn.easypoi.view.PoiBaseView;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -25,6 +30,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
@@ -36,17 +42,13 @@ import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.mapper.CardInfoMapper;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
-import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
-import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
-import cn.stylefeng.guns.sys.core.util.CardDateUtil;
-import cn.stylefeng.guns.sys.core.util.CardStringRandom;
-import cn.stylefeng.guns.sys.core.util.NumToChUtil;
-import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
+import cn.stylefeng.guns.sys.core.util.*;
+import cn.stylefeng.guns.sys.modular.system.service.ExcelService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -59,9 +61,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.rmi.ServerException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
@@ -92,6 +100,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     private AgentBuyCardService agentBuyCardService;
     @Autowired
     private AgentPowerService agentPowerService;
+    @Autowired
+    private ExcelService excelService;
 
 
     @Override
@@ -218,7 +228,6 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }
         editCardInfos(cardInfos, param);
         baseMapper.BachUpdateCardInfo(cardInfos);
-//        this.updateById(newEntity);
     }
 
     private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
@@ -536,6 +545,86 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             }
         }
         return deleteCardCodeList;
+    }
+
+    /**
+     * 更新卡密登录次数
+     *
+     * @param cardId 卡密id
+     */
+    @Override
+    public void updateCardLoginNumByCardId(Long cardId) {
+        baseMapper.updateCardLoginNumByCardId(cardId);
+    }
+
+    /**
+     * 导出card
+     *
+     * @param response
+     * @param param
+     */
+    @Override
+    public void exportCard(HttpServletRequest request, HttpServletResponse response, BatchCardInfoParam param) {
+        List<CardInfo> cardInfos = new ArrayList<>();
+        if (param.getOperateFlag()==0){
+            List<String> idList = Arrays.asList(param.getIds().split(","));
+            cardInfos = this.listByIds(idList);
+        } else {
+            param.setCreateUser(LoginContextHolder.getContext().getUserId());
+            cardInfos = baseMapper.selectByBatchCardInfo(param);
+        }
+        if (CollectionUtils.isEmpty(cardInfos)){
+            throw new ServiceException(UN_FIND_CARD);
+        }
+        List<String> cardList = new ArrayList<>();
+        if (param.getExportFlag()==0){
+            cardInfos.forEach(cardInfo -> {
+                if (param.getExportField()==1){
+                    cardList.add(cardInfo.getCardCode());
+                }else if (param.getExportField()==2){
+                    cardList.add(cardInfo.getCardCode()
+                            +param.getSplitSymbol() + StringUtils.trimToEmpty(DateUtil.format(cardInfo.getActiveTime(), "yyyy-MM-dd HH:mm:ss"))
+                            +param.getSplitSymbol()+StringUtils.trimToEmpty(DateUtil.format(cardInfo.getExpireTime(), "yyyy-MM-dd HH:mm:ss")));
+                }else {
+                    cardList.add(cardInfo.getCardCode()
+                            +param.getSplitSymbol()+cardInfo.getCardTypeName()
+                            +param.getSplitSymbol()+StringUtils.trimToEmpty(DateUtil.format(cardInfo.getActiveTime(), "yyyy-MM-dd HH:mm:ss"))
+                            +param.getSplitSymbol()+StringUtils.trimToEmpty(DateUtil.format(cardInfo.getExpireTime(), "yyyy-MM-dd HH:mm:ss")));
+                }
+            });
+            ExportTextUtil.writeToTxt(response,cardList, String.valueOf(DateUtil.date()));
+        }else {
+            if (param.getExportField()==1){
+                List<CardInfoExport1> cardInfoExport1s = new ArrayList<>();
+                cardInfos.forEach(cardInfo -> {
+                    CardInfoExport1 cardInfoExport1 = new CardInfoExport1();
+                    cardInfoExport1.setCardCode(cardInfo.getCardCode());
+                    cardInfoExport1s.add(cardInfoExport1);
+                });
+                excelService.exportExcel(cardInfoExport1s, CardInfoExport1.class,"卡密导出","report-1",response);
+            }else if (param.getExportField()==2){
+                List<CardInfoExport2> cardInfoExport2s = new ArrayList<>();
+                cardInfos.forEach(cardInfo -> {
+                    CardInfoExport2 cardInfoExport2 = new CardInfoExport2();
+                    cardInfoExport2.setCardCode(cardInfo.getCardCode());
+                    cardInfoExport2.setActiveTime(cardInfo.getActiveTime());
+                    cardInfoExport2.setExpireTime(cardInfo.getExpireTime());
+                    cardInfoExport2s.add(cardInfoExport2);
+                });
+                excelService.exportExcel(cardInfoExport2s, CardInfoExport2.class,"卡密导出","report-1",response);
+            }else {
+                List<CardInfoExport3> cardInfoExport3s = new ArrayList<>();
+                cardInfos.forEach(cardInfo -> {
+                    CardInfoExport3 cardInfoExport3 = new CardInfoExport3();
+                    cardInfoExport3.setCardCode(cardInfo.getCardCode());
+                    cardInfoExport3.setCardTypeName(cardInfo.getCardTypeName());
+                    cardInfoExport3.setActiveTime(cardInfo.getActiveTime());
+                    cardInfoExport3.setExpireTime(cardInfo.getExpireTime());
+                    cardInfoExport3s.add(cardInfoExport3);
+                });
+                excelService.exportExcel(cardInfoExport3s, CardInfoExport3.class,"卡密导出","report-1",response);
+            }
+        }
     }
 
     private Serializable getKey(CardInfoParam param){

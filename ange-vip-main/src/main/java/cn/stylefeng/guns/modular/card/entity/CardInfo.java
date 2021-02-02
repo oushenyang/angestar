@@ -196,6 +196,12 @@ public class CardInfo implements Serializable {
     private Date addTime;
 
     /**
+     * 登录次数
+     */
+    @TableField("login_num")
+    private Integer loginNum;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_user", fill = FieldFill.INSERT)
@@ -452,6 +458,14 @@ public class CardInfo implements Serializable {
         this.addTime = addTime;
     }
 
+    public Integer getLoginNum() {
+        return loginNum;
+    }
+
+    public void setLoginNum(Integer loginNum) {
+        this.loginNum = loginNum;
+    }
+
     public Long getCreateUser() {
         return createUser;
     }
@@ -514,6 +528,7 @@ public class CardInfo implements Serializable {
         ", addHourNum=" + addHourNum +
         ", addMinuteNum=" + addMinuteNum +
         ", addTime=" + addTime +
+        ", loginNum=" + loginNum +
         ", createUser=" + createUser +
         ", createTime=" + createTime +
         ", updateUser=" + updateUser +
