@@ -76,7 +76,11 @@ public class CardLoginController {
         if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(edition)||StringUtils.isEmpty(mac)){
             throw new SystemApiException(-2, "必传参数存在空值","",false);
         }
-        if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
+        if (appInfoApi.getSignFlag()&&StringUtils.isEmpty(sign)){
+            throw new SystemApiException(-2, "签名不正确","",false);
+        }else if (appInfoApi.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
+            throw new SystemApiException(-2, "签名不正确","",false);
+        }else if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
             String md5 = SecureUtil.md5(singleCode+edition+mac+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
             if (!md5.equals(sign)){
                 throw new SystemApiException(-2, "签名不正确","",false);

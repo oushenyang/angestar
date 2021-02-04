@@ -482,7 +482,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         defaultToolbar: ['filter', 'print'],
         height: "full-115",
         cellMinWidth: 100,
-        cols: CardInfo.initColumn()
+        cols: CardInfo.initColumn(),
+        done: function () {this.where={};}
     });
 
     // 搜索按钮点击事件

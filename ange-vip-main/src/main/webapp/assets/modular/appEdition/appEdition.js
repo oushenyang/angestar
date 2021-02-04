@@ -192,7 +192,8 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         page: true,
         height: "full-115",
         cellMinWidth: 100,
-        cols: AppEdition.initColumn()
+        cols: AppEdition.initColumn(),
+        done: function () {this.where={};}
     });
 
     //加载查询数据

@@ -233,14 +233,9 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private String webSalt;
 
     /**
-     * 接收Sign验证
+     * Sign验证开关
      */
-    private String signReceive;
-
-    /**
-     * 输出Sign验证
-     */
-    private String signOutput;
+    private Boolean signFlag;
 
     /**
      * 外部验证：0-关闭；1-易游；2-万捷；

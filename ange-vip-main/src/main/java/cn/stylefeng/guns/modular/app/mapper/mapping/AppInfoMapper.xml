@@ -44,8 +44,7 @@
         <result column="web_algorithm_type" property="webAlgorithmType" />
         <result column="web_key" property="webKey" />
         <result column="web_salt" property="webSalt" />
-        <result column="sign_receive" property="signReceive" />
-        <result column="sign_output" property="signOutput" />
+        <result column="sign_flag" property="signFlag" />
         <result column="other_sign" property="otherSign" />
         <result column="proving_url" property="provingUrl" />
         <result column="version_num" property="versionNum" />
@@ -93,8 +92,7 @@
         web_algorithm_type AS "webAlgorithmType",
         web_key AS "webKey",
         web_salt AS "webSalt",
-        sign_receive AS "signReceive",
-        sign_output AS "signOutput",
+        sign_flag AS "signFlag",
         other_sign AS "otherSign",
         proving_url AS "provingUrl",
         version_num AS "versionNum",
@@ -154,8 +152,7 @@
         web_algorithm_type AS "webAlgorithmType",
         web_key AS "webKey",
         web_salt AS "webSalt",
-        sign_receive AS "signReceive",
-        sign_output AS "signOutput",
+        sign_flag AS "signFlag",
         other_sign AS "otherSign",
         proving_url AS "provingUrl",
         create_user AS "createUser"

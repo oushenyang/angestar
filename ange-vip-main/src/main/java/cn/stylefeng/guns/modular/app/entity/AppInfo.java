@@ -266,16 +266,10 @@ public class AppInfo implements Serializable {
     private String webSalt;
 
     /**
-     * 接收Sgin验证
+     * Sign验证开关
      */
-    @TableField("sign_receive")
-    private String signReceive;
-
-    /**
-     * 输出Sgin验证
-     */
-    @TableField("sign_output")
-    private String signOutput;
+    @TableField("sign_flag")
+    private Boolean signFlag;
 
     /**
      * 外部验证：0-关闭；1-易游；2-万捷；
