@@ -165,6 +165,11 @@ public class CardInfoResult implements Serializable {
     private Date addTime;
 
     /**
+     * 登录次数
+     */
+    private Integer loginNum;
+
+    /**
      * 创建人
      */
     private Long createUser;

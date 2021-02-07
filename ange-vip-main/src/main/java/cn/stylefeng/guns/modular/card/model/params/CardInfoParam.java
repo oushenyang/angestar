@@ -199,6 +199,11 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     private Long developerUserId;
 
     /**
+     * 登录次数
+     */
+    private Integer loginNum;
+
+    /**
      * 创建时间
      */
     private Date createTime;

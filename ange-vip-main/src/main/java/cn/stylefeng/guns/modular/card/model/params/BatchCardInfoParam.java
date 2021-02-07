@@ -36,6 +36,21 @@ public class BatchCardInfoParam implements Serializable, BaseValidatingParam {
     private String event;
 
     /**
+     * 导出类型 0-txt；1-excel
+     */
+    private Integer exportFlag;
+
+    /**
+     * 导出字段 1-仅卡密；2-卡密|激活时间|到期时间；3-卡密|卡类名称|激活时间|到期时间；
+     */
+    private Integer exportField;
+
+    /**
+     * 分割符号
+     */
+    private String splitSymbol;
+
+    /**
      * 卡密ID
      */
     private Long cardId;

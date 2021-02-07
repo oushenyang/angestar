@@ -139,6 +139,37 @@
                 <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" lay-verify="required" maxlength="128" class="layui-textarea layext-text-tool"></textarea>
             </div>
         </div>
+        {{# } else if(d.event == 'export'){ }}
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label layui-form-required">导出类型</label>
+            <div class="layui-input-block">
+                <input type="radio" class="layui-input" name="exportFlag" value="0" lay-filter="exportFlag" title="txt" checked="">
+                <input type="radio" class="layui-input" name="exportFlag" value="1" lay-filter="exportFlag" title="excel">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">导出字段</label>
+            <div class="layui-input-block">
+                <select name="exportField" class="exportField" lay-search="" lay-verType="tips">
+                    <option value="1" selected="selected">仅卡密</option>
+                    <option value="2">卡密|激活时间|到期时间</option>
+                    <option value="3">卡密|卡类名称|激活时间|到期时间</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分割符号</label>
+            <div class="layui-input-block">
+                <select name="splitSymbol" class="splitSymbol" lay-search="" lay-verType="tips">
+                    <option value="|" selected="selected">|</option>
+                    <option value="#">#</option>
+                    <option value="$">$</option>
+                    <option value="_">_</option>
+                    <option value="-">-</option>
+                    <option value=" ">空格</option>
+                </select>
+            </div>
+        </div>
         {{# } }}
 
     </div>

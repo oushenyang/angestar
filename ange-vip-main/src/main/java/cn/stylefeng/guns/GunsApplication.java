@@ -22,9 +22,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * SpringBoot方式启动类
@@ -32,7 +35,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @author stylefeng
  * @Date 2017/5/21 12:06
  */
+@EnableScheduling
 @EnableAsync
+@ServletComponentScan
+@EnableTransactionManagement
 @SpringBootApplication(exclude = {MybatisDataSourceAutoConfiguration.class})
 public class GunsApplication {
 

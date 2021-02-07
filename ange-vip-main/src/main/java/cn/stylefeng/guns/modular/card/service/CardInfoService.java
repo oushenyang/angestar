@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -117,4 +119,23 @@ public interface CardInfoService extends IService<CardInfo> {
      * @return 数量
      */
     Integer expireCardNum(Long userId);
+
+    /**
+     * 删除redis卡密缓存
+     * @return 刪除卡密信息
+     */
+    List<String> deleteRedisCard();
+
+    /**
+     * 更新卡密登录次数
+     * @param cardId 卡密id
+     */
+    void updateCardLoginNumByCardId(Long cardId);
+
+    /**
+     * 导出card
+     * @param response
+     * @param param
+     */
+    void exportCard(HttpServletRequest request, HttpServletResponse response, BatchCardInfoParam param);
 }

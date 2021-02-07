@@ -79,6 +79,8 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     public LayuiPageInfo findPageBySpec(DeviceParam param){
         Page pageContext = getPageContext();
         QueryWrapper<Device> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("card_type",param.getCardType());
+        objectQueryWrapper.eq("card_or_user_id",param.getCardOrUserId());
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
     }
@@ -96,7 +98,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         //如果空
         if (CollectionUtils.isEmpty(deviceApis)){
             List<Device> deviceApiList = new ArrayList<>();
-            insertDevice(deviceApiList,appId,cardId, mac,expireTime);
+            insertDevice(deviceApiList,appId,cardId, mac,model,expireTime);
             return true;
         }else {
             boolean isHave = false;
@@ -104,6 +106,8 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             if (cardBindType == 1){
                 for (Device deviceApi : deviceApis){
                     if (deviceApi.getMac().equals(mac)) {
+                        deviceApi.setLoginNum(deviceApi.getLoginNum()+1);
+                        asyncService.updateDeviceAndCardLoginNum(deviceApi.getDeviceId(),deviceApi.getCardOrUserId());
                         isHave = true;
                         break;
                     }
@@ -112,6 +116,9 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             }else if(cardBindType == 2){
                 for (Device deviceApi : deviceApis){
                     if (deviceApi.getIp().equals(getIp())){
+                        //异步调用更新
+                        deviceApi.setLoginNum(deviceApi.getLoginNum()+1);
+                        asyncService.updateDeviceAndCardLoginNum(deviceApi.getDeviceId(),deviceApi.getCardOrUserId());
                         isHave = true;
                         break;
                     }
@@ -120,6 +127,8 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             }else if(cardBindType == 3){
                 for (Device deviceApi : deviceApis){
                     if (deviceApi.getMac().equals(mac)&&deviceApi.getIp().equals(getIp())){
+                        deviceApi.setLoginNum(deviceApi.getLoginNum()+1);
+                        asyncService.updateDeviceAndCardLoginNum(deviceApi.getDeviceId(),deviceApi.getCardOrUserId());
                         isHave = true;
                         break;
                     }
@@ -132,7 +141,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             }else {
                 //如果还没达到上限,直接插入并返回成功
                 if (deviceApis.size()<cardBindNum){
-                    insertDevice(deviceApis,appId,cardId, mac,expireTime);
+                    insertDevice(deviceApis,appId,cardId, mac,model,expireTime);
                     return true;
                 }else {
                     //返回错误,不在常用设备登录
@@ -142,7 +151,17 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         }
     }
 
-    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,Date expireTime){
+    /**
+     * 更新设备登录次数
+     *
+     * @param deviceId 设备id
+     */
+    @Override
+    public void updateDeviceLoginNumByDeviceId(Long deviceId) {
+        baseMapper.updateDeviceLoginNumByDeviceId(deviceId);
+    }
+
+    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,String model,Date expireTime){
         Date date = new Date();
         Device device = new Device();
         device.setAppId(appId);
@@ -150,7 +169,9 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setCardType(1);
         device.setMac(mac);
         device.setIp(getIp());
+        device.setModel(model);
         device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
+        device.setLoginNum(1);
         device.setCreateTime(date);
 //        baseMapper.insert(device);
         //异步调用插入

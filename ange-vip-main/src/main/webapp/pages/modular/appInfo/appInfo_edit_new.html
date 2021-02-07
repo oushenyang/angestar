@@ -1,18 +1,23 @@
 @layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/appInfo/appInfo_edit.js"]}){
+<style>
+    .layui-form-select dl {
+        z-index: 11111!important;
+    }
+</style>
 <form id="appInfoForm" lay-filter="appInfoForm" class="layui-form layui-form-pane">
     <input name="appId" type="hidden"/>
     @if(tool.isNotEmpty(event)){
         @if(event=='edit'){
         <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
         <div class="layui-form-item">
-            <label class="layui-form-label">软件名称<span style="color: red;">*</span></label>
+            <label class="layui-form-label layui-form-required">软件名称</label>
             <div class="layui-input-block">
                 <input id="appName" name="appName" placeholder="请输入软件名" type="text" class="layui-input"
                        lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item" pane="">
-            <label class="layui-form-label">运营状态<span style="color: red;">*</span></label>
+            <label class="layui-form-label layui-form-required">运营状态</label>
             <div class="layui-input-block">
                 <input type="radio" class="layui-input" name="cydiaFlag" value="0" title="收费" checked="">
                 <input type="radio" class="layui-input" name="cydiaFlag" value="1" title="免费">
@@ -45,7 +50,7 @@
                 <legend>单码模式</legend>
                 <div class="layui-field-box">
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">绑机策略<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">绑机策略</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="codeBindType" value="0" title="关闭" checked="">
                             <input type="radio" class="layui-input" name="codeBindType" value="1" title="机器码" >
@@ -54,24 +59,24 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">绑机数量<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">绑机数量</label>
                         <div class="layui-input-block">
 <!--                            <input type="radio" class="layui-input" name="codeBindOption" value="0" title="每天" checked="">-->
 <!--                            <input type="radio" class="layui-input" name="codeBindOption" value="1" title="永久">-->
-                            <input id="codeBindOption" name="codeBindOption" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
+                            <input id="codeBindNum" name="codeBindNum" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">重绑次数<span style="color: red;">*</span></label>
+                            <label class="layui-form-label layui-form-required">重绑次数</label>
                             <div class="layui-input-inline">
-                                <input id="codeBindNum" name="codeBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
+                                <input id="codeAfreshBindNum" name="codeAfreshBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">重绑扣时</label>
                             <div class="layui-input-inline">
-                                <input id="codeBindTime" name="codeBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
+                                <input id="codeAfreshBindTime" name="codeAfreshBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
                             </div>
                         </div>
                     </div>
@@ -81,7 +86,7 @@
                 <legend>账号模式</legend>
                 <div class="layui-field-box">
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">绑机策略<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">绑机策略</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="accountBindType" value="0" title="关闭" checked="">
                             <input type="radio" class="layui-input" name="accountBindType" value="1" title="机器码">
@@ -90,24 +95,24 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">绑机数量<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">绑机数量</label>
                         <div class="layui-input-block">
 <!--                            <input type="radio" class="layui-input" name="accountBindOption" value="0" title="每天" checked="">-->
 <!--                            <input type="radio" class="layui-input" name="accountBindOption" value="1" title="永久">-->
-                            <input id="accountBindOption" name="accountBindOption" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
+                            <input id="accountBindNum" name="accountBindNum" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">重绑次数<span style="color: red;">*</span></label>
+                            <label class="layui-form-label layui-form-required">重绑次数</label>
                             <div class="layui-input-inline">
-                                <input id="accountBindNum" name="accountBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
+                                <input id="accountAfreshBindNum" name="accountAfreshBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" required/>
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">重绑扣时</label>
                             <div class="layui-input-inline">
-                                <input id="accountBindTime" name="accountBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
+                                <input id="accountAfreshBindTime" name="accountAfreshBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" required/>
                             </div>
                         </div>
                     </div>
@@ -130,20 +135,22 @@
 <!--                        </div>-->
 <!--                    </div>-->
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">登陆方式<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">登陆方式</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="codeSignType" value="1" title="顶号登录">
                             <input type="radio" class="layui-input" name="codeSignType" value="0" title="非顶号登录" checked="">
                         </div>
                     </div>
+<!--                    <span><i class="layui-icon layui-icon-tips" lay-tips="目标的服务对象"-->
+<!--                             lay-direction="1" lay-offset="0,-10px"></i></span>-->
                     <div class="layui-form-item">
-                        <label class="layui-form-label">清理间隔<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">清理间隔</label>
                         <div class="layui-input-block">
                             <select name="codeClearSpace" id="codeClearSpace" dict="clear_space" class="selDict" lay-search="" lay-verify="required" required></select>
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">多开数量</label>
                         <div class="layui-input-block">
                             <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
@@ -163,20 +170,20 @@
 <!--                        </div>-->
 <!--                    </div>-->
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">登陆方式<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">登陆方式 </label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="accountSignType" value="0" title="非顶号登录" checked="">
                             <input type="radio" class="layui-input" name="accountSignType" value="1" title="顶号登录">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">清理间隔<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">清理间隔</label>
                         <div class="layui-input-block">
                             <select name="accountClearSpace" id="accountClearSpace" dict="clear_space" class="selDict" lay-search="" lay-verify="required" required></select>
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">多开数量<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">多开数量</label>
                         <div class="layui-input-block">
                             <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
@@ -191,7 +198,7 @@
                 <legend>单码模式</legend>
                 <div class="layui-field-box">
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">试用策略<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">试用策略</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="codeTryType" value="0" title="关闭" checked="">
                             <input type="radio" class="layui-input" name="codeTryType" value="1" title="时间">
@@ -199,7 +206,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">试用时长<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">试用时长</label>
                         <div class="layui-input-block">
                             <input id="codeTryTime" name="codeTryTime" placeholder="请输入分钟或次数" type="number" class="layui-input" lay-verify="required" required/>
                         </div>
@@ -210,14 +217,14 @@
                 <legend>账号模式</legend>
                 <div class="layui-field-box">
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">用户注册<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">用户注册</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="accountRegisterSwitch" value="0" title="关闭" checked="">
                             <input type="radio" class="layui-input" name="accountRegisterSwitch" value="1" title="开启">
                         </div>
                     </div>
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">注册限制<span style="color: red;">*</span></label>
+                        <label class="layui-form-label layui-form-required">注册限制</label>
                         <div class="layui-input-block">
                             <input type="radio" class="layui-input" name="accountRegisterLimit" value="0" title="关闭" checked="">
                             <input type="radio" class="layui-input" name="accountRegisterLimit" value="1" title="每天">
@@ -226,7 +233,7 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">注册次数<span style="color: red;">*</span></label>
+                            <label class="layui-form-label layui-form-required">注册次数</label>
                             <div class="layui-input-inline">
                                 <input id="accountRegisterNum" name="accountRegisterNum" placeholder="请输入注册次数" type="number" class="layui-input" lay-verify="required" required/>
                             </div>
@@ -250,7 +257,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">加密范围<span style="color: red;">*</span></label>
                         <div class="layui-input-block">
-                            <input id="webKe" name="webKe" placeholder="请输入加密范围" type="text" class="layui-input" lay-verify="required" required/>
+                            <select name="webAlgorithmRange" id="webAlgorithmRange" lay-filter="webAlgorithmRange" lay-verify="required" required>
+                                <option value="0">全部加密</option>
+                                <option value="1">仅加密api参数提交</option>
+                                <option value="2">仅加密api参数返回</option>
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item" pane="">
@@ -278,16 +289,11 @@
                             <fieldset class="layui-elem-field">
                                 <legend>签名校验</legend>
                                 <div class="layui-field-box">
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label">接收Sgin验证<span style="color: red;">*</span></label>
+                                    <div class="layui-form-item"  pane="">
+                                        <label class="layui-form-label">签名校验开关<span style="color: red;">*</span></label>
                                         <div class="layui-input-block">
-                                            <input id="easyKey" name="easyKey" placeholder="请输入加密Key" type="text" class="layui-input" lay-verify="required" required/>
-                                        </div>
-                                    </div>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label">输出Sgin验证<span style="color: red;">*</span></label>
-                                        <div class="layui-input-block">
-                                            <input id="easySalt" name="easySalt" placeholder="请输入签名盐" type="text" class="layui-input" lay-verify="required" required/>
+                                            <input type="radio" class="layui-input" name="signFlag" value="0" title="关闭" checked="">
+                                            <input type="radio" class="layui-input" name="signFlag" value="1" title="开启">
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +305,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">外部应用对接<span style="color: red;">*</span></label>
                 <div class="layui-input-block">
-                    <select name="dictTypeId" id="dictTypeId" lay-filter="dictTypeId">
+                    <select name="otherSign" id="otherSign" lay-filter="otherSign">
                         <option value="0">关闭</option>
                         <option value="1">易游网络验证</option>
                     </select>

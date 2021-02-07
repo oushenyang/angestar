@@ -126,10 +126,12 @@ layui.config({
     func: '../../expand/module/func/func',
     dict: '../../expand/module/dict/dict',
     selectApp: '../../expand/module/app/selectApp',
-}).use(['layer', 'admin'], function () {
+}).use(['table','layer', 'admin'], function () {
     var $ = layui.jquery;
     var layer = layui.layer;
     var admin = layui.admin;
+    var table = layui.table;
+    var form = layui.form;
 
     // 移除loading动画
     setTimeout(function () {
@@ -147,6 +149,14 @@ layui.config({
             }
 
         }
+    });
+
+    // 重置按钮
+    $('#btnReset').click(function () {
+        $("input[type=text]").val("");
+        $("select").val("");
+        form.render('select');
+        table.reload($(this).attr("data-table"), {page:{curr:1},where: {}});
     });
 
 });

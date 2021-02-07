@@ -74,6 +74,14 @@ public class AsyncService {
         deviceService.save(device);
     }
 
+    @Async
+    public void updateDeviceAndCardLoginNum(Long deviceId,Long cardId) {
+        DeviceService deviceService = SpringUtil.getBean(DeviceService.class);
+        CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
+        deviceService.updateDeviceLoginNumByDeviceId(deviceId);
+        cardInfoService.updateCardLoginNumByCardId(cardId);
+    }
+
     /**
      * 更新token和缓存
      * @param cardId 卡密id

@@ -65,6 +65,11 @@ public class DeviceResult implements Serializable {
     private String ipAddress;
 
     /**
+     * 登录次数
+     */
+    private Integer loginNum;
+
+    /**
      * 创建人
      */
     private Long createUser;

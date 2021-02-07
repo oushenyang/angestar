@@ -21,14 +21,18 @@ import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +140,18 @@ public class CardInfoController extends BaseController {
     public void addExport(HttpServletResponse response,String cards) {
         List<String> cardList = Arrays.asList(cards.split(","));
         ExportTextUtil.writeToTxt(response,cardList, String.valueOf(DateUtil.date()));
+    }
+
+    /**
+     * 卡密导出txt
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/exportCard")
+    public void exportCard(HttpServletRequest request, HttpServletResponse response, String data) {
+        BatchCardInfoParam param = JSONObject.parseObject(data,BatchCardInfoParam.class);
+        this.cardInfoService.exportCard(request,response,param);
     }
 
     /**

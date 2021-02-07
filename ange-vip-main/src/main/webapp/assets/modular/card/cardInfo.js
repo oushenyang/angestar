@@ -208,45 +208,16 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         form.render('select');
                     }
                 });
-                //应用选择下拉框事件监听
-                // form.on('select(operateApp)', function (data) {
-                //     $("select[name=cardType]").empty();
-                //     form.render('select');
-                //     var appId=$("select[name=operateApp]").val();
-                //     var ajax = new $ax(Feng.ctxPath + "/cardInfo/getCardTypeByAppId", function (result) {
-                //         var list = result.data;
-                //         if (list.length>0){
-                //             var html="<option value='1'>全部</option>";
-                //             for(var key in list){
-                //                  html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
-                //             }
-                //             $("select[name=cardType]").append(html);
-                //             form.render('select');
-                //         }else {
-                //             var operation = function () {
-                //                 var ajax = new $ax(Feng.ctxPath + "/cardInfo/addCardTypeByAppId", function (result) {
-                //                     Feng.success("创建成功!");
-                //                     var list = result.data;
-                //                     var html="<option value='1'>全部</option>";
-                //                     for(var key in list){
-                //                         html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
-                //                     }
-                //                     $("select[name=cardType]").append(html);
-                //                     form.render('select');
-                //                 }, function (data) {
-                //                     Feng.error("创建失败!" + data.responseJSON.message + "!");
-                //                 });
-                //                 ajax.set('appId',appId);
-                //                 ajax.start();
-                //             };
-                //             Feng.confirm("还未创建卡密类型，是否初始化卡密类型数据?", operation);
-                //         }
-                //     }, function (data) {
-                //         Feng.error("获取卡类信息失败！" + data.responseJSON.message)
-                //     });
-                //     ajax.set('appId',appId);
-                //     ajax.start();
-                // });
+                //单选框事件监听
+                form.on('radio(exportFlag)', function (data) {
+                    if (data.value==0){
+                        $("select[name=splitSymbol]").attr("disabled", false);
+                        form.render('select');
+                    }else {
+                        $("select[name=splitSymbol]").attr("disabled", "disabled");
+                        form.render('select');
+                    }
+                });
                 //表单提交事件
                 form.on('submit(cardEditSubmit)', function (data) {
                     // admin.showLoading(undefined, 3, '.8');
@@ -263,19 +234,24 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     }
                     data.field.ids = ids;
                     data.field.event = obj.event;
-                    var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                    if (obj.event=='export'){
+                        window.location.href=Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
                         admin.removeBtnLoading('#cardEditSubmit');
-                        layer.close(dIndex);
-                        layer.msg("更新成功！", {icon: 1});
-                        table.reload(CardInfo.tableId);
-                        //关掉对话框
-                        admin.closeThisDialog();
-                    }, function (data) {
-                        admin.removeBtnLoading('#cardEditSubmit');
-                        layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
-                    });
-                    ajax.set(data.field);
-                    ajax.start();
+                    }else {
+                        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                            admin.removeBtnLoading('#cardEditSubmit');
+                            layer.close(dIndex);
+                            layer.msg("更新成功！", {icon: 1});
+                            table.reload(CardInfo.tableId);
+                            //关掉对话框
+                            admin.closeThisDialog();
+                        }, function (data) {
+                            admin.removeBtnLoading('#cardEditSubmit');
+                            layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
+                        });
+                        ajax.set(data.field);
+                        ajax.start();
+                    }
                     return false;
                 });
                 // 禁止弹窗出现滚动条
@@ -320,6 +296,28 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         "organizationType":1,
                         "cardType":1,
                         "cardStatus":5
+                    });
+                }else if (obj.event=='itemEdit'){
+                    console.log(111)
+                    table.render({
+                        elem: '#device',
+                        url: Feng.ctxPath + '/device/list',
+                        page: true,
+                        defaultToolbar: [],
+                        height: "full-398",
+                        cellMinWidth: 100,
+                        where: {
+                            'cardType': 1,
+                            'cardOrUserId': obj.data.cardId
+                        },
+                        cols:[[
+                            {field: 'mac', align: 'center', title: 'MAC'},
+                            {field: 'ip', align: 'center', title: 'IP'},
+                            {field: 'ipAddress', align: 'center', title: 'IP地址'},
+                            {field: 'loginNum', align: 'center', title: '登录次数'},
+                            {field: 'updateTime', align: 'center', width: 100, sort: true, title: '上次登录时间'},
+                            {align: 'center', toolbar: '#tableBar', width: 50, fixed: 'right', title: '操作'}
+                        ]],
                     });
                 }else if (obj.event=='itemOvertime'){
                     laydate.render({
@@ -484,7 +482,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         defaultToolbar: ['filter', 'print'],
         height: "full-115",
         cellMinWidth: 100,
-        cols: CardInfo.initColumn()
+        cols: CardInfo.initColumn(),
+        done: function () {this.where={};}
     });
 
     // 搜索按钮点击事件
@@ -546,8 +545,10 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             CardInfo.openAddDlg();
         } else if (obj.event === 'refresh') {
             table.reload(CardInfo.tableId);
-        } else if (obj.event === 'batchRemove') {
-            CardInfo.batchRemove(obj)
+        } else if (obj.event === 'refresh') {
+            table.reload(CardInfo.tableId);
+        } else if (obj.event === 'export') {
+            CardInfo.openEditDlg(obj)
             //批量封禁
         }else if (obj.event === 'prohibition') {
             obj.name = '批量封禁';

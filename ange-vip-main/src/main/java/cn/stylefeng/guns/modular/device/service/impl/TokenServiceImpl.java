@@ -132,7 +132,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                         throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                     } else {
                         //顶号登录，直接生成新的
-                        if (appInfoApi.getAccountSignType() == 1) {
+                        if (appInfoApi.getCodeSignType() == 1) {
                             String tokenStr = delAndInsertToken(tokens, 1,appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                             throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                             //非顶号，提示
@@ -153,7 +153,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                     throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                 } else {
                     //顶号登录，直接生成新的
-                    if (appInfoApi.getAccountSignType() == 1) {
+                    if (appInfoApi.getCodeSignType() == 1) {
                         String tokenStr = delAndInsertToken(tokens,1, appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
                         throw new CardLoginException(200, apiManage.getAppId(),tokenStr,expireTime,holdCheck,true);
                         //非顶号，提示

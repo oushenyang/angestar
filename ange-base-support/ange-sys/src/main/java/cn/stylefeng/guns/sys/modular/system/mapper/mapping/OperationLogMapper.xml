@@ -19,6 +19,9 @@
     <sql id="Base_Column_List">
         operation_log_id AS "operationLogId", log_type AS "logType", log_name AS "logName", user_id AS "userId", class_name AS "className", method AS "method", create_time AS "createTime", succeed AS "succeed", message AS "message"
     </sql>
+    <delete id="deleteLog">
+        DELETE FROM sys_operation_log WHERE create_time &lt; (NOW() - INTERVAL 7 DAY)
+    </delete>
 
     <select id="getOperationLogs" resultType="map">
         select

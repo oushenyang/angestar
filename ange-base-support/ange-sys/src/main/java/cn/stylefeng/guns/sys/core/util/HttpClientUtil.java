@@ -1,4 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
+import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.base.auth.exception.OperationException;
+import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -10,12 +13,14 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -28,6 +33,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
@@ -44,7 +50,7 @@ import java.net.URLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
-
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -133,7 +139,7 @@ public class HttpClientUtil {
 
 
     //适用于post请求并传送form-data数据（同样适用于post的Raw类型的application-json格式）
-    public static String postParams(String url, Map<String, String> params) {
+    public static String postParams(String url, Map<String, String> params,Long appId,String holdCheck) {
         SSLContext sslcontext = createIgnoreVerifySSL();
         // 设置协议http和https对应的处理socket链接工厂的对象
         Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
@@ -144,7 +150,10 @@ public class HttpClientUtil {
 
         //创建自定义的httpclient对象
         CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(2000)
+                .setSocketTimeout(2000).setConnectTimeout(2000).build();
         HttpPost post = new HttpPost(url);
+        post.setConfig(requestConfig);
         CloseableHttpResponse res = null;
         try {
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -157,16 +166,19 @@ public class HttpClientUtil {
             HttpEntity entity = res.getEntity();
             return EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
         } finally {
             try {
-                res.close();
-                client.close();
+                if (ObjectUtil.isNotNull(res)){
+                    res.close();
+                    client.close();
+                }else {
+                    throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
             }
         }
-        return "";
     }
 
     //适用于post传对象（对象里有list）

@@ -16,6 +16,7 @@
     <style>
         /** 统计快捷方式样式 */
         .console-link-block {
+            cursor: pointer;
             font-size: 17px;
             padding: 20px 20px;
             border-radius: 4px;
@@ -187,7 +188,7 @@
     <!-- 快捷方式 -->
     <div class="layui-row layui-col-space10 ">
         <div class="layui-col-md2 layui-col-sm4 layui-col-xs6">
-            <div class="console-link-block">
+            <div class="console-link-block" ew-href="/appInfo" ew-title="软件列表">
                 <div class="console-link-block-num">${appNum!'0'}</div>
                 <div class="console-link-block-text">应用数量</div>
                 <i class="console-link-block-icon fa fa-windows"></i>
@@ -203,7 +204,7 @@
             </div>
         </div>
         <div class="layui-col-md2 layui-col-sm4 layui-col-xs6">
-            <div class="console-link-block">
+            <div class="console-link-block" ew-href="/cardInfo?type=1" ew-title="应用卡密">
                 <div class="console-link-block-num">${allCardNum!'0'}</div>
                 <div class="console-link-block-text">卡密数量</div>
                 <i class="console-link-block-icon fa fa-list-alt"
@@ -212,7 +213,7 @@
             </div>
         </div>
         <div class="layui-col-md2 layui-col-sm4 layui-col-xs6">
-            <div class="console-link-block">
+            <div class="console-link-block" ew-href="/cardInfo?type=1" ew-title="应用卡密">
                 <div class="console-link-block-num">${expireCardNum!'0'}</div>
                 <div class="console-link-block-text">过期卡密</div>
                 <i class="console-link-block-icon fa fa-chain-broken"></i>
@@ -220,7 +221,7 @@
             </div>
         </div>
         <div class="layui-col-md2 layui-col-sm4 layui-col-xs6">
-            <div class="console-link-block">
+            <div class="console-link-block" ew-href="/accountInfo" ew-title="用户列表">
                 <div class="console-link-block-num">${accountNum!'0'}</div>
                 <div class="console-link-block-text">用户数量</div>
                 <i class="console-link-block-icon fa fa-user"></i>
@@ -228,7 +229,7 @@
             </div>
         </div>
         <div class="layui-col-md2 layui-col-sm4 layui-col-xs6">
-            <div class="console-link-block">
+            <div class="console-link-block" ew-href="/agentApp?type=1" ew-title="代理列表">
                 <div class="console-link-block-num">${agentNum!'0'}</div>
                 <div class="console-link-block-text">代理数量</div>
                 <i class="console-link-block-icon fa fa-users"></i>

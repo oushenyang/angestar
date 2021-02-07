@@ -230,7 +230,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         // }, 'filter', 'print'],
         height: "full-115",
         cellMinWidth: 100,
-        cols: CodeCardType.initColumn()
+        cols: CodeCardType.initColumn(),
+        done: function () {this.where={};}
     });
 
     // 搜索按钮点击事件

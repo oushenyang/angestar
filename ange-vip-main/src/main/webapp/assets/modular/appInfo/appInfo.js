@@ -108,7 +108,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
             type: 2,
             area: '700px',
             title: title,
-            content: Feng.ctxPath + '/appInfo/edit?appId=' + data.appId+'&event='+event,
+            content: Feng.ctxPath + '/appInfo/edit?appId=' + data.appId +'&event='+event+'&appNum='+data.appNum,
             endCallback: function () {
                 AppInfo.loadAppInfo();
             }
@@ -129,6 +129,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("appId", data.appId);
+            ajax.set("appNum", data.appNum);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);

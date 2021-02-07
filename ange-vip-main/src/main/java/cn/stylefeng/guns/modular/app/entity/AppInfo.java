@@ -6,6 +6,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,7 @@ import java.io.Serializable;
  * @since 2020-04-01
  */
 @TableName("ag_app_info")
+@Data
 public class AppInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -106,16 +109,22 @@ public class AppInfo implements Serializable {
     private Integer codeBindOption;
 
     /**
-     * 单码重绑次数
+     * 单码绑机数量
      */
     @TableField("code_bind_num")
     private Integer codeBindNum;
 
     /**
+     * 单码重绑次数
+     */
+    @TableField("code_afresh_bind_num")
+    private Integer codeAfreshBindNum;
+
+    /**
      * 单码重绑扣时
      */
-    @TableField("code_bind_time")
-    private Integer codeBindTime;
+    @TableField("code_afresh_bind_time")
+    private Integer codeAfreshBindTime;
 
     /**
      * 账号绑机策略 0-关闭；1-MAC；2-IP；3-混合
@@ -130,16 +139,22 @@ public class AppInfo implements Serializable {
     private Integer accountBindOption;
 
     /**
-     * 账号重绑次数
+     * 账号绑机数量
      */
     @TableField("account_bind_num")
     private Integer accountBindNum;
 
     /**
+     * 账号重绑次数
+     */
+    @TableField("account_again_bind_num")
+    private Integer accountAfreshBindNum;
+
+    /**
      * 账号重绑扣时
      */
-    @TableField("account_bind_time")
-    private Integer accountBindTime;
+    @TableField("account_again_bind_time")
+    private Integer accountAfreshBindTime;
 
     /**
      * 单码多开范围 0-关闭；1-单设备；2-单IP；3-所有设备
@@ -251,16 +266,10 @@ public class AppInfo implements Serializable {
     private String webSalt;
 
     /**
-     * 接收Sgin验证
+     * Sign验证开关
      */
-    @TableField("sign_receive")
-    private String signReceive;
-
-    /**
-     * 输出Sgin验证
-     */
-    @TableField("sign_output")
-    private String signOutput;
+    @TableField("sign_flag")
+    private Boolean signFlag;
 
     /**
      * 外部验证：0-关闭；1-易游；2-万捷；
@@ -303,427 +312,4 @@ public class AppInfo implements Serializable {
      */
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private Date updateTime;
-
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public String getAppNum() {
-        return appNum;
-    }
-
-    public void setAppNum(String appNum) {
-        this.appNum = appNum;
-    }
-
-    public String getAppHead() {
-        return appHead;
-    }
-
-    public void setAppHead(String appHead) {
-        this.appHead = appHead;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-
-    public Integer getCydiaFlag() {
-        return cydiaFlag;
-    }
-
-    public void setCydiaFlag(Integer cydiaFlag) {
-        this.cydiaFlag = cydiaFlag;
-    }
-
-    public String getAppNotice() {
-        return appNotice;
-    }
-
-    public void setAppNotice(String appNotice) {
-        this.appNotice = appNotice;
-    }
-
-    public Integer getCardNum() {
-        return cardNum;
-    }
-
-    public void setCardNum(Integer cardNum) {
-        this.cardNum = cardNum;
-    }
-
-    public Integer getAccountNum() {
-        return accountNum;
-    }
-
-    public void setAccountNum(Integer accountNum) {
-        this.accountNum = accountNum;
-    }
-
-    public String getCustomData1() {
-        return customData1;
-    }
-
-    public void setCustomData1(String customData1) {
-        this.customData1 = customData1;
-    }
-
-    public String getCustomData2() {
-        return customData2;
-    }
-
-    public void setCustomData2(String customData2) {
-        this.customData2 = customData2;
-    }
-
-    public String getCustomData3() {
-        return customData3;
-    }
-
-    public void setCustomData3(String customData3) {
-        this.customData3 = customData3;
-    }
-
-    public Integer getCodeBindType() {
-        return codeBindType;
-    }
-
-    public void setCodeBindType(Integer codeBindType) {
-        this.codeBindType = codeBindType;
-    }
-
-    public Integer getCodeBindOption() {
-        return codeBindOption;
-    }
-
-    public void setCodeBindOption(Integer codeBindOption) {
-        this.codeBindOption = codeBindOption;
-    }
-
-    public Integer getCodeBindNum() {
-        return codeBindNum;
-    }
-
-    public void setCodeBindNum(Integer codeBindNum) {
-        this.codeBindNum = codeBindNum;
-    }
-
-    public Integer getCodeBindTime() {
-        return codeBindTime;
-    }
-
-    public void setCodeBindTime(Integer codeBindTime) {
-        this.codeBindTime = codeBindTime;
-    }
-
-    public Integer getAccountBindType() {
-        return accountBindType;
-    }
-
-    public void setAccountBindType(Integer accountBindType) {
-        this.accountBindType = accountBindType;
-    }
-
-    public Integer getAccountBindOption() {
-        return accountBindOption;
-    }
-
-    public void setAccountBindOption(Integer accountBindOption) {
-        this.accountBindOption = accountBindOption;
-    }
-
-    public Integer getAccountBindNum() {
-        return accountBindNum;
-    }
-
-    public void setAccountBindNum(Integer accountBindNum) {
-        this.accountBindNum = accountBindNum;
-    }
-
-    public Integer getAccountBindTime() {
-        return accountBindTime;
-    }
-
-    public void setAccountBindTime(Integer accountBindTime) {
-        this.accountBindTime = accountBindTime;
-    }
-
-    public Integer getCodeOpenRange() {
-        return codeOpenRange;
-    }
-
-    public void setCodeOpenRange(Integer codeOpenRange) {
-        this.codeOpenRange = codeOpenRange;
-    }
-
-    public Integer getCodeSignType() {
-        return codeSignType;
-    }
-
-    public void setCodeSignType(Integer codeSignType) {
-        this.codeSignType = codeSignType;
-    }
-
-    public Integer getCodeClearSpace() {
-        return codeClearSpace;
-    }
-
-    public void setCodeClearSpace(Integer codeClearSpace) {
-        this.codeClearSpace = codeClearSpace;
-    }
-
-    public Integer getCodeOpenNum() {
-        return codeOpenNum;
-    }
-
-    public void setCodeOpenNum(Integer codeOpenNum) {
-        this.codeOpenNum = codeOpenNum;
-    }
-
-    public Integer getAccountOpenRange() {
-        return accountOpenRange;
-    }
-
-    public void setAccountOpenRange(Integer accountOpenRange) {
-        this.accountOpenRange = accountOpenRange;
-    }
-
-    public Integer getAccountSignType() {
-        return accountSignType;
-    }
-
-    public void setAccountSignType(Integer accountSignType) {
-        this.accountSignType = accountSignType;
-    }
-
-    public Integer getAccountClearSpace() {
-        return accountClearSpace;
-    }
-
-    public void setAccountClearSpace(Integer accountClearSpace) {
-        this.accountClearSpace = accountClearSpace;
-    }
-
-    public Integer getAccountOpenNum() {
-        return accountOpenNum;
-    }
-
-    public void setAccountOpenNum(Integer accountOpenNum) {
-        this.accountOpenNum = accountOpenNum;
-    }
-
-    public Integer getCodeTryType() {
-        return codeTryType;
-    }
-
-    public void setCodeTryType(Integer codeTryType) {
-        this.codeTryType = codeTryType;
-    }
-
-    public Integer getCodeTryTime() {
-        return codeTryTime;
-    }
-
-    public void setCodeTryTime(Integer codeTryTime) {
-        this.codeTryTime = codeTryTime;
-    }
-
-    public Boolean getAccountRegisterSwitch() {
-        return accountRegisterSwitch;
-    }
-
-    public void setAccountRegisterSwitch(Boolean accountRegisterSwitch) {
-        this.accountRegisterSwitch = accountRegisterSwitch;
-    }
-
-    public Integer getAccountRegisterLimit() {
-        return accountRegisterLimit;
-    }
-
-    public void setAccountRegisterLimit(Integer accountRegisterLimit) {
-        this.accountRegisterLimit = accountRegisterLimit;
-    }
-
-    public Integer getAccountRegisterNum() {
-        return accountRegisterNum;
-    }
-
-    public void setAccountRegisterNum(Integer accountRegisterNum) {
-        this.accountRegisterNum = accountRegisterNum;
-    }
-
-    public Integer getAccountRegisterTime() {
-        return accountRegisterTime;
-    }
-
-    public void setAccountRegisterTime(Integer accountRegisterTime) {
-        this.accountRegisterTime = accountRegisterTime;
-    }
-
-    public Integer getWebAlgorithmRange() {
-        return webAlgorithmRange;
-    }
-
-    public void setWebAlgorithmRange(Integer webAlgorithmRange) {
-        this.webAlgorithmRange = webAlgorithmRange;
-    }
-
-    public Integer getWebAlgorithmType() {
-        return webAlgorithmType;
-    }
-
-    public void setWebAlgorithmType(Integer webAlgorithmType) {
-        this.webAlgorithmType = webAlgorithmType;
-    }
-
-    public String getWebKey() {
-        return webKey;
-    }
-
-    public void setWebKey(String webKey) {
-        this.webKey = webKey;
-    }
-
-    public String getWebSalt() {
-        return webSalt;
-    }
-
-    public void setWebSalt(String webSalt) {
-        this.webSalt = webSalt;
-    }
-
-    public String getSignReceive() {
-        return signReceive;
-    }
-
-    public void setSignReceive(String signReceive) {
-        this.signReceive = signReceive;
-    }
-
-    public String getSignOutput() {
-        return signOutput;
-    }
-
-    public void setSignOutput(String signOutput) {
-        this.signOutput = signOutput;
-    }
-
-    public Integer getOtherSign() {
-        return otherSign;
-    }
-
-    public void setOtherSign(Integer otherSign) {
-        this.otherSign = otherSign;
-    }
-
-    public String getProvingUrl() {
-        return provingUrl;
-    }
-
-    public void setProvingUrl(String provingUrl) {
-        this.provingUrl = provingUrl;
-    }
-
-    public Long getVersionNum() {
-        return versionNum;
-    }
-
-    public void setVersionNum(Long versionNum) {
-        this.versionNum = versionNum;
-    }
-
-    public Long getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Long createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Long updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "AppInfo{" +
-        "appId=" + appId +
-        ", appNum=" + appNum +
-        ", userId=" + userId +
-        ", appName=" + appName +
-        ", appHead=" + appHead +
-        ", cydiaFlag=" + cydiaFlag +
-        ", appNotice=" + appNotice +
-        ", customData1=" + customData1 +
-        ", customData2=" + customData2 +
-        ", customData3=" + customData3 +
-        ", codeBindType=" + codeBindType +
-        ", codeBindOption=" + codeBindOption +
-        ", codeBindNum=" + codeBindNum +
-        ", codeBindTime=" + codeBindTime +
-        ", accountBindType=" + accountBindType +
-        ", accountBindOption=" + accountBindOption +
-        ", accountBindNum=" + accountBindNum +
-        ", accountBindTime=" + accountBindTime +
-        ", codeOpenRange=" + codeOpenRange +
-        ", codeClearSpace=" + codeClearSpace +
-        ", codeSignType=" + codeSignType +
-        ", codeOpenNum=" + codeOpenNum +
-        ", accountOpenRange=" + accountOpenRange +
-        ", accountSignType=" + accountSignType +
-        ", accountClearSpace=" + accountClearSpace +
-        ", accountOpenNum=" + accountOpenNum +
-        ", codeTryType=" + codeTryType +
-        ", codeTryTime=" + codeTryTime +
-        ", accountRegisterSwitch=" + accountRegisterSwitch +
-        ", accountRegisterLimit=" + accountRegisterLimit +
-        ", accountRegisterNum=" + accountRegisterNum +
-        ", accountRegisterTime=" + accountRegisterTime +
-        ", webAlgorithmType=" + webAlgorithmType +
-        ", webKey=" + webKey +
-        ", webSalt=" + webSalt +
-        ", versionNum=" + versionNum +
-        ", createUser=" + createUser +
-        ", createTime=" + createTime +
-        ", updateUser=" + updateUser +
-        ", updateTime=" + updateTime +
-        "}";
-    }
 }
