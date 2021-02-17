@@ -96,6 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.GET,
                         "/assets/**",
                         "/favicon.ico",
+                        "/web/**",
                         "/activiti-editor/**"
                 );
 

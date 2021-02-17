@@ -70,6 +70,7 @@ public class NoneAuthedResources {
 
             //单码登录
             "/cardLogin/*",
+            "/urule/frame",
             //检测单码用户状态
             "/checkCardStatus/*",
             "/api/**",
