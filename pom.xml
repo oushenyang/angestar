@@ -11,17 +11,17 @@
     </parent>
 
     <groupId>cn.stylefeng</groupId>
-    <artifactId>ange-vip</artifactId>
+    <artifactId>kettle</artifactId>
     <version>1.0.0</version>
 
-    <name>ange-vip</name>
-    <description>guns开源版</description>
+    <name>kettle</name>
+    <description>kettle后台</description>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>ange-base-support</module>
-        <module>ange-vip-main</module>
+        <module>kettle-base-support</module>
+        <module>kettle-main</module>
     </modules>
 
     <properties>
