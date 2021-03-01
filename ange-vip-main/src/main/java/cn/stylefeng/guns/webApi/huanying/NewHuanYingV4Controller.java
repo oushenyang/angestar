@@ -91,9 +91,12 @@ public class NewHuanYingV4Controller {
         String app_pkg = HttpContext.getRequest().getParameter("app_pkg");
         String app_version = HttpContext.getRequest().getParameter("app_version");
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
+        token = "823C016854EADD58D80ADFEBCFF3C935DDB00D7E1DD66B3A3226D6494ED81E8D99303A5C271A63B597CFE1E75D404A72D7161ADDB4A0A7F5090EA21CCCEC62B3E0BE5EC8088625711C80AA7E7D5037FA18E81559D6910E721BE1CAE787136E7FB93DDF5FA96FD1FDF16384F6CA44A4BC5144ADF76CE501E1";
         //应用名称
-        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
-        String application = HttpContext.getRequest().getParameter("an");
+//        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String virtualId = "18AEB64F337F9CD63528DC262B7417704B4BB374C3C4C1EB";
+//        String application = HttpContext.getRequest().getParameter("an");
+        String application = "3D2762F32E1EB552EDADBF98DE0914ED";
         String sign;
         String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){

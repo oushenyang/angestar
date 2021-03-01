@@ -16,6 +16,7 @@ import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,9 +58,12 @@ public class NewHuanYingV3Controller {
     @RequestMapping("/user")
     @ResponseBody
     public String user(@RequestHeader(value = "User-Token", required = false) String token){
+        token = "823C016854EADD58D80ADFEBCFF3C935DDB00D7E1DD66B3A3226D6494ED81E8D99303A5C271A63B597CFE1E75D404A72D7161ADDB4A0A7F5090EA21CCCEC62B3E0BE5EC8088625711C80AA7E7D5037FA18E81559D6910E721BE1CAE787136E7FB93DDF5FA96FD1FDF16384F6CA44A4BC5144ADF76CE501E1";
         //应用名称
-        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
-        String application = HttpContext.getRequest().getParameter("an");
+//        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String virtualId = "18AEB64F337F9CD63528DC262B7417704B4BB374C3C4C1EB";
+//        String application = HttpContext.getRequest().getParameter("an");
+        String application = "3D2762F32E1EB552EDADBF98DE0914ED";
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         String sign;
         String applicationName = null;
@@ -144,9 +148,12 @@ public class NewHuanYingV3Controller {
     @RequestMapping("/appactive")
     @ResponseBody
     public String appactive(@RequestHeader(value = "User-Token", required = false) String token){
+        token = "823C016854EADD58D80ADFEBCFF3C935DDB00D7E1DD66B3A3226D6494ED81E8D99303A5C271A63B597CFE1E75D404A72D7161ADDB4A0A7F5090EA21CCCEC62B3E0BE5EC8088625711C80AA7E7D5037FA18E81559D6910E721BE1CAE787136E7FB93DDF5FA96FD1FDF16384F6CA44A4BC5144ADF76CE501E1";
         //应用名称
-        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
-        String application = HttpContext.getRequest().getParameter("an");
+//        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String virtualId = "18AEB64F337F9CD63528DC262B7417704B4BB374C3C4C1EB";
+//        String application = HttpContext.getRequest().getParameter("an");
+        String application = "3D2762F32E1EB552EDADBF98DE0914ED";
         String sign;
         String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
@@ -228,11 +235,13 @@ public class NewHuanYingV3Controller {
     public String regps(){
         double lat = Double.parseDouble(HttpContext.getRequest().getParameter("lat"));
         double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
-        GPS aps = GPSAllUtils.g(lat,lon);
+        GPS aps = GPSAllUtils.f(lat,lon);
         GPSHyResult gpsHyResult = new GPSHyResult(aps.getLatitude(),aps.getLongitude());
         List<GPSHyResult> gpsHyResultList = new ArrayList<>();
         gpsHyResultList.add(gpsHyResult);
-        String a = JSON.toJSONString(gpsHyResultList);
+        Gson gson = new Gson();
+        String a = gson.toJson(gpsHyResultList);
+//        String a = JSON.toJSONString(gpsHyResultList);
         String aaa = AESECBUtil.Encrypt(a, "0b31c497990cc6ee");
         assert aaa != null;
         aaa = aaa.replaceAll("\r|\n", "");
@@ -255,9 +264,12 @@ public class NewHuanYingV3Controller {
         if (StringUtils.isEmpty(model)){
             model = utDid;
         }
+        token = "823C016854EADD58D80ADFEBCFF3C935DDB00D7E1DD66B3A3226D6494ED81E8D99303A5C271A63B597CFE1E75D404A72D7161ADDB4A0A7F5090EA21CCCEC62B3E0BE5EC8088625711C80AA7E7D5037FA18E81559D6910E721BE1CAE787136E7FB93DDF5FA96FD1FDF16384F6CA44A4BC5144ADF76CE501E1";
         //应用名称
-        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
-        String application = HttpContext.getRequest().getParameter("an");
+//        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String virtualId = "18AEB64F337F9CD63528DC262B7417704B4BB374C3C4C1EB";
+//        String application = HttpContext.getRequest().getParameter("an");
+        String application = "3D2762F32E1EB552EDADBF98DE0914ED";
         String sign;
         String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
@@ -298,9 +310,12 @@ public class NewHuanYingV3Controller {
         if (StringUtils.isEmpty(model)){
             model = utDid;
         }
+        token = "823C016854EADD58D80ADFEBCFF3C935DDB00D7E1DD66B3A3226D6494ED81E8D99303A5C271A63B597CFE1E75D404A72D7161ADDB4A0A7F5090EA21CCCEC62B3E0BE5EC8088625711C80AA7E7D5037FA18E81559D6910E721BE1CAE787136E7FB93DDF5FA96FD1FDF16384F6CA44A4BC5144ADF76CE501E1";
         //应用名称
-        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
-        String application = HttpContext.getRequest().getParameter("an");
+//        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String virtualId = "18AEB64F337F9CD63528DC262B7417704B4BB374C3C4C1EB";
+//        String application = HttpContext.getRequest().getParameter("an");
+        String application = "3D2762F32E1EB552EDADBF98DE0914ED";
         String sign;
         String applicationName = null;
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)||StringUtils.isEmpty(application)){
