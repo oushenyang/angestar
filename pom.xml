@@ -11,17 +11,17 @@
     </parent>
 
     <groupId>cn.stylefeng</groupId>
-    <artifactId>kettle</artifactId>
+    <artifactId>ange-vip</artifactId>
     <version>1.0.0</version>
 
-    <name>kettle</name>
-    <description>kettle后台</description>
+    <name>ange-vip</name>
+    <description>暗格网络验证</description>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>kettle-base-support</module>
-        <module>kettle-main</module>
+        <module>ange-base-support</module>
+        <module>ange-vip-main</module>
     </modules>
 
     <properties>
