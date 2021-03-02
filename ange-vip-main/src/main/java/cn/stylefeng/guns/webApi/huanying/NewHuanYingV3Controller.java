@@ -11,6 +11,7 @@ import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.result.GPSHyResult;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
+import cn.stylefeng.guns.webApi.huanying.model.result.HyUserResult;
 import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
@@ -70,6 +71,9 @@ public class NewHuanYingV3Controller {
         if (appversioncode.equals("129")&&StringUtils.isEmpty(application)){
             return null;
         }
+        if (appversioncode.equals("131")&&StringUtils.isEmpty(application)){
+            return null;
+        }
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
@@ -92,20 +96,46 @@ public class NewHuanYingV3Controller {
         }
         boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
         Map<String, Object> map = new HashMap<>();
-        if (appversioncode.equals("129")){
-            map.put("data", "NUz9cKV14+jz7sdajasRsTiztQ1MkDkSPnBmPTsSp8P2fqlKaqtYlXEHs8swgKb2MERNcxpBJkP9" +
-                    "VvGnl+tHSugjkpYvjZCRdoZxWPeXhQ+b+SZXvAvibESFu7FQ895LT4v6leZ+eX6ZUSAHmCL0rSYu" +
-                    "Hcj4W+Gm1UDpmwsWiN2q1hX+KpYyrSeJ2Qw188s8fpzulDYM626/xMLM/ilGd47HwyIoDft366SN" +
-                    "12Zb6sZCMMhXggrmGBwpJHV0rxOZq0PJqhnrWpIkGhvkvjkVfGuj+H+85fYVn6z1krak+rGb/kxD" +
-                    "KOgIhA5yGzmB1aMWa4ddBr2y+IAxYUzBvKC9Po4uQDRjBbrZG++D4KIBSwYcbcTey1VFTCBJbw/U" +
-                    "53Yj7N9ZBmKwSZ9ajcF0gxjluDPzgj3gf4R1Ps89KH3dtNPiOnxiMMc3RBQWo167r1sO7xatOzOW" +
-                    "orEIOdIzHWBr9LL4WbhKJUrtgpyJurA9OaUszaBr4YItiLH8l3uR5lbOlnaJHaITo9hlALCn9q2H" +
-                    "9rfVHVqwZo1Emr6+9JkPgvhHNatPJbg8BTqEu21lD+RLCvGhJ9bmEVkceKc3qGvk0IuOq+8oQNkC" +
-                    "I+6MAw78nNTr8d7SdE2fiENpV1E0+qs8lvrmGZC4+T6r4tWoQ5Ns9pe/NjMPtHLroBxJHkXWc3Fn" +
-                    "w0F5YPh1Oi4uE0SDbNVTGrADyLFTKP8y/GT31UkrwnPNIcA00Bdk9AysR3+9Dth14BFtVDf/RAro" +
-                    "1+cG6rgC+tJMFFPyjL/D2aFMT7VK5J6h8DSIyaMKuuuaKcN0D8jCNQ/C0wu18Tah12ShyORTCjtz" +
-                    "W5Ko1AhnUliZ4s3bzW7q5eI+HqN0cUOanflu2jCnT/tvslNru4J5c0DaLfCpUlxuaod4mHJH19yB" +
-                    "Beda3MnLDr9Tsx6VVENLio3EjxNaPWy3Ja5dJQhFy3SlEx7qNSYgfwiXKSAqWVtS0EnpJg==");
+        if (appversioncode.equals("129")||appversioncode.equals("131")){
+            HyUserResult hyUserResult = new HyUserResult();
+            hyUserResult.setStatus(0);
+            hyUserResult.setAppurl("www.lanzous.com/clone");
+            hyUserResult.setLeftmoney("0");
+            hyUserResult.setInchina(1);
+            hyUserResult.setVersioncode("10");
+            hyUserResult.setTag(0);
+            hyUserResult.setOldinviteid("");
+            hyUserResult.setStonetime(1546272000000L);
+            hyUserResult.setValidnum(0);
+            hyUserResult.setGoogleversioncode("6");
+            hyUserResult.setProxyratio("0.1");
+            hyUserResult.setTotalnum(0);
+            hyUserResult.setTotalmoney("0");
+            hyUserResult.setPoints(0);
+            hyUserResult.setClosed(0);
+            hyUserResult.setViptype(3);
+            hyUserResult.setUsername("15156041422");
+            hyUserResult.setRealname("");
+//            hyUserResult.setMyappkey("31f8df9f0478eaa8");
+            hyUserResult.setInviteid("5D8CLY");
+            hyUserResult.setZfb("");
+            hyUserResult.setImsis("");
+            hyUserResult.setVirtual_id("124fec533f25eb12a01ad82d5eaab46a");
+            hyUserResult.setImeis("Xiaomi_M2011K2C|YAfDSMpjAHUDAK4yVkTxVJ4O,Xiaomi_Mi10Pro|X//n8lot5fkDANeuGVdI/Ja6,Xiaomi_RedmiK20ProPremiumEdition|XhAxKdCn3TwDAFwETYuwio1m");
+            hyUserResult.setInvitenum(0);
+            hyUserResult.setProxyid("5D8CLY");
+            hyUserResult.setFatherid("0");
+            hyUserResult.setUserid("Xiaomi_RedmiK20ProPremiumEdition|WvMZuYLQ0W4DAArXTsQddFXj");
+//            hyUserResult.setToken("de1686230d41a96d9c1ce179b8eb8b8f");
+            hyUserResult.setVipphone("None");
+            hyUserResult.setChannel("china");
+            hyUserResult.setStarttime(1558276363000L);
+            hyUserResult.setDeadline(1930452055000L);
+            String a = JSON.toJSONString(hyUserResult);
+            String aaa = AESECBUtil.Encrypt(a, "0b31c497990cc6ee");
+            assert aaa != null;
+            aaa = aaa.replaceAll("\r|\n", "");
+            map.put("data", aaa);
         }else {
             map.put("data","h9M9kQsr/d+/mG43m8PfkKl1eJGN4Jrr2/XvSj2zVs/aZpXPZgg73oJcUjlpK33BVIbdFMBuuRMr82QrX3uRBvXozAZVWs2k95uAzFGJmFNlbYXQTvhr+vzOtYaWOW0FOFrNgHV0JZDO28Fmcb8DY+l9n44wZN7syIaHl/SDFA58FBGMVZVTm9jM+ApjKInmchgxljBCEOcxyo7YsvjMFT1ILzrgMzvoaaIMuqP7B4NpPp4x2Hbf2tbKNT55CvLuL8E4ctWmIDHNmzefT7gvWgFEvQImldioI4UWdxaBcwV4Q8vv4/xv0aMBHXyuvkW1yg83i01pCEBaUDszCm7uq4ptk0GD1grdysRgW+NWsPIXSLSsmhvQTkJzMUW7jpJZN35gzerV9kUxMMSaJunU/fzGnfR1iJ/VGBw00HS0kiJoX3cZEoN15VBwYbvIIcaKepeyR9SCiVXQLGPOdxbqOEaAdbwQiMbb1l5ZELRyaeeGTirbVVlVxMnk8Zi3j91rs5Jfjka9dLQIcI3sc5vFpt57vQOX1hffOLq7U1t5FxNq7S/qIom1/tqXr03cvMLtCYjayE8CFxiplfNk2EdfkLHhvFaSLJwei6MGAWG3meGQs8TUUb3P1UUAEOWALAoFEPV0YRIAP7Cs86hapIKjy1W6NE4NZoj2xaLKs2oobUHzMKEJ02GHCXwLT7z9EJ6dTdtnJ9tht4OnUIm+tS5GLPAIX7zjxhnKnbKP3A4v7JZ6QIhUjDCAJfnWuDjtTqwXhg31f6XtRoyarn5LyiXDZFy824TweySPrSCk9NnwoteJQ/J1gtKcQgSlgqA1bcEIV3vLzd1gpeHd4zZJF0esIamdzMumIEBYCwmuSvpgRFt+siLJ6kMdKi3f90oRu4mILVWGG7mVAdWboraKa+qIgKz9Xfuo6ajmMEAB+lzkufgCXRkg+sZsWDhDkuQrRJWYw1G07puNpN0G/+gM0nWwCQ==");
         }
@@ -235,7 +265,34 @@ public class NewHuanYingV3Controller {
     public String regps(){
         double lat = Double.parseDouble(HttpContext.getRequest().getParameter("lat"));
         double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
-        GPS aps = GPSAllUtils.f(lat,lon);
+        GPS aps = new GPS();
+        String type = ConstantsContext.getLocationType();
+        if ("a".equals(type)){
+            aps.setLatitude(GPSAllUtils.a(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.a(lat,lon)[1]);
+        }else if ("b".equals(type)){
+            aps.setLatitude(GPSAllUtils.b(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.b(lat,lon)[1]);
+        }else if ("c".equals(type)){
+            aps.setLatitude(GPSAllUtils.c(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.c(lat,lon)[1]);
+        }else if ("d".equals(type)){
+            aps.setLatitude(GPSAllUtils.d(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.d(lat,lon)[1]);
+        }else if ("e".equals(type)){
+            aps.setLatitude(GPSAllUtils.e(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.e(lat,lon)[1]);
+        }else if ("f".equals(type)){
+            aps.setLatitude(GPSAllUtils.f(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.f(lat,lon)[1]);
+        }else if ("g".equals(type)){
+            aps.setLatitude(GPSAllUtils.g(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.g(lat,lon)[1]);
+        }else if ("h".equals(type)){
+            aps.setLatitude(GPSAllUtils.h(lat,lon)[0]);
+            aps.setLongitude(GPSAllUtils.h(lat,lon)[1]);
+        }
+
         GPSHyResult gpsHyResult = new GPSHyResult(aps.getLatitude(),aps.getLongitude());
         List<GPSHyResult> gpsHyResultList = new ArrayList<>();
         gpsHyResultList.add(gpsHyResult);
@@ -423,6 +480,12 @@ public class NewHuanYingV3Controller {
             if (CollectionUtil.isNotEmpty(hyAppResults)){
                 hyAppResults.forEach(hyAppResult -> {
                     hyAppResult.setName(ConstantsContext.getPirateOpenText());
+                    if (hyAppResult.getPackAge().equals("com.tencent.mm")){
+                        hyAppResult.setAppinfoid("https://dldir1.qq.com/weixin/android/weixin800android1840.apk");
+                    }else if (hyAppResult.getPackAge().equals("com.immomo.momo")){
+                        hyAppResult.setAppinfoid("https://www-public-static.oss-cn-beijing.aliyuncs.com/momo.apk");
+                    }
+                    hyAppResult.setAppinfoid("http://www.hyer.vip");
                 });
             }
         }

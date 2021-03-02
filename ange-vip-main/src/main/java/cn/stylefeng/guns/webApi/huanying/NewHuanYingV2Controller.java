@@ -295,7 +295,7 @@ public class NewHuanYingV2Controller {
         hyUserResult.setVipphone("None");
         hyUserResult.setChannel("china");
         hyUserResult.setStarttime(1558276363000L);
-        hyUserResult.setDeadline(1614919255000L);
+        hyUserResult.setDeadline(1930452055000L);
         String a = JSON.toJSONString(hyUserResult);
         String aaa = AESECBUtil.Encrypt(a, "0b31c497990cc6ee");
         assert aaa != null;

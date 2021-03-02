@@ -84,6 +84,14 @@ public class ConstantsContext {
     }
 
     /**
+     * 定位方式
+     */
+    public static String getLocationType() {
+        String pirateOpen = (String) CONSTNTS_HOLDER.get("location_type");
+       return pirateOpen;
+    }
+
+    /**
      * 获取盗版制裁显示开关
      */
     public static Boolean getPirateOpen2() {

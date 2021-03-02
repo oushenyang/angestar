@@ -134,6 +134,8 @@ public class NewHuanYingV4Controller {
             List<Dict> dicts = new ArrayList<>();
             if (appversioncode.equals("129")){
                 dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
+            }else if (appversioncode.equals("131")){
+                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
             }else {
                 dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
             }
@@ -141,7 +143,7 @@ public class NewHuanYingV4Controller {
             boolean isChu = false;
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
-                    if (appversioncode.equals("129")){
+                    if (appversioncode.equals("129")||appversioncode.equals("131")){
                         String appkey = dict.getDescription();
                         if (StringUtils.isEmpty(appkey)){
                             appkey = "Abandoned";

@@ -29,10 +29,10 @@ public class GPSAllUtils {
         return new double[]{Math.sin(atan2) * sqrt, sqrt * Math.cos(atan2)};
     }
 
-//    public static double[] c(double d2, double d3) {
-//        double[] b2 = b(d2, d3);
-//        return f(b2[0], b2[1]);
-//    }
+    public static double[] c(double d2, double d3) {
+        double[] b2 = b(d2, d3);
+        return f(b2[0], b2[1]);
+    }
 
     public static double[] d(double d2, double d3) {
         double[] e = e(d2, d3);
@@ -52,17 +52,17 @@ public class GPSAllUtils {
         return dArr;
     }
 
-    public static GPS f(double d2, double d3) {
+    public static double[] f(double d2, double d3) {
         double[] dArr = new double[2];
         if (i(d2, d3)) {
             dArr[0] = d2;
             dArr[1] = d3;
-            return new GPS(dArr[0], dArr[1]);
+            return dArr;
         }
         double[] h = h(d2, d3);
         dArr[0] = d2 - h[0];
         dArr[1] = d3 - h[1];
-        return new GPS(dArr[0], dArr[1]);
+        return dArr;
     }
 
     public static double[] g(double d2, double d3) {
@@ -175,16 +175,16 @@ public class GPSAllUtils {
     public static void main(String[] args) {
         double[] a = a(39.909187,116.397451);
         double[] b = b(39.909187,116.397451);
-//        double[] c = c(39.909187,116.397451);
-//        GPS d = d(39.909187,116.397451);
+        double[] c = c(39.909187,116.397451);
+        double[] d = d(39.909187,116.397451);
         double[] e = e(39.909187,116.397451);
-//        double[] f = f(39.909187,116.397451);
+        double[] f = f(39.909187,116.397451);
         double[] g = g(39.909187,116.397451);
         double[] h = h(39.909187,116.397451);
         System.out.println(a[0]+","+a[1]);
         System.out.println(b[0]+","+b[1]);
 //        System.out.println(c[0]+","+c[1]);
-//        System.out.println(d.getLatitude()+","+d.getLongitude());
+//        System.out.println("f:"+f.getLatitude()+","+f.getLongitude());
 //        System.out.println(d[0]+","+d[1]);
         System.out.println(e[0]+","+e[1]);
 //        System.out.println("f"+f[0]+","+f[1]);
