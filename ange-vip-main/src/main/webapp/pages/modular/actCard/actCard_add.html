@@ -1,0 +1,49 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/actCard/actCard_add.js"]}){
+<form id="cardInfoForm" lay-filter="cardInfoForm"  style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="cardId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="cardTypeId" lay-search="" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
+                    <option value="">请选择卡密类型</option>
+                    @if(isNotEmpty(agentCardResults)){
+                    @for(codeCardType in agentCardResults) {
+                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                    @}
+                </select>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义头</label>
+            <div class="layui-input-block">
+                <input id="cardTypePrefix" name="cardTypePrefix" placeholder="请输入自定义头" maxlength="5" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="addNum" name="addNum" placeholder="请输入新增数量" type="number" class="layui-input" min="1" max="200" lay-verify="required|numberX|h5" oninput="if(value>200)value=200;if(value<1)value=1" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">生成后激活</label>
+            <div class="layui-input-block">
+                <input id="isActivation" name="isActivation" type="checkbox"  lay-filter="isActivation" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">卡密备注</label>
+            <div class="layui-input-block">
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

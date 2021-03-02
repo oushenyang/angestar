@@ -1,0 +1,180 @@
+<style>
+    .layui-form-select dl{
+        z-index: 19891018;
+    }
+</style>
+<form id="cardEditForm" lay-filter="cardEditForm" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+<!--        <input name="cardId" type="hidden"/>-->
+<!--        <div>SEX: {{d.sex}}</div>-->
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label layui-form-required">操作范围</label>
+            <div class="layui-input-block">
+                <input type="radio" class="layui-input" name="operateFlag" value="0" lay-filter="operateFlag" title="选中" checked="">
+                <input type="radio" class="layui-input" name="operateFlag" value="1" lay-filter="operateFlag" title="自定义">
+            </div>
+        </div>
+
+        @if(tool.isNotEmpty(type)){
+        @if(type==1){
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作应用</label>
+            <div class="layui-input-block">
+                <select name="operateApp" lay-verType="tips" lay-filter="operateApp" disabled required>
+                    <option value="1">全部</option>
+<!--                    <option value="0">通用卡密（对所有应用生效）</option>-->
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}"
+                            @if(appId== appInfo.appId) {
+                            selected="selected"
+                            @}
+                    >${appInfo.appName}
+                    </option>
+                    @}
+                </select>
+            </div>
+        </div>
+        @}
+        @if(type==0){
+        <input name="operateApp" value="0" type="hidden">
+        @}
+        @}
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作卡类</label>
+            <div class="layui-input-block">
+                <select name="cardType" class="cardType" lay-search="" lay-filter="cardType" lay-verType="tips" disabled>
+                    <option value="1">全部</option>
+                    @if(tool.isNotEmpty(type)){
+                    @for(codeCardType in codeCardTypes) {
+                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                    @}
+                </select>
+            </div>
+        </div>
+        {{# if(d.event == 'prohibition'){ }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardStatus" class="cardStatus" lay-search="" lay-verType="tips" disabled>
+                    <option value="1" selected="selected">全部</option>
+                    <option value="2">未激活</option>
+                    <option value="3">已激活</option>
+                    <option value="4">已过期</option>
+                </select>
+            </div>
+        </div>
+        {{# } else if(d.event == 'unsealing'){ }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardStatus" class="cardStatus" lay-search="" lay-verType="tips" disabled>
+                    <option value="5">已禁用</option>
+                </select>
+            </div>
+        </div>
+        {{# } else if(d.event == 'overtime'){ }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardStatus" class="cardStatus" lay-search="" lay-verType="tips" disabled>
+                    <option value="1" selected="selected">全部</option>
+                    <option value="2">未激活</option>
+                    <option value="3">已激活</option>
+                    <option value="4">已过期</option>
+                </select>
+            </div>
+        </div>
+        {{# } else{ }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密状态</label>
+            <div class="layui-input-block">
+                <select name="cardStatus" class="cardStatus" lay-search="" lay-verType="tips" disabled>
+                    <option value="1" selected="selected">全部</option>
+                    <option value="2">未激活</option>
+                    <option value="3">已激活</option>
+                    <option value="4">已过期</option>
+                    <option value="5">已禁用</option>
+                </select>
+            </div>
+        </div>
+        {{# } }}
+
+        {{# if(d.event == 'prohibition'){ }}
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">封禁备注</label>
+            <div class="layui-input-block">
+                <textarea id="prohibitRemark" name="prohibitRemark" placeholder="请输入封禁备注" maxlength="128" class="layui-textarea layext-text-tool"></textarea>
+            </div>
+        </div>
+        {{# } else if(d.event == 'overtime'){ }}
+        <div class="layui-form-item" >
+            <label class="layui-form-label">指定日期</label>
+            <div class="layui-input-block">
+                <input id="addTime" name="addTime" placeholder="请选择指定日期" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">天数</label>
+            <div class="layui-input-block">
+                <input id="addDayNum" name="addDayNum" lay-filter="addDayNum"  placeholder="请输入天数" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">小时</label>
+            <div class="layui-input-block">
+                <input id="addHourNum" name="addHourNum" lay-filter="addHourNum"  placeholder="请输入小时" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">分钟</label>
+            <div class="layui-input-block">
+                <input id="addMinuteNum" name="addMinuteNum" lay-filter="addMinuteNum"  placeholder="请输入分钟" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        {{# } else if(d.event == 'editRemark'){ }}
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label layui-form-required">卡密备注</label>
+            <div class="layui-input-block">
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" lay-verify="required" maxlength="128" class="layui-textarea layext-text-tool"></textarea>
+            </div>
+        </div>
+        {{# } else if(d.event == 'export'){ }}
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label layui-form-required">导出类型</label>
+            <div class="layui-input-block">
+                <input type="radio" class="layui-input" name="exportFlag" value="0" lay-filter="exportFlag" title="txt" checked="">
+                <input type="radio" class="layui-input" name="exportFlag" value="1" lay-filter="exportFlag" title="excel">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">导出字段</label>
+            <div class="layui-input-block">
+                <select name="exportField" class="exportField" lay-search="" lay-verType="tips">
+                    <option value="1" selected="selected">仅卡密</option>
+                    <option value="2">卡密|激活时间|到期时间</option>
+                    <option value="3">卡密|卡类名称|激活时间|到期时间</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分割符号</label>
+            <div class="layui-input-block">
+                <select name="splitSymbol" class="splitSymbol" lay-search="" lay-verType="tips">
+                    <option value="|" selected="selected">|</option>
+                    <option value="#">#</option>
+                    <option value="$">$</option>
+                    <option value="_">_</option>
+                    <option value="-">-</option>
+                    <option value=" ">空格</option>
+                </select>
+            </div>
+        </div>
+        {{# } }}
+
+    </div>
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" id="cardEditSubmit" lay-filter="cardEditSubmit" lay-submit>提交</button>
+    </div>
+</form>

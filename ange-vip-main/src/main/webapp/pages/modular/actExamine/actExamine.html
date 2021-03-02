@@ -1,0 +1,58 @@
+@layout("/common/_container.html",{js:["/assets/modular/actExamine/actExamine.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">代理审核表管理</span>
+</div>
+
+<div class="layui-fluid">
+    <input type="hidden" id="type" class="type" value="${type}">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="agentExamineTable" lay-filter="agentExamineTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    {{# if(${type} == 1&&d.applyType === 1&&d.examineStatus === 1){ }}
+    <a class="pear-btn pear-btn-success pear-btn-sm" plain lay-event="agree">同意</a>
+    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="refuse">拒绝</a>
+    {{# } else if(${type} == 2&&d.applyType === 2&&d.examineStatus === 2){ }}
+    <a class="pear-btn pear-btn-success pear-btn-sm" plain lay-event="agree">同意</a>
+    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="refuse">拒绝</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="examineStatusTpl">
+    {{# if(d.examineStatus == 1){ }}
+    <span class="badge badge-pill badge-secondary">等待开发者审核</span>
+    {{# } else if(d.examineStatus == 2){ }}
+    <span class="badge badge-pill badge-secondary">等待代理审核</span>
+    {{# } else if(d.examineStatus == 3){ }}
+    <span class="badge badge-pill badge-danger">开发者拒绝</span>
+    {{# } else if(d.examineStatus == 4){ }}
+    <span class="badge badge-pill badge-danger">代理拒绝</span>
+    {{# } else if(d.examineStatus == 5){ }}
+    <span class="badge badge-pill badge-success">代理成功</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="agentExamineTable-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="layui-icon layui-icon-add-1"></i>新增</button>
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="layui-icon layui-icon-delete"></i>删除</button>
+</script>
+@}

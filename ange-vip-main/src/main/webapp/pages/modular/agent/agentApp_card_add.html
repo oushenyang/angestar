@@ -1,0 +1,55 @@
+
+<style>
+    .layui-form-select dl {
+        z-index: 11111;
+    }
+</style>
+<form id="agentAppCardForm" lay-filter="agentAppCardForm" style="padding:0!important;" class="layui-form layui-form-pane tab-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="agentAppId" type="hidden" value="${agentAppId}"/>
+        <input name="cardType" type="hidden" value="${cardType}"/>
+        <input name="appId" type="hidden" value="${appId}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡类名称<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="cardTypeId" lay-search="" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
+                    <option value="">请选择卡密类型</option>
+                    @for(codeCardType in codeCardTypes) {
+                    <option data-agentPrice="${codeCardType.agentPrice}" value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                </select>
+<!--                <input id="cardTypeName" name="cardTypeName" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>-->
+            </div>
+        </div>
+        <div class="layui-form-item">
+            @if(type == 2) {
+            <label class="layui-form-label">我的代理价格<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input name="marketPrice" readonly placeholder="请输入我的代理价格" min="0" max="99999999" oninput="if(value>99999999)value=99999999;if(value<0)value=0" type="number" class="layui-input layui-disabled" lay-verify="required" lay-verType="tips" required/>
+            </div>
+            @}else{
+            <label class="layui-form-label">市场价格<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="marketPrice" name="marketPrice" placeholder="请输入市场价格" min="0" max="99999999" oninput="if(value>99999999)value=99999999;if(value<0)value=0" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+            @}
+        </div>
+        <div class="layui-form-item">
+            @if(type == 2) {
+            <label class="layui-form-label">下级代理价格<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input name="agentPrice" placeholder="请输入代理价格" min="0" max="99999999" oninput="if(value>99999999)value=99999999;if(value<0)value=0" type="number" class="layui-input" lay-verify="required|subordinateDigital" lay-verType="tips" required/>
+            </div>
+            @}else{
+            <label class="layui-form-label">代理价格<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="agentPrice" name="agentPrice" placeholder="请输入代理价格" min="0" max="99999999" oninput="if(value>99999999)value=99999999;if(value<0)value=0" type="number" class="layui-input" lay-verify="required|digital" lay-verType="tips" required/>
+            </div>
+            @}
+        </div>
+    </div>
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn agentAppCardSubmit" lay-filter="agentAppCardSubmit" lay-submit>提交</button>
+    </div>
+</form>

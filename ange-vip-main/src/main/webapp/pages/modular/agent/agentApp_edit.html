@@ -1,0 +1,95 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/agent/agentApp_edit.js"]}){
+<form id="agentAppForm" lay-filter="agentAppForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="agentAppId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用id<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appId" name="appId" placeholder="请输入应用id" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开发者用户id<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="developerUserId" name="developerUserId" placeholder="请输入开发者用户id" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理用户id<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="agentUserId" name="agentUserId" placeholder="请输入代理用户id" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理用户名称<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="agentUserName" name="agentUserName" placeholder="请输入代理用户名称" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理用户账号<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="agentUserAccount" name="agentUserAccount" placeholder="请输入代理用户账号" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理等级<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="agentGrade" name="agentGrade" placeholder="请输入代理等级" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">父代理应用id<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="pid" name="pid" placeholder="请输入父代理应用id" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">父级ids<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="pids" name="pids" placeholder="请输入父级ids" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">余额<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="balance" name="balance" placeholder="请输入余额" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态 0-正常；1-冻结<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="status" name="status" placeholder="请输入状态 0-正常；1-冻结" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createUser" name="createUser" placeholder="请输入创建人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="createTime" name="createTime" placeholder="请输入创建时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新人<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateUser" name="updateUser" placeholder="请输入更新人" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="updateTime" name="updateTime" placeholder="请输入更新时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

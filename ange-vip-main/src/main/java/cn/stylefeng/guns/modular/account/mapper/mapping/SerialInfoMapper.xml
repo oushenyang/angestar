@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.account.mapper.SerialInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.account.entity.SerialInfo">
+        <id column="serial_id" property="serialId" />
+        <result column="app_id" property="appId" />
+        <result column="card_type_id" property="cardTypeId" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="is_universal" property="isUniversal" />
+        <result column="serial_code" property="serialCode" />
+        <result column="is_custom_time" property="isCustomTime" />
+        <result column="custom_time_num" property="customTimeNum" />
+        <result column="card_status" property="cardStatus" />
+        <result column="change_bind_num" property="changeBindNum" />
+        <result column="active_time" property="activeTime" />
+        <result column="expire_time" property="expireTime" />
+        <result column="remark" property="remark" />
+        <result column="revision" property="revision" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ai.app_name AS appName,
+        cct.card_type_name AS cardTypeName,
+        si.serial_id AS "serialId",
+        si.app_id AS "appId",
+        si.card_type_id AS "cardTypeId",
+        si.user_id AS "userId",
+        si.user_name AS "userName",
+        si.is_universal AS "isUniversal",
+        si.serial_code AS "serialCode",
+        si.is_custom_time AS "isCustomTime",
+        si.custom_time_num AS "customTimeNum",
+        si.card_status AS "cardStatus",
+        si.change_bind_num AS "changeBindNum",
+        si.active_time AS "activeTime",
+        si.expire_time AS "expireTime",
+        si.remark AS "remark",
+        si.revision AS "revision",
+        si.create_user AS "createUser",
+        si.create_time AS "createTime",
+        si.update_user AS "updateUser",
+        si.update_time AS "updateTime"
+    </sql>
+    <insert id="saveSerialBatch">
+        INSERT INTO `ag_serial_info` (
+        `serial_id`,
+        `app_id`,
+        `card_type_id`,
+        `user_id`,
+        `user_name`,
+        `is_universal`,
+        `serial_code`,
+        `is_custom_time`,
+        `custom_time_num`,
+        `card_status`,
+        `active_time`,
+        `expire_time`,
+        `remark`,
+        `create_user`,
+        `create_time`
+        )
+        VALUES
+        <foreach collection ="serialInfos" item="serialInfo" separator =",">
+            (#{serialInfo.serialId},
+            #{serialInfo.appId},
+            #{serialInfo.cardTypeId},
+            #{serialInfo.userId},
+            #{serialInfo.userName},
+            #{serialInfo.isUniversal},
+            #{serialInfo.serialCode},
+            #{serialInfo.isCustomTime},
+            #{serialInfo.customTimeNum},
+            #{serialInfo.cardStatus},
+            #{serialInfo.activeTime},
+            #{serialInfo.expireTime},
+            #{serialInfo.remark},
+            #{serialInfo.createUser},
+            #{serialInfo.createTime}
+            )
+        </foreach >
+    </insert>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_serial_info si
+        left join ag_app_info ai on ai.app_id = si.app_id
+        left join ag_code_card_type cct on cct.card_type_id = si.card_type_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and si.create_user = #{param.createUser}
+            </if>
+            <if test="param.userId != null and param.userId != ''">
+                and (si.user_id = #{param.userId} or si.user_id in ( select agent_user_id from ag_agent_app where pids like CONCAT('%$[', #{param.userId}, '$]%') escape '$' ))
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and si.app_id = #{param.appId}
+            </if>
+            <if test="param.actCardAppId != null and param.actCardAppId !=''">
+                and si.app_id = #{param.actCardAppId} or si.app_id = 0
+            </if>
+            <if test="param.type != null and param.type !=1">
+                and si.app_id = 0
+            </if>
+            <if test="param.type != null and param.type !=0">
+                and si.app_id != 0
+            </if>
+            <if test="param.cardTypeId != null and param.cardTypeId !=''">
+                and si.card_type_id = #{param.cardTypeId}
+            </if>
+            <if test="param.serialCode != null and param.serialCode !=''">
+                and si.serial_code like CONCAT('%',#{param.serialCode},'%')
+            </if>
+        </where>
+        order by si.create_time DESC
+    </select>
+
+</mapper>
