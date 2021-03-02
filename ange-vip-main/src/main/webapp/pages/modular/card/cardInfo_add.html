@@ -1,0 +1,93 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_add.js"]}){
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="cardId" type="hidden"/>
+        @if(tool.isNotEmpty(type)){
+        @if(type==1){
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择应用<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" lay-search="" lay-verify="required" lay-filter="appId" lay-verType="tips" required>
+                    <option value="">请选择软件</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        @}
+        @if(type==0){
+        <input name="appId" value="0" type="hidden">
+        @}
+        @}
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="cardTypeId" lay-search="" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
+                    <option value="">请选择卡密类型</option>
+                    @for(codeCardType in codeCardTypes) {
+                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">自定义头</label>
+            <div class="layui-input-block">
+                <input id="cardTypePrefix" name="cardTypePrefix" placeholder="请输入自定义头" maxlength="5" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="addNum" name="addNum" placeholder="请输入新增数量" type="number" class="layui-input" min="1" max="200" lay-verify="required|numberX|h5" oninput="if(value>200)value=200;if(value<1)value=1" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">自定义时间</label>
+                <div class="layui-input-inline" >
+                    <input id="isCustomTime" name="isCustomTime" type="checkbox"  lay-filter="isCustomTime" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline" id="customTimeNumDisplay" style="display: none">
+                <label class="layui-form-label">时间值(天)<span style="color: red;">*</span></label>
+                <div class="layui-input-inline">
+                    <input id="customTimeNum" name="customTimeNum" lay-filter="customTimeNum"  placeholder="请输入自定义时间值(天)" type="number" min="1" max="9999" oninput="if(value>9999)value=9999;if(value<1)value=1" class="layui-input" lay-verType="tips"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0;">
+            <label class="layui-form-label">生成后激活</label>
+            <div class="layui-input-block">
+                <input id="isActivation" name="isActivation" type="checkbox"  lay-filter="isActivation" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">卡密备注</label>
+            <div class="layui-input-block">
+                <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+
+    <script type="text/html" id="cardAddResultBar">
+        <div class="layui-fluid" style="max-height: 500px;overflow: auto;">
+            <div class="layui-form-item"><span>1、</span>55555555555555555555555555555555555 &nbsp;<button style="margin-left: 60px;" class="layui-badge layui-badge-blue">复制</button></div>
+            <div class="layui-form-item"><span>2、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
+            <div class="layui-form-item"><span>3、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
+            <div class="layui-form-item"><span>4、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
+            <div class="layui-form-item"><span>5、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
+            <div class="layui-form-item"><span>6、</span>55555555555555555555555555555555555 &nbsp;<span style="margin-left: 60px;"class="layui-badge layui-badge-blue">复制</span></div>
+        </div>
+        <div style="z-index: 9999;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+            <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+            <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+        </div>
+    </script>
+</form>
+@}

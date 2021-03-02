@@ -1,0 +1,37 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/agent/agentApp_recharge.js"]}){
+<form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <input name="agentAppId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理名称</label>
+            <div class="layui-input-block">
+                <input id="agentUserName" name="agentUserName" type="text" class="layui-input layui-disabled" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">当前余额</label>
+            <div class="layui-input-block">
+                <input id="balance" name="balance" type="number" class="layui-input layui-disabled"  readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">充值类型<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input type="radio" class="layui-input" name="rechargeType" value="0" title="充值" checked="">
+                <input type="radio" class="layui-input" name="rechargeType" value="1" title="扣款">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">充值金额<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="rechargeBalance" name="rechargeBalance" placeholder="请输入充值金额" type="number" min="1" max="999999999" lay-verify="required|numberX|h5" oninput="if(value>999999999)value=999999999;if(value<0)value=0" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

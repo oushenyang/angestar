@@ -1,0 +1,80 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/appEdition/appEdition_edit.js"]}){
+<style>
+    .layui-form-switch {
+        margin-top: 6px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+</style>
+<form id="appEditionForm" lay-filter="appEditionForm" class="layui-form  layui-form-pane">
+    <input name="editionId" id="editionId" type="hidden"/>
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择软件<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" id="appId" lay-search="" lay-verify="required" lay-verType="tips" required>
+                    <option value="">请选择软件</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">版本名称<span style="color: red;">*</span></label>
+                <div class="layui-input-inline">
+                    <input id="editionName" name="editionName" placeholder="请输入版本名称" maxlength="10" type="text" class="layui-input"
+                           lay-verify="required" required/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">版本号<span style="color: red;">*</span></label>
+                <div class="layui-input-inline">
+                    <input id="editionNum" name="editionNum" placeholder="请输入版本号" maxlength="10" type="number" class="layui-input"
+                           lay-verify="required|digital" required/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0px">
+            <div class="layui-inline">
+                <label class="layui-form-label">版本状态<span style="color: red;">*</span></label>
+                <div class="layui-input-inline layui-input-inline-plus" style="border: 1px solid #e6e6e6;width:auto;height: 36px;">
+                    <input type="radio" class="layui-input" name="editionStatus" value="0" title="启用" checked="">
+                    <input type="radio" class="layui-input" name="editionStatus" value="1" title="关闭">
+                    <input type="radio" class="layui-input" name="editionStatus" value="2" title="测试">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">强制更新<span style="color: red;">*</span></label>
+                <div class="layui-input-inline" style="border: 1px solid #e6e6e6;width:auto;height: 36px;">
+                    <input class="layui-input" type="checkbox" id="needUpdate" name="needUpdate" lay-skin="switch"
+                           lay-text="开启|关闭">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 0px">
+            <label class="layui-form-label">更新URL</label>
+            <div class="layui-input-block">
+                <input id="updateUrl" name="updateUrl" placeholder="请输入更新URL" maxlength="148" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">更新描述</label>
+            <div class="layui-input-block">
+                <textarea id="updateDescribe" name="updateDescribe" maxlength="512" placeholder="请输入更新描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <!--    <div class="layui-form-item layui-form-text">-->
+        <!--        <label class="layui-form-label">备注</label>-->
+        <!--        <div class="layui-input-block">-->
+        <!--            <textarea id="remark" name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>-->
+        <!--        </div>-->
+        <!--    </div>-->
+    </div>
+    <div class="form-group-bottom text-right">
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>&emsp;提交&emsp;</button>
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">&emsp;取消&emsp;</button>
+    </div>
+</form>
+@}

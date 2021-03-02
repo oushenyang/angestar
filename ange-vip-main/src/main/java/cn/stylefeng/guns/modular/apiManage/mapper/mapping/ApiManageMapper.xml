@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.apiManage.mapper.ApiManageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.apiManage.entity.ApiManage">
+        <id column="api_manage_id" property="apiManageId" />
+        <result column="app_id" property="appId" />
+        <result column="call_code" property="callCode" />
+        <result column="api_status" property="apiStatus" />
+        <result column="api_type" property="apiType" />
+        <result column="api_name" property="apiName" />
+        <result column="api_code" property="apiCode" />
+        <result column="parameter_num" property="parameterNum" />
+        <result column="parameter_one" property="parameterOne" />
+        <result column="parameter_one_remark" property="parameterOneRemark" />
+        <result column="parameter_one_note" property="parameterOneNote" />
+        <result column="parameter_one_required" property="parameterOneRequired" />
+        <result column="parameter_two" property="parameterTwo" />
+        <result column="parameter_two_remark" property="parameterTwoRemark" />
+        <result column="parameter_two_note" property="parameterTwoNote" />
+        <result column="parameter_two_required" property="parameterTwoRequired" />
+        <result column="parameter_three" property="parameterThree" />
+        <result column="parameter_three_remark" property="parameterThreeRemark" />
+        <result column="parameter_three_note" property="parameterThreeNote" />
+        <result column="parameter_three_required" property="parameterThreeRequired" />
+        <result column="parameter_four" property="parameterFour" />
+        <result column="parameter_four_remark" property="parameterFourRemark" />
+        <result column="parameter_four_note" property="parameterFourNote" />
+        <result column="parameter_four_required" property="parameterFourRequired" />
+        <result column="parameter_five" property="parameterFive" />
+        <result column="parameter_five_remark" property="parameterFiveRemark" />
+        <result column="parameter_five_note" property="parameterFiveNote" />
+        <result column="parameter_five_required" property="parameterFiveRequired" />
+        <result column="parameter_six" property="parameterSix" />
+        <result column="parameter_six_remark" property="parameterSixRemark" />
+        <result column="parameter_six_note" property="parameterSixNote" />
+        <result column="parameter_six_required" property="parameterSixRequired" />
+        <result column="parameter_seven" property="parameterSeven" />
+        <result column="parameter_seven_remark" property="parameterSevenRemark" />
+        <result column="parameter_seven_note" property="parameterSevenNote" />
+        <result column="parameter_seven_required" property="parameterSevenRequired" />
+        <result column="return_remark" property="returnRemark" />
+        <result column="remark" property="remark" />
+        <result column="sort" property="sort" />
+        <result column="revision" property="revision" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ai.app_name AS "appName",
+        am.api_manage_id AS "apiManageId",
+        am.app_id AS "appId",
+        am.call_code AS "callCode",
+        am.api_status AS "apiStatus",
+        am.api_type AS "apiType",
+        am.api_name AS "apiName",
+        am.api_code AS "apiCode",
+        am.parameter_num AS "parameterNum",
+        am.parameter_one AS "parameterOne",
+        am.parameter_one_remark AS "parameterOneRemark",
+        am.parameter_one_note AS "parameterOneNote",
+        am.parameter_one_required AS "parameterOneRequired",
+        am.parameter_two AS "parameterTwo",
+        am.parameter_two_remark AS "parameterTwoRemark",
+        am.parameter_two_note AS "parameterTwoNote",
+        am.parameter_two_required AS "parameterTwoRequired",
+        am.parameter_three AS "parameterThree",
+        am.parameter_three_remark AS "parameterThreeRemark",
+        am.parameter_three_note AS "parameterThreeNote",
+        am.parameter_three_required AS "parameterThreeRequired",
+        am.parameter_four AS "parameterFour",
+        am.parameter_four_remark AS "parameterFourRemark",
+        am.parameter_four_note AS "parameterFourNote",
+        am.parameter_four_required AS "parameterFourRequired",
+        am.parameter_five AS "parameterFive",
+        am.parameter_five_remark AS "parameterFiveRemark",
+        am.parameter_five_note AS "parameterFiveNote",
+        am.parameter_five_required AS "parameterFiveRequired",
+        am.parameter_six AS "parameterSix",
+        am.parameter_six_remark AS "parameterSixRemark",
+        am.parameter_six_note AS "parameterSixNote",
+        am.parameter_six_required AS "parameterSixRequired",
+        am.parameter_seven AS "parameterSeven",
+        am.parameter_seven_remark AS "parameterSevenRemark",
+        am.parameter_seven_note AS "parameterSevenNote",
+        am.parameter_seven_required AS "parameterSevenRequired",
+        am.return_remark AS "returnRemark",
+        am.remark AS "remark",
+        am.sort AS "sort",
+        am.revision AS "revision",
+        am.create_user AS "createUser",
+        am.create_time AS "createTime",
+        am.update_user AS "updateUser",
+        am.update_time AS "updateTime"
+    </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        (SELECT `name` FROM sys_dict WHERE dict_type_id = (SELECT dict_type_id FROM sys_dict_type WHERE `code` = 'API_TYPE'
+        ) AND `code` = am.api_type) AS apiTypeName,
+        <include refid="Base_Column_List"/>
+        from ag_api_manage am
+        left join ag_app_info ai on ai.app_id = am.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and am.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and am.app_id = #{param.appId}
+            </if>
+            <if test="param.type != null and param.type ==0">
+                and am.app_id = 1
+            </if>
+        </where>
+        order by am.sort ASC
+    </select>
+    <select id="findApiManageApi" resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi">
+        select
+        am.api_manage_id AS "apiManageId",
+        am.app_id AS "appId",
+        am.call_code AS "callCode",
+        am.api_status AS "apiStatus",
+        am.api_code AS "apiCode",
+        am.parameter_one AS "parameterOne",
+        am.parameter_two AS "parameterTwo",
+        am.parameter_three AS "parameterThree",
+        am.parameter_four AS "parameterFour",
+        am.parameter_five AS "parameterFive",
+        am.parameter_six AS "parameterSix",
+        am.parameter_seven AS "parameterSeven",
+        am.return_remark AS "returnRemark"
+        from ag_api_manage am
+        <where>
+            <if test="apiCode != null and apiCode != ''">
+                and am.api_code = #{apiCode}
+            </if>
+            <if test="callCode != null and callCode !=''">
+                and am.call_code = #{callCode}
+            </if>
+        </where>
+    </select>
+    <select id="findApiManageApiListByCallCode"
+            resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi">
+        select
+        am.api_manage_id AS "apiManageId",
+        am.app_id AS "appId",
+        am.call_code AS "callCode",
+        am.api_status AS "apiStatus",
+        am.api_code AS "apiCode",
+        am.parameter_one AS "parameterOne",
+        am.parameter_two AS "parameterTwo",
+        am.parameter_three AS "parameterThree",
+        am.parameter_four AS "parameterFour",
+        am.parameter_five AS "parameterFive",
+        am.parameter_six AS "parameterSix",
+        am.parameter_seven AS "parameterSeven",
+        am.return_remark AS "returnRemark"
+        from ag_api_manage am
+        <where>
+            <if test="callCode != null and callCode !=''">
+                and am.call_code = #{callCode}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+@layout("/common/_container.html",{js:["/assets/modular/account/accountCardType.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">注册码卡类列表管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input name="cardTypeName" id="cardTypeName" class="layui-input" type="text" placeholder="卡类名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
+                                <!--                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>-->
+                                <!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="accountCardTypeTable" lay-filter="accountCardTypeTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    {{# if(d.appId == 0){ }}
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+    {{# } else if(d.appId == 1){ }}
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+    <input type="checkbox" lay-filter="status" value="{{d.accountCardTypeId}}" lay-skin="switch" lay-text="正常|冻结" {{d.status=='1'?'checked':''}} />
+</script>
+
+<script type="text/html" id="accountCardTypeTable-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>新增</button>
+<!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>-->
+</script>
+@}
