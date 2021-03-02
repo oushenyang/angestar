@@ -17,6 +17,7 @@ import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.exception.inter.AccessLimit;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
@@ -61,6 +62,7 @@ public class CardLoginController {
         this.asyncService = asyncService;
     }
 
+    @AccessLimit(times = 5)
     @RequestMapping("/{callCode}")
     @ResponseBody
     public Object cardLogin(@PathVariable String callCode) {
