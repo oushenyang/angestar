@@ -15,6 +15,7 @@
  */
 package cn.stylefeng.guns.config.web;
 
+import cn.stylefeng.guns.sys.core.exception.aop.AccessLimitInterceptor;
 import cn.stylefeng.guns.sys.core.exception.page.GunsErrorView;
 import cn.stylefeng.guns.sys.core.listener.ConfigListener;
 import cn.stylefeng.roses.core.xss.XssFilter;
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -50,6 +52,23 @@ import java.util.Properties;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    //这里需要注入拦截器 否则无法获取到拦截器注入的RedisTemplate<String, Integer> redisTemplate;
+    @Bean
+    public AccessLimitInterceptor accessLimitInterceptor(){
+        return new AccessLimitInterceptor();
+    }
+
+    /**
+     * 配置拦截器
+     * @author lance
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //API限流拦截
+        registry.addInterceptor(accessLimitInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**","/login.html");
+    }
 
     /**
      * 配置string解析器放在json解析器前边
