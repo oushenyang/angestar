@@ -98,7 +98,7 @@ public interface AppPowerService extends IService<AppPower> {
      * @author shenyang.ou
      * @Date 2020-10-29
      */
-    boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String applicationName,String appCode);
+    boolean whetherLegalBySignAndAppCodeNoInsert(String sign,String applicationName,String appCode,String appTypeCode);
 
     /**
      * 判断是否显示

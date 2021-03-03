@@ -1,10 +1,14 @@
 package cn.stylefeng.guns.sys.core.util;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 
 /**
  * <p>自定义加解密</p>
@@ -15,6 +19,11 @@ import java.security.spec.InvalidKeySpecException;
  * @since JDK 1.8
  */
 public class CustomEnAndDe {
+    public static void main(String[] args) throws Exception {
+        String a = deCrypto("961800CA30B855629CF56744E950627D0AB8D2FC8806CCD9");
+        System.out.println(a);
+
+    }
     private String key = "*()&^%$#";
     /**
      * 加密（使用DES算法）

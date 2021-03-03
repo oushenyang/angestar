@@ -7,12 +7,15 @@ import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.util.AESECBUtil;
 import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
 import cn.stylefeng.guns.webApi.huanying.model.result.HyAppResult;
+import cn.stylefeng.guns.webApi.huanying.model.result.HyUserResult;
 import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
 import cn.stylefeng.roses.core.util.HttpContext;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -248,6 +251,57 @@ public class NewHuanYingV2Controller {
         map.put("data",map1);
         map.put("message", "ok");
         map.put("code", 0);
+        JSONObject json = new JSONObject(map);
+        return json.toString();
+    }
+
+    //1.3.1版本更新
+    @RequestMapping("/login")
+    @ResponseBody
+    public String login(){
+        HyUserResult hyUserResult = new HyUserResult();
+        hyUserResult.setStatus(0);
+        hyUserResult.setAppurl("www.lanzous.com/clone");
+        hyUserResult.setLeftmoney("0");
+        hyUserResult.setInchina(1);
+        hyUserResult.setVersioncode("10");
+        hyUserResult.setTag(0);
+        hyUserResult.setOldinviteid("");
+        hyUserResult.setStonetime(1546272000000L);
+        hyUserResult.setValidnum(0);
+        hyUserResult.setGoogleversioncode("6");
+        hyUserResult.setProxyratio("0.1");
+        hyUserResult.setTotalnum(0);
+        hyUserResult.setTotalmoney("0");
+        hyUserResult.setPoints(0);
+        hyUserResult.setClosed(0);
+        hyUserResult.setViptype(3);
+        hyUserResult.setUsername("15156041422");
+        hyUserResult.setRealname("");
+        hyUserResult.setMyappkey("31f8df9f0478eaa8");
+        hyUserResult.setInviteid("5D8CLY");
+        hyUserResult.setZfb("");
+        hyUserResult.setImsis("");
+        hyUserResult.setVirtual_id("124fec533f25eb12a01ad82d5eaab46a");
+        hyUserResult.setImeis("Xiaomi_M2011K2C|YAfDSMpjAHUDAK4yVkTxVJ4O,Xiaomi_Mi10Pro|X//n8lot5fkDANeuGVdI/Ja6,Xiaomi_RedmiK20ProPremiumEdition|XhAxKdCn3TwDAFwETYuwio1m");
+        hyUserResult.setInvitenum(0);
+        hyUserResult.setProxyid("5D8CLY");
+        hyUserResult.setFatherid("0");
+        hyUserResult.setUserid("Xiaomi_RedmiK20ProPremiumEdition|WvMZuYLQ0W4DAArXTsQddFXj");
+        hyUserResult.setToken("de1686230d41a96d9c1ce179b8eb8b8f");
+        hyUserResult.setVipphone("None");
+        hyUserResult.setChannel("china");
+        hyUserResult.setStarttime(1558276363000L);
+        hyUserResult.setDeadline(1930452055000L);
+        String a = JSON.toJSONString(hyUserResult);
+        String aaa = AESECBUtil.Encrypt(a, "0b31c497990cc6ee");
+        assert aaa != null;
+        aaa = aaa.replaceAll("\r|\n", "");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("data",aaa);
+        map.put("message", "success");
+        map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
     }

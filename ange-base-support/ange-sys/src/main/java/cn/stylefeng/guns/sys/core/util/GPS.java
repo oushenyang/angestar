@@ -15,6 +15,9 @@ public class GPS {
     private String w;
     private String w1;
 
+    public GPS() {
+    }
+
     public GPS(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;

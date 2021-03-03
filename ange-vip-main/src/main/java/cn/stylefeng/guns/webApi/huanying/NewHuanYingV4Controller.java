@@ -117,7 +117,14 @@ public class NewHuanYingV4Controller {
 //            }
         }
 
-        boolean isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId);
+        boolean isShow = false;
+        if (appversioncode.equals("129")){
+            isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
+        }else if (appversioncode.equals("131")){
+            isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
+        }else {
+            isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
+        }
         if (ConstantsContext.getPirateOpen()&&isShow){
             Map<String, Object> map = new HashMap<>();
             map.put("data", "r52fVRuqRKZwpOlKry70HdVfpYuzMiujTHxkvoloZLDYJbZYQroqqwghonFtEyWoNbyR205ZbXtKxLXKqzZjh0eojOuyEYXn/UAlFJ3m4/HgC4AWiYrsLQ3hZnehbSC54rzqCCEgA/o4BLCnFp0Bo4vjQo+HKdAoJGl4N5i+DdA2F0mSdt0A5ucLEbuWA88CXrNGl5cKwIlDfUmsRO1LXKxF6i6fCPaJgLAjoR0UufWfdBtU6lLJTZpEgqZRr/oXyKOTa/wSYODT1UeiDR2ISmxW87Bah8Vhz765S6C6rDxBxMmO+LO5fC8mVCJxUYqao7uHCo+4az4iOyqEPyVP/S2VWT9xYAXQDyIbjPxZZ6PGuq/lBRkuGCLAxtHeMTGPIxT6tcG6AzN7VVxl7czvLDOmi25Zb9DHBHl1lRSotJcNjlXJbjO1aOulDhgvMbxodu+GNftwUmjH4ToNuo20Bu2YforldLBimquzE9uoVX3vV2u8QiRjQrc6iOcJJ91iqQly7RWkedP4c6va+YkV7UbB04xa6JvJAPrg16KkPQOaWjaZ3ZmTg3cmGqL7SDW0UZBrxPyCTep/ggiW4CKBXKjR5Q93Pe6A3EJlJ31anptQa04iOd5X7FcJ7W7YmFEyRbmH9gQ5aSJWiuYtQTdnmUj7Y09GUUeyUd0+Ttu839OIihfYDSPyfQAO633WW");
@@ -131,6 +138,8 @@ public class NewHuanYingV4Controller {
             List<Dict> dicts = new ArrayList<>();
             if (appversioncode.equals("129")){
                 dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
+            }else if (appversioncode.equals("131")){
+                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
             }else {
                 dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
             }
@@ -138,7 +147,7 @@ public class NewHuanYingV4Controller {
             boolean isChu = false;
             for (Dict dict : dicts){
                 if (dict.getName().equals(app_version)){
-                    if (appversioncode.equals("129")){
+                    if (appversioncode.equals("129")||appversioncode.equals("131")){
                         String appkey = dict.getDescription();
                         if (StringUtils.isEmpty(appkey)){
                             appkey = "Abandoned";
