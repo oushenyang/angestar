@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.trial.mapper.TrialMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.trial.entity.Trial">
+        <id column="trial_id" property="trialId" />
+        <result column="app_id" property="appId" />
+        <result column="mac" property="mac" />
+        <result column="ip" property="ip" />
+        <result column="model" property="model" />
+        <result column="trial_num" property="trialNum" />
+        <result column="trial_time" property="trialTime" />
+        <result column="expire" property="expire" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ct.trial_id AS "trialId",
+        ct.app_id AS "appId",
+        ct.mac AS "mac",
+        ct.ip AS "ip",
+        ct.model AS "model",
+        ct.trial_num AS "trialNum",
+        ct.trial_time AS "trialTime",
+        ct.expire AS "expire",
+        ct.create_user AS "createUser",
+        ct.create_time AS "createTime",
+        ct.update_user AS "updateUser",
+        ct.update_time AS "updateTime"
+    </sql>
+    <select id="findListBySpec" resultType="java.util.Map">
+        select
+        ai.app_name AS appName,
+        ai.code_try_type AS codeTryType,
+        ai.code_try_time AS codeTryTime,
+        <include refid="Base_Column_List"/>
+        from ag_trial ct
+        left join ag_app_info ai on ai.app_id = ct.app_id
+        <where>
+            <if test="param.createUser != null and param.createUser != ''">
+                and ai.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId != ''">
+                and ai.app_id = #{param.appId}
+            </if>
+            <if test="param.mac != null and param.mac !=''">
+                and ct.mac like CONCAT('%',#{param.mac},'%')
+            </if>
+            <if test="param.model != null and param.model !=''">
+                and ct.model like CONCAT('%',#{param.model},'%')
+            </if>
+        </where>
+        order by ct.create_time DESC
+    </select>
+
+</mapper>

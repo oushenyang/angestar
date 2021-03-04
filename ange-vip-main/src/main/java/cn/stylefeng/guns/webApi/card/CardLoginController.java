@@ -44,7 +44,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/cardLogin")
+@RequestMapping("/api/cardLogin")
 public class CardLoginController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;

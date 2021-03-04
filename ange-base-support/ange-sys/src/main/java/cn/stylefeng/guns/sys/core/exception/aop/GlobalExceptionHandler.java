@@ -276,6 +276,56 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 试用自定义返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(TrialException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Object trialException(TrialException e) {
+        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
+        if (ObjectUtil.isNull(apiResultApi)){
+            apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
+            if (ObjectUtil.isNotNull(apiResultApi)){
+                redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
+            }
+        }
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            if (apiResultApi.getResultSuccess()){
+                return ApiResult.success(apiResultApi.getResultCode(), e.getData()+",剩余"+e.getExpireTimeOrNum(),apiResultApi.getResultSuccess());
+            }else {
+                return ApiResult.success(apiResultApi.getResultCode(), String.valueOf(e.getData()),apiResultApi.getResultSuccess());
+            }
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //TODO
+            if (StringUtils.contains(customResultData, "%appCode%")){
+                if (StringUtils.isNotEmpty(e.getAppCode())){
+                    customResultData = customResultData.replaceAll("%appCode%",e.getAppCode());
+                }else {
+                    customResultData = customResultData.replaceAll("%appCode%","");
+                }
+            }
+            if (StringUtils.contains(customResultData, "%timestamp10%")){
+                customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
+            }
+            if (StringUtils.contains(customResultData, "%timestamp13%")){
+                customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
+            }
+            if (StringUtils.contains(customResultData, "%expireTime%")){
+                customResultData = customResultData.replaceAll("%expireTime%",e.getExpireTimeOrNum());
+            }
+            if (StringUtils.contains(customResultData, "%currentTime%")){
+                customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
+            }
+            return customResultData;
+        }
+    }
+
+    /**
      * 验证码错误异常
      *
      * @author fengshuonan

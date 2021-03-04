@@ -34,7 +34,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/checkCardStatus")
+@RequestMapping("/api/checkCardStatus")
 public class CheckCardStatusController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;

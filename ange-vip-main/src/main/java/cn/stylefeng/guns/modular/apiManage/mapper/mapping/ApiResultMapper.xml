@@ -64,6 +64,9 @@
             <if test="param.appId != null and param.appId !='' and param.type ==1">
                 and aar.app_id = #{param.appId}
             </if>
+            <if test="param.createUser != null and param.createUser !=''">
+                and aar.create_user = #{param.createUser}
+            </if>
             <if test="param.type != null and param.type ==0">
                 and aar.app_id = 1
             </if>

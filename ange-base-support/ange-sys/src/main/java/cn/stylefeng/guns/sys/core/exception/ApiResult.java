@@ -30,6 +30,12 @@ public class ApiResult<T> {
         data = r;
     }
 
+    public ApiResult(int c, String m,boolean s) {
+        code = c;
+        msg = m;
+        success = s;
+    }
+
     public ApiResult(int c, String m) {
         code = c;
         msg = m;
@@ -73,6 +79,10 @@ public class ApiResult<T> {
 
     public static ApiResult success(Object object) {
         return new ApiResult(200, "操作成功", object);
+    }
+
+    public static ApiResult success(int code,String object,boolean success) {
+        return new ApiResult(code, object,success);
     }
 
     public static ApiResult error() {

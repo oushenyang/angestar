@@ -1,0 +1,41 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/trial/trial_add.js"]}){
+<form id="trialForm" lay-filter="trialForm" class="layui-form model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="trialId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用id<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="appId" name="appId" placeholder="请输入应用id" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">mac<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="mac" name="mac" placeholder="请输入mac" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备型号<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="model" name="model" placeholder="请输入设备型号" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">试用次数<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="trialNum" name="trialNum" placeholder="请输入试用次数" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">试用时间<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="trialTime" name="trialTime" placeholder="请输入试用时间" type="text" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

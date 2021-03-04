@@ -137,6 +137,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     if (result.data.resultVariables.indexOf("expireTime") != -1){
         $(".expireTime").show();
     }
+    if (result.data.resultVariables.indexOf("trialTime") != -1){
+        $(".trialTime").show();
+    }
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {

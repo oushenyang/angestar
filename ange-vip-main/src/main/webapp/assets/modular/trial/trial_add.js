@@ -1,19 +1,15 @@
 /**
  * 详情对话框
  */
-var ApiResultInfoDlg = {
+var TrialInfoDlg = {
     data: {
         appId: "",
-        resultType: "",
-        resultSuccess: "",
-        resultVariables: "",
-        resultCode: "",
-        resultData: "",
-        customResultData: "",
-        resultRemark: "",
-        whetherEdit: "",
-        outputFormat: "",
-        sort: "",
+        mac: "",
+        ip: "",
+        model: "",
+        trialNum: "",
+        trialTime: "",
+        expire: "",
         createUser: "",
         createTime: "",
         updateUser: "",
@@ -32,10 +28,7 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        data.field.hasOwnProperty('resultSuccess')?'': data.field.resultSuccess = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('whetherEdit')?'': data.field.whetherEdit = 'off'; //true 值为on,false 值给赋off
-        // data.field.hasOwnProperty('outputFormat')?'': data.field.outputFormat = 'off'; //true 值为on,false 值给赋off
-        var ajax = new $ax(Feng.ctxPath + "/apiResult/addItem", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/trial/addItem", function (data) {
             Feng.success("添加成功！");
 
             //传给上个页面，刷新table用
