@@ -13,6 +13,24 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     //重新渲染select数据
     form.render('select');
     // var clipboard = layui.clipboard;
+
+    //日期范围
+    laydate.render({
+        elem: '#createTimeStr',
+        range: true,
+        trigger: 'click',
+
+    });
+    laydate.render({
+        elem: '#activeTimeStr',
+        range: true,
+        trigger: 'click',
+    });
+    laydate.render({
+        elem: '#expireTimeStr',
+        range: true,
+        trigger: 'click',
+    });
     /**
      * 卡密表管理
      */
@@ -44,8 +62,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     CardInfo.initColumn = function () {
         return [[
             // {type: 'checkbox'},
-            {align: 'center', field: 'cardId',type: 'checkbox'},
-            {field: 'appId', hide: true},
+            {align: 'center', type: 'checkbox'},
+            // {field: 'appId', hide: true},
             {
                 align: 'center', field: 'appName', width: 100, title: '所属应用', templet: function (d) {
                     if (!d.appName) {
@@ -57,7 +75,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             },
             {align: 'center', field: 'cardCode', width: 300, title: '卡密', templet: '#cardCodeTpl'},
             {
-                align: 'center', field: 'cardTypeName', sort: true, title: '卡类', templet: function (d) {
+                align: 'center', field: 'cardTypeName', title: '卡类', templet: function (d) {
                     if (!d.cardTypeName) {
                         return '自定义';
                     } else {
@@ -70,7 +88,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             // {align: 'center',field: 'isUniversal', sort: true, title: '是否通用 0-否；1-是'},
             // {align: 'center',field: 'isCustomTime', sort: true, title: '是否自定义时间'},
             // {align: 'center',field: 'customTimeNum', sort: true, title: '自定义时间值(天)'},
-            {align: 'center', field: 'cardStatus', sort: true, title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus',  title: '状态', templet: '#cardStatusTpl'},
             // {align: 'center',field: 'cardMac', sort: true, title: '绑定mac'},
             // {align: 'center',field: 'cardIp', sort: true, title: '绑定ip'},
             // {align: 'center',field: 'cardToken', sort: true, title: '卡密token'},
@@ -93,6 +111,11 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         queryData['appId'] = $("#appId").val();
         queryData['cardTypeId'] = $("#cardTypeId").val();
         queryData['cardCode'] = $("#cardCode").val();
+        queryData['cardStatus'] = $("#cardStatus").val();
+        queryData['createTimeStr'] = $("#createTimeStr").val();
+        queryData['activeTimeStr'] = $("#activeTimeStr").val();
+        queryData['expireTimeStr'] = $("#expireTimeStr").val();
+        queryData['cardRemark'] = $("#cardRemark").val();
         table.reload(CardInfo.tableId, {where: queryData});
     };
 
@@ -164,6 +187,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         elem: '#addTime',
                         position: 'fixed',
                         type: 'datetime',
+                        trigger: 'click',
                         done: function(value, date){ //监听日期被切换
                             if (value){
                                 $("input[name=addDayNum]").attr("disabled", "disabled");
@@ -324,6 +348,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         elem: '#addTime',
                         position: 'fixed',
                         type: 'datetime',
+                        trigger: 'click',
                         done: function(value, date){ //监听日期被切换
                             if (value){
                                 $("input[name=addDayNum]").attr("disabled", "disabled");
@@ -477,10 +502,11 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     var tableResult = table.render({
         elem: '#' + CardInfo.tableId,
         url: Feng.ctxPath + '/cardInfo/list?type='+$('#type').val(),
-        page: true,
+        // page: true,
         toolbar: '#' + CardInfo.tableId + '-toolbar',
-        defaultToolbar: ['filter', 'print'],
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: CardInfo.initColumn(),
         done: function () {this.where={};}

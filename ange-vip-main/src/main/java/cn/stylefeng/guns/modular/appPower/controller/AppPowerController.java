@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +106,9 @@ public class AppPowerController extends BaseController {
     @RequestMapping("/editItem")
     @ResponseBody
     public ResponseData editItem(AppPowerParam appPowerParam) {
+        if (appPowerParam.getWhetherSanction()){
+            appPowerParam.setSanctionTime(new Date());
+        }
         this.appPowerService.update(appPowerParam);
         return ResponseData.success();
     }
@@ -119,6 +123,19 @@ public class AppPowerController extends BaseController {
     @ResponseBody
     public ResponseData delete(AppPowerParam appPowerParam) {
         this.appPowerService.delete(appPowerParam);
+        return ResponseData.success();
+    }
+
+    /**
+     * 制裁接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    @RequestMapping("/sanction")
+    @ResponseBody
+    public ResponseData sanction(AppPowerParam appPowerParam) {
+        this.appPowerService.sanction(appPowerParam);
         return ResponseData.success();
     }
 

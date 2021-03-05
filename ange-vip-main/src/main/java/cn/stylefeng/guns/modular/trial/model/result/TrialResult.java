@@ -30,6 +30,11 @@ public class TrialResult implements Serializable {
     private Long appId;
 
     /**
+     * 应用名称
+     */
+    private String appName;
+
+    /**
      * mac
      */
     private String mac;
@@ -40,9 +45,19 @@ public class TrialResult implements Serializable {
     private String ip;
 
     /**
+     * ip地址
+     */
+    private String ipAddress;
+
+    /**
      * 设备型号
      */
     private String model;
+
+    /**
+     * 试用策略：1-时间；2-次数；
+     */
+    private Integer trialType;
 
     /**
      * 试用次数
@@ -53,6 +68,11 @@ public class TrialResult implements Serializable {
      * 试用时间
      */
     private Date trialTime;
+
+    /**
+     * 到期时间或次数
+     */
+    private String trialTimeOrNum;
 
     /**
      * 是否到期；0-未到期；1-已到期

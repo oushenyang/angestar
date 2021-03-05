@@ -4,7 +4,19 @@
 /*.layui-input{height: 34px!important;line-height: 34px!important;border-radius: 3px!important;}*/
 /*.layui-form-label{width: 60px!important;padding-left: 0px!important;}*/
 .layui-table-tool-panel{margin-top:10px!important;}
-.layui-table-tool{background-color: white!important;padding-bottom: 10px!important;padding-left:0px!important;padding-top:10px!important;}
+.layui-table-tool{
+    background-color: white!important;
+    padding-bottom: 4px!important;
+    padding-left:0px!important;
+    padding-top:4px!important;
+    min-height: 29px!important;
+    line-height: 29px!important;
+}
+.layui-table-tool-self {
+    position: absolute;
+    right: 5px!important;
+    top: 3px!important;
+}
 /*.layui-table-header, .layui-table-header th{background-color: white!important;border-bottom: 2px solid #dee2e6;border-top: 1px solid #dee2e6;font-size: 15px;font-weight: 800;}1*/
 /*.layui-table-view{border: none!important;}1*/
 /*.layui-table-cell{height: 34px!important;line-height: 34px!important;}1*/
@@ -18,3 +30,13 @@
 /*.layui-table-tool .layui-inline{border-radius: 3px!important;width: 30px!important;height: 30px!important;line-height: 20px!important;}1*/
 /*.layui-table-view .layui-table[lay-skin=line]{border: none!important;}1*/
 .layui-table-tool-temp {padding-right: 40px!important;}
+
+
+/*分页大小
+ */
+.layui-table-page .layui-laypage a, .layui-table-page .layui-laypage span.layui-laypage-curr{
+    padding: 0px 9px!important;
+}
+.layui-laypage input {
+    margin: 0 5px!important;
+}

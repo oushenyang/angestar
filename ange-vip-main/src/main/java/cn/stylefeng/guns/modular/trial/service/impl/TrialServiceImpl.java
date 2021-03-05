@@ -61,7 +61,7 @@ public class TrialServiceImpl extends ServiceImpl<TrialMapper, Trial> implements
     }
 
     @Override
-    public List<Map<String, Object>> findListBySpec(Page page, TrialParam param){
+    public List<TrialResult> findListBySpec(Page page, TrialParam param){
         return baseMapper.findListBySpec(page,param);
     }
 

@@ -16,19 +16,19 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppPower.initColumn = function () {
         return [[
-            {align: 'center',field: 'appPowerId', fixed: 'left',type: 'checkbox'},
+            // {align: 'center',field: 'appPowerId', fixed: 'left',type: 'checkbox'},
             {align: 'center',field: 'appName', title: '应用名'},
+            {align: 'center',field: 'whetherLegal', title: '是否授权', templet: '#whetherLegalTpl'},
             {align: 'center',field: 'num', title: '用户数量'},
+            {align: 'center',field: 'whetherShow', title: '是否显示', templet: '#whetherShow'},
+            {align: 'center',field: 'whetherSanction', title: '是否制裁',templet: '#whetherSanctionTpl'},
             {align: 'center',field: 'appTypeCode', title: '应用分类编码'},
             {align: 'center',field: 'sign', title: '签名验证'},
             {align: 'center',field: 'applicationName', title: '应用入口'},
-            {align: 'center',field: 'whetherLegal', title: '是否授权', templet: '#whetherLegalTpl'},
-            {align: 'center',field: 'whetherShow', title: '是否显示', templet: '#whetherShow'},
-            {align: 'center',field: 'whetherSanction', title: '是否制裁',templet: '#whetherSanctionTpl'},
             // {align: 'center',field: 'customData', title: '应用自定义数据'},
             {align: 'center',field: 'sanctionTime', sort: true, title: '制裁时间'},
             {align: 'center',field: 'createTime', title: '创建时间'},
-            {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center',toolbar: '#tableBar', width: 130, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -109,6 +109,26 @@ layui.use(['table', 'admin', 'ax'], function () {
     };
 
     /**
+     * 点击制裁
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AppPower.onSanctionItem = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/appPower/sanction", function (data) {
+                Feng.success("制裁成功!");
+                table.reload(AppPower.tableId);
+            }, function (data) {
+                Feng.error("制裁失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("appPowerId", data.appPowerId);
+            // ajax.set("sign", data.sign);
+            ajax.start();
+        };
+        Feng.confirm("是否制裁?", operation);
+    };
+
+    /**
      * 批量删除
      *
      * @param obj 选择的行数据
@@ -141,14 +161,12 @@ layui.use(['table', 'admin', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + AppPower.tableId,
         url: Feng.ctxPath + '/appPower/list',
-        page: true,
+        // page: true,
         // toolbar: '#' + AppPower.tableId + '-toolbar',
-        //         defaultToolbar: [{
-        //             title:'刷新',
-        //             layEvent: 'refresh',
-        //             icon: 'layui-icon-refresh',
-        //         }, 'filter', 'print'],
-        height: "full-158",
+        // defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
+        // height: "full-158",
         cellMinWidth: 100,
         cols: AppPower.initColumn()
     });
@@ -188,6 +206,8 @@ layui.use(['table', 'admin', 'ax'], function () {
             AppPower.openEditDlg(data);
         } else if (layEvent === 'delete') {
             AppPower.onDeleteItem(data);
+        } else if (layEvent === 'sanction') {
+            AppPower.onSanctionItem(data);
         }
     });
 });

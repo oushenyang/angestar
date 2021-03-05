@@ -19,6 +19,7 @@ import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.TrialException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.IpUtils;
+import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.lettuce.core.KqueueProvider;
@@ -84,21 +85,28 @@ public class GetTrialController {
             Trial trial = trialService.getOne(new QueryWrapper<Trial>().eq("mac",mac).eq("app_id",appInfoApi.getAppId()));
             if (ObjectUtil.isNotNull(trial)){
                 if (trial.getTrialTime().compareTo(DateUtil.date())<0) {
+                    if (!trial.getExpire()){
+                        trial.setExpire(true);
+                        trialService.updateById(trial);
+                    }
                     throw new TrialException(-302, apiManage.getAppId(),"试用已过期","",holdCheck,false);
                 }else {
-                    throw new TrialException(200, apiManage.getAppId(),"试用成功",DateUtil.between(new Date(), trial.getTrialTime(), DateUnit.MINUTE)+"分",holdCheck,true);
+                    throw new TrialException(200, apiManage.getAppId(),"试用成功",DateUtil.between(new Date(), trial.getTrialTime(), DateUnit.MINUTE)+"分钟",holdCheck,true);
                 }
             }else {
+                HttpServletRequest request = getRequest();
+                String ip = IpUtils.getIpAddr(request);
                 Trial trial1 = new Trial();
                 trial1.setAppId(appInfoApi.getAppId());
-                HttpServletRequest request = getRequest();
-                trial1.setIp(IpUtils.getIpAddr(request));
+                trial1.setIp(ip);
+                trial1.setIpAddress(IpToRegionUtil.ipToRegion(ip));
                 trial1.setMac(mac);
                 trial1.setModel(model);
+                trial1.setTrialType(appInfoApi.getCodeTryType());
                 trial1.setTrialTime(CardDateUtil.getExpireTime(new Date(),0,appInfoApi.getCodeTryTime()));
                 trial1.setCreateTime(new Date());
                 trialService.save(trial1);
-                throw new TrialException(200, apiManage.getAppId(),"试用成功", DateUtil.between(new Date(), trial1.getTrialTime(), DateUnit.MINUTE)+"分",holdCheck,true);
+                throw new TrialException(200, apiManage.getAppId(),"试用成功", DateUtil.between(new Date(), trial1.getTrialTime(), DateUnit.MINUTE)+"分钟",holdCheck,true);
             }
         }else {
             Trial trial = trialService.getOne(new QueryWrapper<Trial>().eq("mac",mac).eq("app_id",appInfoApi.getAppId()));
@@ -115,12 +123,15 @@ public class GetTrialController {
                     throw new TrialException(200, apiManage.getAppId(),"试用成功",trial.getTrialNum()+"次",holdCheck,true);
                 }
             }else {
+                HttpServletRequest request = getRequest();
+                String ip = IpUtils.getIpAddr(request);
                 Trial trial1 = new Trial();
                 trial1.setAppId(appInfoApi.getAppId());
-                HttpServletRequest request = getRequest();
-                trial1.setIp(IpUtils.getIpAddr(request));
+                trial1.setIp(ip);
+                trial1.setIpAddress(IpToRegionUtil.ipToRegion(ip));
                 trial1.setMac(mac);
                 trial1.setModel(model);
+                trial1.setTrialType(appInfoApi.getCodeTryType());
                 trial1.setTrialNum(appInfoApi.getCodeTryTime()-1);
                 trial1.setCreateTime(new Date());
                 trialService.save(trial1);

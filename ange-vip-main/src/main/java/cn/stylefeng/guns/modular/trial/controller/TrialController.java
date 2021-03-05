@@ -5,6 +5,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.trial.entity.Trial;
 import cn.stylefeng.guns.modular.trial.model.params.TrialParam;
+import cn.stylefeng.guns.modular.trial.model.result.TrialResult;
 import cn.stylefeng.guns.modular.trial.service.TrialService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
@@ -147,7 +148,7 @@ public class TrialController extends BaseController {
         Page page = LayuiPageFactory.defaultPage();
         trialParam.setCreateUser(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
-        List<Map<String, Object>> result = trialService.findListBySpec(page, trialParam);
+        List<TrialResult> result = trialService.findListBySpec(page, trialParam);
         page.setRecords(result);
         return LayuiPageFactory.createPageInfo(page);
     }

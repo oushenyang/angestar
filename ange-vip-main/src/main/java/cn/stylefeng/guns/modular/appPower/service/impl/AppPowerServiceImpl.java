@@ -366,6 +366,26 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
         return isLegal;
     }
 
+    /**
+     * 一键制裁
+     *
+     * @param appPowerParam
+     */
+    @Override
+    public void sanction(AppPowerParam appPowerParam) {
+        AppPower param = baseMapper.selectById(appPowerParam.getAppPowerId());
+        param.setAppPowerId(appPowerParam.getAppPowerId());
+        param.setWhetherShow(true);
+        param.setWhetherSanction(true);
+        param.setSanctionTime(new Date());
+        baseMapper.updateById(param);
+        if (StringUtils.isNotEmpty(param.getApplicationName())){
+            redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData()+"-"+param.getApplicationName(),param, RedisExpireTime.MONTH.getCode());
+        }else {
+            redisUtil.hset(RedisType.APP_POWER.getCode() + param.getAppTypeCode(),param.getSign()+"-"+param.getCustomData(),param, RedisExpireTime.MONTH.getCode());
+        }
+    }
+
     private Serializable getKey(AppPowerParam param){
         return param.getAppPowerId();
     }

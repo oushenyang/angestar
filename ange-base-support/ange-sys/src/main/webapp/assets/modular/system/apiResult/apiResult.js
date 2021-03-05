@@ -16,7 +16,7 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     ApiResult.initColumn = function () {
         return [[
-            {align: 'center',field: 'apiResultId', fixed: 'left',type: 'checkbox'},
+            // {align: 'center',field: 'apiResultId', fixed: 'left',type: 'checkbox'},
             {align: 'center',field: 'resultTypeName',  title: '返回类别'},
             {align: 'center',field: 'appName',  title: '所属应用'},
             // {align: 'center',field: 'resultSuccess', title: '是否成功'},
@@ -155,7 +155,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             var mergeIndex = 0;//定位需要添加合并属性的行数
             var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
             var columsName = ['resultTypeName'];//需要合并的列名称
-            var columsIndex = [1];//需要合并的列索引值
+            var columsIndex = [0];//需要合并的列索引值
 
             for (var k = 0; k < columsName.length; k++) { //这里循环所有要合并的列
                 var trArr = $(".layui-table-body>.layui-table").find("tr");//所有行

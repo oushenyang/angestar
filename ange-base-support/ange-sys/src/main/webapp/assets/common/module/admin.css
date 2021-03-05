@@ -175,6 +175,8 @@ body {
     border-top: 1px solid #f5f7f9;
     -webkit-transition: left .3s;
     transition: left .3s;
+    /*height: 35px!important;*/
+    /*line-height: 35px!important;*/
     overflow: hidden;
 }
 
@@ -228,8 +230,15 @@ body {
     padding: 4px 0!important;
 }
 /*行数据边距*/
+.layui-table-cell {
+    height: 25px!important;
+    line-height: 25px!important;
+}
+/*.laytable-cell-1-0-0 {*/
+/*    width: 35px!important;*/
+/*}*/
 .layui-table-cell{
-    padding: 0 10px!important;
+    padding: 0 5px!important;
 }
 .layui-layout-admin .layui-footer
 .layui-tab-title li{

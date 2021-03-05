@@ -1,8 +1,13 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'form','admin', 'selectApp', 'ax'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var form = layui.form;
+    var selectApp=layui.selectApp; //获取自定义模块
+    selectApp.renderAppAll(); //渲染
+    //重新渲染select数据
+    form.render('select');
 
     /**
      * 试用信息管理
@@ -22,15 +27,42 @@ layui.use(['table', 'admin', 'ax'], function () {
             // {align: 'center',field: 'ip', sort: true, title: 'ip'},
             {align: 'center',field: 'model', title: '设备型号'},
             {align: 'center',field: 'trialNum', title: '剩余时间/次数', templet: function (d) {
-                    if (d.trialNum===0) {
-                        return d.trialTime+'分钟';
+                    if (d.trialType===1) {
+                        const date1 = new Date(d.trialTime);
+                        const date2 = new Date();
+                        const s1 = date1.getTime();
+                        const s2 = date2.getTime();
+                        var num = Number((s1 - s2) / 60000);
+                        if (num<=0){
+                            num = 0;
+                        }
+                        return parseInt(num)+'分钟';
                     } else {
                         return d.trialNum+'次';
                     }
                    }
                 },
             // {align: 'center',field: 'trialTime', sort: true, title: '到期时间'},
-            {align: 'center',field: 'expire',  title: '状态', templet: '#trialExpireTpl'},
+            {align: 'center',field: 'expire',  title: '状态', templet: function (d) {
+                    if (d.trialType===1) {
+                        const date1 = new Date(d.trialTime);
+                        const date2 = new Date();
+                        const s1 = date1.getTime();
+                        const s2 = date2.getTime();
+                        var num = Number((s1 - s2) / 60000);
+                        if (num<=0){
+                            return '<span class="layui-badge layui-badge-yellow">已过期</span>';
+                        }else {
+                            return '<span class="layui-badge layui-badge-green">未过期</span>';
+                        }
+                    } else {
+                        if (d.trialNum<=0){
+                            return '<span class="layui-badge layui-badge-yellow">已过期</span>';
+                        }else {
+                            return '<span class="layui-badge layui-badge-green">未过期</span>';
+                        }
+                    }
+                }},
             // {align: 'center',field: 'createUser', sort: true, title: '创建人'},
             {align: 'center',field: 'createTime', title: '开始时间'}
             // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
@@ -146,10 +178,11 @@ layui.use(['table', 'admin', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + Trial.tableId,
         url: Feng.ctxPath + '/trial/list',
-        page: true,
+        // page: true,
         toolbar: '#' + Trial.tableId + '-toolbar',
         defaultToolbar: ['filter'],
-        height: "full-158",
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: Trial.initColumn()
     });

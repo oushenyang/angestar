@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.trial.model.params;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
 import java.util.Date;
@@ -41,9 +42,19 @@ public class TrialParam implements Serializable, BaseValidatingParam {
     private String ip;
 
     /**
+     * ip地址
+     */
+    private String ipAddress;
+
+    /**
      * 设备型号
      */
     private String model;
+
+    /**
+     * 试用策略：1-时间；2-次数；
+     */
+    private Integer trialType;
 
     /**
      * 试用次数

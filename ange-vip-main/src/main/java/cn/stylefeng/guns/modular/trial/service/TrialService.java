@@ -66,7 +66,7 @@ public interface TrialService extends IService<Trial> {
      * @author shenyang.ou
      * @Date 2021-03-04
      */
-    List<Map<String, Object>> findListBySpec(Page page, TrialParam param);
+    List<TrialResult> findListBySpec(Page page, TrialParam param);
 
     /**
      * 查询分页数据，Specification模式

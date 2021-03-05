@@ -221,14 +221,11 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     var tableResult = table.render({
         elem: '#' + AccountCardType.tableId,
         url: Feng.ctxPath + '/accountCardType/list',
-        page: true,
+        // page: true,
         toolbar: '#' + AccountCardType.tableId + '-toolbar',
-        // defaultToolbar: [{
-        //     title: '刷新',
-        //     layEvent: 'refresh',
-        //     icon: 'layui-icon-refresh',
-        // }, 'filter', 'print'],
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: AccountCardType.initColumn()
     });

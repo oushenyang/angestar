@@ -184,13 +184,9 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         elem: '#' + AppEdition.tableId,
         url: Feng.ctxPath + '/appEdition/list',
         toolbar: '#appEdition-toolbar',
-        defaultToolbar: [{
-            title:'刷新',
-            layEvent: 'refresh',
-            icon: 'layui-icon-refresh',
-        }, 'filter', 'print'],
-        page: true,
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: AppEdition.initColumn(),
         done: function () {this.where={};}

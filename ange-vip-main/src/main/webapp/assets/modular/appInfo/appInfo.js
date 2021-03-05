@@ -139,8 +139,10 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
         dataGrid.render({
             elem: '#demoGrid1',  // 容器
             templet: '#demoGridItem3',  // 模板
+            height: '1200',
+            defaultToolbar: ['filter'],
             data: Feng.ctxPath + '/appInfo/list', // url
-            page: {limit: 8, limits: [8, 16, 24, 32, 40]},
+            page: {limit: 12, limits: [12, 24, 36, 48, 60]},
             done:function(data,curr,count){
             },
             onItemClick: function (obj) {  // item事件

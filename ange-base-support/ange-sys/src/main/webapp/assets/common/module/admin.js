@@ -1236,7 +1236,7 @@ layui.define(['layer'], function (exports) {
                 var strNum = num.toString().replace(pref, '').replace(suf, '');
                 if (isNaN(strNum * 1) || strNum === '0') {
                     flag ? $this.val(num) : $this.html(num);
-                    console.error('not a number');
+                    // console.error('not a number');
                     return;
                 }
                 var int_dec = strNum.split('.');

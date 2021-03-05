@@ -270,6 +270,12 @@
             <if test="param.cardCode != null and param.cardCode !=''">
                 and cci.card_code like CONCAT('%',#{param.cardCode},'%')
             </if>
+            <if test="param.cardStatus != null and param.cardStatus !=''">
+                and cci.card_status = #{param.cardStatus}
+            </if>
+            <if test="param.cardRemark != null and param.cardRemark !=''">
+                and cci.card_remark like CONCAT('%',#{param.cardRemark},'%')
+            </if>
         </where>
         order by cci.create_time DESC
     </select>

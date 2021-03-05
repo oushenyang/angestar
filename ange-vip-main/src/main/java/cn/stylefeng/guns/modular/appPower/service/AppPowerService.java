@@ -116,4 +116,9 @@ public interface AppPowerService extends IService<AppPower> {
      */
     boolean whetherShowBySignAndAppCode(String sign,String applicationName,String appCode);
 
+    /**
+     * 一键制裁
+     * @param appPowerParam
+     */
+    void sanction(AppPowerParam appPowerParam);
 }

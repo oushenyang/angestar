@@ -173,14 +173,10 @@ layui.use(['table', 'admin', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + SerialInfo.tableId,
         url: Feng.ctxPath + '/serialInfo/list?type='+$('#type').val(),
-        page: true,
         toolbar: '#' + SerialInfo.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: SerialInfo.initColumn()
     });

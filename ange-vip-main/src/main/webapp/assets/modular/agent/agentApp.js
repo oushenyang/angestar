@@ -351,17 +351,14 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
     var tableResult = table.render({
         elem: '#' + AgentApp.tableId,
         url: Feng.ctxPath + '/agentApp/list',
-        page: true,
+        // page: true,
         toolbar: '#' + AgentApp.tableId + '-toolbar',
         where: {
             'type': Feng.getUrlParam("type")
         },
-        defaultToolbar: [{
-            title: '刷新',
-            layEvent: 'refresh',
-            icon: 'layui-icon-refresh',
-        }, 'filter', 'print'],
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: AgentApp.initColumn()
     });

@@ -165,8 +165,10 @@ layui.use(['table', 'admin', 'ax', 'notice'], function () {
     var tableResult = table.render({
         elem: '#' + AgentExamine.tableId,
         url: Feng.ctxPath + '/actExamine/list',
-        page: true,
-        height: "full-158",
+        // page: true,
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         where:{
             type:$("#type").val()

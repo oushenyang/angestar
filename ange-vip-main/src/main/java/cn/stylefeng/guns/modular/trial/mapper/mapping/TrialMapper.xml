@@ -8,7 +8,9 @@
         <result column="app_id" property="appId" />
         <result column="mac" property="mac" />
         <result column="ip" property="ip" />
+        <result column="ip_address" property="ipAddress" />
         <result column="model" property="model" />
+        <result column="trial_type" property="trialType" />
         <result column="trial_num" property="trialNum" />
         <result column="trial_time" property="trialTime" />
         <result column="expire" property="expire" />
@@ -24,7 +26,9 @@
         ct.app_id AS "appId",
         ct.mac AS "mac",
         ct.ip AS "ip",
+        ct.ip_address AS "ipAddress",
         ct.model AS "model",
+        ct.trial_type AS "trialType",
         ct.trial_num AS "trialNum",
         ct.trial_time AS "trialTime",
         ct.expire AS "expire",
@@ -33,7 +37,7 @@
         ct.update_user AS "updateUser",
         ct.update_time AS "updateTime"
     </sql>
-    <select id="findListBySpec" resultType="java.util.Map">
+    <select id="findListBySpec" resultType="cn.stylefeng.guns.modular.trial.model.result.TrialResult">
         select
         ai.app_name AS appName,
         ai.code_try_type AS codeTryType,

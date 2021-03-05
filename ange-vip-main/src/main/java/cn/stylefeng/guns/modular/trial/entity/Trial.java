@@ -46,10 +46,22 @@ public class Trial implements Serializable {
     private String ip;
 
     /**
+     * ip地址
+     */
+    @TableField("ip_address")
+    private String ipAddress;
+
+    /**
      * 设备型号
      */
     @TableField("model")
     private String model;
+
+    /**
+     * 试用策略：1-时间；2-次数；
+     */
+    @TableField("trial_type")
+    private Integer trialType;
 
     /**
      * 试用次数
@@ -126,12 +138,28 @@ public class Trial implements Serializable {
         this.ip = ip;
     }
 
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     public String getModel() {
         return model;
     }
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public Integer getTrialType() {
+        return trialType;
+    }
+
+    public void setTrialType(Integer trialType) {
+        this.trialType = trialType;
     }
 
     public Integer getTrialNum() {
@@ -197,7 +225,9 @@ public class Trial implements Serializable {
         ", appId=" + appId +
         ", mac=" + mac +
         ", ip=" + ip +
+        ", ipAddress=" + ipAddress +
         ", model=" + model +
+        ", trialType=" + trialType +
         ", trialNum=" + trialNum +
         ", trialTime=" + trialTime +
         ", expire=" + expire +

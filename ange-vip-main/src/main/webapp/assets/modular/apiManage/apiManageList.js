@@ -43,7 +43,7 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
      */
     ApiManage.initColumn = function () {
         return [[
-            {align: 'center',field: 'apiManageId', fixed: 'left',type: 'checkbox'},
+            // {align: 'center',field: 'apiManageId', fixed: 'left',type: 'checkbox'},
             {align: 'center',field: 'apiTypeName', title: '分类'},
             {align: 'center',field: 'appName', title: '所属应用'},
             // {align: 'center',field: 'callCode',  title: '调用码'},

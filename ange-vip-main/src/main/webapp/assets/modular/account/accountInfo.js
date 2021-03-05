@@ -140,11 +140,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         url: Feng.ctxPath + '/accountInfo/list',
         page: true,
         toolbar: '#' + AccountInfo.tableId + '-toolbar',
-                defaultToolbar: [{
-                    title:'刷新',
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print'],
+        defaultToolbar: [ 'filter'],
         height: "full-115",
         cellMinWidth: 100,
         cols: AccountInfo.initColumn()

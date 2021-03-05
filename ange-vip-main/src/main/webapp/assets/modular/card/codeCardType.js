@@ -73,7 +73,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
             {field: 'createTime', sort: true, title: '创建时间'},
             {field: 'status',  templet: '#statusTpl', title: '状态'},
             {field: 'sort', title: '排序'},
-            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 80, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -221,14 +221,11 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     var tableResult = table.render({
         elem: '#' + CodeCardType.tableId,
         url: Feng.ctxPath + '/codeCardType/list',
-        page: true,
+        // page: true,
         toolbar: '#' + CodeCardType.tableId + '-toolbar',
-        // defaultToolbar: [{
-        //     title: '刷新',
-        //     layEvent: 'refresh',
-        //     icon: 'layui-icon-refresh',
-        // }, 'filter', 'print'],
-        height: "full-115",
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: CodeCardType.initColumn(),
         done: function () {this.where={};}

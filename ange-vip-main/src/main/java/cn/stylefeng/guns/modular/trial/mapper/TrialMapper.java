@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.trial.mapper;
 
 import cn.stylefeng.guns.modular.trial.entity.Trial;
 import cn.stylefeng.guns.modular.trial.model.params.TrialParam;
+import cn.stylefeng.guns.modular.trial.model.result.TrialResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -19,5 +20,5 @@ import java.util.Map;
  */
 public interface TrialMapper extends BaseMapper<Trial> {
 
-    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") TrialParam param);
+    List<TrialResult> findListBySpec(@Param("page") Page page, @Param("param") TrialParam param);
 }
