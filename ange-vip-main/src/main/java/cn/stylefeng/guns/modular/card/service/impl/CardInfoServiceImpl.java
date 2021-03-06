@@ -113,9 +113,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }else {
             param.setIsUniversal(false);
             //获取应用信息
-            AppInfo appInfo = appInfoService.getById(param.getAppId());
-            appInfo.setCardNum(appInfo.getCardNum()+param.getAddNum());
-            appInfoService.updateById(appInfo);
+//            AppInfo appInfo = appInfoService.getById(param.getAppId());
+//            appInfo.setCardNum(appInfo.getCardNum()+param.getAddNum());
+//            appInfoService.updateById(appInfo);
         }
         //当前时间
         Date date = DateUtil.date();
@@ -199,12 +199,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardInfo.getAppId(),cardInfo.getCardCode());
             redisUtil.hdel(RedisType.TOKEN.getCode() + cardInfo.getCardId());
             redisUtil.hdel(RedisType.DEVICE.getCode() + cardInfo.getCardId());
-            if (cardInfo.getAppId()!=0){
-                //获取应用信息
-                AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
-                appInfo.setCardNum(appInfo.getCardNum()-1);
-                appInfoService.updateById(appInfo);
-            }
+//            if (cardInfo.getAppId()!=0){
+//                //获取应用信息
+//                AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
+//                appInfo.setCardNum(appInfo.getCardNum()-1);
+//                appInfoService.updateById(appInfo);
+//            }
         });
         this.removeByIds(idList);
     }

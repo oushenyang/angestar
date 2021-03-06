@@ -61,7 +61,7 @@ public interface AppInfoService extends IService<AppInfo> {
      * @author shenyang.ou
      * @Date 2020-04-01
      */
-    List<Map<String, Object>> findListBySpec(Page page,AppInfoParam param);
+    List<AppInfoResult> findListBySpec(Page page,AppInfoParam param);
 
     /**
      * 查询分页数据，Specification模式

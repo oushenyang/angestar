@@ -14,6 +14,7 @@ import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
+import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
@@ -164,7 +165,7 @@ public class AppInfoController extends BaseController {
         Page page = LayuiPageFactory.defaultPage();
         appInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
-        List<Map<String, Object>> result = appInfoService.findListBySpec(page, appInfoParam);
+        List<AppInfoResult> result = appInfoService.findListBySpec(page, appInfoParam);
 
         page.setRecords(result);
 

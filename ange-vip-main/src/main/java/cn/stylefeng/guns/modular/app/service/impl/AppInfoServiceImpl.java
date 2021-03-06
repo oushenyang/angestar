@@ -133,7 +133,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
-    public List<Map<String, Object>> findListBySpec(Page page,AppInfoParam param){
+    public List<AppInfoResult> findListBySpec(Page page,AppInfoParam param){
         return baseMapper.findListBySpec(page,param);
     }
 

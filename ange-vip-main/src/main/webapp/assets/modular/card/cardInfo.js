@@ -449,11 +449,32 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     };
 
     /**
+     * 点击封禁
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    CardInfo.itemProhibition = function (obj) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                Feng.success("封禁成功!");
+                table.reload(CardInfo.tableId);
+            }, function (data) {
+                Feng.error("封禁失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("ids", obj.data.cardId);
+            ajax.set("operateFlag", 0);
+            ajax.set("event", "prohibition");
+            ajax.start();
+        };
+        Feng.confirm("是否封禁?", operation);
+    };
+
+    /**
      * 点击解封
      *
      * @param data 点击按钮时候的行数据
      */
-    CardInfo.itemUnsealing = function (data) {
+    CardInfo.itemUnsealing = function (obj) {
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                 Feng.success("解封成功!");
@@ -461,7 +482,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 Feng.error("解封失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("ids", data.cardId);
+            ajax.set("ids", obj.data.cardId);
             ajax.set("operateFlag", 0);
             ajax.set("event", "unsealing");
             ajax.start();
@@ -613,10 +634,10 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             CardInfo.openItemEditDlg(obj)
         } else if (layEvent === 'itemProhibition') {
             obj.name = '卡密封禁';
-            CardInfo.openItemEditDlg(obj)
+            CardInfo.itemProhibition(obj)
         }  else if (layEvent === 'itemUnsealing') {
             obj.name = '卡密解封';
-            CardInfo.itemUnsealing(data)
+            CardInfo.itemUnsealing(obj)
         } else if (layEvent === 'itemOvertime') {
             obj.name = '卡密加时';
             CardInfo.openItemEditDlg(obj)

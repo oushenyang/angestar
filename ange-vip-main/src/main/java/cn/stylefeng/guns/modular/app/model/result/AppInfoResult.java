@@ -66,6 +66,11 @@ public class AppInfoResult implements Serializable {
     private Integer accountNum;
 
     /**
+     * 版本号
+     */
+    private String editionNum;
+
+    /**
      * 应用自定义数据1
      */
     private String customData1;

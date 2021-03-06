@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.app.mapper;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
+import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -29,7 +30,7 @@ public interface AppInfoMapper extends BaseMapper<AppInfo> {
      */
     List<AppInfoParam> findAppInfoList(@Param("userId") Long userId);
 
-    List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") AppInfoParam param);
+    List<AppInfoResult> findListBySpec(@Param("page") Page page, @Param("param") AppInfoParam param);
 
     AppInfoApi findAppInfoApi(@Param("callCode") String callCode);
 

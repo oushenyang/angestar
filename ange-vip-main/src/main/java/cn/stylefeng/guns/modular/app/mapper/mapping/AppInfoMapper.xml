@@ -104,12 +104,12 @@
     <select id="findAppInfoList" resultType="cn.stylefeng.guns.modular.app.model.params.AppInfoParam">
         select app_name, app_id from ag_app_info WHERE user_id = #{userId}
     </select>
-    <select id="findListBySpec" resultType="java.util.Map">
+    <select id="findListBySpec" resultType="cn.stylefeng.guns.modular.app.model.result.AppInfoResult">
         select
         ai.app_name AS appName,
         ai.app_head AS appHead,
-        ai.card_num AS cardNum,
-        ai.account_num AS accountNum,
+        (select count(aci.card_id) from ag_card_info aci where aci.app_id = ai.app_id) AS cardNum,
+        (select count(aai.account_id) from ag_account_info aai where aai.app_id = ai.app_id) AS accountNum,
         ae.edition_num AS editionNum,
         ai.app_id AS appId
         from ag_app_info ai
