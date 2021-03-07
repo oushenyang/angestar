@@ -3464,7 +3464,7 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 /** ---------------------------藏青主题start----------------------------------- */
 /* logo */
 .theme-cyan .layui-layout-admin .layui-header .layui-logo {
-    background-color: #001529;
+    background-color: #28333E;
 }
 
 /* 鼠标指向表格时,行背景颜色 */
@@ -3475,12 +3475,12 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 /* header */
 .theme-cyan .layui-layout-admin .layui-header .layui-nav .layui-this:after,
 .theme-cyan .layui-layout-admin .layui-header .layui-nav-bar {
-    background-color: #001529;
+    background-color: #28333E;
 }
 
 /* side */
 .theme-cyan .layui-layout-admin .layui-side {
-    background-color: #001529;
+    background-color: #28333E;
 }
 
 .theme-cyan .layui-nav-tree .layui-nav-child dd.layui-this a,
@@ -3494,12 +3494,12 @@ body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content
 }
 
 .theme-cyan .layui-layout-admin.admin-nav-mini .layui-side .layui-nav .admin-nav-hover > .layui-nav-child:before {
-    background: #001529 !important;
+    background: #28333E !important;
 }
 
 /* body tab */
 .theme-cyan .layui-layout-admin .layui-body > .layui-tab > .layui-tab-title li.layui-this:after {
-    background-color: #001529;
+    background-color: #28333E;
 }
 
 /* body title */
