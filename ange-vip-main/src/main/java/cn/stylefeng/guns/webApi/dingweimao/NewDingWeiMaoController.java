@@ -74,9 +74,17 @@ public class NewDingWeiMaoController {
     @RequestMapping("/config/GetAnnouncementList")
     @ResponseBody
     public JSONObject GetAnnouncementList(){
-        Map map = new HashMap<String, String>();
-        List<String> a = new ArrayList<>();
-        map.put("data",a);
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("Id",11);
+        map1.put("Title","春节放假");
+        map1.put("Content","春节放假：2021年2月9日至3月1日，期间无客服，给您造成的不便深表歉意");
+        map1.put("StartTime","2020-10-23T00:00:00");
+        map1.put("EndTime","2023-10-04T00:00:00");
+        map1.put("Enable",true);
+        map1.put("CreateTime","2020-10-23T14:15:15Z");
+        map1.put("UpdateTime","2021-02-09T18:40:45Z");
+        map.put("data",map1);
         map.put("error", 0);
         map.put("message", "");
         map.put("type", 0);
@@ -108,7 +116,8 @@ public class NewDingWeiMaoController {
         map1.put("etm",1878183608);
         map1.put("inv",0);
         map1.put("ifc",1);
-        map1.put("closedviptry","");
+        map1.put("ul",0);
+//        map1.put("closedviptry","");
         map.put("data",map1);
         map.put("error", 0);
         map.put("message", "");
@@ -154,6 +163,29 @@ public class NewDingWeiMaoController {
         return json;
     }
 
+    @RequestMapping("/User/AppRaing")
+    @ResponseBody
+    public JSONObject appRaing(){
+        Map map = new HashMap<String, String>();
+        map.put("error", 0);
+        map.put("message", "");
+        JSONObject json = new JSONObject(map);
+        return json;
+    }
+
+    @RequestMapping("/user/GetTurnPlateRewardSetting")
+    @ResponseBody
+    public JSONObject getTurnPlateRewardSetting(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("data",null);
+        map.put("error", 0);
+        map.put("message", "");
+        map.put("type", 0);
+        String a = "{\"error\":0,\"message\":\"\",\"type\":0,\"data\":{\"limit\":3,\"list\":[{\"name\":\"再接再厉\",\"order_num\":0},{\"name\":\"月卡一张\",\"order_num\":1},{\"name\":\"日卡一张\",\"order_num\":2},{\"name\":\"年卡一张\",\"order_num\":3},{\"name\":\"季卡一张\",\"order_num\":4},{\"name\":\"日卡一张\",\"order_num\":5},{\"name\":\"再接再厉\",\"order_num\":6},{\"name\":\"周卡一张\",\"order_num\":7}],\"count\":3}}";
+        JSONObject json = JSON.parseObject(a);
+        return json;
+    }
+
     @RequestMapping("/config/AppBlackList")
     @ResponseBody
     public JSONObject AppBlackList(@RequestBody String  body){
@@ -171,21 +203,22 @@ public class NewDingWeiMaoController {
         JSONObject jbb = JSONObject.parseObject(body);
         String pkg = jbb.getString("apppackagename");
         String version = jbb.getString("appversionname");
-        String token = HttpContext.getRequest().getParameter("c");
-        String application = HttpContext.getRequest().getParameter("bundleid");
-        String sign;
-        String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
-            }
-
-            sign = deSign.substring(0,deSign.length()-8);
-        }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+//        String token = HttpContext.getRequest().getParameter("c");
+//        String application = HttpContext.getRequest().getParameter("bundleid");
+//        String sign;
+//        String applicationName = null;
+//        if (StringUtils.isEmpty(token)){
+//            return null;
+//        }else {
+//            String deSign = CustomEnAndDe.deCrypto(token);
+//            if (StringUtils.isNotEmpty(application)){
+//                applicationName = CustomEnAndDe.deCrypto(application);
+//            }
+//
+//            sign = deSign.substring(0,deSign.length()-8);
+//        }
+//        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+        boolean whetherLegal = false;
         if (whetherLegal){
             Map map = new HashMap<String, String>();
             List<String> a = new ArrayList<>();
@@ -251,20 +284,21 @@ public class NewDingWeiMaoController {
             }
         }
 
-        String token = HttpContext.getRequest().getParameter("c");
-        String application = HttpContext.getRequest().getParameter("bundleid");
-        String sign;
-        String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-            if (StringUtils.isNotEmpty(application)){
-                applicationName = CustomEnAndDe.deCrypto(application);
-            }
-            sign = deSign.substring(0,deSign.length()-8);
-        }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+//        String token = HttpContext.getRequest().getParameter("c");
+//        String application = HttpContext.getRequest().getParameter("bundleid");
+//        String sign;
+//        String applicationName = null;
+//        if (StringUtils.isEmpty(token)){
+//            return null;
+//        }else {
+//            String deSign = CustomEnAndDe.deCrypto(token);
+//            if (StringUtils.isNotEmpty(application)){
+//                applicationName = CustomEnAndDe.deCrypto(application);
+//            }
+//            sign = deSign.substring(0,deSign.length()-8);
+//        }
+//        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+        boolean whetherLegal = false;
         if (StringUtils.isNotEmpty(appName)){
 //            boolean isHave = true;
 //            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
