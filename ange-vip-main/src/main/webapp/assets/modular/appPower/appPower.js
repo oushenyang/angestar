@@ -28,7 +28,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             // {align: 'center',field: 'customData', title: '应用自定义数据'},
             {align: 'center',field: 'sanctionTime', sort: true, title: '制裁时间'},
             {align: 'center',field: 'createTime', title: '创建时间'},
-            {align: 'center',toolbar: '#tableBar', width: 130, fixed: 'right', title: '操作'}
+            {align: 'center',toolbar: '#tableBar', width: 200, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -106,6 +106,29 @@ layui.use(['table', 'admin', 'ax'], function () {
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
+    };
+
+    /**
+     * 点击删除用户
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AppPower.onDeleteUserItem = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/appPower/deleteUser", function (data) {
+                Feng.success("情空成功!");
+                table.reload(AppPower.tableId);
+            }, function (data) {
+                Feng.error("清空失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("appPowerId", data.appPowerId);
+            ajax.set("appName", data.appName);
+            ajax.set("appCode", data.appCode);
+            ajax.set("applicationName", data.applicationName);
+            ajax.set("sign", data.sign);
+            ajax.start();
+        };
+        Feng.confirm("是否清空?", operation);
     };
 
     /**
@@ -206,6 +229,8 @@ layui.use(['table', 'admin', 'ax'], function () {
             AppPower.openEditDlg(data);
         } else if (layEvent === 'delete') {
             AppPower.onDeleteItem(data);
+        } else if (layEvent === 'deleteUser') {
+            AppPower.onDeleteUserItem(data);
         } else if (layEvent === 'sanction') {
             AppPower.onSanctionItem(data);
         }

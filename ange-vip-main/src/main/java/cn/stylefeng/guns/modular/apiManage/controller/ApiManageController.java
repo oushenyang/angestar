@@ -190,7 +190,9 @@ public class ApiManageController extends BaseController {
     public LayuiPageInfo list(ApiManageParam apiManageParam) {
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
-        apiManageParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        if (apiManageParam.getType()==1){
+            apiManageParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        }
         //根据条件查询操作日志
         List<Map<String, Object>> result = apiManageService.findListBySpec(page, apiManageParam);
         page.setRecords(result);

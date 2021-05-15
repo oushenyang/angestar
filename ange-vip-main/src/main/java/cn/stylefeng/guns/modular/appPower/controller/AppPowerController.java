@@ -127,6 +127,19 @@ public class AppPowerController extends BaseController {
     }
 
     /**
+     * 删除接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    @RequestMapping("/deleteUser")
+    @ResponseBody
+    public ResponseData deleteUser(AppPowerParam appPowerParam) {
+        this.appPowerService.deleteUser(appPowerParam);
+        return ResponseData.success();
+    }
+
+    /**
      * 制裁接口
      *
      * @author shenyang.ou

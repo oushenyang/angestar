@@ -73,6 +73,11 @@ public class AppPowerServiceImpl extends ServiceImpl<AppPowerMapper, AppPower> i
     }
 
     @Override
+    public void deleteUser(AppPowerParam param){
+        baseMapper.deleteUser(param);
+    }
+
+    @Override
     public void batchRemove(String ids){
         List<String> idList = Arrays.asList(ids.split(","));
         this.removeByIds(idList);

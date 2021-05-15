@@ -25,4 +25,10 @@ public interface AppPowerMapper extends BaseMapper<AppPower> {
 
     AppPower getAppPowerBySignAndAppTypeCode(@Param("sign") String sign,@Param("appTypeCode") String appTypeCode);
     AppPower getAppPowerBySignAndAppCodeAndAppTypeCode(@Param("sign") String sign,@Param("applicationName") String applicationName,@Param("appCode") String appCode,@Param("appTypeCode") String appTypeCode);
+
+    /**
+     * 清空用户
+     * @param param
+     */
+    void deleteUser(@Param("param") AppPowerParam param);
 }
