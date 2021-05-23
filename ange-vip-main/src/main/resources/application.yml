@@ -22,9 +22,9 @@ spring:
         enable-logging: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.108.252.160:3306/ange_new?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    url: jdbc:mysql://115.159.104.158:33066/ange_new?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
     username: root
-    password: root
+    password: oushenyang1314
     filters: wall,mergeStat
 
     # 连接池大小根据实际情况调整

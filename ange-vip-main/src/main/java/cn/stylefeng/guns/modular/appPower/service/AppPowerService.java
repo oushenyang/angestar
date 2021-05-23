@@ -37,6 +37,14 @@ public interface AppPowerService extends IService<AppPower> {
     void delete(AppPowerParam param);
 
     /**
+     * 删除用戶
+     *
+     * @author shenyang.ou
+     * @Date 2020-10-29
+     */
+    void deleteUser(AppPowerParam param);
+
+    /**
      * 批量删除
      *
      * @author shenyang.ou

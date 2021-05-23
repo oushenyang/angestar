@@ -37,6 +37,23 @@
         aap.update_time AS "updateTime",
         aap.sanction_time AS "sanctionTime"
     </sql>
+    <delete id="deleteUser">
+        delete from pj_hy_app
+        <where>
+            <if test="param.appName != null and param.appName != ''">
+                and app_name = #{appName}
+            </if>
+            <if test="param.appCode != null and param.appCode != ''">
+                and app_code = #{param.appCode}
+            </if>
+            <if test="param.applicationName != null and param.applicationName != ''">
+                and application_name = #{param.applicationName}
+            </if>
+            <if test="param.sign != null and param.sign != ''">
+                and sign = #{param.sign}
+            </if>
+        </where>
+    </delete>
     <select id="findListBySpec" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>

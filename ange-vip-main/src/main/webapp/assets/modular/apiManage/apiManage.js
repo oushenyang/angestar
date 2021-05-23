@@ -135,14 +135,14 @@ layui.use(['table', 'admin', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + ApiManage.tableId,
         url: Feng.ctxPath + '/apiManage/list',
-        page: true,
         toolbar: '#' + ApiManage.tableId + '-toolbar',
                 defaultToolbar: [{
                     title:'刷新',
                     layEvent: 'refresh',
                     icon: 'layui-icon-refresh',
                 }, 'filter', 'print'],
-        height: "full-115",
+        height: "full-80",
+        page: {limit: 50, limits: [50, 100, 150, 200, 250, 300]},
         where:{
             type:$('#type').val()
         },
@@ -154,7 +154,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             var mergeIndex = 0;//定位需要添加合并属性的行数
             var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
             var columsName = ['apiTypeName'];//需要合并的列名称
-            var columsIndex = [1];//需要合并的列索引值
+            var columsIndex = [0];//需要合并的列索引值
 
             for (var k = 0; k < columsName.length; k++) { //这里循环所有要合并的列
                 var trArr = $(".layui-table-body>.layui-table").find("tr");//所有行
