@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
@@ -28,6 +29,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,7 +46,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/api/cardLogin")
+@RequestMapping("/cardLogin")
 public class CardLoginController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;

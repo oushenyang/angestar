@@ -70,6 +70,18 @@ public class UeditorController {
     }
 
     /**
+     * ueditor文件上传方法
+     *
+     * @author fengshuonan
+     * @Date 2019-08-27 10:05
+     */
+    @RequestMapping(value = "/uploadFileTxt", method = RequestMethod.POST)
+    @ResponseBody
+    public UeditorFileResult uploadFileTxt(@RequestParam(value = "file") MultipartFile upfile) {
+        return UeditorUtil.uploadFile(upfile, UeditorUtil.FileType.FILE);
+    }
+
+    /**
      * 视频上传
      *
      * @author fengshuonan

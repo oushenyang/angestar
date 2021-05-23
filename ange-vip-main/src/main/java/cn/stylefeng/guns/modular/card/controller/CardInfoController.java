@@ -28,10 +28,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -144,9 +147,8 @@ public class CardInfoController extends BaseController {
      */
     @RequestMapping("/yyImportItem")
     @ResponseBody
-    public ResponseData yyImportItem(CardInfoParam cardInfoParam) {
-        List<String> cardInfos = this.cardInfoService.actAddItem(cardInfoParam);
-        return ResponseData.success(cardInfos);
+    public ResponseData yyImportItem(@RequestPart("file") File file, Long appId,String yyCardAddress) {
+        return ResponseData.success(file);
     }
 
     /**

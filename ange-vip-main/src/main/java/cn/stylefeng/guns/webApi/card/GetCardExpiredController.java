@@ -26,7 +26,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/api/getCardExpired")
+@RequestMapping("/getCardExpired")
 public class GetCardExpiredController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;

@@ -63,5 +63,7 @@ mybatis-plus:
       id-type: assign_id
       table-underline: true
 
+uploadFile:
+  file-path: D:/tmp/
 log:
   path:
