@@ -136,6 +136,22 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     };
 
     /**
+     * 弹出导入易游对话框
+     */
+    CardInfo.openYyImportDlg = function (obj) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '导入易游',
+            area: '700px',
+            content: Feng.ctxPath + '/cardInfo/yyImport?type='+$('#type').val(),
+            end: function () {
+                admin.getTempData('formOk') && table.reload(CardInfo.tableId);
+            }
+        });
+    };
+
+    /**
      * 导出excel按钮
      */
     CardInfo.exportExcel = function () {
@@ -594,6 +610,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             table.reload(CardInfo.tableId);
         } else if (obj.event === 'refresh') {
             table.reload(CardInfo.tableId);
+        } else if (obj.event === 'openYyImport') {
+            CardInfo.openYyImportDlg(obj)
+            //批量封禁
         } else if (obj.event === 'export') {
             CardInfo.openEditDlg(obj)
             //批量封禁

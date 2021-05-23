@@ -119,6 +119,37 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 易游导入页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/yyImport")
+    public String yyImport(Model model,Integer type) {
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("appInfoParams", appInfoParams);
+        model.addAttribute("appId", 0);
+        model.addAttribute("type", type);
+        List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("codeCardTypes", codeCardTypes);
+        return PREFIX + "/cardInfo_yyImport.html";
+    }
+
+    /**
+     * 易游导入
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/yyImportItem")
+    @ResponseBody
+    public ResponseData yyImportItem(CardInfoParam cardInfoParam) {
+        List<String> cardInfos = this.cardInfoService.actAddItem(cardInfoParam);
+        return ResponseData.success(cardInfos);
+    }
+
+    /**
      * 新增结果价格维护页面
      *
      * @author shenyang.ou
