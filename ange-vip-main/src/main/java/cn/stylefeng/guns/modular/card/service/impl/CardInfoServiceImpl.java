@@ -185,9 +185,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void delete(CardInfoParam param){
-        redisUtil.hdel(RedisType.CARD_INFO.getCode() + param.getAppId(),param.getCardCode());
-        redisUtil.del(RedisType.TOKEN.getCode() + param.getCardId());
-        redisUtil.del(RedisType.DEVICE.getCode() + param.getCardId());
+        redisUtil.del(RedisType.CARD_INFO.getCode() + param.getCardCode());
         this.removeById(getKey(param));
     }
 
@@ -196,9 +194,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         List<String> idList = Arrays.asList(ids.split(","));
         List<CardInfo> cardInfos = this.listByIds(idList);
         cardInfos.forEach(cardInfo->{
-            redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardInfo.getAppId(),cardInfo.getCardCode());
-            redisUtil.hdel(RedisType.TOKEN.getCode() + cardInfo.getCardId());
-            redisUtil.hdel(RedisType.DEVICE.getCode() + cardInfo.getCardId());
+            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getAppId());
 //            if (cardInfo.getAppId()!=0){
 //                //获取应用信息
 //                AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
@@ -232,7 +228,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
         cardInfos.forEach(cardInfo->{
-            redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardInfo.getAppId(),cardInfo.getCardCode());
+            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getCardCode());
             switch (param.getEvent()){
                 case "prohibition":
                     cardInfo.setProhibitRemark(param.getProhibitRemark());
@@ -366,9 +362,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
         CardInfoApi cardInfoApi;
         //是否存在该hash表
-        boolean isHave = redisUtil.hHasKey(RedisType.CARD_INFO.getCode()+ appId,singleCode);
+        boolean isHave = redisUtil.hHasKey(RedisType.CARD_INFO.getCode()+ singleCode,singleCode);
         if (isHave){
-            cardInfoApi = (CardInfoApi)redisUtil.hget(RedisType.CARD_INFO.getCode()+ appId,singleCode);
+            cardInfoApi = (CardInfoApi)redisUtil.hget(RedisType.CARD_INFO.getCode()+ singleCode,singleCode);
         }else {
             //不存在则数据库查
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);
@@ -385,7 +381,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     asyncService.updateCard(cardInfo);
                 }
                 cardInfoApi.setRedisTime(new Date());
-                redisUtil.hset(RedisType.CARD_INFO.getCode()+ appId,singleCode,cardInfoApi, RedisExpireTime.WEEK.getCode());
+                redisUtil.hset(RedisType.CARD_INFO.getCode()+ singleCode,singleCode,cardInfoApi, RedisExpireTime.DAY.getCode());
             }
         }
         return cardInfoApi;
@@ -393,7 +389,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 
     @Override
     public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
-        redisUtil.hdel(RedisType.CARD_INFO.getCode() + appId,singleCode);
+        redisUtil.del(RedisType.CARD_INFO.getCode() + singleCode);
         baseMapper.updateById(cardInfo);
     }
 
@@ -540,7 +536,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             for (CardInfoApi cardInfoApi : cardInfoApiList){
                 if (DateUtil.between(new Date(),cardInfoApi.getRedisTime(), DateUnit.SECOND)>=604800){
                     deleteCardCodeList.add(cardInfoApi.getCardCode());
-                    redisUtil.hdel(RedisType.CARD_INFO.getCode()+ cardInfoApi.getAppId(),cardInfoApi.getCardCode());
+                    redisUtil.del(RedisType.CARD_INFO.getCode()+ cardInfoApi.getCardCode());
                 }
             }
         }

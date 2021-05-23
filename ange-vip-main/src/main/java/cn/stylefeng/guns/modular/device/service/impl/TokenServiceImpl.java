@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.device.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
@@ -19,6 +20,7 @@ import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -115,12 +117,11 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
      */
     @Override
     public boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model,String holdCheck,Date expireTime) {
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.TOKEN.getCode() + cardInfoApi.getCardId());
+        Object object = redisUtil.hget(RedisType.CARD_INFO.getCode() + cardInfoApi.getCardCode(),RedisType.TOKEN.getCode());
         List<Token> tokens = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(objects)) {
-            for (Map.Entry<Object, Object> m : objects.entrySet()) {
-                tokens.add((Token) m.getValue());
-            }
+        if (ObjectUtil.isNotNull(object)) {
+            List<Token> tokenList = JSON.parseArray(object.toString(),Token.class);
+            tokens.addAll(tokenList);
         }
         switch (cardInfoApi.getCardOpenRange()) {
             case 0:
@@ -189,7 +190,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         asyncService.insertTokenToSql(token);
 //        baseMapper.insert(token);
         tokenList.add(token);
-        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,tokenStr,token,CardDateUtil.getClearSpace(expireTime,appInfoApi.getCodeClearSpace()));
+        redisUtil.hset(RedisType.CARD_INFO.getCode() + cardCode,RedisType.TOKEN.getCode(),JSON.toJSONString(tokenList),CardDateUtil.getClearSpace(expireTime,appInfoApi.getCodeClearSpace()));
         return tokenStr;
     }
 
@@ -205,10 +206,9 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
      */
     private String delAndInsertToken(List<Token> tokenList, Integer delNum,AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
 //        //先删除然后新增一个
-        for (int i = 0; i < delNum; i++) {
-            redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
-//            baseMapper.deleteById(tokenList.get(i));
-        }
+//        for (int i = 0; i < delNum; i++) {
+//            redisUtil.hdel(RedisType.CARD_INFO.getCode() + cardCode, tokenList.get(i).getToken());
+//        }
         //异步调用先删除
         asyncService.delAndInsertToken(delNum,cardId,tokenList);
         String tokenStr = IdUtil.simpleUUID();

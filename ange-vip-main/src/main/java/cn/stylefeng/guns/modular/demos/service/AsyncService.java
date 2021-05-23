@@ -63,7 +63,7 @@ public class AsyncService {
         RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
         //先删除然后新增一个
         for (int i = 0; i < delNum; i++) {
-            redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
+//            redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
             tokenService.deleteByToken(tokenList.get(i).getToken());
         }
     }
@@ -241,7 +241,7 @@ public class AsyncService {
     public void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode) {
         RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
         CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
-        redisUtil.hdel(RedisType.CARD_INFO.getCode() + appId,singleCode);
+        redisUtil.del(RedisType.CARD_INFO.getCode() + singleCode);
         cardInfoService.updateById(cardInfo);
     }
 }

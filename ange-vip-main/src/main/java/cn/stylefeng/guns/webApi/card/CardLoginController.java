@@ -14,8 +14,12 @@ import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.inter.AccessLimit;
@@ -23,19 +27,19 @@ import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>单码用户登录</p>
@@ -54,6 +58,8 @@ public class CardLoginController {
     private final DeviceService deviceService;
     private final TokenService tokenService;
     private final AsyncService asyncService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, AppInfoService appInfoService, DeviceService deviceService, TokenService tokenService, AsyncService asyncService) {
         this.apiManageService = apiManageService;
@@ -62,6 +68,30 @@ public class CardLoginController {
         this.deviceService = deviceService;
         this.tokenService = tokenService;
         this.asyncService = asyncService;
+    }
+
+    @AccessLimit(times = 5)
+    @RequestMapping("/test")
+    @ResponseBody
+    public Object cardLogin1() {
+        CardInfoApi cardInfoApi = new CardInfoApi();
+        cardInfoApi.setActiveTime(new Date());
+        cardInfoApi.setCardIp("10.2.3.10");
+        redisUtil.hset(RedisType.CARD_INFO.getCode() + "11111","11111",cardInfoApi, RedisExpireTime.DAY.getCode());
+        List<Token> tokenList = new ArrayList<>();
+        Token token = new Token();
+        token.setToken("11dssfsfsfsfs");
+        token.setCreateTime(new Date());
+        tokenList.add(token);
+        redisUtil.hset(RedisType.CARD_INFO.getCode() + "11111",RedisType.TOKEN.getCode(), JSON.toJSONString(tokenList),RedisExpireTime.DAY.getCode());
+
+        Object object = redisUtil.hget(RedisType.CARD_INFO.getCode() + "11111",RedisType.TOKEN.getCode());
+        List<Token> tokens = new ArrayList<>();
+        if (ObjectUtil.isNotNull(object)) {
+            List<Token> tokenList1 = JSON.parseArray(object.toString(),Token.class);
+            tokens.addAll(tokenList1);
+        }
+        return "11";
     }
 
     @AccessLimit(times = 5)
