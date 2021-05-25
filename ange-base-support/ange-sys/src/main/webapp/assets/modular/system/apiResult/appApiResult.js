@@ -22,11 +22,22 @@ layui.use(['table', 'admin', 'ax'], function () {
             // {align: 'center',field: 'resultSuccess', title: '是否成功'},
             // {align: 'center',field: 'resultVariables', title: '变量编码集合'},
             {align: 'center',field: 'resultCode', title: '默认返回码'},
-            {align: 'center',field: 'resultData', title: '默认返回数据'},
-            {align: 'center',field: 'customResultData',  title: '自定义返回数据'},
+            // {align: 'center',field: 'resultData', title: '默认返回数据'},
+            // {align: 'center',field: 'customResultData',  title: '自定义返回数据'},
             {align: 'center',field: 'resultRemark', title: '返回说明'},
             // {align: 'center',field: 'whetherEdit',  title: '是否可编辑'},
-            // {align: 'center',field: 'whetherResultJson', sort: true, title: '是否返回json  0-否；1-是'},
+            {align: 'center',field: 'outputFormat', sort: true, title: '输出格式', templet: function (d) {
+                    if (d.outputFormat===0) {
+                        return 'JSON';
+                    } else if (d.outputFormat===1){
+                        return 'XML';
+                    } else if (d.outputFormat===2){
+                        return 'HTML';
+                    } else if (d.outputFormat===3){
+                        return 'TEXT';
+                    }
+                }
+                },
             // {align: 'center',field: 'sort', sort: true, title: '排序'},
             {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];

@@ -175,16 +175,17 @@ public class DingWeiMaoController {
         String application = HttpContext.getRequest().getParameter("bundleid");
         String sign;
         String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-//            if (StringUtils.isNotEmpty(application)){
-//                applicationName = CustomEnAndDe.deCrypto(application);
-//            }
-            sign = deSign.substring(0,deSign.length()-8);
-        }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+//        if (StringUtils.isEmpty(token)){
+//            return null;
+//        }else {
+//            String deSign = CustomEnAndDe.deCrypto(token);
+////            if (StringUtils.isNotEmpty(application)){
+////                applicationName = CustomEnAndDe.deCrypto(application);
+////            }
+//            sign = deSign.substring(0,deSign.length()-8);
+//        }
+//        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+        boolean whetherLegal = false;
         if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
             if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
 
@@ -253,16 +254,17 @@ public class DingWeiMaoController {
         String application = HttpContext.getRequest().getParameter("bundleid");
         String sign;
         String applicationName = null;
-        if (StringUtils.isEmpty(token)){
-            return null;
-        }else {
-            String deSign = CustomEnAndDe.deCrypto(token);
-//            if (StringUtils.isNotEmpty(application)){
-//                applicationName = CustomEnAndDe.deCrypto(application);
-//            }
-            sign = deSign.substring(0,deSign.length()-8);
-        }
-        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+//        if (StringUtils.isEmpty(token)){
+//            return null;
+//        }else {
+//            String deSign = CustomEnAndDe.deCrypto(token);
+////            if (StringUtils.isNotEmpty(application)){
+////                applicationName = CustomEnAndDe.deCrypto(application);
+////            }
+//            sign = deSign.substring(0,deSign.length()-8);
+//        }
+//        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+        boolean whetherLegal = false;
         if (StringUtils.isNotEmpty(appName)){
 //            boolean isHave = true;
 //            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");

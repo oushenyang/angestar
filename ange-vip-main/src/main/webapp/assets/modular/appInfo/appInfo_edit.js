@@ -50,12 +50,13 @@ layui.use('element', function(){
         console.log(data);
     });
 });
-layui.use(['form', 'admin', 'ax','dict'], function () {
+layui.use(['form', 'admin', 'ax','dict', 'notice'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var dict=layui.dict; //获取自定义模块
+    var notice = layui.notice;
     dict.renderDictAll(); //渲染
     //重新渲染select数据
     form.render('select');
@@ -68,22 +69,23 @@ layui.use(['form', 'admin', 'ax','dict'], function () {
     var result = ajax.start();
     form.val('appInfoForm', result.data);
 
-    //表单提交事件
-    form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/appInfo/editItem", function (data) {
-            Feng.success("更新成功！");
-
-            //传给上个页面，刷新table用
-            admin.putTempData('formOk', true);
-
-            //关掉对话框
-            admin.closeThisDialog();
-        }, function (data) {
-            Feng.error("更新失败！" + data.responseJSON.message)
+    $('.btnSubmit').click(function () {
+        //表单提交事件
+        form.on('submit(btnSubmit)', function (data) {
+            // notice.destroy();
+            var ajax = new $ax(Feng.ctxPath + "/appInfo/editItem", function (data) {
+                Feng.success("更新成功！");
+                //传给上个页面，刷新table用
+                admin.putTempData('formOk', true);
+                //关掉对话框
+                admin.closeThisDialog();
+            }, function (data) {
+                Feng.error("更新失败！" + data.responseJSON.message)
+            });
+            ajax.set(data.field);
+            ajax.start();
+            //添加 return false 可成功跳转页面
+            return false;
         });
-        ajax.set(data.field);
-        ajax.start();
-        //添加 return false 可成功跳转页面
-        return false;
     });
 });
