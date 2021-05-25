@@ -27,8 +27,12 @@
     <sql id="Base_Column_List">
         token_id AS "tokenId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", edition_num AS "editionNum", mac AS "mac", ip AS "ip", model AS "model", login_num AS "loginNum", login_time AS "loginTime", check_time AS "checkTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
-    <delete id="deleteByToken">
-        delete from ag_token where token = #{token}
+    <delete id="deleteByCardId">
+    DELETE
+    FROM
+	ag_token
+    WHERE
+	token_id = (SELECT token_id FROM ag_token WHERE card_or_user_id = #{cardId} ORDER BY create_time ASC LIMIT 1);
     </delete>
 
 </mapper>

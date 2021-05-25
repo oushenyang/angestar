@@ -44,7 +44,7 @@ public interface TokenService extends IService<Token> {
      * @author shenyang.ou
      * @Date 2020-08-02
      */
-    void deleteByToken(String token);
+    void deleteByCardId(Long token);
 
     /**
      * 更新

@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.card.entity.CodeCardType;
@@ -116,4 +117,13 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
      * @return 卡类信息
      */
     List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId);
+
+    /**
+     * 根据用户id和卡密类型和时间值查询卡密类型ID
+     * @param userId 用户id
+     * @param cardTimeType 卡密类型
+     * @param cardTypeData 时间值
+     * @return 卡密类型ID
+     */
+    Long findByCardTimeTypeAndCardTypeData(Long userId, Integer cardTimeType, Integer cardTypeData);
 }

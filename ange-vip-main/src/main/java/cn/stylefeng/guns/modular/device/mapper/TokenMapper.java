@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TokenMapper extends BaseMapper<Token> {
 
-    void deleteByToken(@Param("token") String token);
+    void deleteByCardId(@Param("cardId") Long cardId);
 }

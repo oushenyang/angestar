@@ -74,7 +74,7 @@ public interface DeviceService extends IService<Device> {
      * @param cardId 卡密id
      * @return 返回设备
      */
-    boolean getDeviceApiAndHandleByCardOrUserId(Long appId, Long cardId, Integer cardBindType, Integer cardBindNum, String mac, String model, Date expireTime);
+    boolean getDeviceApiAndHandleByCardOrUserId(Long appId, Long cardId, String cardCode, Integer cardBindType, Integer cardBindNum, String mac, String model, Date expireTime);
 
     /**
      * 更新设备登录次数

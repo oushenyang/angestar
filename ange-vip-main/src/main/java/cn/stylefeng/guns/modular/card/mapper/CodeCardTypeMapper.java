@@ -47,4 +47,13 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
      * @return 卡类信息
      */
     List<AgentCardResult> findAgentCardResultByAppIdAndCardTypeIds(@Param("userId")Long userId);
+
+    /**
+     * 根据用户id和卡密类型和时间值查询卡密类型ID
+     * @param userId 用户id
+     * @param cardTimeType 卡密类型
+     * @param cardTypeData 时间值
+     * @return 卡密类型ID
+     */
+    Long findByCardTimeTypeAndCardTypeData(@Param("userId")Long userId,@Param("cardTimeType")Integer cardTimeType, @Param("cardTypeData")Integer cardTypeData);
 }

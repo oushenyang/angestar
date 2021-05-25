@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.modular.demos.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.modular.account.entity.AccountCardType;
 import cn.stylefeng.guns.modular.account.service.AccountCardTypeService;
 import cn.stylefeng.guns.modular.agent.entity.*;
@@ -53,19 +55,22 @@ public class AsyncService {
 
     /**
      * 先删除在新增token
-     * @param delNum 删除数量
+     * @param codeOpenNumLong 保留数量
      * @param cardId 卡密id
-     * @param tokenList token集合
      */
     @Async
-    public void delAndInsertToken(Integer delNum, Long cardId, List<Token> tokenList){
+    public void delAndInsertToken(Integer codeOpenNumLong, Long cardId){
         TokenService tokenService = SpringUtil.getBean(TokenService.class);
-        RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
-        //先删除然后新增一个
-        for (int i = 0; i < delNum; i++) {
-//            redisUtil.hdel(RedisType.TOKEN.getCode() + cardId, tokenList.get(i).getToken());
-            tokenService.deleteByToken(tokenList.get(i).getToken());
+        List<Token> tokenList = tokenService.list(new QueryWrapper<Token>().eq("card_or_user_id", cardId));
+        if (tokenList.size()>codeOpenNumLong){
+            //先删除然后新增一个
+            for (int i = 0; i < tokenList.size()-codeOpenNumLong; i++) {
+                if (ObjectUtil.isNotNull(tokenList.get(i))){
+                    tokenService.deleteByCardId(tokenList.get(i).getCardOrUserId());
+                }
+            }
         }
+        tokenList.clear();
     }
 
     @Async

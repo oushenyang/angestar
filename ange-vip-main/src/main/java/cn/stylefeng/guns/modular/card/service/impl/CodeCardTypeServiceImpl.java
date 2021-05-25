@@ -195,4 +195,15 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
         return codeCardTypes;
     }
 
+    /**
+     * 根据用户id和卡密类型和时间值查询卡密类型ID
+     * @param userId 用户id
+     * @param cardTimeType 卡密类型
+     * @param cardTypeData 时间值
+     * @return 卡密类型ID
+     */
+    @Override
+    public Long findByCardTimeTypeAndCardTypeData(Long userId,Integer cardTimeType, Integer cardTypeData) {
+        return baseMapper.findByCardTimeTypeAndCardTypeData(userId,cardTimeType,cardTypeData);
+    }
 }

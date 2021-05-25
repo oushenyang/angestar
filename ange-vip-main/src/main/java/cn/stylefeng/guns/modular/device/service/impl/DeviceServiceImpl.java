@@ -1,9 +1,11 @@
 package cn.stylefeng.guns.modular.device.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.device.entity.Device;
@@ -15,6 +17,7 @@ import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -86,19 +89,18 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,Integer cardBindType,Integer cardBindNum,String mac,String model,Date expireTime) {
-        Map<Object, Object> objects = redisUtil.hmget(RedisType.DEVICE.getCode() + cardId);
+    public boolean getDeviceApiAndHandleByCardOrUserId(Long appId,Long cardId,String cardCode,Integer cardBindType,Integer cardBindNum,String mac,String model,Date expireTime) {
+        Object object = redisUtil.hget(RedisType.CARD_INFO.getCode() + cardCode,RedisType.DEVICE.getCode());
         List<Device> deviceApis = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(objects)) {
-            for (Map.Entry<Object, Object> m : objects.entrySet()) {
-                deviceApis.add((Device) m.getValue());
-            }
+        if (ObjectUtil.isNotNull(object)) {
+            List<Device> deviceList = JSON.parseArray(object.toString(),Device.class);
+            deviceApis.addAll(deviceList);
         }
 
         //如果空
         if (CollectionUtils.isEmpty(deviceApis)){
             List<Device> deviceApiList = new ArrayList<>();
-            insertDevice(deviceApiList,appId,cardId, mac,model,expireTime);
+            insertDevice(deviceApiList,appId,cardId, mac,model,cardCode);
             return true;
         }else {
             boolean isHave = false;
@@ -141,7 +143,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             }else {
                 //如果还没达到上限,直接插入并返回成功
                 if (deviceApis.size()<cardBindNum){
-                    insertDevice(deviceApis,appId,cardId, mac,model,expireTime);
+                    insertDevice(deviceApis,appId,cardId, mac,model,cardCode);
                     return true;
                 }else {
                     //返回错误,不在常用设备登录
@@ -161,7 +163,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         baseMapper.updateDeviceLoginNumByDeviceId(deviceId);
     }
 
-    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,String model,Date expireTime){
+    private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,String model,String cardCode){
         Date date = new Date();
         Device device = new Device();
         device.setAppId(appId);
@@ -177,7 +179,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         //异步调用插入
         asyncService.insertDevice(device);
         deviceApiList.add(device);
-        redisUtil.hset(RedisType.DEVICE.getCode() + cardId,mac+getIp(),device, CardDateUtil.getExpireTimeSpace(expireTime));
+        redisUtil.hset(RedisType.CARD_INFO.getCode() + cardCode,RedisType.DEVICE.getCode(),JSON.toJSONString(deviceApiList), RedisExpireTime.DAY.getCode());
     }
 
     private Serializable getKey(DeviceParam param){

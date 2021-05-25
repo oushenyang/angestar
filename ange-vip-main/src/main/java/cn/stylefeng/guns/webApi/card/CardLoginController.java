@@ -4,38 +4,34 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
+import cn.stylefeng.guns.core.constant.state.CardTimeType;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.entity.CodeCardType;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
-import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
-import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
-import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
-import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.inter.AccessLimit;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
+import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.core.util.ToolUtil;
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,44 +50,19 @@ import java.util.*;
 public class CardLoginController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;
+    private final CodeCardTypeService codeCardTypeService;
     private final AppInfoService appInfoService;
     private final DeviceService deviceService;
     private final TokenService tokenService;
     private final AsyncService asyncService;
-    @Autowired
-    private RedisUtil redisUtil;
-
-    public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, AppInfoService appInfoService, DeviceService deviceService, TokenService tokenService, AsyncService asyncService) {
+    public CardLoginController(ApiManageService apiManageService, CardInfoService cardInfoService, CodeCardTypeService codeCardTypeService, AppInfoService appInfoService, DeviceService deviceService, TokenService tokenService, AsyncService asyncService) {
         this.apiManageService = apiManageService;
         this.cardInfoService = cardInfoService;
+        this.codeCardTypeService = codeCardTypeService;
         this.appInfoService = appInfoService;
         this.deviceService = deviceService;
         this.tokenService = tokenService;
         this.asyncService = asyncService;
-    }
-
-    @AccessLimit(times = 5)
-    @RequestMapping("/test")
-    @ResponseBody
-    public Object cardLogin1() {
-        CardInfoApi cardInfoApi = new CardInfoApi();
-        cardInfoApi.setActiveTime(new Date());
-        cardInfoApi.setCardIp("10.2.3.10");
-        redisUtil.hset(RedisType.CARD_INFO.getCode() + "11111","11111",cardInfoApi, RedisExpireTime.DAY.getCode());
-        List<Token> tokenList = new ArrayList<>();
-        Token token = new Token();
-        token.setToken("11dssfsfsfsfs");
-        token.setCreateTime(new Date());
-        tokenList.add(token);
-        redisUtil.hset(RedisType.CARD_INFO.getCode() + "11111",RedisType.TOKEN.getCode(), JSON.toJSONString(tokenList),RedisExpireTime.DAY.getCode());
-
-        Object object = redisUtil.hget(RedisType.CARD_INFO.getCode() + "11111",RedisType.TOKEN.getCode());
-        List<Token> tokens = new ArrayList<>();
-        if (ObjectUtil.isNotNull(object)) {
-            List<Token> tokenList1 = JSON.parseArray(object.toString(),Token.class);
-            tokens.addAll(tokenList1);
-        }
-        return "11";
     }
 
     @AccessLimit(times = 5)
@@ -220,7 +191,7 @@ public class CardLoginController {
                 //生成token
                 tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
-                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model,expireTime);
+                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardCode(),cardInfoApi.getCardBindType()-1,cardInfoApi.getCardBindNum(),mac,model,expireTime);
                 if (successful){
                     //返回成功信息
                     //生成token
@@ -243,7 +214,7 @@ public class CardLoginController {
                 //生成token
                 tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
             }else {
-                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindOption(),mac,model,expireTime);
+                boolean successful = deviceService.getDeviceApiAndHandleByCardOrUserId(apiManage.getAppId(),cardInfoApi.getCardId(),cardInfoApi.getCardCode(),appInfoApi.getCodeBindType(),appInfoApi.getCodeBindNum(),mac,model,expireTime);
                 if (successful){
                     //返回成功信息
                     tokenService.createToken(apiManage,cardInfoApi,appInfoApi,mac,model,holdCheck,expireTime);
@@ -284,10 +255,42 @@ public class CardLoginController {
             //先创建卡密
             CardInfo cardInfo = new CardInfo();
             cardInfo.setAppId(appInfoApi.getAppId());
+            if ("小时卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.HOUR.getCode(),1);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("六时卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.HOUR.getCode(),6);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("天卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.DAY.getCode(),1);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("周卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.WEEK.getCode(),1);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("半月卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.DAY.getCode(),15);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("月卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.MONTH.getCode(),1);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("季卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.MONTH.getCode(),3);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("半年卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.MONTH.getCode(),6);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("年卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.YEAR.getCode(),1);
+                cardInfo.setCardTypeId(cardTypeId);
+            }else if ("永久卡".equals(cardTypeName)){
+                Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(appInfoApi.getCreateUser(),CardTimeType.YEAR.getCode(),99);
+                cardInfo.setCardTypeId(cardTypeId);
+            }
             cardInfo.setCardTypeName(cardTypeName);
             cardInfo.setUserId(appInfoApi.getCreateUser());
             cardInfo.setCreateUser(appInfoApi.getCreateUser());
             cardInfo.setUserName("易游");
+            cardInfo.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
             cardInfo.setCreateTime(DateUtil.date());
             cardInfo.setCardCode(singleCode);
             cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());

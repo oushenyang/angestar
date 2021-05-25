@@ -32,8 +32,13 @@ layui.use(['form','formX','admin', 'ax'], function () {
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/codeCardType/detail?cardTypeId=" + Feng.getUrlParam("cardTypeId"));
     var result = ajax.start();
+    if (result.data.appId===0){
+        $('#cardTimeType').attr("disabled", "disabled");
+        $('#cardTypeData').attr("disabled", "disabled");
+        $('#cardTypeData').addClass("layui-disabled");
+        // form.render('select');
+    }
     form.val('codeCardTypeForm', result.data);
-
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         if (Number(data.field.cardTypePrice)<Number(data.field.cardTypeAgentPrice)){

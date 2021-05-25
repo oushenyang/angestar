@@ -94,5 +94,16 @@
         cct.create_user = #{userId}
         order by cct.sort ASC
     </select>
+    <select id="findByCardTimeTypeAndCardTypeData"
+            resultType="java.lang.Long">
+        select card_type_id
+        from ag_code_card_type
+        where
+        app_id = 0
+        AND card_time_type = #{cardTimeType}
+        AND card_type_data = #{cardTypeData}
+        AND create_user = #{userId}
+        LIMIT 1
+    </select>
 
 </mapper>
