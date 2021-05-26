@@ -26,8 +26,6 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
             {field: 'cydiaFlag', sort: true, title: '运行状态 0-收费；1-免费；2-关闭'},
             {field: 'appNotice', sort: true, title: '软件公告'},
             {field: 'customData1', sort: true, title: '应用自定义数据1'},
-            {field: 'customData2', sort: true, title: '应用自定义数据2'},
-            {field: 'customData3', sort: true, title: '应用自定义数据2'},
             {field: 'codeBindType', sort: true, title: '单码绑机策略 0-关闭；1-MAC；2-IP；3-混合'},
             {field: 'codeBindOption', sort: true, title: '单码绑机选项 0-每天；1-永久；'},
             {field: 'codeBindNum', sort: true, title: '单码重绑次数'},

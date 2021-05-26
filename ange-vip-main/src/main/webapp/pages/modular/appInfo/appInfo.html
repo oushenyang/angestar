@@ -241,8 +241,16 @@
 <!--        <div class="ribbon ribbon-warning float-right">编号：00012</div>-->
         <div class="application-list-item">
             <div class="application-list-item-header">
-                <img class="head" src="{{d.appHead}}"/>
-                <h2><div class="text-num-item-text">{{d.appName}}</div></h2>
+                <div class="text-item" style="float: left">
+                    <img class="head" src="{{d.appHead}}"/>
+                </div>
+                <div class="text-item" style="float: left">
+                    <h2><div class="text-num-item-text">{{d.appName}}</div></h2>
+                </div>
+                <div class="text-item" style="float: right;color: #999;">
+                    <h3><div class="text-num-item-text">编号:{{d.appNo}}</div></h3>
+                </div>
+                <div style="clear: both"></div>
             </div>
             <div class="application-list-item-body">
                 <div class="text-num-item">
@@ -271,7 +279,7 @@
                     <i class="layui-icon layui-icon-edit" lay-tips="编辑" lay-offset="0,-8px"></i>
                 </span>
                 <span class="application-list-item-tool-item" lay-event="share">
-                    <i class="layui-icon layui-icon-share" lay-tips="分享" lay-offset="0,-8px"></i>
+                    <i class="layui-icon layui-icon-delete" lay-event="delete" lay-tips="删除" lay-offset="0,-8px"></i>
                 </span>
                 <span class="application-list-item-tool-item">
                     <div class="dropdown-menu dropdown-hover">
@@ -282,7 +290,7 @@
                             <li><a lay-event="trial">试用注册</a></li>
                             <li><a lay-event="password">密匙配置</a></li>
                             <li><a lay-event="otherSign">外部验证对接</a></li>
-                            <li><a lay-event="delete" style="color: red">删除应用</a></li>
+<!--                            <li><a lay-event="delete" style="color: red">删除应用</a></li>-->
                         </ul>
                     </div>
                 </span>

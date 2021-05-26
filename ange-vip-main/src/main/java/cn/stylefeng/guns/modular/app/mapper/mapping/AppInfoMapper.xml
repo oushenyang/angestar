@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.app.entity.AppInfo">
         <id column="app_id" property="appId" />
         <result column="app_num" property="appNum" />
+        <result column="app_no" property="appNo" />
         <result column="app_head" property="appHead" />
         <result column="user_id" property="userId" />
         <result column="app_name" property="appName" />
@@ -14,8 +15,6 @@
         <result column="card_num" property="cardNum" />
         <result column="account_num" property="accountNum" />
         <result column="custom_data1" property="customData1" />
-        <result column="custom_data2" property="customData2" />
-        <result column="custom_data3" property="customData3" />
         <result column="code_bind_type" property="codeBindType" />
         <result column="code_bind_option" property="codeBindOption" />
         <result column="code_bind_num" property="codeBindNum" />
@@ -42,11 +41,15 @@
         <result column="account_register_time" property="accountRegisterTime" />
         <result column="web_algorithm_range" property="webAlgorithmRange" />
         <result column="web_algorithm_type" property="webAlgorithmType" />
+        <result column="encryption_mode" property="encryptionMode" />
+        <result column="fill" property="fill" />
+        <result column="web_algorithm_output" property="webAlgorithmOutput" />
         <result column="web_key" property="webKey" />
         <result column="web_salt" property="webSalt" />
         <result column="sign_flag" property="signFlag" />
         <result column="other_sign" property="otherSign" />
         <result column="proving_url" property="provingUrl" />
+        <result column="card_login_url" property="cardLoginUrl" />
         <result column="version_num" property="versionNum" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
@@ -58,13 +61,12 @@
     <sql id="Base_Column_List">
         app_id AS "appId",
         app_num AS "appNum",
+        app_no AS "appNo",
         user_id AS "userId",
         app_name AS "appName",
         cydia_flag AS "cydiaFlag",
         app_notice AS "appNotice",
         custom_data1 AS "customData1",
-        custom_data2 AS "customData2",
-        custom_data3 AS "customData3",
         code_bind_type AS "codeBindType",
         code_bind_option AS "codeBindOption",
         code_bind_num AS "codeBindNum",
@@ -90,11 +92,15 @@
         account_register_num AS "accountRegisterNum",
         account_register_time AS "accountRegisterTime",
         web_algorithm_type AS "webAlgorithmType",
+        encryption_mode AS "encryptionMode",
+        fill AS "fill",
+        web_algorithm_output AS "webAlgorithmOutput",
         web_key AS "webKey",
         web_salt AS "webSalt",
         sign_flag AS "signFlag",
         other_sign AS "otherSign",
         proving_url AS "provingUrl",
+        card_login_url AS "cardLoginUrl",
         version_num AS "versionNum",
         create_user AS "createUser",
         create_time AS "createTime",
@@ -107,6 +113,7 @@
     <select id="findListBySpec" resultType="cn.stylefeng.guns.modular.app.model.result.AppInfoResult">
         select
         ai.app_name AS appName,
+        ai.app_no AS appNo,
         ai.app_head AS appHead,
         (select count(aci.card_id) from ag_card_info aci where aci.app_id = ai.app_id) AS cardNum,
         (select count(aai.account_id) from ag_account_info aai where aai.app_id = ai.app_id) AS accountNum,
@@ -126,6 +133,8 @@
     <select id="findAppInfoApi" resultType="cn.stylefeng.guns.modular.app.model.result.AppInfoApi">
         select
         app_id AS "appId",
+        app_no AS "appNo",
+        app_num AS "appNum",
         cydia_flag AS "cydiaFlag",
         app_notice AS "appNotice",
         code_bind_type AS "codeBindType",
@@ -153,11 +162,15 @@
         account_register_time AS "accountRegisterTime",
         web_algorithm_range AS "webAlgorithmRange",
         web_algorithm_type AS "webAlgorithmType",
+        encryption_mode AS "encryptionMode",
+        fill AS "fill",
+        web_algorithm_output AS "webAlgorithmOutput",
         web_key AS "webKey",
         web_salt AS "webSalt",
         sign_flag AS "signFlag",
         other_sign AS "otherSign",
         proving_url AS "provingUrl",
+        card_login_url AS "cardLoginUrl",
         create_user AS "createUser"
         from ag_app_info
         <where>

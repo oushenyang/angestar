@@ -50,13 +50,14 @@ layui.use('element', function(){
         console.log(data);
     });
 });
-layui.use(['form', 'admin', 'ax','dict', 'notice'], function () {
+layui.use(['form', 'admin', 'ax','dict', 'notice', 'formX'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var dict=layui.dict; //获取自定义模块
     var notice = layui.notice;
+    var formX = layui.formX;
     dict.renderDictAll(); //渲染
     //重新渲染select数据
     form.render('select');

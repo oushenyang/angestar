@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.demos.service;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.modular.account.entity.AccountCardType;
@@ -35,6 +36,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -248,5 +250,19 @@ public class AsyncService {
         CardInfoService cardInfoService = SpringUtil.getBean(CardInfoService.class);
         redisUtil.del(RedisType.CARD_INFO.getCode() + singleCode);
         cardInfoService.updateById(cardInfo);
+    }
+
+    /**
+     * 激活易游卡密
+     * @param cardLoginUrl 单码登录地址
+     * @param singleCode 单码
+     */
+    @Async
+    public void activationYyCard(String cardLoginUrl, String singleCode) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("SingleCode", singleCode);
+        paramMap.put("Ver", "1.0");
+        paramMap.put("Mac", "11111");
+        HttpUtil.post(cardLoginUrl, paramMap);
     }
 }

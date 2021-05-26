@@ -82,6 +82,13 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         }
         //生成应用编码
         entity.setAppNum(wordAndNum("",12));
+
+        //生成加密密匙
+        entity.setWebKey(wordAndNum("",16));
+
+        //生成加密盐
+        entity.setWebSalt(wordAndNum("",16));
+
         this.save(entity);
         param.setAppId(entity.getAppId());
 

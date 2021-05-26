@@ -27,9 +27,14 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private Long appId;
 
     /**
-     * 应用编号
+     * 应用编号(api接口用到)
      */
     private String appNum;
+
+    /**
+     * 应用编号
+     */
+    private String appNo;
 
     /**
      * 应用头像
@@ -80,16 +85,6 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
      * 应用自定义数据1
      */
     private String customData1;
-
-    /**
-     * 应用自定义数据2
-     */
-    private String customData2;
-
-    /**
-     * 应用自定义数据2
-     */
-    private String customData3;
 
     /**
      * 单码绑机策略 0-关闭；1-MAC；2-IP；3-混合
@@ -218,9 +213,24 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private Integer webAlgorithmRange;
 
     /**
-     * webApi加密算法 0-关闭；1-DES；2-AES；
+     * webApi加密算法 0-关闭；1-DES；2-AES；3-RC4；4-Blowfish
      */
     private Integer webAlgorithmType;
+
+    /**
+     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB；6-PCBC
+     */
+    private Integer encryptionMode;
+
+    /**
+     * 填充：0-PKCS5Padding；1-PKCS7Padding；2-PKCS1Padding；3-ISO10126Padding；4-SSL3Padding；5-ZeroPadding；6-OAEPPadding；7-NoPadding；
+     */
+    private Integer fill;
+
+    /**
+     * 输出：0-base64；1-hex；
+     */
+    private Integer webAlgorithmOutput;
 
     /**
      * webApi加密key
@@ -243,9 +253,14 @@ public class AppInfoParam implements Serializable, BaseValidatingParam {
     private Integer otherSign;
 
     /**
-     * 验证地址
+     * 卡密查询地址
      */
     private String provingUrl;
+
+    /**
+     * 单码登录地址
+     */
+    private String cardLoginUrl;
 
     /**
      * 版本号id
