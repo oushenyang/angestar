@@ -76,6 +76,7 @@ public class NoneAuthedResources {
             "/checkCardStatus/*",
             "/api/**",
             "/new/api/**",
+            "/web/api/**",
             "/dict/*",
             "/dic*",
             "/dictType/**",

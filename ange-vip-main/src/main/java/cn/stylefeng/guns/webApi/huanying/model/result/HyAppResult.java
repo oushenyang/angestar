@@ -35,5 +35,7 @@ public class HyAppResult implements Serializable {
     private Integer fakedata;
 
     private String applicationName;
+    private Integer fs;
+    private Integer fn;
 
 }

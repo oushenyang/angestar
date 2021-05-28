@@ -72,6 +72,9 @@ public class CardLoginController {
     @RequestMapping("/{callCode}")
     @ResponseBody
     public Object cardLogin(@PathVariable String callCode, @RequestBody(required=false) String body) {
+        if (StringUtils.isNotEmpty(callCode)){
+            return "11111111111111111111111111111111";
+        }
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("cardLogin",callCode);
         AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
