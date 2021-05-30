@@ -16,9 +16,13 @@
 package cn.stylefeng.guns.sys.core.exception.aop;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
+import cn.hutool.crypto.symmetric.AES;
+import cn.hutool.crypto.symmetric.DES;
+import cn.hutool.crypto.symmetric.DESede;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
@@ -212,10 +216,10 @@ public class GlobalExceptionHandler {
      * @Date 2020/2/6 11:14 上午
      */
     @ExceptionHandler(SystemApiException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ApiResult systemApiException(SystemApiException e) {
-        return ApiResult.resultError(e.getCode(), e.getMessage(),e.getData(),e.getSuccess());
+        return ApiResult.resultError(e.getCode(), e.getMessage(),e.getSuccess());
     }
 
     /**
@@ -225,7 +229,7 @@ public class GlobalExceptionHandler {
      * @Date 2020/2/6 11:14 上午
      */
     @ExceptionHandler(CardLoginException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object cardLoginException(CardLoginException e) {
         ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
@@ -235,25 +239,38 @@ public class GlobalExceptionHandler {
                 redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
             }
         }
+        Object object = null;
+        if (ObjectUtil.isNull(apiResultApi)){
+            object = ApiResult.resultError(-1, "接口不正确",false);
+        }
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (apiResultApi.getResultSuccess()){
-                Map map = new HashMap<String, String>();
-                map.put("expireTime", e.getExpireTime());
-                map.put("token", e.getData());
+                Map<String, Object> map = new HashMap<>(2);
+                map.put("expireTime", DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+                if (StringUtils.isNotEmpty(e.getHoldCheck())){
+                    map.put("token", e.getHoldCheck());
+                }
                 JSONObject json = new JSONObject(map);
-                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
-                return ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),e.getData(),apiResultApi.getResultSuccess());
+                if (StringUtils.isNotEmpty(e.getHoldCheck())){
+                    Map<String, Object> map = new HashMap<>(2);
+                    map.put("holdCheck", e.getHoldCheck());
+                    JSONObject json = new JSONObject(map);
+                    object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+                }else {
+                    object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
+                }
             }
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //TODO
-            if (StringUtils.contains(customResultData, "%appCode%")){
-                if (StringUtils.isNotEmpty(e.getAppCode())){
-                    customResultData = customResultData.replaceAll("%appCode%",e.getAppCode());
+            if (StringUtils.contains(customResultData, "%holdCheck%")){
+                if (StringUtils.isNotEmpty(e.getHoldCheck())){
+                    customResultData = customResultData.replaceAll("%holdCheck%",e.getHoldCheck());
                 }else {
-                    customResultData = customResultData.replaceAll("%appCode%","");
+                    customResultData = customResultData.replaceAll("%holdCheck%","");
                 }
             }
             if (StringUtils.contains(customResultData, "%token%")){
@@ -271,8 +288,36 @@ public class GlobalExceptionHandler {
             if (StringUtils.contains(customResultData, "%currentTime%")){
                 customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
             }
-            return customResultData;
+            object = customResultData;
         }
+        if (e.getAppInfoApi().getWebAlgorithmType()!=0&&e.getAppInfoApi().getWebAlgorithmRange()!=1){
+            //des解密
+            if (e.getAppInfoApi().getWebAlgorithmType()==1){
+                DES des = DESContext.getInstance(e.getAppInfoApi());
+                try {
+                    object = des.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                }catch (Exception ignored){
+                    throw new SystemApiException(4, "系统错误","",false);
+                }
+                //aes解密
+            }else if (e.getAppInfoApi().getWebAlgorithmType()==2){
+                AES aes = AESContext.getInstance(e.getAppInfoApi());
+                try {
+                    object = aes.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                }catch (Exception ignored){
+                    throw new SystemApiException(4, "系统错误","",false);
+                }
+                //DESede解密
+            }else if (e.getAppInfoApi().getWebAlgorithmType()==3){
+                DESede deSede = DESedeContext.getInstance(e.getAppInfoApi());
+                try {
+                    object = deSede.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                }catch (Exception ignored){
+                    throw new SystemApiException(4, "系统错误","",false);
+                }
+            }
+        }
+        return object;
     }
 
     /**
@@ -282,7 +327,7 @@ public class GlobalExceptionHandler {
      * @Date 2020/2/6 11:14 上午
      */
     @ExceptionHandler(TrialException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object trialException(TrialException e) {
         ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());

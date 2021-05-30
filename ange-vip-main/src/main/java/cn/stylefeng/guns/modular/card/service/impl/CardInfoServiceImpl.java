@@ -33,6 +33,7 @@ import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Token;
+import cn.stylefeng.guns.modular.trial.entity.Trial;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -45,6 +46,7 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.*;
@@ -58,6 +60,9 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -621,6 +626,123 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                 });
                 excelService.exportExcel(cardInfoExport3s, CardInfoExport3.class,"卡密导出","report-1",response);
             }
+        }
+    }
+
+    @Override
+    public void yyImportItem(Long appId, String yyCardAddress, String txtFileName) {
+        List<String> idList = Arrays.asList(txtFileName.split("\n"));
+
+        for (String singleCode : idList){
+            CardInfo cardInfo1 = this.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",singleCode));
+            if (ObjectUtil.isNull(cardInfo1)){
+                Map<String, String> paramMap = new HashMap<>();
+                paramMap.put("k", singleCode);
+                String result= HttpClientUtil.postParams(yyCardAddress, paramMap);
+                if(StringUtils.contains(result, "无此卡密")){
+                    continue;
+                }
+                if (StringUtils.isEmpty(result)){
+                    continue;
+                }
+                Document doc = Jsoup.parse(result);
+                Elements rows = doc.select("form").get(0).select("span");
+                //说明已激活
+                if(StringUtils.contains(result, "到期时间")){
+                    //卡密类型
+                    String cardTypeName = rows.select("span").get(1).text();
+                    //激活时间
+                    String activeTime = rows.select("span").get(2).text();
+                    //到期时间
+                    String expireTime = rows.select("span").get(3).text();
+                    //先创建卡密
+                    CardInfo cardInfo = new CardInfo();
+                    cardInfo.setAppId(appId);
+                    setCardTypeId(cardTypeName,cardInfo,LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCardTypeName(cardTypeName);
+                    cardInfo.setUserId(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCreateUser(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setUserName("易游");
+                    cardInfo.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+                    cardInfo.setCreateTime(DateUtil.date());
+                    cardInfo.setCardCode(singleCode);
+                    cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                    cardInfo.setCardBindType(0);
+                    cardInfo.setCardSignType(1);
+                    cardInfo.setCardOpenRange(0);
+                    cardInfo.setActiveTime(DateUtil.parse(activeTime));
+                    cardInfo.setExpireTime(DateUtil.parse(expireTime));
+                    cardInfo.setCardRemark("从易游导入");
+                    //已经过期
+                    if (DateUtil.parse(expireTime).compareTo(DateUtil.date())<0) {
+                        cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                        this.save(cardInfo);
+                    }
+                    this.save(cardInfo);
+                    System.out.println("111111");
+                }
+                //说明未激活
+                if(StringUtils.contains(result, "未激活")){
+                    //卡密类型
+                    String cardTypeName = rows.select("span").get(1).text();
+                    Date date = DateUtil.date();
+                    //到期时间
+                    Date expireTime = CardDateUtil.getExpireTimeByCardTypeName(cardTypeName,date);
+                    //先创建卡密
+                    CardInfo cardInfo = new CardInfo();
+                    cardInfo.setAppId(appId);
+                    setCardTypeId(cardTypeName,cardInfo,LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCardTypeName(cardTypeName);
+                    cardInfo.setUserId(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setUserName("易游");
+                    cardInfo.setCreateUser(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCreateTime(DateUtil.date());
+                    cardInfo.setCardCode(singleCode);
+                    cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                    cardInfo.setCardBindType(0);
+                    cardInfo.setCardSignType(1);
+                    cardInfo.setCardOpenRange(0);
+                    cardInfo.setActiveTime(date);
+                    cardInfo.setExpireTime(expireTime);
+                    cardInfo.setCardRemark("从易游导入");
+                    this.save(cardInfo);
+                    System.out.println("111111");
+                }
+            }
+        }
+    }
+
+    public void setCardTypeId(String cardTypeName, CardInfo cardInfo,Long createUser){
+        if ("小时卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.HOUR.getCode(),1);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("六时卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.HOUR.getCode(),6);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("天卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.DAY.getCode(),1);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("周卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.WEEK.getCode(),1);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("半月卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.DAY.getCode(),15);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("月卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.MONTH.getCode(),1);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("季卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.MONTH.getCode(),3);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("半年卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.MONTH.getCode(),6);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("年卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.YEAR.getCode(),1);
+            cardInfo.setCardTypeId(cardTypeId);
+        }else if ("永久卡".equals(cardTypeName)){
+            Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.YEAR.getCode(),99);
+            cardInfo.setCardTypeId(cardTypeId);
         }
     }
 

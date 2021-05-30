@@ -410,4 +410,16 @@ public class ConstantsContext {
         }
     }
 
+    /**
+     * 获取易游崩溃开关
+     */
+    public static Boolean getYiYouOpen() {
+        String yiyou = (String) CONSTNTS_HOLDER.get("yiyou");
+        if (CommonStatus.ENABLE.getCode().equalsIgnoreCase(yiyou)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

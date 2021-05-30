@@ -24,6 +24,7 @@ import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.SpringUtil;
@@ -91,14 +92,14 @@ public class AsyncService {
 
     /**
      * 更新token和缓存
-     * @param cardId 卡密id
+     * @param singleCode 卡密
      * @param token token
      */
     @Async
-    public void updateTokenAndRedis(Long cardId, Token token, Integer clearSpace, Date expireTime) {
+    public void updateTokenAndRedis(String singleCode, Token token) {
         TokenService tokenService = SpringUtil.getBean(TokenService.class);
         RedisUtil redisUtil = SpringUtil.getBean(RedisUtil.class);
-        redisUtil.hset(RedisType.TOKEN.getCode() + cardId,token.getToken(),token, CardDateUtil.getClearSpace(expireTime,clearSpace));
+        redisUtil.expire(RedisType.CARD_INFO.getCode() + singleCode, RedisExpireTime.DAY.getCode());
         tokenService.updateById(token);
     }
 

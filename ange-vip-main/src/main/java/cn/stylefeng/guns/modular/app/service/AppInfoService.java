@@ -3,15 +3,12 @@ package cn.stylefeng.guns.modular.app.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

@@ -1,33 +1,23 @@
-package cn.stylefeng.guns.webApi.common;
+package cn.stylefeng.guns.sys.core.exception;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
-import cn.hutool.crypto.symmetric.DES;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
-import cn.stylefeng.guns.sys.core.util.ip2region.DbConfig;
-import cn.stylefeng.guns.sys.core.util.ip2region.DbMakerConfigException;
-import cn.stylefeng.guns.sys.core.util.ip2region.DbSearcher;
-import org.apache.commons.io.IOUtils;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
- * des加解密（单例）
+ * aes加解密（单例）
  */
-public class DESContext {
-    private static DES des = null;
+public class AESContext {
+    private static AES aes = null;
     private static Integer encryptionMode = 10;
     private static Integer fill = 10;
     private static String webKey = "0";
     private static String webSalt = "0";
 
-    public static DES getInstance(AppInfoApi appInfoApi) {
-
-        if (des == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
+    public static AES getInstance(AppInfoApi appInfoApi) {
+        if (aes == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
                 ||!fill.equals(appInfoApi.getFill())
                 ||!webKey.equals(appInfoApi.getWebKey())
                 ||!webSalt.equals(appInfoApi.getWebSalt())) {
@@ -86,18 +76,18 @@ public class DESContext {
             }
             if (StringUtils.isNotEmpty(appInfoApi.getWebSalt())&&appInfoApi.getEncryptionMode()!=0){
                 if (appInfoApi.getFill()==1){
-                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    aes = new AES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }else {
-                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    aes = new AES(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }
             }else {
                 if (appInfoApi.getFill()==1){
-                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
+                    aes = new AES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
                 }else {
-                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes());
+                    aes = new AES(mode, padding, appInfoApi.getWebKey().getBytes());
                 }
             }
         }
-        return des;
+        return aes;
     }
 }

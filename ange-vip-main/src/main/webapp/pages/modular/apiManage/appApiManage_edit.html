@@ -1,18 +1,41 @@
 @layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/apiManage/appApiManage_edit.js"]}){
+<style>
+    .layui-table tbody tr:hover, .layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-hover, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even) {
+        background-color: #f2f6fc;
+    }
+    .layui-table thead tr th{
+        text-align: center;
+    }
+    .layui-table tbody tr td{
+        text-align: center;
+    }
+</style>
 <form id="apiManageForm" lay-filter="apiManageForm"  style="padding:0!important;" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
         <input name="apiManageId" type="hidden"/>
-        <div class="layui-form-item">
-            <label class="layui-form-label">api类别<span style="color: red;">*</span></label>
-            <div class="layui-input-block">
-                <select name="apiType" lay-search="" lay-verify="required" lay-filter="apiType" lay-verType="tips" required>
-                    <option value="">请选择api类别</option>
-                    @for(dict in dicts) {
-                    <option value="${dict.code}">${dict.name}</option>
-                    @}
-                </select>
+        <fieldset class="layui-elem-field">
+            <legend>${apiManage.apiName}</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <thead>
+                    <tr class="tr">
+                        <th>参数名</th>
+                        <th>参数类型</th>
+                        <th>必传</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>11</td>
+                        <td>11</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </fieldset>
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">接口名称</label>

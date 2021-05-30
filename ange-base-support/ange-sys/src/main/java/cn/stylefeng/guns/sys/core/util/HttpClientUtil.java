@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -139,7 +140,7 @@ public class HttpClientUtil {
 
 
     //适用于post请求并传送form-data数据（同样适用于post的Raw类型的application-json格式）
-    public static String postParams(String url, Map<String, String> params,Long appId,String holdCheck) {
+    public static String postParams(String url, Map<String, String> params, Long appId, String holdCheck, AppInfoApi appInfoApi) {
         SSLContext sslcontext = createIgnoreVerifySSL();
         // 设置协议http和https对应的处理socket链接工厂的对象
         Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
@@ -150,8 +151,8 @@ public class HttpClientUtil {
 
         //创建自定义的httpclient对象
         CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
-        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(2000)
-                .setSocketTimeout(2000).setConnectTimeout(2000).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(3000)
+                .setSocketTimeout(3000).setConnectTimeout(3000).build();
         HttpPost post = new HttpPost(url);
         post.setConfig(requestConfig);
         CloseableHttpResponse res = null;
@@ -166,19 +167,60 @@ public class HttpClientUtil {
             HttpEntity entity = res.getEntity();
             return EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
-            throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
+            throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
         } finally {
             try {
                 if (ObjectUtil.isNotNull(res)){
                     res.close();
                     client.close();
                 }else {
-                    throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
+                    throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
                 }
             } catch (IOException e) {
-                throw new CardLoginException(-207, appId,"外部验证接口连接超时，请在应用设置中检查！",new Date(),holdCheck,false);
+                throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
             }
         }
+    }
+
+    public static String postParams(String url, Map<String, String> params) {
+        SSLContext sslcontext = createIgnoreVerifySSL();
+        // 设置协议http和https对应的处理socket链接工厂的对象
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https", new SSLConnectionSocketFactory(sslcontext))
+                .build();
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+
+        //创建自定义的httpclient对象
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(8000)
+                .setSocketTimeout(8000).setConnectTimeout(8000).build();
+        HttpPost post = new HttpPost(url);
+        post.setConfig(requestConfig);
+        CloseableHttpResponse res = null;
+        try {
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            Set<String> keySet = params.keySet();
+            for (String key : keySet) {
+                nvps.add(new BasicNameValuePair(key, params.get(key)));
+            }
+            post.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
+            res = client.execute(post);
+            HttpEntity entity = res.getEntity();
+            return EntityUtils.toString(entity, "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ObjectUtil.isNotNull(res)){
+                    res.close();
+                    client.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     //适用于post传对象（对象里有list）

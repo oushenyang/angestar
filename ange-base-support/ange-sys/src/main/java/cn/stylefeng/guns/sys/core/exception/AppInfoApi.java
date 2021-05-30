@@ -1,9 +1,6 @@
-package cn.stylefeng.guns.modular.app.model.result;
+package cn.stylefeng.guns.sys.core.exception;
 
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -14,7 +11,7 @@ import java.util.Date;
  * @since 2020-04-01
  */
 @Data
-public class AppInfoApi{
+public class AppInfoApi {
 
     /**
      * 应用id

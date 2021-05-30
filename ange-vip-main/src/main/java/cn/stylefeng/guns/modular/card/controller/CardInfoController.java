@@ -147,8 +147,9 @@ public class CardInfoController extends BaseController {
      */
     @RequestMapping("/yyImportItem")
     @ResponseBody
-    public ResponseData yyImportItem(@RequestPart("file") File file, Long appId,String yyCardAddress) {
-        return ResponseData.success(file);
+    public ResponseData yyImportItem(Long appId,String yyCardAddress,String txtFileName) {
+        cardInfoService.yyImportItem(appId,yyCardAddress,txtFileName);
+        return ResponseData.success();
     }
 
     /**

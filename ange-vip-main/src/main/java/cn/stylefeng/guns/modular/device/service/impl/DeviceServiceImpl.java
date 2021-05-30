@@ -172,7 +172,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setMac(mac);
         device.setIp(getIp());
         device.setModel(model);
-        device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
+//        device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
         device.setLoginNum(1);
         device.setCreateTime(date);
 //        baseMapper.insert(device);

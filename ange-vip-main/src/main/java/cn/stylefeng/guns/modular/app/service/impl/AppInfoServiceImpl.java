@@ -1,38 +1,22 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
-import cn.stylefeng.guns.base.db.entity.DatabaseInfo;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.agent.entity.AgentApp;
-import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
-import cn.stylefeng.guns.modular.agent.service.AgentCardService;
-import cn.stylefeng.guns.modular.app.entity.AppEdition;
-import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
-import cn.stylefeng.guns.modular.app.service.AppEditionService;
-import cn.stylefeng.guns.modular.card.entity.CardInfo;
-import cn.stylefeng.guns.modular.card.entity.CodeCardType;
-import cn.stylefeng.guns.modular.card.service.CardInfoService;
-import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
-import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
-import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.mapper.AppInfoMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
-import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
-import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -42,13 +26,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.management.Agent;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.ADD_HEAD_ERROR;
@@ -87,7 +68,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         entity.setWebKey(wordAndNum("",16));
 
         //生成加密盐
-        entity.setWebSalt(wordAndNum("",16));
+        entity.setWebSalt(wordAndNum("",8));
 
         this.save(entity);
         param.setAppId(entity.getAppId());
@@ -196,7 +177,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
                 redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.WEEK.getCode());
             }else {
                 //接口错误
-                throw new SystemApiException(-1, "数据错误","",false);
+                throw new SystemApiException(1, "数据错误","",false);
             }
         }
         return appInfoApi;

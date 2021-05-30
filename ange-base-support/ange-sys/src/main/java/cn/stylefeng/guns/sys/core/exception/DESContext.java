@@ -1,25 +1,24 @@
-package cn.stylefeng.guns.webApi.common;
+package cn.stylefeng.guns.sys.core.exception;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.DES;
-import cn.hutool.crypto.symmetric.RC4;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * aes加解密（单例）
+ * des加解密（单例）
  */
-public class AESContext {
-    private static AES aes = null;
+public class DESContext {
+    private static DES des = null;
     private static Integer encryptionMode = 10;
     private static Integer fill = 10;
     private static String webKey = "0";
     private static String webSalt = "0";
 
-    public static AES getInstance(AppInfoApi appInfoApi) {
-        if (aes == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
+    public static DES getInstance(AppInfoApi appInfoApi) {
+
+        if (des == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
                 ||!fill.equals(appInfoApi.getFill())
                 ||!webKey.equals(appInfoApi.getWebKey())
                 ||!webSalt.equals(appInfoApi.getWebSalt())) {
@@ -78,18 +77,18 @@ public class AESContext {
             }
             if (StringUtils.isNotEmpty(appInfoApi.getWebSalt())&&appInfoApi.getEncryptionMode()!=0){
                 if (appInfoApi.getFill()==1){
-                    aes = new AES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }else {
-                    aes = new AES(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }
             }else {
                 if (appInfoApi.getFill()==1){
-                    aes = new AES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
+                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
                 }else {
-                    aes = new AES(mode, padding, appInfoApi.getWebKey().getBytes());
+                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes());
                 }
             }
         }
-        return aes;
+        return des;
     }
 }

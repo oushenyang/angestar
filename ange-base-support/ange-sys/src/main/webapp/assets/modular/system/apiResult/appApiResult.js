@@ -1,7 +1,8 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'ax', 'form'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
+    var form = layui.form;
     var admin = layui.admin;
 
     /**
@@ -149,8 +150,12 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + ApiResult.tableId,
-        url: Feng.ctxPath + '/apiResult/list?type=1&appId='+$('#firstAppId').val(),
+        url: Feng.ctxPath + '/apiResult/list',
         page: true,
+        where:{
+            type:1,
+            appId:$('#firstAppId').val()
+        },
         height: "full-98",
         cellMinWidth: 100,
         cols: ApiResult.initColumn(),
@@ -200,6 +205,13 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 导出excel
     $('#btnExp').click(function () {
         ApiResult.exportExcel();
+    });
+
+    //应用选择下拉框事件监听
+    form.on('select(appId)', function (data) {
+        var queryData = {};
+        queryData['appId'] = $("select[name=appId]").val();
+        table.reload(ApiResult.tableId, {where: queryData});
     });
 
     // 表头工具条点击事件

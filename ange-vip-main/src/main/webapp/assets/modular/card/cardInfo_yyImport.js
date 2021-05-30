@@ -31,6 +31,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice', 'upload'], function () {
     form.on('submit(btnSubmit)', function (data) {
         field['appId'] = $('#appId').val();
         field['yyCardAddress'] = $('#yyCardAddress').val();
+        field['txtFileName'] = $('#txtFileName').val();
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/yyImportItem", function (result) {
             Feng.success("添加成功！");
             //传给上个页面，刷新table用

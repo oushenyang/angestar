@@ -3,9 +3,11 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.roses.core.util.HttpContext;
@@ -30,11 +32,13 @@ import java.util.Date;
 public class GetCardExpiredController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;
+    private final AppInfoService appInfoService;
     private final RedisUtil redisUtil;
 
-    public GetCardExpiredController(ApiManageService apiManageService, CardInfoService cardInfoService, RedisUtil redisUtil) {
+    public GetCardExpiredController(ApiManageService apiManageService, CardInfoService cardInfoService, AppInfoService appInfoService, RedisUtil redisUtil) {
         this.apiManageService = apiManageService;
         this.cardInfoService = cardInfoService;
+        this.appInfoService = appInfoService;
         this.redisUtil = redisUtil;
     }
 
@@ -47,14 +51,15 @@ public class GetCardExpiredController {
         String holdCheck = HttpContext.getRequest().getParameter(apiManage.getParameterFive());
         String sign = HttpContext.getRequest().getParameter(apiManage.getParameterSix());
         if (StringUtils.isEmpty(singleCode)){
-            throw new SystemApiException(-2, "必传参数存在空值","",false);
+            throw new SystemApiException(2, "必传参数存在空值","",false);
         }
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),singleCode);
+        AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(-200, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,false);
+            throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,appInfoApi,false);
         }else {
-            throw new CardLoginException(200, apiManage.getAppId(),"成功！",new Date(),holdCheck,false);
+            throw new CardLoginException(2000, apiManage.getAppId(),"成功！",new Date(),holdCheck,appInfoApi,false);
         }
     }
 

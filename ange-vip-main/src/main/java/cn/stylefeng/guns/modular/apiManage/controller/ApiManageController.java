@@ -94,9 +94,10 @@ public class ApiManageController extends BaseController {
      * @Date 2020-05-21
      */
     @RequestMapping("/edit")
-    public String edit(Model model) {
+    public String edit(Model model,Long apiManageId) {
         List<Dict> dicts =  dictService.listDictsByCode("API_TYPE");
         model.addAttribute("dicts", dicts);
+
         return PREFIX + "/apiManage_edit.html";
     }
 
@@ -107,9 +108,11 @@ public class ApiManageController extends BaseController {
      * @Date 2020-05-21
      */
     @RequestMapping("/appEdit")
-    public String appEdit(Model model) {
+    public String appEdit(Model model,Long apiManageId) {
         List<Dict> dicts =  dictService.listDictsByCode("API_TYPE");
         model.addAttribute("dicts", dicts);
+        ApiManage detail = this.apiManageService.getById(apiManageId);
+        model.addAttribute("apiManage", detail);
         return PREFIX + "/appApiManage_edit.html";
     }
 

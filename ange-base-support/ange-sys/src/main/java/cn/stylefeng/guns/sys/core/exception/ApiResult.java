@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.sys.core.exception;
 
+import cn.hutool.core.util.ObjectUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -96,7 +97,11 @@ public class ApiResult<T> {
     public static ApiResult errorMsg(String object) {
         return new ApiResult(500, object,"");
     }
-    public static ApiResult resultError(Integer code,String msg,Object data,Boolean success) {
+    public static ApiResult resultError(int code,String msg,boolean success) {
+        return new ApiResult(code,msg,success);
+    }
+
+    public static ApiResult resultSuccess(Integer code,String msg,Object data,Boolean success) {
         return new ApiResult(code,msg,data,success);
     }
 

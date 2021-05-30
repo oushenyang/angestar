@@ -187,10 +187,11 @@ public class ApiResultController extends BaseController {
     @RequestMapping("/list")
     public LayuiPageInfo list(ApiResultParam apiResultParam) {
 //        return this.apiResultService.findPageBySpec(apiResultParam);
-
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
-        apiResultParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        if (apiResultParam.getType()==1){
+            apiResultParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        }
         //根据条件查询操作日志
         List<Map<String, Object>> result = apiResultService.findListBySpec(page, apiResultParam);
         page.setRecords(result);

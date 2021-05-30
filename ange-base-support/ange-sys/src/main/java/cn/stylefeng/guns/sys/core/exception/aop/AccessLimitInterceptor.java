@@ -67,7 +67,7 @@ public class AccessLimitInterceptor  implements HandlerInterceptor {
                     // 30405 API_REQUEST_TOO_MUCH  请求过于频繁
 //                    RequestUtils.out(response, ResultUtils.error(Code.API_REQUEST_TOO_MUCH));
 //                    return false;
-                    throw new SystemApiException(-2, "请求过于频繁","",false);
+                    throw new SystemApiException(2, "请求过于频繁","",false);
                 }
             }
         }catch (Exception e){

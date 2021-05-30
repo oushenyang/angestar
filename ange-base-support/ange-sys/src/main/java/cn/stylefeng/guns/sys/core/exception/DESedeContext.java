@@ -1,12 +1,9 @@
-package cn.stylefeng.guns.webApi.common;
+package cn.stylefeng.guns.sys.core.exception;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.DESede;
-import cn.hutool.crypto.symmetric.RC4;
-import cn.stylefeng.guns.modular.app.model.result.AppInfoApi;
-import com.sun.crypto.provider.BlowfishCipher;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import org.apache.commons.lang3.StringUtils;
 
 /**
