@@ -12,6 +12,7 @@ import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -636,9 +637,13 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         for (String singleCode : idList){
             CardInfo cardInfo1 = this.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",singleCode));
             if (ObjectUtil.isNull(cardInfo1)){
-                Map<String, String> paramMap = new HashMap<>();
+//                Map<String, String> paramMap = new HashMap<>();
+//                paramMap.put("k", singleCode);
+//                String result= HttpClientUtil.postParams(yyCardAddress, paramMap);
+
+                HashMap<String, Object> paramMap = new HashMap<>();
                 paramMap.put("k", singleCode);
-                String result= HttpClientUtil.postParams(yyCardAddress, paramMap);
+                String result= HttpUtil.post(yyCardAddress, paramMap);
                 if(StringUtils.contains(result, "无此卡密")){
                     continue;
                 }
@@ -672,7 +677,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     cardInfo.setCardOpenRange(0);
                     cardInfo.setActiveTime(DateUtil.parse(activeTime));
                     cardInfo.setExpireTime(DateUtil.parse(expireTime));
-                    cardInfo.setCardRemark("从易游导入");
+                    cardInfo.setCardRemark("手动从易游导入");
                     //已经过期
                     if (DateUtil.parse(expireTime).compareTo(DateUtil.date())<0) {
                         cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
@@ -704,7 +709,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     cardInfo.setCardOpenRange(0);
                     cardInfo.setActiveTime(date);
                     cardInfo.setExpireTime(expireTime);
-                    cardInfo.setCardRemark("从易游导入");
+                    cardInfo.setCardRemark("手动从易游导入");
                     this.save(cardInfo);
                     System.out.println("111111");
                 }

@@ -29,10 +29,9 @@ layui.use(['form', 'formX','admin', 'ax', 'notice', 'upload'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        field['appId'] = $('#appId').val();
-        field['yyCardAddress'] = $('#yyCardAddress').val();
-        field['txtFileName'] = $('#txtFileName').val();
+        var loading = layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/yyImportItem", function (result) {
+            layer.close(loading);
             Feng.success("添加成功！");
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
@@ -40,9 +39,10 @@ layui.use(['form', 'formX','admin', 'ax', 'notice', 'upload'], function () {
             admin.closeThisDialog();
             return false;
         }, function (result) {
+            layer.close(loading);
             notice.msg("添加失败!" + result.responseJSON.message + "!", {icon: 2});
-        });
-        ajax.set(field);
+        },true);
+        ajax.set(data.field);
         ajax.start();
         return false;
     });

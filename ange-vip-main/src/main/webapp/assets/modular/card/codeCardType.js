@@ -142,12 +142,15 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      */
     CodeCardType.onDeleteItem = function (data) {
         var operation = function () {
+            var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/delete", function (data) {
+                layer.close(loading);
                 Feng.success("删除成功!");
                 table.reload(CodeCardType.tableId);
             }, function (data) {
+                layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
+            },true);
             ajax.set("cardTypeId", data.cardTypeId);
             ajax.start();
         };
@@ -162,21 +165,27 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
      */
     CodeCardType.changeCardTypeStatus = function (cardTypeId, checked) {
         if (checked) {
+            var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/unfreeze", function (data) {
+                layer.close(loading);
                 notice.msg('解除冻结成功!', {icon: 1});
             }, function (data) {
+                layer.close(loading);
                 notice.msg("解除冻结失败!" + data.responseJSON.message + "!", {icon: 2});
                 table.reload(CodeCardType.tableId);
-            });
+            },true);
             ajax.set("cardTypeId", cardTypeId);
             ajax.start();
         } else {
+            var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/freeze", function (data) {
+                layer.close(loading);
                 notice.msg('冻结成功!', {icon: 1});
             }, function (data) {
+                layer.close(loading);
                 notice.msg("冻结失败!" + data.responseJSON.message + "!", {icon: 2});
                 table.reload(CodeCardType.tableId);
-            });
+            },true);
             ajax.set("cardTypeId", cardTypeId);
             ajax.start();
         }
@@ -205,12 +214,15 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         }
         ids = ids.substr(0, ids.length - 1);
         var operation = function () {
+            var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/batchRemove", function (data) {
+                layer.close(loading);
                 notice.msg("删除成功!", {icon: 1});
                 table.reload(CodeCardType.tableId);
             }, function (data) {
+                layer.close(loading);
                 notice.msg("删除失败!" + data.responseJSON.message + "!", {icon: 2});
-            });
+            },true);
             ajax.set("ids", ids);
             ajax.start();
         };

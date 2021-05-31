@@ -45,7 +45,9 @@ layui.use(['form','formX','admin', 'ax'], function () {
             Feng.error("代理价格不能大于市场价格！");
             return false;
         }
+        var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
         var ajax = new $ax(Feng.ctxPath + "/codeCardType/editItem", function (data) {
+            layer.close(loading);
             Feng.success("更新成功！");
 
             //传给上个页面，刷新table用
@@ -54,8 +56,9 @@ layui.use(['form','formX','admin', 'ax'], function () {
             //关掉对话框
             admin.closeThisDialog();
         }, function (data) {
+            layer.close(loading);
             Feng.error("更新失败！" + data.responseJSON.message)
-        });
+        },true);
         ajax.set(data.field);
         ajax.start();
         return false;

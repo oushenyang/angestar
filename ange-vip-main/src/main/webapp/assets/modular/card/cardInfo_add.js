@@ -99,11 +99,13 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
         data.field.hasOwnProperty('isCustomTime')?'': data.field.isCustomTime = 'off'; //true 值为on,false 值给赋off
         data.field.hasOwnProperty('isActivation')?'': data.field.isActivation = 'off'; //true 值为on,false 值给赋off
         var cardTypeId = $("[name='cardTypeId']").val();
         data.field.cardTypeName = $("[name='cardTypeId']").children("[value=" + cardTypeId + "]").text();
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/addItem", function (result) {
+            layer.close(loading);
             Feng.success("添加成功！");
             //传给上个页面，刷新table用
             admin.putTempData('formOk', true);
@@ -122,6 +124,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
             return false;
         }, function (result) {
             if (result.responseJSON.code==420){
+                layer.close(loading);
                 notice.msg("添加失败！" + result.responseJSON.message + "，请维护该卡密价格信息！", {icon: 2});
                 layui.admin.open({
                     type: 2,
@@ -131,9 +134,10 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
                 });
                 return false;
             }else {
+                layer.close(loading);
                 notice.msg("添加失败!" + result.responseJSON.message + "!", {icon: 2});
             }
-        });
+        },true);
         ajax.set(data.field);
         ajax.start();
         return false;

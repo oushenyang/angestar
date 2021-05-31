@@ -120,10 +120,13 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
      */
     AppInfo.onDeleteItem = function (data) {
         var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/appInfo/delete", function (data) {
+                layer.close(loading);
                 Feng.success("删除成功!");
                 AppInfo.loadAppInfo();
             }, function (data) {
+                layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("appId", data.appId);
@@ -145,7 +148,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
             },
             onItemClick: function (obj) {  // item事件
                 var index = obj.index + 1;
-                layer.msg('点击了第' + index + '个', {icon: 1});
+                // layer.msg('点击了第' + index + '个', {icon: 1});
             },
             onToolBarClick: function (obj) {  // toolBar事件
                 var event = obj.event;

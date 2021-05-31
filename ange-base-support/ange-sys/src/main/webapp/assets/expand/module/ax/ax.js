@@ -1,12 +1,17 @@
 layui.define(['jquery'], function (exports) {
     var $ = layui.$;
 
-    var $ax = function (url, success, error) {
+    var $ax = function (url, success, error, async) {
         this.url = url;
         this.type = "post";
         this.data = {};
         this.dataType = "json";
-        this.async = false;
+        if (async){
+            this.async = async;
+        }else {
+            this.async = false;
+        }
+
         this.success = success;
         this.error = error;
     };

@@ -35,7 +35,9 @@ layui.use(['form', 'admin', 'ax','element'], function () {
     form.on('submit(btnSubmit)', function (data) {
         data.field.codeClearSpace = 1;
         data.field.accountClearSpace = 1;
+        var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
         var ajax = new $ax(Feng.ctxPath + "/appInfo/addItem", function (data) {
+            layer.close(loading);
             Feng.success("添加成功！");
 
             //传给上个页面，刷新table用
@@ -44,8 +46,9 @@ layui.use(['form', 'admin', 'ax','element'], function () {
             //关掉对话框
             admin.closeThisDialog();
         }, function (data) {
+            layer.close(loading);
             Feng.error("添加失败！" + data.responseJSON.message)
-        });
+        },true);
         ajax.set(data.field);
         ajax.start();
         //添加 return false 可成功跳转页面
