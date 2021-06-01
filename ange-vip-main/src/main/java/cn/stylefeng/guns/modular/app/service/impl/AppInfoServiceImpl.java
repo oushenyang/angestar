@@ -170,8 +170,9 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     @Override
     public AppInfoApi getAppInfoByRedis(String callCode) {
-        AppInfoApi appInfoApi = (AppInfoApi) redisUtil.get(RedisType.APP_INFO.getCode() + callCode);
-        if (ObjectUtil.isNull(appInfoApi)){
+        AppInfoApi appInfoApi = null;
+        Object object = redisUtil.get(RedisType.APP_INFO.getCode() + callCode);
+        if (ObjectUtil.isNull(object)){
             appInfoApi = baseMapper.findAppInfoApi(callCode);
             if (ObjectUtil.isNotNull(appInfoApi)){
                 redisUtil.set(RedisType.APP_INFO.getCode() + callCode , appInfoApi, RedisExpireTime.WEEK.getCode());
@@ -179,6 +180,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
                 //接口错误
                 throw new SystemApiException(1, "数据错误","",false);
             }
+        }else {
+            appInfoApi = (AppInfoApi)object;
         }
         return appInfoApi;
     }

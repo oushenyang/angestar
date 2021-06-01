@@ -83,6 +83,9 @@ public class CardDateUtil {
                 expireTime = DateUtil.offsetMonth(date, 6);
                 break;
             case "年卡":
+                expireTime = DateUtil.offsetMonth(date, 12);
+                break;
+            case "永久卡":
                 expireTime = DateUtil.offsetMonth(date, 99*12);
                 break;
 

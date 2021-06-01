@@ -361,6 +361,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         ]],
                     });
                 }else if (obj.event=='itemOvertime'){
+                    obj.event=='overtime';
                     laydate.render({
                         elem: '#addTime',
                         position: 'fixed',
@@ -410,22 +411,12 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                 });
                 //表单提交事件
                 form.on('submit(cardItemEditSubmit)', function (data) {
-                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
-                    let idData = table.checkStatus(obj.config.id).data;
-                    let ids = "";
-                    for (let i = 0; i < idData.length; i++) {
-                        ids += idData[i].cardId + ",";
-                    }
-                    ids = ids.substr(0, ids.length - 1);
-                    if (data.field.operateFlag==0 && idData.length ==0){
-                        layer.msg('未选中数据!', {icon: 2});
-                        return false;
-                    }
-                    data.field.ids = ids;
+                    var loading=top.layer.msg('处理中',{icon:16, shade:[0.1,'#000'], time:false});
+                    data.field.ids = obj.data.cardId;
                     data.field.event = obj.event;
+                    data.field.operateFlag = 0;
                     var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
-                        layer.close(loading);
-                        layer.close(dIndex);
+                        layer.closeAll();
                         layer.msg("操作成功！", {icon: 1});
                         table.reload(CardInfo.tableId);
                         //关掉对话框
@@ -583,7 +574,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
         cols: CardInfo.initColumn(),
-        done: function () {this.where={};}
+        // done: function () {this.where={};}
     });
 
     // 搜索按钮点击事件
