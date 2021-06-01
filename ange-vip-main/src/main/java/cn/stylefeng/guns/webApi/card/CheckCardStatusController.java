@@ -18,6 +18,8 @@ import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
+import cn.stylefeng.guns.sys.core.exception.CheckCardStatusException;
+import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.webApi.common.param.CheckCardStatusParam;
 import cn.stylefeng.guns.webApi.common.param.RequestUtil;
 import com.alibaba.fastjson.JSON;
@@ -71,7 +73,7 @@ public class CheckCardStatusController {
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getSingleCode());
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(2000, apiManage.getAppId(),"卡密不存在！",new Date(),param.getHoldCheck(),appInfoApi,false);
+            throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),param.getHoldCheck(),appInfoApi,false);
         }
         if (cardInfoApi.getCardStatus()==2){
             throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),appInfoApi,false);
@@ -99,7 +101,12 @@ public class CheckCardStatusController {
                 }
             }
            if (!isHave){
-               throw new CardLoginException(2007, apiManage.getAppId(),"卡密在别的设备上登录！",new Date(),param.getHoldCheck(),appInfoApi,false);
+               throw new CardLoginException(2007, apiManage.getAppId(),"卡密在别的设备上登录",new Date(),param.getHoldCheck(),appInfoApi,false);
+               //校验是否已过清理时间
+           }else {
+               if (DateUtil.offsetMinute(token.getCreateTime(), CardDateUtil.getClearSpace(appInfoApi.getCodeClearSpace())).compareTo(DateUtil.date())<0) {
+                   throw new CardLoginException(2010, apiManage.getAppId(),"卡密登录过期，请重新登录",new Date(),param.getHoldCheck(),appInfoApi,false);
+               }
            }
            if (cardInfoApi.getCardStatus()==1){
                if (cardInfoApi.getExpireTime().compareTo(DateUtil.date())<0) {
@@ -115,7 +122,7 @@ public class CheckCardStatusController {
                    token.setUpdateTime(new Date());
                    //异步调用更新token
                    asyncService.updateTokenAndRedis(param.getSingleCode(),token);
-                   throw new CardLoginException(2000, apiManage.getAppId(),"状态正常！",cardInfoApi.getExpireTime(),param.getHoldCheck(),appInfoApi,true);
+                   throw new CheckCardStatusException(2011, apiManage.getAppId(),"单码用户状态正常",cardInfoApi.getExpireTime(),param.getHoldCheck(),appInfoApi,true);
                }
            }
         }else {

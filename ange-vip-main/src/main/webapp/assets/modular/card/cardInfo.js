@@ -426,13 +426,13 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                         layer.close(loading);
                         layer.close(dIndex);
-                        layer.msg("更新成功！", {icon: 1});
+                        layer.msg("操作成功！", {icon: 1});
                         table.reload(CardInfo.tableId);
                         //关掉对话框
                         admin.closeThisDialog();
                     }, function (data) {
                         layer.close(loading);
-                        layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
+                        layer.msg("操作失败！" + data.responseJSON.message, {icon: 2});
                     },true);
                     ajax.set(data.field);
                     ajax.start();
@@ -490,6 +490,30 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             ajax.start();
         };
         Feng.confirm("是否封禁?", operation);
+    };
+
+    /**
+     * 点击解绑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    CardInfo.itemUntying = function (obj) {
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                layer.close(loading);
+                Feng.success("解绑成功!");
+                table.reload(CardInfo.tableId);
+            }, function (data) {
+                layer.close(loading);
+                Feng.error("解绑失败!" + data.responseJSON.message + "!");
+            },true);
+            ajax.set("ids", obj.data.cardId);
+            ajax.set("operateFlag", 0);
+            ajax.set("event", "untying");
+            ajax.start();
+        };
+        Feng.confirm("是否解绑?", operation);
     };
 
     /**
@@ -684,6 +708,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         } else if (layEvent === 'itemData') {
             obj.name = '卡密数据';
             CardInfo.openItemEditDlg(obj)
+        } else if (layEvent === 'itemUntying') {
+            obj.name = '卡密解绑';
+            CardInfo.itemUntying(obj)
         }
     });
 });

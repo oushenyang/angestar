@@ -51,7 +51,7 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
             {align: 'center',field: 'apiName', title: '接口名称'},
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
-            {align: 'center',field: 'parameterNum', title: '返回加密'},
+            // {align: 'center',field: 'parameterNum', title: '返回加密'},
             {align: 'left',field: 'callCode',  width: 360, title: '调用地址',templet: '#callCodeTpl'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];

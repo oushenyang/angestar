@@ -167,17 +167,17 @@ public class HttpClientUtil {
             HttpEntity entity = res.getEntity();
             return EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
-            throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+            throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
         } finally {
             try {
                 if (ObjectUtil.isNotNull(res)){
                     res.close();
                     client.close();
                 }else {
-                    throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+                    throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
                 }
             } catch (IOException e) {
-                throw new CardLoginException(2008, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+                throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
             }
         }
     }

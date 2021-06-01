@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.demos.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
@@ -26,6 +27,7 @@ import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.SpringUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
@@ -36,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +54,17 @@ import java.util.List;
 @Service
 public class AsyncService {
     @Async
-    public void insertTokenToSql(Token token){
+    public void insertTokenToSql(Token token,AppInfoApi appInfoApi){
         TokenService tokenService = SpringUtil.getBean(TokenService.class);
+        List<Token> tokenList = tokenService.list(new QueryWrapper<Token>().eq("card_or_user_id", token.getCardOrUserId()));
+        if (CollectionUtil.isNotEmpty(tokenList)){
+            tokenList.forEach(token1 -> {
+                //如果到期，直接删除
+                if (DateUtil.offsetMinute(token1.getCreateTime(), CardDateUtil.getClearSpace(appInfoApi.getCodeClearSpace())).compareTo(DateUtil.date())<0) {
+                    tokenService.removeById(token1.getTokenId());
+                }
+            });
+        }
         tokenService.save(token);
     }
 
@@ -62,18 +74,30 @@ public class AsyncService {
      * @param cardId 卡密id
      */
     @Async
-    public void delAndInsertToken(Integer codeOpenNumLong, Long cardId){
+    public void delAndInsertToken(Integer codeOpenNumLong, Long cardId, AppInfoApi appInfoApi){
         TokenService tokenService = SpringUtil.getBean(TokenService.class);
         List<Token> tokenList = tokenService.list(new QueryWrapper<Token>().eq("card_or_user_id", cardId));
-        if (tokenList.size()>codeOpenNumLong){
+        List<Token> removeTokenList = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(tokenList)){
+            tokenList.forEach(token -> {
+                //如果到期，直接删除
+                if (DateUtil.offsetMinute(token.getCreateTime(), CardDateUtil.getClearSpace(appInfoApi.getCodeClearSpace())).compareTo(DateUtil.date())<0) {
+                    tokenService.removeById(token.getTokenId());
+                }else {
+                    removeTokenList.add(token);
+                }
+            });
+        }
+
+        if (removeTokenList.size()>codeOpenNumLong){
             //先删除然后新增一个
-            for (int i = 0; i < tokenList.size()-codeOpenNumLong; i++) {
-                if (ObjectUtil.isNotNull(tokenList.get(i))){
-                    tokenService.deleteByCardId(tokenList.get(i).getCardOrUserId());
+            for (int i = 0; i < removeTokenList.size()-codeOpenNumLong; i++) {
+                if (ObjectUtil.isNotNull(removeTokenList.get(i))){
+                    tokenService.deleteByCardId(removeTokenList.get(i).getCardOrUserId());
                 }
             }
         }
-        tokenList.clear();
+        removeTokenList.clear();
     }
 
     @Async
@@ -228,7 +252,7 @@ public class AsyncService {
         //代理审核记录
         agentExamineService.remove(new QueryWrapper<AgentExamine>().eq("app_id", appId));
         //代理购卡记录
-        agentBuyCardService.remove(new QueryWrapper<AgentBuyCard>().eq("app_id", appId));
+        agentBuyCardService.remove(new QueryWrapper<AgentBuyCard>().eq("agent_app_id", appId));
     }
 
     /**

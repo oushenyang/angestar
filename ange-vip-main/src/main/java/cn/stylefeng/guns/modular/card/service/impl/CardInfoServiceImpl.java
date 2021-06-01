@@ -31,9 +31,12 @@ import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
+import cn.stylefeng.guns.modular.device.entity.Device;
 import cn.stylefeng.guns.modular.device.entity.Token;
+import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.trial.entity.Trial;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
@@ -108,6 +111,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     private AgentPowerService agentPowerService;
     @Autowired
     private ExcelService excelService;
+    @Autowired
+    private DeviceService deviceService;
 
 
     @Override
@@ -328,7 +333,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                         }
                     }
                     return;
+                    //解绑
                 case "untying":
+                    deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
                     return;
                 case "editRemark":
                     cardInfo.setCardRemark(param.getCardRemark());
@@ -372,6 +379,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         boolean isHave = redisUtil.hHasKey(RedisType.CARD_INFO.getCode()+ singleCode,singleCode);
         if (isHave){
             cardInfoApi = (CardInfoApi)redisUtil.hget(RedisType.CARD_INFO.getCode()+ singleCode,singleCode);
+            if (!cardInfoApi.getAppId().equals(appId)){
+                return null;
+            }
         }else {
             //不存在则数据库查
             cardInfoApi = baseMapper.getCardInfoApiByAppIdAndCardCode(appId,singleCode);

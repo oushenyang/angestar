@@ -20,21 +20,6 @@ import org.apache.commons.lang3.StringUtils;
  * @since JDK 1.8
  */
 public class RequestUtil {
-    public static void main(String[] args){
-
-        AppInfoApi appInfoApi = new AppInfoApi();
-        appInfoApi.setWebAlgorithmType(1);
-        appInfoApi.setFill(0);
-        appInfoApi.setEncryptionMode(1);
-        appInfoApi.setWebKey("5cttt5wxxduc3h5p");
-        DES des = DESContext.getInstance(appInfoApi);
-        try {
-            String decryptStr = des.decryptStr("7rjN9/qsxGn5NP5/6Lznh5G77OTsziUF", CharsetUtil.CHARSET_UTF_8);
-            System.out.println(decryptStr);
-        }catch (Exception ignored){
-            throw new SystemApiException(3, "解密失败，请检查","",false);
-        }
-    }
     public static CardLoginParam getCardLoginParameter(ApiManageApi apiManage, AppInfoApi appInfoApi, String body){
         String decryptStr = null;
         CardLoginParam cardLoginParam = null;

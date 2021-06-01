@@ -50,14 +50,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        data.field.hasOwnProperty('parameterOneRequired')?'': data.field.parameterOneRequired = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterTwoRequired')?'': data.field.parameterTwoRequired = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterThreeNote')?'': data.field.parameterThreeNote = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterFourRequired')?'': data.field.parameterFourRequired = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterFiveRequired')?'': data.field.parameterFiveRequired = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterSixRequired')?'': data.field.parameterSixRequired = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('parameterSevenRequired')?'': data.field.parameterSevenRequired = 'off'; //true 值为on,false 值给赋off
+        var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
         var ajax = new $ax(Feng.ctxPath + "/apiManage/editItem", function (data) {
+            layer.close(loading);
             Feng.success("更新成功！");
 
             //传给上个页面，刷新table用
@@ -66,8 +61,9 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             //关掉对话框
             admin.closeThisDialog();
         }, function (data) {
+            layer.close(loading);
             Feng.error("更新失败！" + data.responseJSON.message)
-        });
+        },true);
         ajax.set(data.field);
         ajax.start();
         return false;

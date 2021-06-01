@@ -65,6 +65,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
         ApiManage oldEntity = getOldEntity(param);
         ApiManage newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
+        redisUtil.del(RedisType.API_MANAGE.getCode()+ oldEntity.getCallCode());
         this.updateById(newEntity);
     }
 

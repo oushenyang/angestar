@@ -6,6 +6,8 @@ import cn.stylefeng.guns.modular.apiManage.mapper.ApiResultMapper;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiResultParam;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiResultApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultResult;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -13,6 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -30,6 +33,9 @@ import java.util.Map;
  */
 @Service
 public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult> implements ApiResultService {
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public void add(ApiResultParam param){
@@ -53,6 +59,8 @@ public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult
         ApiResult oldEntity = getOldEntity(param);
         ApiResult newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
+        //删除缓存
+        redisUtil.del(RedisType.API_RESULT.getCode() + oldEntity.getAppId() + "-" +  oldEntity.getResultCode());
         this.updateById(newEntity);
     }
 

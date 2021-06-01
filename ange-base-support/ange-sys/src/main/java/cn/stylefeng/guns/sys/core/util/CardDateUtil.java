@@ -128,6 +128,15 @@ public class CardDateUtil {
     }
 
     /**
+     * 获取token清理间隔
+     * @param clearSpace 清理间隔
+     * @return 返回分钟
+     */
+    public static int getClearSpace(Integer clearSpace){
+        return clearSpace*60;
+    }
+
+    /**
      * 获取到期时间清理间隔
      * @param expireTime 到期时间
      * @return 返回秒

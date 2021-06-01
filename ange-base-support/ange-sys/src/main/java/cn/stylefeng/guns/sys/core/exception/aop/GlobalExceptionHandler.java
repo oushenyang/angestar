@@ -37,6 +37,7 @@ import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 //import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 //import cn.stylefeng.guns.sys.modular.system.service.ApiResultService;
+import cn.stylefeng.guns.sys.core.util.ApiResultUtil;
 import cn.stylefeng.guns.sys.modular.system.model.result.ApiResultApi;
 import cn.stylefeng.guns.sys.modular.system.service.SysApiResultService;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -248,8 +249,9 @@ public class GlobalExceptionHandler {
             if (apiResultApi.getResultSuccess()){
                 Map<String, Object> map = new HashMap<>(2);
                 map.put("expireTime", DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+                map.put("token", e.getData());
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    map.put("token", e.getHoldCheck());
+                    map.put("holdCheck", e.getHoldCheck());
                 }
                 JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
@@ -290,33 +292,69 @@ public class GlobalExceptionHandler {
             }
             object = customResultData;
         }
-        if (e.getAppInfoApi().getWebAlgorithmType()!=0&&e.getAppInfoApi().getWebAlgorithmRange()!=1){
-            //des解密
-            if (e.getAppInfoApi().getWebAlgorithmType()==1){
-                DES des = DESContext.getInstance(e.getAppInfoApi());
-                try {
-                    object = des.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
-                }catch (Exception ignored){
-                    throw new SystemApiException(4, "系统错误","",false);
-                }
-                //aes解密
-            }else if (e.getAppInfoApi().getWebAlgorithmType()==2){
-                AES aes = AESContext.getInstance(e.getAppInfoApi());
-                try {
-                    object = aes.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
-                }catch (Exception ignored){
-                    throw new SystemApiException(4, "系统错误","",false);
-                }
-                //DESede解密
-            }else if (e.getAppInfoApi().getWebAlgorithmType()==3){
-                DESede deSede = DESedeContext.getInstance(e.getAppInfoApi());
-                try {
-                    object = deSede.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
-                }catch (Exception ignored){
-                    throw new SystemApiException(4, "系统错误","",false);
-                }
+        object = ApiResultUtil.setAlgorithm(object,e.getAppInfoApi());
+        return object;
+    }
+
+    /**
+     * 检测单码用户状态异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(CheckCardStatusException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object checkCardStatusException(CheckCardStatusException e) {
+        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
+        if (ObjectUtil.isNull(apiResultApi)){
+            apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
+            if (ObjectUtil.isNotNull(apiResultApi)){
+                redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
             }
         }
+        Object object = null;
+        if (ObjectUtil.isNull(apiResultApi)){
+            object = ApiResult.resultError(-1, "接口不正确",false);
+        }
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            if (StringUtils.isNotEmpty(e.getHoldCheck())){
+                Map<String, Object> map = new HashMap<>(2);
+                map.put("holdCheck", e.getHoldCheck());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
+            }
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //TODO
+            if (StringUtils.contains(customResultData, "%holdCheck%")){
+                if (StringUtils.isNotEmpty(e.getHoldCheck())){
+                    customResultData = customResultData.replaceAll("%holdCheck%",e.getHoldCheck());
+                }else {
+                    customResultData = customResultData.replaceAll("%holdCheck%","");
+                }
+            }
+            if (StringUtils.contains(customResultData, "%token%")){
+                customResultData = customResultData.replaceAll("%token%",String.valueOf(e.getData()));
+            }
+            if (StringUtils.contains(customResultData, "%timestamp10%")){
+                customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
+            }
+            if (StringUtils.contains(customResultData, "%timestamp13%")){
+                customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
+            }
+            if (StringUtils.contains(customResultData, "%expireTime%")){
+                customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
+            if (StringUtils.contains(customResultData, "%currentTime%")){
+                customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
+            }
+            object = customResultData;
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getAppInfoApi());
         return object;
     }
 
