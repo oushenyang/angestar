@@ -115,15 +115,18 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppPower.onDeleteUserItem = function (data) {
         var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/appPower/deleteUser", function (data) {
-                Feng.success("情空成功!");
+                layer.close(loading);
+                Feng.success("清空成功!");
                 table.reload(AppPower.tableId);
             }, function (data) {
+                layer.close(loading);
                 Feng.error("清空失败!" + data.responseJSON.message + "!");
-            });
+            },true);
             ajax.set("appPowerId", data.appPowerId);
             ajax.set("appName", data.appName);
-            ajax.set("appCode", data.appCode);
+            ajax.set("appCode", data.customData);
             ajax.set("applicationName", data.applicationName);
             ajax.set("sign", data.sign);
             ajax.start();

@@ -118,9 +118,9 @@ public class NewHuanYingV4Controller {
         }
 
         boolean isShow = false;
-        if (appversioncode.equals("129")){
+        if ("129".equals(appversioncode)){
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
-        }else if (appversioncode.equals("131")){
+        }else if ("131".equals(appversioncode)){
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
         }else {
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");

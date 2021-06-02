@@ -45,28 +45,12 @@ public interface AppInfoService extends IService<AppInfo> {
     void update(AppInfoParam param);
 
     /**
-     * 查询单条数据，Specification模式
-     *
-     * @author shenyang.ou
-     * @Date 2020-04-01
-     */
-    AppInfoResult findBySpec(AppInfoParam param);
-
-    /**
      * 查询列表，Specification模式
      *
      * @author shenyang.ou
      * @Date 2020-04-01
      */
     List<AppInfoResult> findListBySpec(Page page,AppInfoParam param);
-
-    /**
-     * 查询分页数据，Specification模式
-     *
-     * @author shenyang.ou
-     * @Date 2020-04-01
-     */
-     LayuiPageInfo findPageBySpec(AppInfoParam param);
 
     /**
      * 查找当前用户所有软件列表

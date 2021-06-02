@@ -123,10 +123,13 @@
         left join ag_app_edition ae on ae.edition_id = ai.version_num
         <where>
             <if test="param.userId != null and param.userId != ''">
-                ai.create_user = #{param.userId}
+                and ai.create_user = #{param.userId}
+            </if>
+            <if test="param.appName != null and param.appName != ''">
+                and ai.app_name like CONCAT('%',#{param.appName},'%')
             </if>
             <if test="param.createUser != null and param.createUser != ''">
-                ai.create_user = #{param.createUser}
+                and ai.create_user = #{param.createUser}
             </if>
         </where>
     </select>

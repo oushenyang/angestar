@@ -152,11 +152,11 @@ layui.config({
     });
 
     // 重置按钮
-    $('#btnReset').click(function () {
-        $("input[type=text]").val("");
-        $("select").val("");
-        form.render('select');
-        table.reload($(this).attr("data-table"), {page:{curr:1},where: {}});
-    });
+    // $('#btnReset').click(function () {
+    //     $("input[type=text]").val("");
+    //     $("select").val("");
+    //     form.render('select');
+    //     table.reload($(this).attr("data-table"), {page:{curr:1},where: {}});
+    // });
 
 });

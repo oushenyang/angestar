@@ -64,10 +64,10 @@ public class NewHuanYingV3Controller {
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         String sign;
         String applicationName = null;
-        if (appversioncode.equals("129")&&StringUtils.isEmpty(application)){
+        if ("129".equals(appversioncode)&&StringUtils.isEmpty(application)){
             return null;
         }
-        if (appversioncode.equals("131")&&StringUtils.isEmpty(application)){
+        if ("131".equals(appversioncode)&&StringUtils.isEmpty(application)){
             return null;
         }
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
@@ -91,9 +91,9 @@ public class NewHuanYingV3Controller {
 //            }
         }
         boolean whetherLegal = false;
-        if (appversioncode.equals("129")){
+        if ("129".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
-        }else if (appversioncode.equals("131")){
+        }else if ("131".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
         }else {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
@@ -222,9 +222,9 @@ public class NewHuanYingV3Controller {
 //            }
         }
         boolean whetherLegal = false;
-        if (appversioncode.equals("129")){
+        if ("129".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
-        }else if (appversioncode.equals("131")){
+        }else if ("131".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
         }else {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
@@ -290,7 +290,7 @@ public class NewHuanYingV3Controller {
         double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
         GPS aps = new GPS();
-        if (appversioncode.equals("131")){
+        if ("131".equals(appversioncode)){
             aps.setLatitude(GPSNewUtils.f(lat,lon)[0]);
             aps.setLongitude(GPSNewUtils.f(lat,lon)[1]);
         }else{

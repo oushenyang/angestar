@@ -116,21 +116,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
-    public AppInfoResult findBySpec(AppInfoParam param){
-        return null;
-    }
-
-    @Override
     public List<AppInfoResult> findListBySpec(Page page,AppInfoParam param){
         return baseMapper.findListBySpec(page,param);
-    }
-
-    @Override
-    public LayuiPageInfo findPageBySpec(AppInfoParam param){
-        Page pageContext = getPageContext();
-        QueryWrapper<AppInfo> objectQueryWrapper = new QueryWrapper<>();
-        IPage page = this.page(pageContext, objectQueryWrapper);
-        return LayuiPageFactory.createPageInfo(page);
     }
 
     private Serializable getKey(AppInfoParam param){

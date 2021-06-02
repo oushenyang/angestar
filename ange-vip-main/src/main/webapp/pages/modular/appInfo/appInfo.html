@@ -203,20 +203,19 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                                <input id="appName" class="layui-input" type="text" placeholder="应用名称"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索
                                 </button>
                                 <button id="btnReset" data-table="demoGrid1" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
-                                </button>
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="fa fa-right fa-plus"></i>新增应用</button>
                             </div>
                         </div>
                     </div>
 
                     <!--                    <table class="layui-table" id="appInfoTable" lay-filter="appInfoTable"></table>-->
-                    <div class="layui-row layui-col-space30" id="demoGrid1" style="min-height: 650px;">
+                    <div class="layui-row layui-col-space30" id="appInfoTable" style="min-height: 650px;">
                         <div class="layui-col-md3">
                             <div class="application-list-item">
                                 <div class="application-list-item-body">
@@ -235,7 +234,7 @@
 </div>
 
 <!-- 应用模板 -->
-<script type="text/html" id="demoGridItem3">
+<script type="text/html" id="appInfoItem">
     <div class="layui-col-md3">
 <!--        <div class="ribbon-two ribbon-two-success"><span>100012</span></div>-->
 <!--        <div class="ribbon ribbon-warning float-right">编号：00012</div>-->

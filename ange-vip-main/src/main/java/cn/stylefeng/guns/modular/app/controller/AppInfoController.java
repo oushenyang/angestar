@@ -160,15 +160,12 @@ public class AppInfoController extends BaseController {
     @ResponseBody
     @RequestMapping("/list")
     public LayuiPageInfo list(AppInfoParam appInfoParam) {
-//        return this.appInfoService.findPageBySpec(appInfoParam);
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
         appInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
         //根据条件查询操作日志
         List<AppInfoResult> result = appInfoService.findListBySpec(page, appInfoParam);
-
         page.setRecords(result);
-
         return LayuiPageFactory.createPageInfo(page);
     }
 

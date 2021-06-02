@@ -1,4 +1,4 @@
-layui.use(['form', 'admin', 'ax','element'], function () {
+layui.use(['form', 'admin', 'ax','element', 'textool'], function () {
     //表单初始赋值
     layui.form.val('appInfoForm', {
         "codeBindOption":1,
@@ -27,6 +27,13 @@ layui.use(['form', 'admin', 'ax','element'], function () {
     var form = layui.form;
     var admin = layui.admin;
     var element = layui.element;
+    var textool = layui.textool;
+    textool.init({
+        // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+        eleId: null,
+        // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+        maxlength: 512
+    });
 
     //让当前iframe弹层高度适应
     admin.iframeAuto();

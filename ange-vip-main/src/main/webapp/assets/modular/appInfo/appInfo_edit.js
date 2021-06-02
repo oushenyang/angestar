@@ -1,63 +1,19 @@
-/**
- * 详情对话框
- */
-var AppInfoInfoDlg = {
-    data: {
-        appNum: "",
-        userId: "",
-        appName: "",
-        cydiaFlag: "",
-        appNotice: "",
-        customData1: "",
-        customData2: "",
-        customData3: "",
-        codeBindType: "",
-        codeBindOption: "",
-        codeBindNum: "",
-        codeBindTime: "",
-        accountBindType: "",
-        accountBindOption: "",
-        accountBindNum: "",
-        accountBindTime: "",
-        codeOpenRange: "",
-        codeSignType: "",
-        codeOpenNum: "",
-        accountOpenRange: "",
-        accountSignType: "",
-        accountOpenNum: "",
-        codeTryType: "",
-        codeTryTime: "",
-        accountRegisterSwitch: "",
-        accountRegisterLimit: "",
-        accountRegisterNum: "",
-        accountRegisterTime: "",
-        webAlgorithmType: "",
-        webKey: "",
-        webSalt: "",
-        versionNum: "",
-        createUser: "",
-        createTime: "",
-        updateUser: "",
-        updateTime: ""
-    }
-};
-//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-layui.use('element', function(){
-    var element = layui.element;
-
-    //一些事件监听
-    element.on('tab(demo)', function(data){
-        console.log(data);
-    });
-});
-layui.use(['form', 'admin', 'ax','dict', 'notice', 'formX'], function () {
+layui.use(['form', 'admin', 'ax','dict', 'notice', 'formX', 'textool','element'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var dict=layui.dict; //获取自定义模块
     var notice = layui.notice;
+    var element = layui.element;
     var formX = layui.formX;
+    var textool = layui.textool;
+    textool.init({
+        // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+        eleId: null,
+        // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+        maxlength: 512
+    });
     dict.renderDictAll(); //渲染
     //重新渲染select数据
     form.render('select');

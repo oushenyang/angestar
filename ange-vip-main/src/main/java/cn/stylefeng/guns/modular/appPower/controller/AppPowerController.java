@@ -3,15 +3,22 @@ package cn.stylefeng.guns.modular.appPower.controller;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.agent.entity.AgentPower;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.appPower.entity.AppPower;
 import cn.stylefeng.guns.modular.appPower.model.params.AppPowerParam;
 import cn.stylefeng.guns.modular.appPower.model.result.AppPowerTypeResult;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerTypeService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.webApi.huanying.entity.HyApp;
+import cn.stylefeng.guns.webApi.huanying.service.HyAppService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +48,12 @@ public class AppPowerController extends BaseController {
 
     @Autowired
     private AppPowerTypeService appPowerTypeService;
+
+    @Autowired
+    private HyAppService hyAppService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 跳转到主页面
@@ -134,8 +147,41 @@ public class AppPowerController extends BaseController {
      */
     @RequestMapping("/deleteUser")
     @ResponseBody
-    public ResponseData deleteUser(AppPowerParam appPowerParam) {
-        this.appPowerService.deleteUser(appPowerParam);
+    public ResponseData deleteUser(AppPowerParam param) {
+        System.out.println(param);
+        if (StringUtils.isNotEmpty(param.getAppName())&&StringUtils.isNotEmpty(param.getAppCode())&&StringUtils.isNotEmpty(param.getApplicationName())&&StringUtils.isNotEmpty(param.getSign())){
+            List<HyApp> appList =   hyAppService.list(new QueryWrapper<HyApp>()
+                    .eq("app_name", param.getAppName())
+                    .eq("app_code", param.getAppCode())
+                    .eq("application_name", param.getApplicationName())
+                    .eq("sign", param.getSign()));
+            appList.forEach(hyApp -> {
+                redisUtil.del(RedisType.HUANYIN.getCode() + hyApp.getUtDid() +"-"+ param.getSign() +"-"+ param.getAppCode());
+            });
+            hyAppService.remove(new QueryWrapper<HyApp>()
+                    .eq("app_name", param.getAppName())
+                    .eq("app_code", param.getAppCode())
+                    .eq("application_name", param.getApplicationName())
+                    .eq("sign", param.getSign()));
+
+        }
+        if (StringUtils.isNotEmpty(param.getAppName())&&StringUtils.isNotEmpty(param.getAppCode())&&StringUtils.isEmpty(param.getApplicationName())&&StringUtils.isNotEmpty(param.getSign())){
+            List<HyApp> appList =   hyAppService.list(new QueryWrapper<HyApp>()
+                    .eq("app_name", param.getAppName())
+                    .eq("app_code", param.getAppCode())
+//                    .eq("application_name", param.getApplicationName())
+                    .eq("sign", param.getSign()));
+            appList.forEach(hyApp -> {
+                redisUtil.del(RedisType.HUANYIN.getCode() + hyApp.getUtDid() +"-"+ param.getSign() +"-"+ param.getAppCode());
+            });
+            hyAppService.remove(new QueryWrapper<HyApp>()
+                    .eq("app_name", param.getAppName())
+                    .eq("app_code", param.getAppCode())
+//                    .eq("application_name", param.getApplicationName())
+                    .eq("sign", param.getSign()));
+        }
+//        hyAppService.remove(new QueryWrapper<HyApp>().eq("agent_app_id", param.getAgentAppId()))
+//        this.appPowerService.deleteUser(appPowerParam);
         return ResponseData.success();
     }
 
