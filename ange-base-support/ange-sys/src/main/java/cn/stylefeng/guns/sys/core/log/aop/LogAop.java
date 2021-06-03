@@ -15,6 +15,7 @@
  */
 package cn.stylefeng.guns.sys.core.log.aop;
 
+import cn.hutool.core.text.StrBuilder;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.guns.base.dict.AbstractDictMap;
@@ -97,7 +98,8 @@ public class LogAop {
         String key = annotation.key();
         Class dictClass = annotation.dict();
 
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
         for (Object param : params) {
             sb.append(param);
             sb.append(" & ");

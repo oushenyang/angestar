@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 
+import cn.hutool.core.text.StrBuilder;
+
 import java.util.Random;
 
 /**
@@ -42,7 +44,9 @@ public class CardStringRandom {
     }
     //生成大写字母+数字,
     public static String capitalWordAndNum(String cardTypePrefix,Integer cardTypeLength) {
-        StringBuilder val = new StringBuilder(cardTypePrefix);
+//        StringBuilder val = new StringBuilder(cardTypePrefix);
+        StrBuilder val = StrBuilder.create();
+        val.append(cardTypePrefix);
         Random random = new Random();
         //参数length，表示生成几位随机数
         for(int i = 0; i < cardTypeLength; i++) {
@@ -62,7 +66,9 @@ public class CardStringRandom {
 
     //生成小写字母+数字,
     public static String wordAndNum(String cardTypePrefix,Integer cardTypeLength) {
-        StringBuilder val = new StringBuilder(cardTypePrefix);
+//        StringBuilder val = new StringBuilder(cardTypePrefix);
+        StrBuilder val = StrBuilder.create();
+        val.append(cardTypePrefix);
         Random random = new Random();
         //参数length，表示生成几位随机数
         for(int i = 0; i < cardTypeLength; i++) {
@@ -84,7 +90,9 @@ public class CardStringRandom {
     private static String capitalWord(String cardTypePrefix,Integer cardTypeLength){
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(cardTypePrefix);
+//        StringBuilder sb = new StringBuilder(cardTypePrefix);
+        StrBuilder sb = StrBuilder.create();
+        sb.append(cardTypePrefix);
         for ( int i = 0; i < cardTypeLength; i++ )
         {
             int number = random.nextInt( base.length() );
@@ -99,7 +107,9 @@ public class CardStringRandom {
     private static String word(String cardTypePrefix,Integer cardTypeLength){
         String base = "abcdefghijklmnopqrstuvwxyz";
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(cardTypePrefix);
+//        StringBuilder sb = new StringBuilder(cardTypePrefix);
+        StrBuilder sb = StrBuilder.create();
+        sb.append(cardTypePrefix);
         for ( int i = 0; i < cardTypeLength; i++ )
         {
             int number = random.nextInt( base.length() );
@@ -114,7 +124,9 @@ public class CardStringRandom {
     private static String num(String cardTypePrefix,Integer cardTypeLength){
         String base = "0123456789";
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(cardTypePrefix);
+//        StringBuilder sb = new StringBuilder(cardTypePrefix);
+        StrBuilder sb = StrBuilder.create();
+        sb.append(cardTypePrefix);
         for ( int i = 0; i < cardTypeLength; i++ )
         {
             int number = random.nextInt( base.length() );

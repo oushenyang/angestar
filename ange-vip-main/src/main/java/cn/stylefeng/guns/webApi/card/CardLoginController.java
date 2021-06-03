@@ -18,7 +18,6 @@ import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
-import cn.stylefeng.guns.sys.core.exception.inter.AccessLimit;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
@@ -65,7 +64,6 @@ public class CardLoginController {
         this.asyncService = asyncService;
     }
 
-    @AccessLimit(times = 5)
     @RequestMapping("/{callCode}")
     @ResponseBody
     public String cardLogin(@PathVariable String callCode, @RequestBody(required=false) String body) {

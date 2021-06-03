@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.sys.core.util.ip2region;
 
+import cn.hutool.core.text.StrBuilder;
+
 /**
  * data block class
  * 
@@ -77,7 +79,8 @@ public class DataBlock
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
+//		StringBuilder sb = new StringBuilder();
+		StrBuilder sb = StrBuilder.create();
 		
 		sb.append(city_id).append('|').append(region).append('|').append(dataPtr);
 		return sb.toString();

@@ -267,13 +267,13 @@ public class CreateNamePicture {
         if(nameWritten.length() ==1) {
             // 中文
             if(isChinese(nameWritten)) {
-                font = new Font("微软雅黑", Font.PLAIN, 50);
+                font = new Font("黑体", Font.PLAIN, 50);
                 g2.setFont(font);
                 g2.drawString(nameWritten, 25, 70);
             }
             // 英文
             else {
-                font = new Font("微软雅黑", Font.PLAIN, 55);
+                font = new Font("黑体", Font.PLAIN, 55);
                 g2.setFont(font);
                 g2.drawString(nameWritten.toUpperCase(), 33, 67);
             }

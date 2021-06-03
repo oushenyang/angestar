@@ -14,6 +14,9 @@ import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import  cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
+import cn.stylefeng.guns.sys.core.util.IpUtils;
+import cn.stylefeng.roses.core.util.HttpContext;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -96,18 +99,35 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
      */
     @Override
     public ApiManageApi getApiManageByRedis(String apiCode, String callCode) {
+        limit(4,10);
         //是否存在该hash表
         ApiManageApi apiManageApi = (ApiManageApi)redisUtil.hget(RedisType.API_MANAGE.getCode()+ callCode,apiCode);
         if (ObjectUtil.isNull(apiManageApi)) {
             //不存在则查询
             apiManageApi = baseMapper.findApiManageApi(apiCode, callCode);
             if (ObjectUtil.isNull(apiManageApi)) {
-                throw new SystemApiException(1, "接口不正确", "", false);
+                throw new SystemApiException(ApiExceptionEnum.API_BAD.getCode(), ApiExceptionEnum.API_BAD.getMessage(), "", false);
             } else {
                 redisUtil.hset(RedisType.API_MANAGE.getCode() + callCode, apiCode, apiManageApi, RedisExpireTime.WEEK.getCode());
             }
         }
         return apiManageApi;
+    }
+
+    //限流
+    public void limit(int times, int second){
+        //根据 IP + API 限流
+        String key = IpUtils.getIpAddr(HttpContext.getRequest()) + HttpContext.getRequest().getRequestURI();
+        //根据key获取已请求次数
+        Integer maxTimes = (Integer) redisUtil.get(key);
+        if(maxTimes == null){
+            //set时一定要加过期时间
+            redisUtil.set(key, 1, second);
+        }else if(maxTimes < times){
+            redisUtil.set(key, maxTimes+1, second);
+        }else{
+            throw new SystemApiException(5, "请求过于频繁,请稍后再试","",false);
+        }
     }
 
     private Serializable getKey(ApiManageParam param){

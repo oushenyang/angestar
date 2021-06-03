@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 
+import cn.hutool.core.text.StrBuilder;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
@@ -28,7 +30,8 @@ public class ExportTextUtil {
         }
         response.addHeader("Content-Disposition", "attachment;filename="+a+".txt");// filename指定默认的名字
         BufferedOutputStream buff = null;
-        StringBuilder write = new StringBuilder();
+//        StringBuilder write = new StringBuilder();
+        StrBuilder write = StrBuilder.create();
         String tab = "  ";
         String enter = "\r\n";
         ServletOutputStream outSTr = null;

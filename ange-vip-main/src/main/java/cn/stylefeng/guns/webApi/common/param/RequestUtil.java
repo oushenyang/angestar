@@ -59,8 +59,8 @@ public class RequestUtil {
         }
        if (appInfoApi.getWebAlgorithmRange()==2||appInfoApi.getWebAlgorithmType()==0){
             singleCode = HttpContext.getRequest().getParameter(apiManage.getParameterOne());
-            edition = HttpContext.getRequest().getParameter(apiManage.getParameterTwo());
-            mac = HttpContext.getRequest().getParameter(apiManage.getParameterThree());
+            mac = HttpContext.getRequest().getParameter(apiManage.getParameterTwo());
+            edition = HttpContext.getRequest().getParameter(apiManage.getParameterThree());
             model = HttpContext.getRequest().getParameter(apiManage.getParameterFour());
             holdCheck = HttpContext.getRequest().getParameter(apiManage.getParameterFive());
             sign = HttpContext.getRequest().getParameter(apiManage.getParameterSix());
@@ -89,7 +89,7 @@ public class RequestUtil {
         }else if (appInfoApi.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
             throw new SystemApiException(4, "签名不正确","",false);
         }else if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(singleCode+edition+mac+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
+            String md5 = SecureUtil.md5(singleCode+mac+StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
             if (!md5.equals(sign)){
                 throw new SystemApiException(4, "签名不正确","",false);
             }

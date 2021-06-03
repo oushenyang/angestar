@@ -16,6 +16,7 @@
 package cn.stylefeng.guns.sys.core.constant.factory;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.sys.core.constant.cache.Cache;
 import cn.stylefeng.guns.sys.core.constant.cache.CacheKey;
@@ -87,7 +88,8 @@ public class ConstantFactory implements IConstantFactory {
             return "";
         }
         Long[] roles = Convert.toLongArray(roleIds);
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
         for (Long role : roles) {
             Role roleObj = roleMapper.selectById(role);
             if (ToolUtil.isNotEmpty(roleObj) && ToolUtil.isNotEmpty(roleObj.getName())) {
@@ -142,7 +144,9 @@ public class ConstantFactory implements IConstantFactory {
     @Override
     public String getMenuNames(String menuIds) {
         Long[] menus = Convert.toLongArray(menuIds);
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
+
         for (Long menu : menus) {
             Menu menuObj = menuMapper.selectById(menu);
             if (ToolUtil.isNotEmpty(menuObj) && ToolUtil.isNotEmpty(menuObj.getName())) {
@@ -352,7 +356,8 @@ public class ConstantFactory implements IConstantFactory {
     @Override
     public String getPositionName(Long userId) {
 
-        StringBuilder positionNames = new StringBuilder();
+//        StringBuilder positionNames = new StringBuilder();
+        StrBuilder positionNames = StrBuilder.create();
 
         List<UserPos> userPosList = this.userPosService.list(
                 new QueryWrapper<UserPos>().eq("user_id", userId));
@@ -371,7 +376,8 @@ public class ConstantFactory implements IConstantFactory {
 
     @Override
     public String getPositionIds(Long userId) {
-        StringBuilder positionIds = new StringBuilder();
+//        StringBuilder positionIds = new StringBuilder();
+        StrBuilder positionIds = StrBuilder.create();
 
         List<UserPos> userPosList = this.userPosService.list(
                 new QueryWrapper<UserPos>().eq("user_id", userId));

@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.base.db.util;
 
+import cn.hutool.core.text.StrBuilder;
+
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.sql.Clob;
@@ -47,7 +49,8 @@ public class ClobUtil {
             e.printStackTrace();
         }
 
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
 
         // 如果没有到达流的末尾，则继续读取下一行
         while (str != null) {

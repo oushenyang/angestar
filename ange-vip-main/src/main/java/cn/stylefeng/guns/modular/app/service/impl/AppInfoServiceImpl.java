@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
+import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -79,7 +80,9 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     //生成小写字母+数字,
     public String wordAndNum(String cardTypePrefix,Integer cardTypeLength) {
-        StringBuilder val = new StringBuilder(cardTypePrefix);
+//        StringBuilder val = new StringBuilder(cardTypePrefix);
+        StrBuilder val = StrBuilder.create();
+        val.append(cardTypePrefix);
         String base = "abcdefghkmnpqrstuvwxyz123456789";
         Random random = new Random();
         for ( int i = 0; i < cardTypeLength; i++ )

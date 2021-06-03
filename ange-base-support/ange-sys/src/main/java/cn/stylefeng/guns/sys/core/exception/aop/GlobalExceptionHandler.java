@@ -16,13 +16,8 @@
 package cn.stylefeng.guns.sys.core.exception.aop;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.XmlUtil;
-import cn.hutool.crypto.symmetric.AES;
-import cn.hutool.crypto.symmetric.DES;
-import cn.hutool.crypto.symmetric.DESede;
+import cn.hutool.json.JSONUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.AuthException;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
@@ -62,7 +57,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -247,19 +241,17 @@ public class GlobalExceptionHandler {
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (apiResultApi.getResultSuccess()){
-                Map<String, Object> map = new HashMap<>(2);
-                map.put("expireTime", DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
-                map.put("token", e.getData());
+                cn.hutool.json.JSONObject json = JSONUtil.createObj();
+                json.set("expireTime",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+                json.set("token",e.getData());
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    map.put("holdCheck", e.getHoldCheck());
+                    json.set("holdCheck", e.getHoldCheck());
                 }
-                JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    Map<String, Object> map = new HashMap<>(2);
-                    map.put("holdCheck", e.getHoldCheck());
-                    JSONObject json = new JSONObject(map);
+                    cn.hutool.json.JSONObject json = JSONUtil.createObj();
+                    json.set("holdCheck",e.getHoldCheck());
                     object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
                 }else {
                     object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());

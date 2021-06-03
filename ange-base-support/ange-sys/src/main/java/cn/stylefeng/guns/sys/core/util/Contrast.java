@@ -16,6 +16,7 @@
 package cn.stylefeng.guns.sys.core.util;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.base.dict.AbstractDictMap;
 import cn.stylefeng.guns.sys.core.constant.dictmap.factory.DictFieldWarpperFactory;
@@ -197,7 +198,8 @@ public class Contrast {
      * @Date 2017/5/16 22:19
      */
     public static String parseMutiKey(AbstractDictMap dictMap, String key, Map<String, String> requests) {
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
         if (key.contains(",")) {
             String[] keys = key.split(",");
             for (String item : keys) {

@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.sys.core.util.ip2region;
 
+import cn.hutool.core.text.StrBuilder;
+
 import java.io.IOException;
 
 /**
@@ -112,7 +114,8 @@ public class IpToRegionUtil
     */
     public static String long2ip( long ip )
     {
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = StrBuilder.create();
         
         sb
         .append((ip >> 24) & 0xFF).append('.')
