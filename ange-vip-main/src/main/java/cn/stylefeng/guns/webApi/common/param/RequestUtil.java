@@ -88,7 +88,7 @@ public class RequestUtil {
             throw new SystemApiException(4, "签名不正确","",false);
         }else if (appInfoApi.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
             throw new SystemApiException(4, "签名不正确","",false);
-        }else if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
+        }else if(appInfoApi.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
             String md5 = SecureUtil.md5(singleCode+mac+StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
             if (!md5.equals(sign)){
                 throw new SystemApiException(4, "签名不正确","",false);
