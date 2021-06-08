@@ -36,7 +36,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     var admin = layui.admin;
     var notice = layui.notice;
     //表单初始赋值
-    layui.form.val('cardInfoForm', {
+    form.val('cardInfoForm', {
         "addNum":1
     });
 
