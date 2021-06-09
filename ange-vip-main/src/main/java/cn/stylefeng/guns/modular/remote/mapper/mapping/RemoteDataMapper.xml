@@ -48,5 +48,18 @@
         </where>
         order by rd.create_time DESC
     </select>
+    <select id="getRemoteDataByAppIdAndDataCode"
+            resultType="cn.stylefeng.guns.modular.remote.model.result.RemoteDataApi">
+        select
+        rd.data_id AS "dataId",
+        rd.app_id AS "appId",
+        rd.data_code AS "dataCode",
+        rd.data_value AS "dataValue",
+        rd.create_time AS "createTime",
+        rd.update_time AS "updateTime"
+        from ag_remote_data rd
+        where rd.app_id = #{appId} and rd.data_code = #{dataCode}
+        LIMIT 1
+    </select>
 
 </mapper>

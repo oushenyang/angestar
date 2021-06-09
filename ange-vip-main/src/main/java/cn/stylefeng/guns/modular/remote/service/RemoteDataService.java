@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.remote.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.remote.entity.RemoteData;
 import cn.stylefeng.guns.modular.remote.model.params.RemoteDataParam;
+import cn.stylefeng.guns.modular.remote.model.result.RemoteDataApi;
 import cn.stylefeng.guns.modular.remote.model.result.RemoteDataResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -76,4 +77,10 @@ public interface RemoteDataService extends IService<RemoteData> {
      */
      LayuiPageInfo findPageBySpec(RemoteDataParam param);
 
+    /**
+     * 从redis获取远程数据信息
+     * @param dataCode 编码
+     * @return 应用信息
+     */
+    RemoteDataApi getRemoteDataByRedis(Long appId, String dataCode);
 }

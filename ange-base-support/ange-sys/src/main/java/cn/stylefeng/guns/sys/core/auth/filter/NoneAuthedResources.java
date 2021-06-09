@@ -70,6 +70,9 @@ public class NoneAuthedResources {
 
             //单码登录
             "/cardLogin/*",
+
+            //获取远程数据
+            "/getRemoteData/**",
             "/getTrial/*",
             "/urule/frame",
             //检测单码用户状态

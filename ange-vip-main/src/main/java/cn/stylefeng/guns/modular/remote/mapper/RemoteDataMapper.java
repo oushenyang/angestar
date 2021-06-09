@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.remote.mapper;
 
 import cn.stylefeng.guns.modular.remote.entity.RemoteData;
 import cn.stylefeng.guns.modular.remote.model.params.RemoteDataParam;
+import cn.stylefeng.guns.modular.remote.model.result.RemoteDataApi;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ import java.util.Map;
 public interface RemoteDataMapper extends BaseMapper<RemoteData> {
 
     List<Map<String, Object>> findListBySpec(@Param("page") Page page, @Param("param") RemoteDataParam param);
+
+    RemoteDataApi getRemoteDataByAppIdAndDataCode(@Param("appId") Long appId, @Param("dataCode") String dataCode);
 }
