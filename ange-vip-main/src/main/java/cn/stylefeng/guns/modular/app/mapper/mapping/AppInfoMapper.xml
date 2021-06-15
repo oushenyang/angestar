@@ -138,6 +138,7 @@
         app_id AS "appId",
         app_no AS "appNo",
         app_num AS "appNum",
+        app_quick AS "appQuick",
         cydia_flag AS "cydiaFlag",
         app_notice AS "appNotice",
         code_bind_type AS "codeBindType",

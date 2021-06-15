@@ -42,6 +42,13 @@ public class AppInfo implements Serializable {
     @TableField("app_no")
     private String appNo;
 
+
+    /**
+     * 应用快捷页面编号
+     */
+    @TableField("app_quick")
+    private String appQuick;
+
     /**
      * 应用头像
      */

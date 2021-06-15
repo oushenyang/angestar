@@ -36,6 +36,11 @@ public class AppInfoResult implements Serializable {
     private String appNo;
 
     /**
+     * 应用快捷页面编号
+     */
+    private String appQuick;
+
+    /**
      * 应用头像
      */
     private String appHead;

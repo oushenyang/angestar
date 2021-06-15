@@ -86,7 +86,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(
                         HttpMethod.POST,
-                        "/login"
+                        "/login",
+                        "/quick/**"
                 )
 
                 // 静态资源放开过滤
