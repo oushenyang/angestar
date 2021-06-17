@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.account.mapper;
 
 import cn.stylefeng.guns.modular.account.entity.AccountInfo;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
+import cn.stylefeng.guns.modular.account.model.result.AccountMonth;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,6 @@ public interface AccountInfoMapper extends BaseMapper<AccountInfo> {
      * @return 数量
      */
     Integer accountNum(@Param("userId") Long userId);
+
+    List<AccountMonth> getAccountMonth(@Param("userId") Long userId, @Param("date") String format,@Param("countArr")  String[] countArr);
 }

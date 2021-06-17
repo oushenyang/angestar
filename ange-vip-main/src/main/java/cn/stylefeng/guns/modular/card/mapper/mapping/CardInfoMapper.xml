@@ -270,7 +270,7 @@
             <if test="param.cardCode != null and param.cardCode !=''">
                 and cci.card_code like CONCAT('%',#{param.cardCode},'%')
             </if>
-            <if test="param.cardStatus != null and param.cardStatus !=''">
+            <if test="param.cardStatus != null">
                 and cci.card_status = #{param.cardStatus}
             </if>
             <if test="param.cardRemark != null and param.cardRemark !=''">
@@ -321,6 +321,42 @@
     </select>
     <select id="expireCardNum" resultType="java.lang.Integer">
          select count(card_id) from ag_card_info where card_status = 2 and create_user = #{userId}
+    </select>
+
+    <select id="getCardMonth" resultType="cn.stylefeng.guns.modular.card.model.result.CardMonth">
+       select
+       (SELECT count(card_id) FROM ag_card_info WHERE DATE(expire_time) = s.date) expireNum,
+       count(u.card_id) as activeNum,
+       s.date as activeTime
+       from
+       (select date_add(#{date},interval @i:=@i+1 day) as date
+       from (
+       select 1
+        <foreach item="index" collection="countArr">
+            union all select 1
+        </foreach>
+        ) as tmp,
+       (select @i:= -1) t
+       ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d')
+       GROUP BY s.date
+    </select>
+    <select id="getIncomeStatistics" resultType="cn.stylefeng.guns.modular.card.model.result.IncomeStatistics">
+        select
+        (SELECT SUM(acct.card_type_price) FROM ag_card_info aci
+        LEFT JOIN ag_code_card_type acct ON acct.card_type_id = aci.card_type_id
+        WHERE DATE(aci.active_time) = s.date) price,
+        s.date as activeTime
+        from
+        (select date_add(#{date},interval @i:=@i+1 day) as date
+        from (
+        select 1
+        <foreach item="index" collection="countArr">
+            union all select 1
+        </foreach>
+        ) as tmp,
+        (select @i:= -1) t
+        ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d')
+        GROUP BY s.date
     </select>
 
 </mapper>

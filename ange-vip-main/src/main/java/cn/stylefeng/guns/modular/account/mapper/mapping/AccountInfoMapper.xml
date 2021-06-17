@@ -81,5 +81,22 @@
         from ag_account_info
         where create_user = #{userId}
     </select>
+    <select id="getAccountMonth" resultType="cn.stylefeng.guns.modular.account.model.result.AccountMonth">
+        select
+        (SELECT count(account_id) FROM ag_account_info WHERE DATE(expire_time) = s.date) expireNum,
+        count(u.account_id) as activeNum,
+        s.date as registrationTime
+        from
+        (select date_add(#{date},interval @i:=@i+1 day) as date
+        from (
+        select 1
+        <foreach item="index" collection="countArr">
+            union all select 1
+        </foreach>
+        ) as tmp,
+        (select @i:= -1) t
+        ) s left join ag_account_info u on s.date = date_format(u.registration_time,'%Y-%m-%d')
+        GROUP BY s.date
+    </select>
 
 </mapper>

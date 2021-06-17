@@ -6,6 +6,7 @@ import cn.stylefeng.guns.modular.account.entity.AccountInfo;
 import cn.stylefeng.guns.modular.account.mapper.AccountInfoMapper;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
 import cn.stylefeng.guns.modular.account.model.result.AccountInfoResult;
+import cn.stylefeng.guns.modular.account.model.result.AccountMonth;
 import  cn.stylefeng.guns.modular.account.service.AccountInfoService;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -103,6 +104,11 @@ public class AccountInfoServiceImpl extends ServiceImpl<AccountInfoMapper, Accou
     @Override
     public Integer accountNum(Long userId) {
         return baseMapper.accountNum(userId);
+    }
+
+    @Override
+    public List<AccountMonth> getAccountMonth(Long userId, String format, String[] countArr) {
+        return baseMapper.getAccountMonth(userId,format,countArr);
     }
 
     private Serializable getKey(AccountInfoParam param){

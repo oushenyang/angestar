@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.account.entity.AccountInfo;
 import cn.stylefeng.guns.modular.account.model.params.AccountInfoParam;
 import cn.stylefeng.guns.modular.account.model.result.AccountInfoResult;
+import cn.stylefeng.guns.modular.account.model.result.AccountMonth;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -90,4 +91,6 @@ public interface AccountInfoService extends IService<AccountInfo> {
      * @return 数量
      */
     Integer accountNum(Long userId);
+
+    List<AccountMonth> getAccountMonth(Long userId, String format, String[] countArr);
 }

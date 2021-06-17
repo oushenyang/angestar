@@ -6,6 +6,8 @@ import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
+import cn.stylefeng.guns.modular.card.model.result.CardMonth;
+import cn.stylefeng.guns.modular.card.model.result.IncomeStatistics;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,6 +121,20 @@ public interface CardInfoService extends IService<CardInfo> {
      * @return 数量
      */
     Integer expireCardNum(Long userId);
+
+    /**
+     * 获取该用户卡密月统计
+     * @param userId 用户id
+     * @return 结果
+     */
+    List<CardMonth> getCardMonth(Long userId,String date,String[] countArr);
+
+    /**
+     * 获取该用户收入统计
+     * @param userId 用户id
+     * @return 结果
+     */
+    List<IncomeStatistics> getIncomeStatistics(Long userId, String date, String[] countArr);
 
     /**
      * 删除redis卡密缓存

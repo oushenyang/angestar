@@ -16,13 +16,17 @@
 package cn.stylefeng.guns.modular.system;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.model.LoginUser;
 import cn.stylefeng.guns.base.oshi.SystemHardwareInfo;
 import cn.stylefeng.guns.modular.account.mapper.AccountInfoMapper;
+import cn.stylefeng.guns.modular.account.model.result.AccountMonth;
 import cn.stylefeng.guns.modular.account.service.AccountInfoService;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.modular.card.model.result.CardMonth;
+import cn.stylefeng.guns.modular.card.model.result.IncomeStatistics;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.sys.core.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.sys.core.log.LogObjectHolder;
@@ -41,6 +45,9 @@ import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.exception.enums.CoreExceptionEnum;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.TokenService;
@@ -52,9 +59,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 通用控制器
@@ -113,6 +120,84 @@ public class SystemController extends BaseController {
         model.addAttribute("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
         model.addAttribute("avatar", DefaultImages.defaultAvatarUrl());
         return "/modular/frame/console3.html";
+    }
+
+    /**
+     * 获取卡密月统计
+     *
+     * @author fengshuonan
+     * @Date 2018/11/9 12:45 PM
+     */
+    @RequestMapping("/cardMonth")
+    @ResponseBody
+    public Object cardMonth() {
+        String[] countArr = new String[29];
+        List<CardMonth> cardMonths = cardInfoService.getCardMonth(LoginContextHolder.getContext().getUserId(),DateUtil.format(DateUtil.offsetDay(new Date(), -29),"YYYY-MM-dd"),countArr);
+//        Collections.reverse(cardMonths);
+        List<String> months = Lists.newArrayList();
+        List<Integer> expireNums = Lists.newArrayList();
+        List<Integer> activeNums = Lists.newArrayList();
+        for (CardMonth cardMonth : cardMonths){
+            months.add(DateUtil.format(cardMonth.getActiveTime(),"MM-dd"));
+            expireNums.add(cardMonth.getExpireNum());
+            activeNums.add(cardMonth.getActiveNum());
+        }
+        Map<String,Object> maps = Maps.newHashMap();
+        maps.put("months",months);
+        maps.put("expireNums",expireNums);
+        maps.put("activeNums",activeNums);
+        return JSON.toJSON(maps);
+    }
+
+    /**
+     * 收入统计
+     *
+     * @author fengshuonan
+     * @Date 2018/11/9 12:45 PM
+     */
+    @RequestMapping("/incomeStatistics")
+    @ResponseBody
+    public Object incomeStatistics() {
+        String[] countArr = new String[10];
+        List<IncomeStatistics> incomeStatisticsList = cardInfoService.getIncomeStatistics(LoginContextHolder.getContext().getUserId(),DateUtil.format(DateUtil.offsetDay(new Date(), -10),"YYYY-MM-dd"),countArr);
+//        Collections.reverse(cardMonths);
+        List<String> months = Lists.newArrayList();
+        List<BigDecimal> price = Lists.newArrayList();
+        for (IncomeStatistics incomeStatistics : incomeStatisticsList){
+            months.add(DateUtil.format(incomeStatistics.getActiveTime(),"MM-dd"));
+            price.add(incomeStatistics.getPrice());
+        }
+        Map<String,Object> maps = Maps.newHashMap();
+        maps.put("months",months);
+        maps.put("price",price);
+        return JSON.toJSON(maps);
+    }
+
+    /**
+     * 获取用户月统计
+     *
+     * @author fengshuonan
+     * @Date 2018/11/9 12:45 PM
+     */
+    @RequestMapping("/accountMonth")
+    @ResponseBody
+    public Object accountMonth() {
+        String[] countArr = new String[29];
+        List<AccountMonth> cardMonths = accountInfoService.getAccountMonth(LoginContextHolder.getContext().getUserId(),DateUtil.format(DateUtil.offsetDay(new Date(), -29),"YYYY-MM-dd"),countArr);
+//        Collections.reverse(cardMonths);
+        List<String> months = Lists.newArrayList();
+        List<Integer> expireNums = Lists.newArrayList();
+        List<Integer> activeNums = Lists.newArrayList();
+        for (AccountMonth accountMonth : cardMonths){
+            months.add(DateUtil.format(accountMonth.getRegistrationTime(),"MM-dd"));
+            expireNums.add(accountMonth.getExpireNum());
+            activeNums.add(accountMonth.getActiveNum());
+        }
+        Map<String,Object> maps = Maps.newHashMap();
+        maps.put("months",months);
+        maps.put("expireNums",expireNums);
+        maps.put("activeNums",activeNums);
+        return JSON.toJSON(maps);
     }
 
     /**

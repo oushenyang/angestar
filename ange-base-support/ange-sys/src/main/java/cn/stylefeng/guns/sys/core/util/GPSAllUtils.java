@@ -86,6 +86,14 @@ public class GPSAllUtils {
         GPS gps = g(39.909187,116.397451);
         System.out.println(gps);
 
+        byte[] srtbyte = {49, 50, 48, 49, 50, 51, 48, 49, 50, 53, 52, 54, 50, 50, 52, 52};
+
+// byte[] 转 string
+
+        String res = new String(srtbyte);
+
+        System.out.println(res);
+
     }
 
 }

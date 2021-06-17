@@ -64,6 +64,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -522,6 +523,30 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     @Override
     public Integer expireCardNum(Long userId) {
         return baseMapper.expireCardNum(userId);
+    }
+
+    /**
+     * 获取该用户卡密月统计
+     *
+     * @param userId 用户id
+     * @return 结果
+     */
+    @Override
+    public List<CardMonth> getCardMonth(Long userId,String date,String[] countArr) {
+        return baseMapper.getCardMonth(userId, date,countArr);
+    }
+
+    /**
+     * 获取该用户收入统计
+     *
+     * @param userId   用户id
+     * @param date
+     * @param countArr
+     * @return 结果
+     */
+    @Override
+    public List<IncomeStatistics> getIncomeStatistics(Long userId, String date, String[] countArr) {
+        return baseMapper.getIncomeStatistics(userId, date,countArr);
     }
 
     /**

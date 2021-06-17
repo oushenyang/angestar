@@ -4,6 +4,8 @@ import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
+import cn.stylefeng.guns.modular.card.model.result.CardMonth;
+import cn.stylefeng.guns.modular.card.model.result.IncomeStatistics;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -59,9 +61,30 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
     Integer expireCardNum(@Param("userId") Long userId);
 
     /**
+     * 获取该用户卡密月统计
+     *
+     * @param userId 用户id
+     * @param date 开始时间
+     * @param countArr 天数
+     * @return 结果
+     */
+    List<CardMonth> getCardMonth(@Param("userId") Long userId, @Param("date") String date, @Param("countArr") String[] countArr);
+
+    /**
+     * 获取该用户收入统计
+     *
+     * @param userId 用户id
+     * @param date 开始时间
+     * @param countArr 天数
+     * @return 结果
+     */
+    List<IncomeStatistics> getIncomeStatistics(@Param("userId") Long userId, @Param("date") String date, @Param("countArr") String[] countArr);
+
+    /**
      * 更新卡密登录次数
      *
      * @param cardId 卡密id
      */
     void updateCardLoginNumByCardId(@Param("cardId") Long cardId);
+
 }

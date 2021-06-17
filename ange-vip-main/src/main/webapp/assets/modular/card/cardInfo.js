@@ -107,7 +107,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         queryData['activeTimeStr'] = $("#activeTimeStr").val();
         queryData['expireTimeStr'] = $("#expireTimeStr").val();
         queryData['cardRemark'] = $("#cardRemark").val();
-        table.reload(CardInfo.tableId, {where: queryData});
+        table.reload(CardInfo.tableId, {
+            where: queryData, page: {curr: 1}
+        });
     };
 
     /**
