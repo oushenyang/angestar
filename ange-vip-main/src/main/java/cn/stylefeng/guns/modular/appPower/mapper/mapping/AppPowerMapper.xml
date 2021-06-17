@@ -91,6 +91,7 @@
                 and custom_data = #{appCode}
             </if>
         </where>
+        LIMIT 1
     </select>
     <select id="findUserNum" resultType="java.lang.Integer">
         select

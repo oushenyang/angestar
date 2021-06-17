@@ -65,6 +65,9 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         //生成应用编码
         entity.setAppNum(wordAndNum("",12));
 
+        //应用快捷页面编号
+        entity.setAppQuick(wordAndNum("",12));
+
         //生成加密密匙
         entity.setWebKey(wordAndNum("",16));
 

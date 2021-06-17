@@ -71,6 +71,9 @@ public class NoneAuthedResources {
             //单码登录
             "/cardLogin/*",
 
+            //快捷页面
+            "/quick/**",
+
             //获取远程数据
             "/getRemoteData/**",
             "/getTrial/*",
@@ -79,6 +82,7 @@ public class NoneAuthedResources {
             "/checkCardStatus/*",
             "/api/**",
             "/new/api/**",
+            "/shenqi/**",
             "/web/api/**",
             "/dict/*",
             "/dic*",

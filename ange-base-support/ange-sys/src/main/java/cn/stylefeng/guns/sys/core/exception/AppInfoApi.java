@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.sys.core.exception;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -32,6 +33,11 @@ public class AppInfoApi {
      * 应用编号
      */
     private String appNo;
+
+    /**
+     * 应用快捷页面编号
+     */
+    private String appQuick;
 
     /**
      * 软件公告
