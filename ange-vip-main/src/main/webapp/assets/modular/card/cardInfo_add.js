@@ -41,7 +41,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     });
 
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
+    // admin.iframeAuto();
 
     //应用选择下拉框事件监听
     // form.on('select(appId)', function (data) {

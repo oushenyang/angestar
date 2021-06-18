@@ -70,6 +70,41 @@ public class AgentAppResult implements Serializable {
     private String agentUserName;
 
     /**
+     * 上级代理用户名称
+     */
+    private String pidUserName;
+
+    /**
+     * 账号未使用数量
+     */
+    private String accountNoActiveNum;
+
+    /**
+     * 账号已使用数量
+     */
+    private String accountActiveNum;
+
+    /**
+     * 账号总数量
+     */
+    private String accountAllNum;
+
+    /**
+     * 卡密未使用数量
+     */
+    private String cardNoActiveNum;
+
+    /**
+     * 卡密已使用数量
+     */
+    private String cardActiveNum;
+
+    /**
+     * 卡密总数量
+     */
+    private String cardAllNum;
+
+    /**
      * 代理用户名称
      */
     private String agentUserAccount;

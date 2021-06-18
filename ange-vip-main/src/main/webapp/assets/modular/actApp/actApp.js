@@ -17,10 +17,11 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
      */
     AgentApp.initColumn = function () {
         return [[
-            {align: 'center', field: 'agentAppId', fixed: 'left', type: 'checkbox'},
-            {field: 'agentPowerId', hide: true},
-            {field: 'appId', hide: true},
+            // {align: 'center', field: 'agentAppId', fixed: 'left', type: 'checkbox'},
+            // {field: 'agentPowerId', hide: true},
+            // {field: 'appId', hide: true},
             {align: 'center', field: 'appName', title: '所属应用'},
+            {align: 'center', field: 'pidUserName', title: '上级名称'},
             {align: 'center', field: 'agentGradeName', sort: true, title: '代理等级'},
             // {align: 'center', field: 'agentUserAccount', rowspan: 2, title: '代理账号'},
             {align: 'center', field: 'createTime', sort: true, title: '合作时间'},

@@ -81,9 +81,12 @@
         height: 18px;
         line-height: 18px;
     }
+    .layui-table-view{
+        min-height: 450px!important;
+    }
 </style>
 <form id="agentAppForm" lay-filter="agentAppForm" style="padding:0!important;" class="layui-form layui-form-pane tab-form">
-    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
+    <div class="layui-fluid" style="padding-bottom: 30px;margin-top: -15px;">
         <input name="agentPowerId" type="hidden"/>
         <div class="layui-tab layui-tab-brief" lay-filter="cardTabBrief">
             <ul class="layui-tab-title">
@@ -93,7 +96,7 @@
             </ul>
             <div class="layui-tab-content">
                 <!-- 单码卡密 -->
-                <div class="layui-tab-item layui-show" style="height: 490px">
+                <div class="layui-tab-item layui-show">
                     <table class="layui-table" id="card" lay-filter="card" style="margin-top: -10px;"></table>
                 </div>
 <!--                &lt;!&ndash; 通用单码卡密 &ndash;&gt;-->
@@ -101,7 +104,7 @@
 <!--                    <table class="layui-table" id="current_card" lay-filter="current_card" style="margin-top: -10px;"></table>-->
 <!--                </div>-->
                 <!-- 账号卡密 -->
-                <div style="height: 490px">
+                <div  class="layui-tab-item">
                     <table class="layui-table" id="account" lay-filter="account" style="margin-top: -10px;"></table>
                 </div>
             </div>

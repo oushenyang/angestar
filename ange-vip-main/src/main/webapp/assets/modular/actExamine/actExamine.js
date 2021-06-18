@@ -19,7 +19,7 @@ layui.use(['table', 'admin', 'ax', 'notice'], function () {
         return [[
             // {align: 'center', field: 'agentExamineId', fixed: 'left', type: 'checkbox'},
             {align: 'center', field: 'appName', title: '应用名称'},
-            {align: 'center', field: 'developerUserName',title: '开发者名称'},
+            {align: 'center', field: 'pidUserName',title: '上级名称'},
             {align: 'center', field: 'agentUserName', title: '代理名称'},
             {align: 'center', field: 'agentUserAccount',title: '代理账号'},
             {

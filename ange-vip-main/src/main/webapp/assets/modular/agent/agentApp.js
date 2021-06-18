@@ -57,12 +57,12 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
                 // {align: 'center',field: 'pid', sort: true, title: '父代理应用id'},
                 // {align: 'center',field: 'pids', sort: true, title: '父级ids'},
 
-                {align: 'center', field: 'balance', title: '未使用'},
-                {align: 'center', field: 'balance', title: '已使用'},
-                {align: 'center', field: 'balance', title: '总卡量'},
-                {align: 'center', field: 'balance', title: '未使用'},
-                {align: 'center', field: 'balance', title: '已使用'},
-                {align: 'center', field: 'balance', title: '总卡量'},
+                {align: 'center', field: 'accountNoActiveNum', title: '未使用'},
+                {align: 'center', field: 'accountActiveNum', title: '已使用'},
+                {align: 'center', field: 'accountAllNum', title: '总卡量'},
+                {align: 'center', field: 'cardNoActiveNum', title: '未使用'},
+                {align: 'center', field: 'cardActiveNum', title: '已使用'},
+                {align: 'center', field: 'cardAllNum', title: '总卡量'},
 
 
             ]

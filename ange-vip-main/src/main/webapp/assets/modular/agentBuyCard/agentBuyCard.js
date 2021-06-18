@@ -18,7 +18,7 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             // {align: 'center', width:60,field: 'agentBuyCardId', fixed: 'left', type: 'checkbox'},
             {align: 'center', maxWidth:150,field: 'appName', title: '应用名称'},
-            {align: 'center', maxWidth:150,field: 'developerUserName', title: '开发者名称'},
+            {align: 'center', maxWidth:150,field: 'pidUserName', title: '上级名称'},
             {align: 'center', maxWidth:150,field: 'agentUserName', title: '代理名称'},
             {align: 'center', maxWidth:150,field: 'agentUserAccount', title: '代理账号'},
             // {align: 'center', maxWidth:150,field: 'buyNum', title: '购买数量'},

@@ -79,7 +79,13 @@
     </select>
     <select id="selectCardTypeByAppIdAndAgentAppId"
             resultType="cn.stylefeng.guns.modular.agent.model.result.AgentCardResult">
-        select * from ag_agent_card where agent_app_id = #{agentAppId} AND app_id = #{appId} AND card_type = #{cardType} AND market_price IS NOT NULL AND agent_price IS NOT NULL
+        select * from
+        ag_agent_card
+        where
+        agent_app_id = #{agentAppId}
+        AND app_id = #{appId}
+        AND card_type = #{cardType}
+        AND market_price IS NOT NULL AND agent_price IS NOT NULL
     </select>
 
     <select id="getSuperiorCardTypeByAgentAppIdAndCardType"

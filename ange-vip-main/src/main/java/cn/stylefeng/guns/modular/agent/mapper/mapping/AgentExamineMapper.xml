@@ -42,7 +42,7 @@
     <select id="findListBySpec" resultType="java.util.Map">
         select
         ai.app_name AS "appName",
-        (select `name` from sys_user where user_id = aae.developer_user_id) AS developerUserName,
+        (select `name` from sys_user where user_id = aae.pid) AS pidUserName,
         (select `name` from sys_user where user_id = aae.agent_user_id) AS agentUserName,
         (select `account` from sys_user where user_id = aae.agent_user_id) AS agentUserAccount,
         <include refid="Base_Column_List"/>

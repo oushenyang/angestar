@@ -45,6 +45,7 @@
         select
         ai.app_name AS "appName",
         cct.card_type_name AS "cardTypeName",
+        (select `name` from sys_user where user_id = aaa.pid) AS pidUserName,
         (select `name` from sys_user where user_id = aaa.developer_user_id) AS developerUserName,
         (select `name` from sys_user where user_id = aaa.agent_user_id) AS agentUserName,
         (select `account` from sys_user where user_id = aaa.agent_user_id) AS agentUserAccount,
