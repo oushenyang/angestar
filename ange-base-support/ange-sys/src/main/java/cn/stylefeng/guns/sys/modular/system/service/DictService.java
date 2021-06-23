@@ -8,6 +8,8 @@ import cn.stylefeng.guns.base.pojo.node.ZTreeNode;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.entity.DictType;
@@ -25,10 +27,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.Name;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static cn.stylefeng.guns.sys.core.constant.state.RedisType.DICT;
 
 /**
  * <p>
@@ -314,6 +319,23 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
             }
         }
         return dicts;
+    }
+
+    /**
+     * 查询字典列表，通过字典类型code
+     *
+     * @author fengshuonan
+     * @Date 2019-06-20 15:14
+     */
+    public Dict getDictByCodeAndNameByRedis(String dictTypeCode,String name) {
+        Dict dict = (Dict)redisUtil.hget(RedisType.DICT.getCode() + dictTypeCode,name);
+        if (ObjectUtil.isNull(dict)){
+             dict = baseMapper.getDictsByCodeAndName(dictTypeCode, name);
+            if (ObjectUtil.isNotNull(dict)){
+                redisUtil.hset(DICT.getCode() + dictTypeCode, name,dict, RedisExpireTime.WEEK.getCode());
+            }
+        }
+        return dict;
     }
 
     /**

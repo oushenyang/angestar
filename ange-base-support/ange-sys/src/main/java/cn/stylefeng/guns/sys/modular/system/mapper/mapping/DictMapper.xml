@@ -44,5 +44,13 @@
             and parent_ids LIKE CONCAT('%$[',#{dictId},'$]%') escape '$'
         </if>
     </select>
+    <select id="getDictsByCodeAndName" resultType="cn.stylefeng.guns.sys.modular.system.entity.Dict">
+        SELECT *
+        FROM sys_dict
+        WHERE
+              dict_type_id = (SELECT dict_type_id FROM sys_dict_type WHERE `code` = #{dictTypeCode})
+        AND `name` = #{name}
+        LIMIT 1
+    </select>
 
 </mapper>

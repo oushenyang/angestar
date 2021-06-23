@@ -235,9 +235,6 @@ public class GlobalExceptionHandler {
             }
         }
         Object object = null;
-        if (ObjectUtil.isNull(apiResultApi)){
-            object = ApiResult.resultError(-1, "接口不正确",false);
-        }
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (apiResultApi.getResultSuccess()){
@@ -306,9 +303,6 @@ public class GlobalExceptionHandler {
             }
         }
         Object object = null;
-        if (ObjectUtil.isNull(apiResultApi)){
-            object = ApiResult.resultError(-1, "接口不正确",false);
-        }
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (StringUtils.isNotEmpty(e.getHoldCheck())){

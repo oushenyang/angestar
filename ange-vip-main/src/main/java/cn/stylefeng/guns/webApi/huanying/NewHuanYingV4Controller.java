@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.webApi.huanying;
 
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
@@ -135,18 +136,15 @@ public class NewHuanYingV4Controller {
         }
         Map<String, Object> map = new HashMap<>();
         if ("com.alibaba.android.rimet".equals(app_pkg)){
-            List<Dict> dicts = new ArrayList<>();
-            if (appversioncode.equals("129")){
-                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
-            }else if (appversioncode.equals("131")){
-                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN129");
+            String code;
+            if (appversioncode.equals("129")||appversioncode.equals("131")){
+                code = "HUANYING_TOKEN129";
             }else {
-                dicts = dictService.listDictsByCodeByRedis("HUANYING_TOKEN");
+                code = "HUANYING_TOKEN";
             }
-
+            Dict dict = dictService.getDictByCodeAndNameByRedis(code,app_version);
             boolean isChu = false;
-            for (Dict dict : dicts){
-                if (dict.getName().equals(app_version)){
+            if (ObjectUtil.isNotNull(dict)){
                     if (appversioncode.equals("129")||appversioncode.equals("131")){
                         String appkey = dict.getDescription();
                         if (StringUtils.isEmpty(appkey)){
@@ -161,8 +159,6 @@ public class NewHuanYingV4Controller {
                         map.put("data", dict.getCode());
                     }
                     isChu = true;
-                    break;
-                }
             }
             if (!isChu){
                 map.put("message", "no data in database");
