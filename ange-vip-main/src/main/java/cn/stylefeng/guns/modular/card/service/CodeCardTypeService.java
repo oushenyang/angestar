@@ -112,13 +112,6 @@ public interface CodeCardTypeService extends IService<CodeCardType> {
     List<CodeCardType> getCardTypeByAgentAppIdAndCardType(Long agentAppId,Integer cardType);
 
     /**
-     * 根据应用id创建卡类信息
-     * @param sqls sql
-     * @return 卡类信息
-     */
-    List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId);
-
-    /**
      * 根据用户id和卡密类型和时间值查询卡密类型ID
      * @param userId 用户id
      * @param cardTimeType 卡密类型

@@ -68,9 +68,6 @@
         cct.create_user = #{userId}
     </select>
 
-    <select id="addCardTypeBySql" resultType="java.lang.Void">
-       ${sqlStr}
-    </select >
     <select id="findCardTypeByAppIdAndCardTypeIds"
             resultType="cn.stylefeng.guns.modular.card.entity.CodeCardType">
         select

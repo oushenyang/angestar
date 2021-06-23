@@ -165,37 +165,6 @@ public class CodeCardTypeServiceImpl extends ServiceImpl<CodeCardTypeMapper, Cod
     }
 
     /**
-     * 根据应用id创建卡类信息
-     *
-     * @param sqls  sql
-     * @return 卡类信息
-     */
-    @Transactional
-    @Override
-    public List<CodeCardType> addCardTypeBySql(List<Sql> sqls,Long appId) {
-        List<CodeCardType> codeCardTypes = new ArrayList<>();
-        for (Sql sql : sqls){
-            Long cardTypeId = IdWorker.getId();
-            Map<String, Object> map = new HashMap<>();
-            map.put("sqlStr",sql.getDescription());
-            map.put("cardTypeId",cardTypeId);
-            map.put("appId",0L);
-            map.put("createUser",LoginContextHolder.getContext().getUserId());
-            map.put("createTime",new Date());
-            try{
-                baseMapper.addCardTypeBySql(map);
-                CodeCardType codeCardType = new CodeCardType();
-                codeCardType.setCardTypeId(cardTypeId);
-                codeCardType.setCardTypeName(sql.getName());
-                codeCardTypes.add(codeCardType);
-            }catch (Exception e){
-                throw new ServiceException(SQL_ERROR);
-            }
-        }
-        return codeCardTypes;
-    }
-
-    /**
      * 根据用户id和卡密类型和时间值查询卡密类型ID
      * @param userId 用户id
      * @param cardTimeType 卡密类型

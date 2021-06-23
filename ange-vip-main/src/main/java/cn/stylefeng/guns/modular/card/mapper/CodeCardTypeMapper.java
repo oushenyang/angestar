@@ -29,9 +29,6 @@ public interface CodeCardTypeMapper extends BaseMapper<CodeCardType> {
      */
     List<CodeCardType> findCardTypeByUserId(@Param("userId")Long userId);
 
-    @Transactional
-    void addCardTypeBySql(Map map);
-
     /**
      * 排除已经存在的卡类获取剩余卡类信息
      * @param cardTypeIds 已经存在的卡密类型id集合

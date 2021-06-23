@@ -47,22 +47,22 @@ import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
  * @since JDK 1.8
  */
 public class CreateNamePicture {
-    /**
-     * @throws IOException
-     * @throws
-     **/
-    public static void main(String[] args) throws Exception {
-        String dateStr1 = "2017-03-01 22:33:23";
-        Date date1 = DateUtil.parse(dateStr1);
-
-        String dateStr2 = "2017-04-01 22:33:23";
-        Date date2 = DateUtil.parse(dateStr2);
-
-//相差一个月，31天
-        long betweenDay = DateUtil.between(date2, date1, DateUnit.SECOND);
-        System.out.println(betweenDay);
-
-    }
+//    /**
+//     * @throws IOException
+//     * @throws
+//     **/
+//    public static void main(String[] args) throws Exception {
+//        String dateStr1 = "2017-03-01 22:33:23";
+//        Date date1 = DateUtil.parse(dateStr1);
+//
+//        String dateStr2 = "2017-04-01 22:33:23";
+//        Date date2 = DateUtil.parse(dateStr2);
+//
+////相差一个月，31天
+//        long betweenDay = DateUtil.between(date2, date1, DateUnit.SECOND);
+//        System.out.println(betweenDay);
+//
+//    }
 
 
 

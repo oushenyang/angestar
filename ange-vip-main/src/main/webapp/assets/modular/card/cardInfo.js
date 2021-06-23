@@ -641,46 +641,46 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         CardInfo.exportExcel();
     });
     //应用选择下拉框事件监听
-    form.on('select(appId)', function (data) {
-        $("select[name=cardTypeId]").empty();
-        form.render('select');
-        var appId=$("select[name=appId]").val();
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/getCardTypeByAppId", function (result) {
-            var list = result.data;
-            if (list.length>0){
-                var html="<option value=''>不限</option>";
-                for(var key in list){
-                        html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
-                }
-                $("select[name=cardTypeId]").append(html);
-                form.render('select');
-            }else {
-                var operation = function () {
-                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
-                    var ajax = new $ax(Feng.ctxPath + "/cardInfo/addCardTypeByAppId", function (result) {
-                        layer.close(loading);
-                        Feng.success("创建成功!");
-                        var list = result.data;
-                        for(var key in list){
-                            var html="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
-                            $("select[name=cardTypeId]").append(html);
-                        }
-                        form.render('select');
-                    }, function (data) {
-                        layer.close(loading);
-                        Feng.error("创建失败!" + data.responseJSON.message + "!");
-                    },true);
-                    ajax.set('appId',appId);
-                    ajax.start();
-                };
-                Feng.confirm("还未创建卡密类型，是否初始化卡密类型数据?", operation);
-            }
-        }, function (data) {
-            Feng.error("获取卡类信息失败！" + data.responseJSON.message)
-        },true);
-        ajax.set('appId',appId);
-        ajax.start();
-    });
+    // form.on('select(appId)', function (data) {
+    //     $("select[name=cardTypeId]").empty();
+    //     form.render('select');
+    //     var appId=$("select[name=appId]").val();
+    //     var ajax = new $ax(Feng.ctxPath + "/cardInfo/getCardTypeByAppId", function (result) {
+    //         var list = result.data;
+    //         if (list.length>0){
+    //             var html="<option value=''>不限</option>";
+    //             for(var key in list){
+    //                     html+="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
+    //             }
+    //             $("select[name=cardTypeId]").append(html);
+    //             form.render('select');
+    //         }else {
+    //             var operation = function () {
+    //                 var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+    //                 var ajax = new $ax(Feng.ctxPath + "/cardInfo/addCardTypeByAppId", function (result) {
+    //                     layer.close(loading);
+    //                     Feng.success("创建成功!");
+    //                     var list = result.data;
+    //                     for(var key in list){
+    //                         var html="<option value='"+list[key].cardTypeId+"'>"+list[key].cardTypeName+"</option>";
+    //                         $("select[name=cardTypeId]").append(html);
+    //                     }
+    //                     form.render('select');
+    //                 }, function (data) {
+    //                     layer.close(loading);
+    //                     Feng.error("创建失败!" + data.responseJSON.message + "!");
+    //                 },true);
+    //                 ajax.set('appId',appId);
+    //                 ajax.start();
+    //             };
+    //             Feng.confirm("还未创建卡密类型，是否初始化卡密类型数据?", operation);
+    //         }
+    //     }, function (data) {
+    //         Feng.error("获取卡类信息失败！" + data.responseJSON.message)
+    //     },true);
+    //     ajax.set('appId',appId);
+    //     ajax.start();
+    // });
     // 表头工具条点击事件
     table.on('toolbar(' + CardInfo.tableId + ')', function (obj) {
         //添加

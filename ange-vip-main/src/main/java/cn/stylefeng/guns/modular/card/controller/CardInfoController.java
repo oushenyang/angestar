@@ -14,16 +14,12 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.modular.device.entity.Device;
-import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
 import cn.stylefeng.guns.modular.device.model.result.TokenResult;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
-import cn.stylefeng.guns.sys.modular.system.entity.Sql;
-import cn.stylefeng.guns.sys.modular.system.service.SqlService;
-import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.alibaba.fastjson.JSONObject;
@@ -61,19 +57,13 @@ public class CardInfoController extends BaseController {
 
     private final CodeCardTypeService codeCardTypeService;
 
-    private final SqlService SqlService;
-
-    private final UserService userService;
-
     private final DeviceService deviceService;
 
-    public CardInfoController(CardInfoService cardInfoService, TokenService tokenService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService, UserService userService, DeviceService deviceService) {
+    public CardInfoController(CardInfoService cardInfoService, TokenService tokenService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, DeviceService deviceService) {
         this.cardInfoService = cardInfoService;
         this.tokenService = tokenService;
         this.appInfoService = appInfoService;
         this.codeCardTypeService = codeCardTypeService;
-        this.SqlService = SqlService;
-        this.userService = userService;
         this.deviceService = deviceService;
     }
 
@@ -393,20 +383,6 @@ public class CardInfoController extends BaseController {
     @ResponseBody
     public ResponseData getCardTypeByAppId(Long appId) {
         List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(LoginContextHolder.getContext().getUserId());
-        return ResponseData.success(codeCardTypes);
-    }
-
-    /**
-     * 根据应用id创建卡类信息
-     *
-     * @author shenyang.ou
-     * @Date 2020-04-20
-     */
-    @RequestMapping("/addCardTypeByAppId")
-    @ResponseBody
-    public ResponseData addCardTypeByAppId(Long appId) {
-        List<Sql> sqls = SqlService.listSqlsByCode("CARD_TYPE");
-        List<CodeCardType> codeCardTypes = codeCardTypeService.addCardTypeBySql(sqls,appId);
         return ResponseData.success(codeCardTypes);
     }
 
