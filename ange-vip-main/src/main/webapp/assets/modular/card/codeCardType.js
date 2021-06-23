@@ -84,8 +84,6 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         var queryData = {};
         queryData['appId'] = $("#appId").val();
         queryData['cardTypeName'] = $("#cardTypeName").val();
-        $('.toolbar').reset();
-        layui.form.render();
         table.reload(CodeCardType.tableId, {page:{curr:1},where: queryData});
     };
 
@@ -246,6 +244,16 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         CodeCardType.search();
+    });
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#cardTypeName").val("");
+        queryData['appId'] = "";
+        queryData['cardTypeName'] ="";
+        form.render();
+        table.reload(CodeCardType.tableId, {page:{curr:1},where: queryData});
     });
 
     // 添加按钮点击事件

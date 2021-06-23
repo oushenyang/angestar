@@ -1,0 +1,23 @@
+@layout("/common/_form.html",{plugins:["clipboard"],bg:"bg-white",js:["/assets/modular/quick/cardInfo_unBind.js"]}){
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:10px!important;" class="layui-form layui-form-pane model-form">
+    <fieldset class="layui-elem-field">
+        <legend style="text-align: center!important;">${appInfoResult.appName}-卡密解绑</legend>
+        <div class="layui-field-box">
+            <div class="layui-fluid" style="padding-bottom: 25px;margin-top: -15px;">
+                <input name="cardId" type="hidden"/>
+                <input name="appId" id="appId" value="${appInfoResult.appId}" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">卡密</label>
+                    <div class="layui-input-block">
+                        <input id="card" name="card" placeholder="请输入卡密" maxlength="50" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group-bottom text-right">
+                <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">重置</button>
+                <button class="layui-btn" lay-filter="btnSubmit" lay-submit>解绑</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+@}

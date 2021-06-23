@@ -21,9 +21,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
     AgentApp.initColumn = function () {
         return [
             [
-                {align: 'center', field: 'agentAppId', rowspan: 2, type: 'checkbox'},
-                {field: 'agentPowerId', hide: true},
-                {field: 'appId', hide: true},
+                {align: 'center', field: 'agentAppId', rowspan: 2, type: 'radio'},
                 {align: 'center', field: 'appName', rowspan: 2, title: '所属应用'},
                 {
                     align: 'center', field: 'status', title: '状态', rowspan: 2, templet: function (d) {
@@ -47,7 +45,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
                 },
                 // {align: 'center',field: 'updateUser', sort: true, title: '更新人'},
                 // {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-                {align: 'center', toolbar: '#tableBar', width: 250, rowspan: 2, fixed: 'right', title: '操作'}
+                {align: 'center', toolbar: '#tableBar', width: 80, rowspan: 2, fixed: 'right', title: '操作'}
             ],
             [
 
@@ -75,7 +73,9 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
      */
     AgentApp.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appId'] = $("#appId").val();
+        queryData['agentUserName'] = $("#agentUserName").val();
+        queryData['agentUserAccount'] = $("#agentUserAccount").val();
         queryData['type'] = Feng.getUrlParam("type");
         table.reload(AgentApp.tableId, {page:{curr:1},where: queryData});
     };
@@ -162,13 +162,18 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
      *
      * @param data 点击按钮时候的行数据
      */
-    AgentApp.openRechargeDlg = function (data) {
+    AgentApp.openRechargeDlg = function (obj) {
+        let data = table.checkStatus(obj.config.id).data;
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
+            return false;
+        }
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '代理充值',
             area: '500px',
-            content: Feng.ctxPath + '/agentApp/recharge?agentAppId=' + data.agentAppId,
+            content: Feng.ctxPath + '/agentApp/recharge?agentAppId=' + data[0].agentAppId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -180,13 +185,18 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
      *
      * @param data 点击按钮时候的行数据
      */
-    AgentApp.openPowerDlg = function (data) {
+    AgentApp.openPowerDlg = function (obj) {
+        let data = table.checkStatus(obj.config.id).data;
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
+            return false;
+        }
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '权限配置',
             area: '700px',
-            content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data.agentPowerId + '&agentAppId=' + data.agentAppId+ '&type=' + Feng.getUrlParam("type"),
+            content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data[0].agentPowerId + '&agentAppId=' + data[0].agentAppId+ '&type=' + Feng.getUrlParam("type"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -198,15 +208,19 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
      *
      * @param data 点击按钮时候的行数据
      */
-    AgentApp.openCardDlg = function (data) {
+    AgentApp.openCardDlg = function (obj) {
+        let data = table.checkStatus(obj.config.id).data;
+        if (data.length === 0) {
+            Feng.error("未选中数据!");
+            return false;
+        }
         admin.putTempData('formOk', false);
-        console.log(data.appId);
         top.layui.admin.open({
             type: 2,
             title: '卡密配置',
             area: '800px',
             // area: ['800px', '1000px'], //宽高
-            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data.agentAppId + '&appId=' + data.appId+ '&type=' + Feng.getUrlParam("type"),
+            content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data[0].agentAppId + '&appId=' + data[0].appId+ '&type=' + Feng.getUrlParam("type"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
             }
@@ -368,6 +382,32 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         AgentApp.search();
     });
 
+    //应用选择下拉框事件监听
+    form.on('select(appId)', function (data) {
+        var queryData = {};
+        queryData['appId'] = $("select[name=appId]").val();
+        queryData['agentUserName'] = $("#agentUserName").val();
+        queryData['agentUserAccount'] = $("#agentUserAccount").val();
+        queryData['type'] = Feng.getUrlParam("type");
+        table.reload(AgentApp.tableId, {where: queryData});
+    });
+
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#agentUserName").val("");
+        $("#agentUserAccount").val("");
+        queryData['appId'] = "";
+        queryData['agentUserName'] = "";
+        queryData['agentUserAccount'] = "";
+        queryData['type'] = Feng.getUrlParam("type");
+        form.render();
+        table.reload(AgentApp.tableId, {
+            where: queryData, page: {curr: 1}
+        });
+    });
+
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         AgentApp.openAddDlg();
@@ -387,6 +427,12 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
             table.reload(AgentApp.tableId);
         } else if (obj.event === 'batchRemove') {
             AgentApp.batchRemove(obj)
+        } else if (obj.event === 'recharge') {
+            AgentApp.openRechargeDlg(obj);
+        } else if (obj.event === 'power') {
+            AgentApp.openPowerDlg(obj);
+        } else if (obj.event === 'card') {
+            AgentApp.openCardDlg(obj);
         }
     });
     // 行内工具条点击事件

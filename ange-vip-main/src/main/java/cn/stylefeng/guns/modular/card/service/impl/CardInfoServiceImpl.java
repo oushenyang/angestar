@@ -239,6 +239,22 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         baseMapper.BachUpdateCardInfo(cardInfos);
     }
 
+    /**
+     * 卡密配置更新
+     *
+     * @param param
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @Override
+    public void editConfigItem(CardInfoParam param) {
+        CardInfo oldEntity = getOldEntity(param);
+        CardInfo newEntity = getEntity(param);
+        ToolUtil.copyProperties(newEntity, oldEntity);
+        this.updateById(newEntity);
+        redisUtil.del(RedisType.CARD_INFO.getCode() + param.getCardCode());
+    }
+
     private List<CardInfo> editCardInfos(List<CardInfo> cardInfos,BatchCardInfoParam param){
         cardInfos.forEach(cardInfo->{
             redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getCardCode());

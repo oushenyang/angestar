@@ -1620,7 +1620,7 @@ layui.define(['layer'], function (exports) {
     setter = $.extend({
         pageTabs: true,  // 是否开启多标签
         cacheTab: true,  // 是否记忆打开的选项卡
-        defaultTheme: '',  // 默认主题
+        defaultTheme: 'theme-colorful',  // 默认主题
         openTabCtxMenu: true,  // 是否开启Tab右键菜单
         maxTabNum: 20,  // 最多打开多少个tab
         tableName: 'easyweb-iframe',  // 存储表名

@@ -157,6 +157,37 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     };
 
     /**
+     * 弹出详情
+     */
+    CardInfo.openDetailDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '详情',
+            area: ['700px','700px'],
+            content: Feng.ctxPath + '/cardInfo/detail?cardId='+data.cardId,
+            end: function () {
+                admin.getTempData('formOk');
+            }
+        });
+    };
+    /**
+     * 弹出卡密配置
+     */
+    CardInfo.openConfigEditlDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '卡密配置',
+            area: ['700px','560px'],
+            content: Feng.ctxPath + '/cardInfo/configEdit?cardId='+data.cardId,
+            end: function () {
+                admin.getTempData('formOk');
+            }
+        });
+    };
+
+    /**
      * 点击编辑
      *
      * @param data 点击按钮时候的行数据
@@ -575,6 +606,31 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         CardInfo.search();
     });
 
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#cardTypeId").val("");
+        $("#cardCode").val("");
+        $("#cardStatus").val("");
+        $("#createTimeStr").val("");
+        $("#activeTimeStr").val("");
+        $("#expireTimeStr").val("");
+        $("#cardRemark").val("");
+        queryData['appId'] = "";
+        queryData['cardTypeId'] = "";
+        queryData['cardCode'] = "";
+        queryData['cardStatus'] = "";
+        queryData['createTimeStr'] = "";
+        queryData['activeTimeStr'] = "";
+        queryData['expireTimeStr'] = "";
+        queryData['cardRemark'] = "";
+        form.render();
+        table.reload(CardInfo.tableId, {
+            where: queryData, page: {curr: 1}
+        });
+    });
+
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         CardInfo.openAddDlg();
@@ -668,7 +724,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         var data = obj.data;
         var layEvent = obj.event;
 
-        if (layEvent === 'edit') {
+        if (layEvent === 'detail') {
+            CardInfo.openDetailDlg(data);
+        } else if (layEvent === 'edit') {
             CardInfo.openEditDlg(data);
         } else if (layEvent === 'delete') {
             CardInfo.onDeleteItem(data);
@@ -688,7 +746,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             CardInfo.openItemEditDlg(obj)
         } else if (layEvent === 'itemConfig') {
             obj.name = '卡密配置';
-            CardInfo.openItemEditDlg(obj)
+            CardInfo.openConfigEditlDlg(data)
         } else if (layEvent === 'itemData') {
             obj.name = '卡密数据';
             CardInfo.openItemEditDlg(obj)

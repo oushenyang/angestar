@@ -67,6 +67,11 @@ public class AgentAppParam implements Serializable, BaseValidatingParam {
     private String agentUserAccount;
 
     /**
+     * 代理用户名称
+     */
+    private String agentUserName;
+
+    /**
      * 代理等级
      */
     private Boolean rose;

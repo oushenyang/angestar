@@ -29,23 +29,13 @@ var CardInfoInfoDlg = {
     }
 };
 
-layui.use(['form','laydate','formX','admin', 'ax'], function () {
+layui.use(['form','formX','admin', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
-    var laydate = layui.laydate;
-
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
-
-    /* 渲染laydate */
-    laydate.render({
-        elem: '#formAdvDateSel1',
-        theme: 'grid',
-        position: 'fixed',
-        range: true
-    });
+    // admin.iframeAuto();
 
 
 
@@ -57,7 +47,7 @@ layui.use(['form','laydate','formX','admin', 'ax'], function () {
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
-        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editConfigItem", function (data) {
             layer.close(loading);
             Feng.success("更新成功！");
 

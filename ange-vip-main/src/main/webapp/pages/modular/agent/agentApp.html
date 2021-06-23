@@ -13,12 +13,22 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                                <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                    <option value="">所属应用</option>
+                                    @for(appInfo in appInfoParams) {
+                                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="agentUserName" class="layui-input" type="text" placeholder="代理名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="agentUserAccount" class="layui-input" type="text" placeholder="代理账号"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
-                                <!--                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>-->
-                                <!--                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>-->
+                                <button id="btnReset" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
                             </div>
                         </div>
                     </div>
@@ -30,11 +40,9 @@
 </div>
 
 <script type="text/html" id="tableBar">
-    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="recharge">充值</a>
-    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="card">卡密设置</a>
-    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="power">代理权限</a>
+
     <a class="pear-btn pear-btn-success pear-btn-sm" plain data-dropdown="#dropUser{{d.LAY_INDEX}}" no-shade="true"
-       lay-event="edit2">更多<i class="fa fa-left fa-caret-down"></i></a>
+       lay-event="edit2">设置<i class="fa fa-left fa-caret-down"></i></a>
     <!-- 下拉菜单 -->
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser{{d.LAY_INDEX}}">
         <div class="dropdown-anchor"></div>
@@ -57,6 +65,9 @@
 
 <script type="text/html" id="agentAppTable-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>添加代理</button>
+    <button class="pear-btn pear-btn-success pear-btn-md" lay-event="recharge"><i class="fa fa-usd fa-right"></i>充值</button>
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="card"><i class="fa fa-cog fa-right"></i>卡密设置</button>
+    <button class="pear-btn pear-btn-warming pear-btn-md" lay-event="power"><i class="fa fa-right fa-bolt"></i>代理权限</button>
 <!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>-->
 </script>
 @}

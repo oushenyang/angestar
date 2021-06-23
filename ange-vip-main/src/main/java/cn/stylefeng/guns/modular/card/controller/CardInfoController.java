@@ -13,29 +13,29 @@ import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
+import cn.stylefeng.guns.modular.device.entity.Device;
+import cn.stylefeng.guns.modular.device.entity.Token;
+import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
+import cn.stylefeng.guns.modular.device.model.result.TokenResult;
+import cn.stylefeng.guns.modular.device.service.DeviceService;
+import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Sql;
-import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.SqlService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +55,8 @@ public class CardInfoController extends BaseController {
 
     private final CardInfoService cardInfoService;
 
+    private final TokenService tokenService;
+
     private final AppInfoService appInfoService;
 
     private final CodeCardTypeService codeCardTypeService;
@@ -63,12 +65,16 @@ public class CardInfoController extends BaseController {
 
     private final UserService userService;
 
-    public CardInfoController(CardInfoService cardInfoService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService, UserService userService) {
+    private final DeviceService deviceService;
+
+    public CardInfoController(CardInfoService cardInfoService, TokenService tokenService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, SqlService SqlService, UserService userService, DeviceService deviceService) {
         this.cardInfoService = cardInfoService;
+        this.tokenService = tokenService;
         this.appInfoService = appInfoService;
         this.codeCardTypeService = codeCardTypeService;
         this.SqlService = SqlService;
         this.userService = userService;
+        this.deviceService = deviceService;
     }
 
     /**
@@ -119,6 +125,37 @@ public class CardInfoController extends BaseController {
         List<String> cardList = Arrays.asList(cards.split(","));
         model.addAttribute("cards", cardList);
         return PREFIX + "/cardInfo_add_result.html";
+    }
+
+    /**
+     * 详情页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/detail")
+    public String detail(Model model,Long cardId) {
+        CardInfo cardInfo = cardInfoService.getById(cardId);
+        TokenResult token = tokenService.getLastTokenByCardOrUserId(cardId);
+        DeviceParam deviceParam = new DeviceParam();
+        deviceParam.setCardType(1);
+        deviceParam.setCardOrUserId(cardId);
+        List<Device> deviceList = deviceService.findListBySpec(deviceParam);
+        model.addAttribute("cardInfo", cardInfo);
+        model.addAttribute("token", token);
+        model.addAttribute("deviceList", deviceList);
+        return PREFIX + "/cardInfo_detail.html";
+    }
+
+    /**
+     * 卡密配置页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/configEdit")
+    public String configEdit() {
+        return PREFIX + "/cardInfo_config_edit.html";
     }
 
     /**
@@ -269,6 +306,19 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 卡密配置编辑接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/editConfigItem")
+    @ResponseBody
+    public ResponseData editConfigItem(CardInfoParam cardInfoParam) {
+        this.cardInfoService.editConfigItem(cardInfoParam);
+        return ResponseData.success();
+    }
+
+    /**
      * 删除接口
      *
      * @author shenyang.ou
@@ -308,9 +358,9 @@ public class CardInfoController extends BaseController {
      * @author shenyang.ou
      * @Date 2020-04-20
      */
-    @RequestMapping("/detail")
+    @RequestMapping("/detailItem")
     @ResponseBody
-    public ResponseData detail(CardInfoParam cardInfoParam) {
+    public ResponseData detailItem(CardInfoParam cardInfoParam) {
         CardInfo detail = this.cardInfoService.getById(cardInfoParam.getCardId());
         return ResponseData.success(detail);
     }

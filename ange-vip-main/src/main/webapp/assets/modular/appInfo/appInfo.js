@@ -55,6 +55,24 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
     };
 
     /**
+     * 点击编辑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AppInfo.openQuickDlg = function (data) {
+        admin.putTempData('formOk', false);
+        func.open({
+            type: 2,
+            area: '700px',
+            title: '快捷页面',
+            content: Feng.ctxPath + '/appInfo/quick?appId=' + data.appId +'&appNum='+data.appNum,
+            endCallback: function () {
+                AppInfo.loadAppInfo();
+            }
+        });
+    };
+
+    /**
      * 点击删除
      *
      * @param data 点击按钮时候的行数据
@@ -113,6 +131,8 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
                     AppInfo.openEditDlg(data,'试用注册',event);
                 } else if (event == 'password') {
                     AppInfo.openEditDlg(data,'密匙配置',event);
+                } else if (event == 'quick') {
+                    AppInfo.openQuickDlg(data);
                 } else if (event == 'otherSign') {
                     AppInfo.openEditDlg(data,'外部验证对接',event);
                 } else if (event == 'delete') {

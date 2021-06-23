@@ -63,13 +63,14 @@
         and aci.active_time is not null) AS cardActiveNum,
         (SELECT COUNT(aci.card_id) FROM ag_card_info aci WHERE
         aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )) AS cardAllNum,
-        (select `name` from sys_user where user_id = aa.agent_user_id) AS agentUserName,
+        su.`name` AS agentUserName,
+        su.`account` AS agentUserAccount,
         (select `name` from sys_user where user_id = aa.pid) AS pidUserName,
-        (select `account` from sys_user where user_id = aa.agent_user_id) AS agentUserAccount,
         <include refid="Base_Column_List"/>
         from ag_agent_app aa
         left join ag_agent_power ap on ap.agent_app_id = aa.agent_app_id
         left join ag_app_info ai on ai.app_id = aa.app_id
+        left join sys_user su on su.user_id = aa.agent_user_id
         <where>
             <if test="param.createUser != null and param.createUser != ''">
                 and aa.create_user = #{param.createUser}
@@ -82,6 +83,12 @@
             </if>
             <if test="param.agentUserId != null and param.agentUserId !=''">
                 and aa.agent_user_id = #{param.agentUserId}
+            </if>
+            <if test="param.agentUserName != null and param.agentUserName !=''">
+                and su.`name` like CONCAT('%',#{param.agentUserName},'%')
+            </if>
+            <if test="param.agentUserAccount != null and param.agentUserAccount !=''">
+                and su.`account` like CONCAT('%',#{param.agentUserAccount},'%')
             </if>
             <if test="param.developerUserId != null and param.developerUserId !=''">
                 and aa.developer_user_id = #{param.developerUserId}

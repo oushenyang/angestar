@@ -28,6 +28,7 @@ import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.model.result.CardMonth;
 import cn.stylefeng.guns.modular.card.model.result.IncomeStatistics;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.sys.core.log.LogObjectHolder;
 import cn.stylefeng.guns.sys.core.util.DefaultImages;
@@ -50,7 +51,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +90,9 @@ public class SystemController extends BaseController {
     private CardInfoService cardInfoService;
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private AccountInfoService accountInfoService;
 
     @Autowired
@@ -106,12 +109,14 @@ public class SystemController extends BaseController {
         Long userId = LoginContextHolder.getContext().getUserId();
         Integer appNum = appInfoService.appNum(userId);
         Integer allCardNum = cardInfoService.allCardNum(userId);
+        Integer onlineNum = tokenService.onlineNum(userId);
         Integer expireCardNum = cardInfoService.expireCardNum(userId);
         Integer accountNum = accountInfoService.accountNum(userId);
         Integer agentNum = agentAppService.agentNum(LoginContextHolder.getContext().getUserId());
         User user = this.userService.getById(userId);
         model.addAttribute("appNum", appNum);
         model.addAttribute("allCardNum", allCardNum);
+        model.addAttribute("onlineNum", onlineNum);
         model.addAttribute("expireCardNum", expireCardNum);
         model.addAttribute("accountNum", accountNum);
         model.addAttribute("agentNum", agentNum);

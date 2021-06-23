@@ -25,7 +25,7 @@
         device_id AS "deviceId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", mac AS "mac", ip AS "ip", model AS "model", ip_address AS "ipAddress", login_num AS "loginNum", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
     <update id="updateDeviceLoginNumByDeviceId">
-        update ag_device set login_num = login_num+1 where device_id = #{deviceId}
+        update ag_device set login_num = login_num+1,update_time = now() where device_id = #{deviceId}
     </update>
 
 </mapper>

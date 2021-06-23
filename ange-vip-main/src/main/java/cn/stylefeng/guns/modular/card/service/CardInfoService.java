@@ -69,6 +69,15 @@ public interface CardInfoService extends IService<CardInfo> {
     void BatchEdit(BatchCardInfoParam param);
 
     /**
+     * 卡密配置更新
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @Transactional(rollbackFor = Exception.class)
+    void editConfigItem(CardInfoParam param);
+
+    /**
      * 查询单条数据，Specification模式
      *
      * @author shenyang.ou

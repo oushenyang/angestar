@@ -77,8 +77,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public List<DeviceResult> findListBySpec(DeviceParam param){
-        return null;
+    public List<Device> findListBySpec(DeviceParam param){
+        QueryWrapper<Device> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("card_type",param.getCardType());
+        objectQueryWrapper.eq("card_or_user_id",param.getCardOrUserId());
+        return baseMapper.selectList(objectQueryWrapper);
     }
 
     @Override
@@ -178,6 +181,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 //        device.setIpAddress(IpToRegionUtil.ipToRegion(getIp()));
         device.setLoginNum(1);
         device.setCreateTime(date);
+        device.setUpdateTime(date);
 //        baseMapper.insert(device);
         //异步调用插入
         asyncService.insertDevice(device);

@@ -139,6 +139,11 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     private Integer cardBindType;
 
     /**
+     * 绑机数量
+     */
+    private Integer cardBindNum;
+
+    /**
      * 多开开关 0-默认；1-关闭；2-开启
      */
     private Integer cardOpenRange;

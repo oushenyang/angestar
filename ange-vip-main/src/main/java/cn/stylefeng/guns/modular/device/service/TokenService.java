@@ -79,6 +79,14 @@ public interface TokenService extends IService<Token> {
      LayuiPageInfo findPageBySpec(TokenParam param);
 
     /**
+     * 获取上次登录token
+     *
+     * @author shenyang.ou
+     * @Date 2020-08-02
+     */
+    TokenResult getLastTokenByCardOrUserId(Long cardOrUserId);
+
+    /**
      * 创建token
      * @param apiManage 接口信息
      * @param cardInfoApi 卡密信息
@@ -88,4 +96,11 @@ public interface TokenService extends IService<Token> {
      * @return 接口
      */
     boolean createToken(ApiManageApi apiManage, CardInfoApi cardInfoApi, AppInfoApi appInfoApi, String mac, String model, String holdCheck, Date expireTime);
+
+    /**
+     * 获取今日在线人数
+     * @param userId 用户id
+     * @return
+     */
+    Integer onlineNum(Long userId);
 }

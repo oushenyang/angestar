@@ -59,7 +59,7 @@ public interface DeviceService extends IService<Device> {
      * @author shenyang.ou
      * @Date 2020-08-02
      */
-    List<DeviceResult> findListBySpec(DeviceParam param);
+    List<Device> findListBySpec(DeviceParam param);
 
     /**
      * 查询分页数据，Specification模式

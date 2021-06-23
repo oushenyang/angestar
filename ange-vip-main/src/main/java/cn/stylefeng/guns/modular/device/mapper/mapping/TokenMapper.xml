@@ -34,5 +34,15 @@
     WHERE
 	token_id = (SELECT token_id FROM ag_token WHERE card_or_user_id = #{cardId} ORDER BY create_time ASC LIMIT 1);
     </delete>
+    <select id="getLastTokenByCardOrUserId"
+            resultType="cn.stylefeng.guns.modular.device.model.result.TokenResult">
+        select * from ag_token
+        where card_or_user_id = ${cardOrUserId}
+        order by create_time DESC
+        limit 1
+    </select>
+    <select id="onlineNum" resultType="java.lang.Integer">
+        select count(DISTINCT mac) from ag_token where create_user = #{userId} and date_format(create_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+    </select>
 
 </mapper>

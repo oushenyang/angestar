@@ -93,6 +93,19 @@ public class AppInfoController extends BaseController {
     }
 
     /**
+     * 快捷页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @RequestMapping("/quick")
+    public String quick(@RequestParam("appId") Long appId, Model model) {
+        AppInfo appInfo = this.appInfoService.getById(appId);
+        model.addAttribute("appInfo", appInfo);
+        return PREFIX + "/appInfo_quick.html";
+    }
+
+    /**
      * 新增接口
      *
      * @author shenyang.ou

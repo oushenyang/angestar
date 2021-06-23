@@ -1,0 +1,59 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/cardInfo_config_edit.js"]}){
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
+        <input name="cardId" type="hidden"/>
+        <input name="cardCode" type="hidden"/>
+        <fieldset class="layui-elem-field">
+            <legend>绑机配置</legend>
+            <div class="layui-field-box">
+                <div class="layui-form-item" style="margin-top: 0px;" pane="">
+                    <label class="layui-form-label layui-form-required">绑机策略</label>
+                    <div class="layui-input-block">
+                        <input type="radio" class="layui-input" name="cardBindType" value="0" title="跟随应用设置" checked="">
+                        <input type="radio" class="layui-input" name="cardBindType" value="1" title="关闭">
+                        <input type="radio" class="layui-input" name="cardBindType" value="2" title="机器码" >
+                        <input type="radio" class="layui-input" name="cardBindType" value="3" title="IP地址">
+                        <input type="radio" class="layui-input" name="cardBindType" value="4" title="混合">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">绑机数量</label>
+                    <div class="layui-input-block">
+                        <input id="cardBindNum" name="cardBindNum" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>多开配置</legend>
+            <div class="layui-field-box">
+                <div class="layui-form-item" style="margin-top: 0px;" pane="">
+                    <label class="layui-form-label layui-form-required">多开策略</label>
+                    <div class="layui-input-block">
+                        <input type="radio" class="layui-input" name="cardOpenRange" value="0" title="跟随应用设置" checked="">
+                        <input type="radio" class="layui-input" name="cardOpenRange" value="1" title="关闭" checked="">
+                        <input type="radio" class="layui-input" name="cardOpenRange" value="2" title="开启">
+                    </div>
+                </div>
+                <div class="layui-form-item" pane="">
+                    <label class="layui-form-label layui-form-required">登陆方式</label>
+                    <div class="layui-input-block">
+                        <input type="radio" class="layui-input" name="cardSignType" value="1" title="顶号登录" checked="">
+                        <input type="radio" class="layui-input" name="cardSignType" value="0" title="非顶号登录">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">多开数量</label>
+                    <div class="layui-input-block">
+                        <input id="cardOpenNum" name="cardOpenNum" placeholder="请输入多开数量" maxlength="100" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+    </div>
+</form>
+@}

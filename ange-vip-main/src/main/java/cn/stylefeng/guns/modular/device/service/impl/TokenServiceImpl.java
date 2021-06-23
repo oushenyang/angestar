@@ -110,6 +110,18 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
     }
 
     /**
+     * 获取上次登录token
+     *
+     * @param cardOrUserId
+     * @author shenyang.ou
+     * @Date 2020-08-02
+     */
+    @Override
+    public TokenResult getLastTokenByCardOrUserId(Long cardOrUserId) {
+        return baseMapper.getLastTokenByCardOrUserId(cardOrUserId);
+    }
+
+    /**
      * 创建token
      *
      * @param apiManage   接口信息
@@ -183,6 +195,17 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         return true;
     }
 
+    /**
+     * 获取今日在线人数
+     *
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public Integer onlineNum(Long userId) {
+        return baseMapper.onlineNum(userId);
+    }
+
     private String insertToken(List<Token> tokenList, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = IdUtil.simpleUUID();
         Date date = new Date();
@@ -200,6 +223,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setLoginTime(date);
         token.setCheckTime(date);
         token.setCreateTime(date);
+        token.setCreateUser(appInfoApi.getCreateUser());
         //异步调用插入
         asyncService.insertTokenToSql(token,appInfoApi);
 //        baseMapper.insert(token);
@@ -246,6 +270,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setToken(tokenStr);
         token.setLoginTime(date);
         token.setCheckTime(date);
+        token.setCreateUser(appInfoApi.getCreateUser());
         token.setCreateTime(date);
 //        baseMapper.insert(token);
         //异步调用插入

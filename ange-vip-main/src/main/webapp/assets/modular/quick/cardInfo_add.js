@@ -36,6 +36,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     var admin = layui.admin;
     var notice = layui.notice;
     var CardInfo = {};
+    var cards = "";
 
     CardInfo.copy = function (data) {
         var cla = '.cardStr' + data;
@@ -75,6 +76,15 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
         }
     });
 
+    form.on('submit(exportSubmit)', function (data) {
+        if (!cards){
+            notice.msg("请先生成卡密!", {icon: 2});
+            return false;
+        }
+        window.location.href=Feng.ctxPath + "/quick/cardAdd/addExport?cards=" + cards;
+        return false;
+    });
+
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
@@ -89,12 +99,11 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
             admin.putTempData('formOk', true);
             //关掉对话框
             admin.closeThisDialog();
-            let cards = "";
             $('#cardAddResultBar').show();
             $('#cardAddResultBarItem').html("");
             for (let i = 0; i < result.data.length; i++) {
                 cards += result.data[i] + ",";
-                $('#cardAddResultBarItem').append('<div class="layui-form-item"><span style="color: red;margin-right: 5px;">'+i+1+'、</span>'+result.data[i]+' &nbsp;<button type="button" style="float: right;" value="'+result.data[i]+'" onclick="'+CardInfo.copy(result.data[i])+'" class="layui-badge layui-badge-blue cardStr cardStr'+result.data[i]+'">复制</button></div>')
+                $('#cardAddResultBarItem').append('<div class="layui-form-item" style="margin-top: 5px!important;"><span style="color: red;margin-right: 5px;">'+(Number(i)+1)+'、</span>'+result.data[i]+' &nbsp;<button type="button" style="float: right;" value="'+result.data[i]+'" onclick="'+CardInfo.copy(result.data[i])+'" class="layui-badge layui-badge-blue cardStr cardStr'+result.data[i]+'">复制</button></div>')
             }
            // top.layui.admin.open({
            //      type: 2,

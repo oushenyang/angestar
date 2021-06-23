@@ -1,0 +1,101 @@
+@layout("/common/_form.html",{bg:"bg-white"}){
+<style>
+    .layui-table tbody tr:hover, .layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-hover, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even) {
+        background-color: #f2f6fc;
+    }
+    .layui-table thead tr th{
+        text-align: center;
+    }
+    .layui-table tbody tr td{
+        text-align: center;
+    }
+</style>
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:0!important;"
+      class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <fieldset class="layui-elem-field">
+            <legend>卡密详情</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <thead>
+                    <tr class="tr">
+                        <th>卡密</th>
+                        <th>创建时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>${cardInfo.cardCode!}</td>
+                        <td>${cardInfo.createTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr class="tr">
+                        <th>激活时间</th>
+                        <th>过期时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        @if(isNotEmpty(cardInfo.activeTime)){
+                        <td>${cardInfo.activeTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                        @}else{
+                        <td>暂无</td>
+                        @}
+                        @if(isNotEmpty(cardInfo.expireTime)){
+                        <td>${cardInfo.expireTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                        @}else{
+                        <td>暂无</td>
+                        @}
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr class="tr">
+                        <th>登录次数</th>
+                        <th>上次登录token</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>${cardInfo.loginNum!}</td>
+                        @if(isNotEmpty(token.token)){
+                        <td>${token.token!}</td>
+                        @}else{
+                        <td>暂无</td>
+                        @}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>绑机详情</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <thead>
+                    <tr class="tr">
+                        <th>设备MAC</th>
+                        <th>IP</th>
+                        <th>登录次数</th>
+                        <th>上次登录时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for(device in deviceList!) {
+                    <tr>
+                        <td>${device.mac!}</td>
+                        <td>${device.ip!}</td>
+                        <td>${device.loginNum!}</td>
+                        <td>${device.updateTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                    </tr>
+                    @}
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">关闭</button>
+    </div>
+</form>
+@}

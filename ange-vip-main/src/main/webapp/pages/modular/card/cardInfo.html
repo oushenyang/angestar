@@ -71,7 +71,7 @@
 <!--                            </div>-->
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
-                                <button id="btnReset" data-table="codeCardTypeTable" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
+                                <button id="btnReset" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
                                 <a class="layui-btn form-search-expand" search-expand>
                                     展开 <i class="layui-icon layui-icon-down"></i></a>
                             </div>
@@ -174,13 +174,13 @@
 </script>
 
 <script type="text/html" id="tableBar">
-    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">详情</a>
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="detail">详情</a>
     <a class="pear-btn pear-btn-success pear-btn-sm" plain data-dropdown="#dropUser{{d.LAY_INDEX}}" no-shade="true"
        lay-event="edit2">编辑<i class="fa fa-left fa-caret-down"></i></a>
     <!-- 下拉菜单 -->
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser{{d.LAY_INDEX}}">
         <div class="dropdown-anchor"></div>
-        <li><a lay-event="itemEdit"><i class="fa fa-right fa-edit fa-fw"></i>卡密编辑</a></li>
+<!--        <li><a lay-event="itemEdit"><i class="fa fa-right fa-edit fa-fw"></i>卡密编辑</a></li>-->
         {{# if(d.cardStatus == 3){ }}
         <li><a lay-event="itemUnsealing"><i class="fa fa-right fa-check-circle fa-fw"></i>卡密解封</a></li>
         {{# } else { }}
