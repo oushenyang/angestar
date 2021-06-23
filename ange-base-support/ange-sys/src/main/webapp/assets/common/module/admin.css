@@ -453,6 +453,18 @@ body {
 
 /** admin移动端样式 */
 @media screen and (max-width: 768px) {
+    /** 隐藏底部 */
+    .layui-footer{
+        display: none!important;
+    }
+    .layui-layout-admin .layui-body{
+        bottom: 0px!important;
+    }
+    /** 隐藏部分分页 */
+    .layui-laypage-skip{
+        display: none!important;
+    }
+
     .layui-layout-admin {
         left: -200px;
     }
