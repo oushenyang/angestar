@@ -114,6 +114,39 @@ layui.define(['layer'], function (exports) {
                 $(layero).data('tpl', param.tpl || '');
                 admin.reloadLayer(index, param.url, sCallBack);
             };
+        }else {
+            param.success = function (layero, index) {
+                // 取得当前窗口高度
+                var windowHeight = top.layui.$(window).height();
+                // 取得iframe高度
+                var iframeHeight = top.layui.layer.getChildFrame('html', index).outerHeight();
+                // 最大高度
+                var maxHeight = this.maxHeight || windowHeight;
+                if (/^\d+%$/.test(maxHeight)) {
+                    maxHeight = windowHeight * parseFloat(maxHeight) / 100;
+                }
+                // 标题高度
+                var titleHeight = layero.find('.layui-layer-title').outerHeight() || 0;
+                // 按钮高度
+                var buttonHeight = layero.find('.layui-layer-btn').outerHeight() || 0;
+                // 内容高度
+                var contentHeight = maxHeight - titleHeight - buttonHeight;
+                // 计算iframe高度
+                iframeHeight = iframeHeight > contentHeight ? contentHeight : iframeHeight;
+                // 计算层高度
+                var layerHeight = iframeHeight > contentHeight ? maxHeight : iframeHeight + titleHeight + buttonHeight;
+                // 计算定位
+                var topPosition = (windowHeight - layerHeight) * 0.5;
+                // 设置窗口高度
+                layero.css({height: layerHeight, top: topPosition});
+                console.log(layero.find('.iframe').find('.bg-white'));
+                console.log(layero.find('.iframe').find('.bg-white').outerHeight());
+                console.log(layero.find('.iframe').find('.bg-white').height());
+                console.log(layero.find('.iframe').find('.bg-white').height);
+                // 设置iframe高度
+                // layero.find('iframe').css({height: iframeHeight});
+                return null;
+            };
         }
         var layIndex = layer.open(param);
         if (param.data) admin.layerData['d' + layIndex] = param.data;
