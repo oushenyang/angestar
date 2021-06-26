@@ -283,10 +283,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                             cardInfo.setAddHourNum(param.getAddHourNum());
                             cardInfo.setAddMinuteNum(param.getAddMinuteNum());
                             cardInfo.setAddTime(null);
+                            cardInfo.setWhetherAddTime(true);
                         }else {
                             cardInfo.setAddDayNum(null);
                             cardInfo.setAddHourNum(null);
                             cardInfo.setAddMinuteNum(null);
+                            cardInfo.setWhetherAddTime(true);
                             cardInfo.setAddTime(param.getAddTime());
                         }
                     }else if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()||cardInfo.getCardStatus()==CardStatus.EXPIRED.getCode()){
@@ -295,6 +297,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                             cardInfo.setAddHourNum(param.getAddHourNum());
                             cardInfo.setAddMinuteNum(param.getAddMinuteNum());
                             cardInfo.setAddTime(null);
+                            cardInfo.setWhetherAddTime(true);
                             Date addExpireTime = CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(),param.getAddDayNum(),param.getAddHourNum(),param.getAddMinuteNum());
                             cardInfo.setExpireTime(addExpireTime);
                             //如果已激活，同时处理后的到期时间小于当前时间，则已过期
@@ -310,6 +313,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                             cardInfo.setAddMinuteNum(null);
                             cardInfo.setAddTime(param.getAddTime());
                             cardInfo.setExpireTime(param.getAddTime());
+                            cardInfo.setWhetherAddTime(true);
                             //如果已激活，同时处理后的到期时间小于当前时间，则已过期
                             if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()&&param.getAddTime().before(new Date())){
                                 cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
@@ -326,11 +330,13 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                                 cardInfo.setAddMinuteNum(param.getAddMinuteNum());
                                 cardInfo.setAddTime(null);
                                 cardInfo.setExpireTime(null);
+                                cardInfo.setWhetherAddTime(true);
                             }else if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()!=null){
                                 cardInfo.setAddDayNum(param.getAddDayNum());
                                 cardInfo.setAddHourNum(param.getAddHourNum());
                                 cardInfo.setAddMinuteNum(param.getAddMinuteNum());
                                 cardInfo.setAddTime(null);
+                                cardInfo.setWhetherAddTime(true);
                                 cardInfo.setExpireTime(CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(),param.getAddDayNum(),param.getAddHourNum(),param.getAddMinuteNum()));
                             }
                         }else {
@@ -340,12 +346,14 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                                 cardInfo.setAddMinuteNum(null);
                                 cardInfo.setAddTime(param.getAddTime());
                                 cardInfo.setExpireTime(null);
+                                cardInfo.setWhetherAddTime(true);
                             }else if (cardInfo.getCardStatus()==CardStatus.DISABLED.getCode()&&cardInfo.getExpireTime()!=null){
                                 cardInfo.setAddDayNum(null);
                                 cardInfo.setAddHourNum(null);
                                 cardInfo.setAddMinuteNum(null);
                                 cardInfo.setAddTime(param.getAddTime());
                                 cardInfo.setExpireTime(param.getAddTime());
+                                cardInfo.setWhetherAddTime(true);
                             }
                         }
                     }
@@ -356,6 +364,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     return;
                 case "editRemark":
                     cardInfo.setCardRemark(param.getCardRemark());
+                    return;
+                case "data":
+                    cardInfo.setCardData(param.getCardData());
                     return;
                 case "batchRemove":
                     return;

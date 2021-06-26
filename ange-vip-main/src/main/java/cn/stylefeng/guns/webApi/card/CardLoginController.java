@@ -99,6 +99,7 @@ public class CardLoginController {
             case 0:
                 CardInfo cardInfo = new CardInfo();
                 cardInfo.setCardId(cardInfoApi.getCardId());
+                cardInfo.setLoginNum(1);
                 cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
                 //激活时间
                 cardInfo.setActiveTime(DateUtil.date());

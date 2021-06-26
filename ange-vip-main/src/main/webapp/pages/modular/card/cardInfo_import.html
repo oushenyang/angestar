@@ -1,0 +1,63 @@
+<style>
+    .layui-form-select dl{
+        z-index: 19891018;
+    }
+</style>
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:0!important;" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-bottom: 75px;">
+        <input name="cardId" type="hidden"/>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label layui-form-required">导入范围</label>
+            <div class="layui-input-block">
+                <input type="radio" class="layui-input" name="operateFlag" value="0" lay-filter="operateFlag" title="单个卡密" checked="">
+                <input type="radio" class="layui-input" name="operateFlag" value="1" lay-filter="operateFlag" title="多个卡密">
+            </div>
+        </div>
+        @if(tool.isNotEmpty(type)){
+        @if(type==1){
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">选择应用</label>
+            <div class="layui-input-block">
+                <select name="appId" lay-search="" lay-verify="required" lay-filter="appId" lay-verType="tips" required>
+                    <option value="">请选择软件</option>
+                    @for(appInfo in appInfoParams) {
+                    <option value="${appInfo.appId}">${appInfo.appName}</option>
+                    @}
+                </select>
+            </div>
+        </div>
+        @}
+        @if(type==0){
+        <input name="appId" value="0" type="hidden">
+        @}
+        @}
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">卡密</label>
+            <div class="layui-input-block">
+                <input id="cardCode" name="cardCode" placeholder="请输入卡密" maxlength="40" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">卡类</label>
+            <div class="layui-input-block">
+                <select name="cardType" class="cardType" lay-search="" lay-filter="cardType" lay-verType="tips">
+                    @if(tool.isNotEmpty(type)){
+                    @for(codeCardType in codeCardTypes) {
+                    <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                    @}
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">激活时间</label>
+            <div class="layui-input-block">
+                <input id="activeTime" name="activeTime" readonly placeholder="请选择激活时间（为空则代表未激活）" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" id="cardEditSubmit" lay-filter="cardEditSubmit" lay-submit>提交</button>
+    </div>
+</form>

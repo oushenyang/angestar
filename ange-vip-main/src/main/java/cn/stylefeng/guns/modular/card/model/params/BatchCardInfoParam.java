@@ -81,6 +81,11 @@ public class BatchCardInfoParam implements Serializable, BaseValidatingParam {
     private String cardRemark;
 
     /**
+     * 卡密备注
+     */
+    private String cardData;
+
+    /**
      * 禁用备注
      */
     private String prohibitRemark;

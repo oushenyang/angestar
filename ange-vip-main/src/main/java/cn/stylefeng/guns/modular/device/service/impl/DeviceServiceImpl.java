@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
@@ -23,6 +24,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.catalina.connector.Request;
@@ -101,6 +103,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         if (ObjectUtil.isNotNull(object)) {
             List<Device> deviceList = JSON.parseArray(object.toString(),Device.class);
             deviceApis.addAll(deviceList);
+        }else {
+            QueryWrapper<Device> wrapper = new QueryWrapper<>();
+            wrapper = wrapper.eq("card_or_user_id", cardId);
+            wrapper = wrapper.eq("app_id", appId);
+            deviceApis = baseMapper.selectList(wrapper);
         }
 
         //如果空
@@ -172,6 +179,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     private void insertDevice(List<Device> deviceApiList,Long appId,Long cardId,String mac,String model,String cardCode){
         Date date = new Date();
         Device device = new Device();
+        device.setDeviceId(IdWorker.getId());
         device.setAppId(appId);
         device.setCardOrUserId(cardId);
         device.setCardType(1);

@@ -145,6 +145,78 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     };
 
     /**
+     * 弹出自定义导入对话框
+     */
+    CardInfo.openImportDlg = function (obj) {
+        admin.open({
+            // type: 1,
+            title: '自定义导入',
+            area: '600px',
+            url: Feng.ctxPath + '/cardInfo/customImport?type='+$('#type').val(),
+            tpl: true,
+            success: function (layero, dIndex) {
+                laydate.render({
+                    elem: '#activeTime',
+                    position: 'fixed',
+                    type: 'datetime',
+                    trigger: 'click'
+                });
+
+                form.render();
+                //单选框事件监听
+                form.on('radio(exportFlag)', function (data) {
+                    if (data.value==0){
+                        $("select[name=splitSymbol]").attr("disabled", false);
+                        form.render('select');
+                    }else {
+                        $("select[name=splitSymbol]").attr("disabled", "disabled");
+                        form.render('select');
+                    }
+                });
+                //表单提交事件
+                form.on('submit(cardEditSubmit)', function (data) {
+                    // admin.showLoading(undefined, 3, '.8');
+                    var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+                    let idData = table.checkStatus(obj.config.id).data;
+                    let ids = "";
+                    for (let i = 0; i < idData.length; i++) {
+                        ids += idData[i].cardId + ",";
+                    }
+                    ids = ids.substr(0, ids.length - 1);
+                    if (data.field.operateFlag==0 && idData.length ==0){
+                        layer.close(loading);
+                        layer.msg('未选中数据!', {icon: 2});
+                        return false;
+                    }
+                    data.field.ids = ids;
+                    data.field.event = obj.event;
+                    if (obj.event=='export'){
+                        layer.close(loading);
+                        window.location.href=Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
+                    }else {
+                        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                            layer.close(loading);
+                            layer.closeAll();
+                            layer.msg("更新成功！", {icon: 1});
+                            table.reload(CardInfo.tableId);
+                            //关掉对话框
+                            admin.closeThisDialog();
+                        }, function (data) {
+                            layer.close(loading);
+                            layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
+                        },true);
+                        ajax.set(data.field);
+                        ajax.start();
+                    }
+                    return false;
+                });
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
+            }
+        });
+    };
+
+    /**
      * 导出excel按钮
      */
     CardInfo.exportExcel = function () {
@@ -356,14 +428,13 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
                     maxlength: 255
                 });
-                if (obj.event=='unsealing'){
+                if (obj.event==='unsealing'){
                     form.val('cardEditForm', {
                         "organizationType":1,
                         "cardType":1,
                         "cardStatus":5
                     });
-                }else if (obj.event=='itemEdit'){
-                    console.log(111)
+                }else if (obj.event==='itemEdit'){
                     table.render({
                         elem: '#device',
                         url: Feng.ctxPath + '/device/list',
@@ -384,8 +455,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             {align: 'center', toolbar: '#tableBar', width: 50, fixed: 'right', title: '操作'}
                         ]],
                     });
-                }else if (obj.event=='itemOvertime'){
-                    obj.event=='overtime';
+                }else if (obj.event==='itemOvertime'){
+                    obj.event='overtime';
                     laydate.render({
                         elem: '#addTime',
                         position: 'fixed',
@@ -412,6 +483,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             }
                         }
                     });
+                }else if (obj.event==='itemData'){
+                    obj.event='data';
                 }else {
                     form.val('cardEditForm', {
                         "organizationType":1,
@@ -440,13 +513,14 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     data.field.event = obj.event;
                     data.field.operateFlag = 0;
                     var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                        top.layer.close(loading);
                         layer.closeAll();
                         layer.msg("操作成功！", {icon: 1});
                         table.reload(CardInfo.tableId);
                         //关掉对话框
                         admin.closeThisDialog();
                     }, function (data) {
-                        layer.close(loading);
+                        top.layer.close(loading);
                         layer.msg("操作失败！" + data.responseJSON.message, {icon: 2});
                     },true);
                     ajax.set(data.field);
@@ -692,6 +766,9 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             table.reload(CardInfo.tableId);
         } else if (obj.event === 'openYyImport') {
             CardInfo.openYyImportDlg(obj)
+            //批量封禁
+        } else if (obj.event === 'customImport') {
+            CardInfo.openImportDlg(obj)
             //批量封禁
         } else if (obj.event === 'export') {
             CardInfo.openEditDlg(obj)

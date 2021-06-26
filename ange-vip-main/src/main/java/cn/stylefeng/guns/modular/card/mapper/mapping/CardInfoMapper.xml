@@ -25,6 +25,7 @@
         <result column="card_open_range" property="cardOpenRange" />
         <result column="card_open_num" property="cardOpenNum" />
         <result column="card_remark" property="cardRemark" />
+        <result column="card_data" property="cardData" />
         <result column="prohibit_remark" property="prohibitRemark" />
         <result column="login_num" property="loginNum" />
         <result column="create_user" property="createUser" />
@@ -59,6 +60,7 @@
         cci.card_sign_type AS "cardSignType",
         cci.card_open_num AS "cardOpenNum",
         cci.card_remark AS "cardRemark",
+        cci.card_data AS "cardData",
         cci.prohibit_remark AS "prohibitRemark",
         cci.login_num AS "loginNum",
         cci.create_user AS "createUser",
@@ -94,6 +96,7 @@
         cci.card_sign_type AS "cardSignType",
         cci.card_open_num AS "cardOpenNum",
         cci.card_remark AS "cardRemark",
+        cci.card_data AS "cardData",
         cci.prohibit_remark AS "prohibitRemark",
         cci.create_user AS "createUser",
         cct.card_time_type,
@@ -165,6 +168,16 @@
                     </if>
                     <if test="item.prohibitRemark == null">
                         when card_id=#{item.cardId} then ag_card_info.prohibit_remark
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="card_data =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.cardData !=null">
+                        when card_id=#{item.cardId} then #{item.cardData}
+                    </if>
+                    <if test="item.prohibitRemark == null">
+                        when card_id=#{item.cardId} then ag_card_info.card_data
                     </if>
                 </foreach>
             </trim>

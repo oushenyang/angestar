@@ -160,6 +160,12 @@ public class CardInfo implements Serializable {
     private String cardRemark;
 
     /**
+     * 卡密数据
+     */
+    @TableField("card_data")
+    private String cardData;
+
+    /**
      * 禁用备注
      */
     @TableField("prohibit_remark")
@@ -410,6 +416,14 @@ public class CardInfo implements Serializable {
         this.cardRemark = cardRemark;
     }
 
+    public String getCardData() {
+        return cardData;
+    }
+
+    public void setCardData(String cardData) {
+        this.cardData = cardData;
+    }
+
     public String getProhibitRemark() {
         return prohibitRemark;
     }
@@ -522,6 +536,7 @@ public class CardInfo implements Serializable {
         ", cardOpenRange=" + cardOpenRange +
         ", cardOpenNum=" + cardOpenNum +
         ", cardRemark=" + cardRemark +
+        ", cardData=" + cardData +
         ", prohibitRemark=" + prohibitRemark +
         ", whetherAddTime=" + whetherAddTime +
         ", addDayNum=" + addDayNum +
