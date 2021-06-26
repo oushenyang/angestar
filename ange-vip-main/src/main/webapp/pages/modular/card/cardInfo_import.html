@@ -31,16 +31,16 @@
         <input name="appId" value="0" type="hidden">
         @}
         @}
-        <div class="layui-form-item">
+        <div class="layui-form-item oneCard">
             <label class="layui-form-label layui-form-required">卡密</label>
             <div class="layui-input-block">
-                <input id="cardCode" name="cardCode" placeholder="请输入卡密" maxlength="40" type="text" lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+                <input id="cardCode" name="cardCode" placeholder="请输入卡密" minlength="10" maxlength="40" type="text" lay-verify="noChina|required" class="layui-input" lay-verType="tips"/>
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item oneCard">
             <label class="layui-form-label layui-form-required">卡类</label>
             <div class="layui-input-block">
-                <select name="cardType" class="cardType" lay-search="" lay-filter="cardType" lay-verType="tips">
+                <select name="cardTypeId" class="cardTypeId" lay-search="" lay-filter="cardTypeId" lay-verType="tips">
                     @if(tool.isNotEmpty(type)){
                     @for(codeCardType in codeCardTypes) {
                     <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
@@ -49,12 +49,31 @@
                 </select>
             </div>
         </div>
-        <div class="layui-form-item" >
+        <div class="layui-form-item oneCard" >
             <label class="layui-form-label">激活时间</label>
             <div class="layui-input-block">
                 <input id="activeTime" name="activeTime" readonly placeholder="请选择激活时间（为空则代表未激活）" class="layui-input icon-date" autocomplete="off" lay-verType="tips"/>
             </div>
         </div>
+
+        <div class="layui-form-item layui-form-text moreCard" style="display: none">
+            <label class="layui-form-label layui-form-required">卡密</label>
+            <div class="layui-input-block">
+                <textarea id="txtMoreCard" name="txtMoreCard" style="min-height:200px!important;"
+                          placeholder="每个卡密一行,一次最多导入200个卡密
+
+格式: 卡密#卡密类型#激活时间#到期时间
+
+卡密类型列表:小时卡,六时卡,天卡,周卡,半月卡,月卡,季卡,半年卡,年卡,永久卡
+
+卡密长度为10位到40位之间
+
+激活时间或到期时间为0 表示卡密未激活
+
+例如: MB080NIEMS9OTR953J89406#月卡#2021-06-26 19:31:09#2021-07-26 19:31:09" class="layui-textarea" lay-verify="required" lay-verType="tips"></textarea>
+            </div>
+        </div>
+
     </div>
     <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>

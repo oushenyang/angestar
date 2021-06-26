@@ -167,6 +167,19 @@ public class CardInfoController extends BaseController {
     }
 
     /**
+     * 自定义导入
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/customImportItem")
+    @ResponseBody
+    public ResponseData customImportItem(CardInfoParam param) {
+        cardInfoService.customImportItem(param);
+        return ResponseData.success();
+    }
+
+    /**
      * 易游导入页面
      *
      * @author shenyang.ou

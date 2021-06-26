@@ -63,6 +63,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.jsoup.Jsoup;
@@ -774,6 +775,85 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     cardInfo.setCardRemark("手动从易游导入");
                     this.save(cardInfo);
                     System.out.println("111111");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void customImportItem(CardInfoParam param) {
+        if (param.getOperateFlag()==0){
+            CardInfo cardInfo1 = this.getOne(new QueryWrapper<CardInfo>().eq("app_id",param.getAppId()).eq("card_code",param.getCardCode()));
+            if (ObjectUtil.isNotNull(cardInfo1)){
+                throw new OperationException(BizExceptionEnum.FIND_CARD_EXISTED);
+            }
+            param.setIsUniversal(false);
+            Date date = DateUtil.date();
+            param.setUserId(LoginContextHolder.getContext().getUserId());
+            param.setCreateUser(LoginContextHolder.getContext().getUserId());
+            param.setCreateTime(date);
+            param.setUserName(LoginContextHolder.getContext().getUserName());
+            CodeCardType codeCardType = codeCardTypeService.getById(param.getCardTypeId());
+            if (param.getActiveTime()==null){
+                param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+            }else {
+                param.setCardStatus(CardStatus.ACTIVATED.getCode());
+                param.setExpireTime(CardDateUtil.getExpireTime(param.getActiveTime(),codeCardType.getCardTimeType(),codeCardType.getCardTypeData()));
+            }
+            param.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+            param.setCardBindType(0);
+            param.setCardSignType(1);
+            param.setCardOpenRange(0);
+            param.setCardRemark("自定义单个卡密导入");
+            CardInfo entity = getEntity(param);
+            baseMapper.insert(entity);
+        }else {
+            List<String> cardStrList = Arrays.asList(param.getTxtMoreCard().split("\n"));
+            if (CollectionUtil.isNotEmpty(cardStrList)){
+                int index = 1;
+                for (String cardStr : cardStrList){
+                    List<String> str = Arrays.asList(cardStr.split("#"));
+                    if (str.size()<4){
+                        throw new OperationException(StrUtil.format("第{}行数据格式不正确,请检查！", index));
+                    }
+                    if (str.get(0).length()<10||str.get(0).length()>40){
+                        throw new OperationException(StrUtil.format("第{}行卡密长度不正确,请检查！", index));
+                    }
+                    CardInfo cardInfo = new CardInfo();
+                    setCardTypeId(str.get(1),cardInfo,LoginContextHolder.getContext().getUserId());
+                    if (cardInfo.getCardTypeId()==null){
+                        throw new OperationException(StrUtil.format("第{}行未找到该卡密类型,请检查！", index));
+                    }
+                    if ("0".equals(str.get(2))||"0".equals(str.get(3))){
+                        cardInfo.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
+                    }else {
+                        cardInfo.setCardStatus(CardStatus.ACTIVATED.getCode());
+                        String[] parsePatterns = {"yyyy-MM-dd HH:mm:ss"};
+                        try {
+                            cardInfo.setActiveTime(DateUtils.parseDate(str.get(2), parsePatterns));
+                            cardInfo.setExpireTime(DateUtils.parseDate(str.get(3), parsePatterns));
+                        } catch (ParseException e) {
+                            throw new OperationException(StrUtil.format("第{}行时间格式不正确,请检查！", index));
+                        }
+                    }
+                    CardInfo cardInfo1 = this.getOne(new QueryWrapper<CardInfo>().eq("app_id",param.getAppId()).eq("card_code",str.get(0)));
+                    if (ObjectUtil.isNotNull(cardInfo1)){
+                        continue;
+                    }
+                    Date date = DateUtil.date();
+                    cardInfo.setCardCode(str.get(0));
+                    cardInfo.setAppId(param.getAppId());
+                    cardInfo.setUserId(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCreateUser(LoginContextHolder.getContext().getUserId());
+                    cardInfo.setCreateTime(date);
+                    cardInfo.setUserName(LoginContextHolder.getContext().getUserName());
+                    cardInfo.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+                    cardInfo.setCardBindType(0);
+                    cardInfo.setCardSignType(1);
+                    cardInfo.setCardOpenRange(0);
+                    cardInfo.setCardRemark("自定义多个卡密导入");
+                    baseMapper.insert(cardInfo);
+                    index += 1;
                 }
             }
         }

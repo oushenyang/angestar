@@ -1,14 +1,15 @@
-layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'selectApp', 'textool'], function () {
+layui.use(['table', 'form', 'dropdown', 'admin', 'ax', 'xmSelect', 'laydate', 'selectApp', 'textool', 'formX'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var dropdown = layui.dropdown;
     var form = layui.form;
+    var formX = layui.formX;
     var xmSelect = layui.xmSelect;
     var laydate = layui.laydate;
     var textool = layui.textool;
-    var selectApp=layui.selectApp; //获取自定义模块
+    var selectApp = layui.selectApp; //获取自定义模块
     selectApp.renderAppAll(); //渲染
     //重新渲染select数据
     form.render('select');
@@ -85,7 +86,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             },
             // {align: 'center',field: 'userId', sort: true, title: '申请人ID'},
             {align: 'center', field: 'userName', title: '申请人名称'},
-            {align: 'center', field: 'cardStatus',  title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus', title: '状态', templet: '#cardStatusTpl'},
             {align: 'center', field: 'activeTime', sort: true, title: '激活时间'},
             {align: 'center', field: 'expireTime', sort: true, title: '过期时间'},
             {align: 'center', field: 'cardRemark', title: '备注'},
@@ -120,8 +121,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         top.layui.admin.open({
             type: 2,
             title: '添加卡密',
-            area: ['700px','637px'],
-            content: Feng.ctxPath + '/cardInfo/add?type='+$('#type').val(),
+            area: ['700px', '637px'],
+            content: Feng.ctxPath + '/cardInfo/add?type=' + $('#type').val(),
             end: function () {
                 admin.getTempData('formOk') && table.reload(CardInfo.tableId);
             }
@@ -137,7 +138,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             type: 2,
             title: '导入易游',
             area: '700px',
-            content: Feng.ctxPath + '/cardInfo/yyImport?type='+$('#type').val(),
+            content: Feng.ctxPath + '/cardInfo/yyImport?type=' + $('#type').val(),
             end: function () {
                 admin.getTempData('formOk') && table.reload(CardInfo.tableId);
             }
@@ -152,7 +153,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             // type: 1,
             title: '自定义导入',
             area: '600px',
-            url: Feng.ctxPath + '/cardInfo/customImport?type='+$('#type').val(),
+            url: Feng.ctxPath + '/cardInfo/customImport?type=' + $('#type').val(),
             tpl: true,
             success: function (layero, dIndex) {
                 laydate.render({
@@ -164,50 +165,50 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
 
                 form.render();
                 //单选框事件监听
-                form.on('radio(exportFlag)', function (data) {
-                    if (data.value==0){
-                        $("select[name=splitSymbol]").attr("disabled", false);
-                        form.render('select');
-                    }else {
-                        $("select[name=splitSymbol]").attr("disabled", "disabled");
-                        form.render('select');
+                form.on('radio(operateFlag)', function (data) {
+                    if (data.value == 0) {
+                        $(".oneCard").show();
+                        $(".moreCard").hide();
+                        $(".moreCard #txtMoreCard").removeAttr("lay-verify");
+                        $(".moreCard #txtMoreCard").removeAttr("lay-verType");
+                        $(".oneCard #cardCode").attr("lay-verify","noChina|required");
+                        $(".oneCard #cardCode").attr("lay-verType","tips");
+                        $(".oneCard #cardTypeId").attr("lay-verify","required");
+                        $(".oneCard #cardTypeId").attr("lay-verType","tips");
+                        $(".oneCard #activeTime").attr("lay-verify","required");
+                        $(".oneCard #activeTime").attr("lay-verType","tips");
+                        form.render();
+                    } else {
+                        $(".oneCard").hide();
+                        $(".moreCard").show();
+                        $(".moreCard #txtMoreCard").attr("lay-verify","required");
+                        $(".moreCard #txtMoreCard").attr("lay-verType","tips");
+                        $(".oneCard #cardCode").removeAttr("lay-verify");
+                        $(".oneCard #cardCode").removeAttr("lay-verType");
+                        $(".oneCard #cardTypeId").removeAttr("lay-verify");
+                        $(".oneCard #cardTypeId").removeAttr("lay-verType");
+                        $(".oneCard #activeTime").removeAttr("lay-verify");
+                        $(".oneCard #activeTime").removeAttr("lay-verType");
+                        form.render();
                     }
                 });
                 //表单提交事件
                 form.on('submit(cardEditSubmit)', function (data) {
-                    // admin.showLoading(undefined, 3, '.8');
-                    var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
-                    let idData = table.checkStatus(obj.config.id).data;
-                    let ids = "";
-                    for (let i = 0; i < idData.length; i++) {
-                        ids += idData[i].cardId + ",";
-                    }
-                    ids = ids.substr(0, ids.length - 1);
-                    if (data.field.operateFlag==0 && idData.length ==0){
-                        layer.close(loading);
-                        layer.msg('未选中数据!', {icon: 2});
-                        return false;
-                    }
-                    data.field.ids = ids;
+                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
                     data.field.event = obj.event;
-                    if (obj.event=='export'){
-                        layer.close(loading);
-                        window.location.href=Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
-                    }else {
-                        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
-                            layer.close(loading);
-                            layer.closeAll();
-                            layer.msg("更新成功！", {icon: 1});
-                            table.reload(CardInfo.tableId);
-                            //关掉对话框
-                            admin.closeThisDialog();
-                        }, function (data) {
-                            layer.close(loading);
-                            layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
-                        },true);
-                        ajax.set(data.field);
-                        ajax.start();
-                    }
+                    var ajax = new $ax(Feng.ctxPath + "/cardInfo/customImportItem", function (data) {
+                        top.layer.close(loading);
+                        layer.closeAll();
+                        layer.msg("导入成功！", {icon: 1});
+                        table.reload(CardInfo.tableId);
+                        //关掉对话框
+                        admin.closeThisDialog();
+                    }, function (data) {
+                        top.layer.close(loading);
+                        layer.msg("导入失败！" + data.responseJSON.message, {icon: 2});
+                    }, true);
+                    ajax.set(data.field);
+                    ajax.start();
                     return false;
                 });
                 // 禁止弹窗出现滚动条
@@ -236,8 +237,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         top.layui.admin.open({
             type: 2,
             title: '详情',
-            area: ['700px','700px'],
-            content: Feng.ctxPath + '/cardInfo/detail?cardId='+data.cardId,
+            area: ['700px', '700px'],
+            content: Feng.ctxPath + '/cardInfo/detail?cardId=' + data.cardId,
             end: function () {
                 admin.getTempData('formOk');
             }
@@ -251,8 +252,8 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         top.layui.admin.open({
             type: 2,
             title: '卡密配置',
-            area: ['700px','560px'],
-            content: Feng.ctxPath + '/cardInfo/configEdit?cardId='+data.cardId,
+            area: ['700px', '560px'],
+            content: Feng.ctxPath + '/cardInfo/configEdit?cardId=' + data.cardId,
             end: function () {
                 admin.getTempData('formOk');
             }
@@ -265,7 +266,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      * @param data 点击按钮时候的行数据
      */
     CardInfo.openEditDlg = function (obj) {
-        var url = Feng.ctxPath + '/cardInfo/edit?type='+$('#type').val();
+        var url = Feng.ctxPath + '/cardInfo/edit?type=' + $('#type').val();
         admin.open({
             // type: 1,
             title: obj.name,
@@ -283,25 +284,25 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
                     maxlength: 128
                 });
-                if (obj.event=='unsealing'){
+                if (obj.event == 'unsealing') {
                     form.val('cardEditForm', {
-                        "organizationType":1,
-                        "cardType":1,
-                        "cardStatus":5
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 5
                     });
-                }else if (obj.event=='overtime'){
+                } else if (obj.event == 'overtime') {
                     form.val('cardEditForm', {
-                        "organizationType":1,
-                        "cardType":1,
-                        "cardStatus":1
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
                     });
                     laydate.render({
                         elem: '#addTime',
                         position: 'fixed',
                         type: 'datetime',
                         trigger: 'click',
-                        done: function(value, date){ //监听日期被切换
-                            if (value){
+                        done: function (value, date) { //监听日期被切换
+                            if (value) {
                                 $("input[name=addDayNum]").attr("disabled", "disabled");
                                 $("input[name=addDayNum]").attr("class", "layui-input layui-disabled");
                                 $("input[name=addDayNum]").val("");
@@ -311,7 +312,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                                 $("input[name=addMinuteNum]").attr("disabled", "disabled");
                                 $("input[name=addMinuteNum]").attr("class", "layui-input layui-disabled");
                                 $("input[name=addMinuteNum]").val("");
-                            }else {
+                            } else {
                                 $("input[name=addDayNum]").attr("disabled", false);
                                 $("input[name=addDayNum]").attr("class", "layui-input");
                                 $("input[name=addHourNum]").attr("disabled", false);
@@ -321,23 +322,23 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             }
                         }
                     });
-                }else {
+                } else {
                     form.val('cardEditForm', {
-                        "organizationType":1,
-                        "cardType":1,
-                        "cardStatus":1
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
                     });
                 }
 
                 // form.val('cardEditForm', data);
                 //单选框事件监听
                 form.on('radio(operateFlag)', function (data) {
-                    if (data.value==0){
+                    if (data.value == 0) {
                         $("select[name=operateApp]").attr("disabled", "disabled");
                         $("select[name=cardType]").attr("disabled", "disabled");
                         $("select[name=cardStatus]").attr("disabled", "disabled");
                         form.render('select');
-                    }else {
+                    } else {
                         $("select[name=operateApp]").attr("disabled", false);
                         $("select[name=cardType]").attr("disabled", false);
                         $("select[name=cardStatus]").attr("disabled", false);
@@ -346,10 +347,10 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                 });
                 //单选框事件监听
                 form.on('radio(exportFlag)', function (data) {
-                    if (data.value==0){
+                    if (data.value == 0) {
                         $("select[name=splitSymbol]").attr("disabled", false);
                         form.render('select');
-                    }else {
+                    } else {
                         $("select[name=splitSymbol]").attr("disabled", "disabled");
                         form.render('select');
                     }
@@ -357,24 +358,24 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                 //表单提交事件
                 form.on('submit(cardEditSubmit)', function (data) {
                     // admin.showLoading(undefined, 3, '.8');
-                    var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+                    var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
                     let idData = table.checkStatus(obj.config.id).data;
                     let ids = "";
                     for (let i = 0; i < idData.length; i++) {
                         ids += idData[i].cardId + ",";
                     }
                     ids = ids.substr(0, ids.length - 1);
-                    if (data.field.operateFlag==0 && idData.length ==0){
+                    if (data.field.operateFlag == 0 && idData.length == 0) {
                         layer.close(loading);
                         layer.msg('未选中数据!', {icon: 2});
                         return false;
                     }
                     data.field.ids = ids;
                     data.field.event = obj.event;
-                    if (obj.event=='export'){
+                    if (obj.event == 'export') {
                         layer.close(loading);
-                        window.location.href=Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
-                    }else {
+                        window.location.href = Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
+                    } else {
                         var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                             layer.close(loading);
                             layer.closeAll();
@@ -385,7 +386,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                         }, function (data) {
                             layer.close(loading);
                             layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
-                        },true);
+                        }, true);
                         ajax.set(data.field);
                         ajax.start();
                     }
@@ -403,7 +404,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      * @param data 点击按钮时候的行数据
      */
     CardInfo.openItemEditDlg = function (obj) {
-        var url = Feng.ctxPath + '/cardInfo/itemEdit?type='+$('#type').val();
+        var url = Feng.ctxPath + '/cardInfo/itemEdit?type=' + $('#type').val();
         admin.open({
             // type: 1,
             title: obj.name,
@@ -428,13 +429,13 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
                     maxlength: 255
                 });
-                if (obj.event==='unsealing'){
+                if (obj.event === 'unsealing') {
                     form.val('cardEditForm', {
-                        "organizationType":1,
-                        "cardType":1,
-                        "cardStatus":5
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 5
                     });
-                }else if (obj.event==='itemEdit'){
+                } else if (obj.event === 'itemEdit') {
                     table.render({
                         elem: '#device',
                         url: Feng.ctxPath + '/device/list',
@@ -446,7 +447,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             'cardType': 1,
                             'cardOrUserId': obj.data.cardId
                         },
-                        cols:[[
+                        cols: [[
                             {field: 'mac', align: 'center', title: 'MAC'},
                             {field: 'ip', align: 'center', title: 'IP'},
                             {field: 'ipAddress', align: 'center', title: 'IP地址'},
@@ -455,15 +456,15 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             {align: 'center', toolbar: '#tableBar', width: 50, fixed: 'right', title: '操作'}
                         ]],
                     });
-                }else if (obj.event==='itemOvertime'){
-                    obj.event='overtime';
+                } else if (obj.event === 'itemOvertime') {
+                    obj.event = 'overtime';
                     laydate.render({
                         elem: '#addTime',
                         position: 'fixed',
                         type: 'datetime',
                         trigger: 'click',
-                        done: function(value, date){ //监听日期被切换
-                            if (value){
+                        done: function (value, date) { //监听日期被切换
+                            if (value) {
                                 $("input[name=addDayNum]").attr("disabled", "disabled");
                                 $("input[name=addDayNum]").attr("class", "layui-input layui-disabled");
                                 $("input[name=addDayNum]").val("");
@@ -473,7 +474,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                                 $("input[name=addMinuteNum]").attr("disabled", "disabled");
                                 $("input[name=addMinuteNum]").attr("class", "layui-input layui-disabled");
                                 $("input[name=addMinuteNum]").val("");
-                            }else {
+                            } else {
                                 $("input[name=addDayNum]").attr("disabled", false);
                                 $("input[name=addDayNum]").attr("class", "layui-input");
                                 $("input[name=addHourNum]").attr("disabled", false);
@@ -483,23 +484,23 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                             }
                         }
                     });
-                }else if (obj.event==='itemData'){
-                    obj.event='data';
-                }else {
+                } else if (obj.event === 'itemData') {
+                    obj.event = 'data';
+                } else {
                     form.val('cardEditForm', {
-                        "organizationType":1,
-                        "cardType":1,
-                        "cardStatus":1
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
                     });
                 }
                 //单选框事件监听
                 form.on('radio(operateFlag)', function (data) {
-                    if (data.value==0){
+                    if (data.value == 0) {
                         $("select[name=operateApp]").attr("disabled", "disabled");
                         $("select[name=cardType]").attr("disabled", "disabled");
                         $("select[name=cardStatus]").attr("disabled", "disabled");
                         form.render('select');
-                    }else {
+                    } else {
                         $("select[name=operateApp]").attr("disabled", false);
                         $("select[name=cardType]").attr("disabled", false);
                         $("select[name=cardStatus]").attr("disabled", false);
@@ -508,7 +509,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                 });
                 //表单提交事件
                 form.on('submit(cardItemEditSubmit)', function (data) {
-                    var loading=top.layer.msg('处理中',{icon:16, shade:[0.1,'#000'], time:false});
+                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
                     data.field.ids = obj.data.cardId;
                     data.field.event = obj.event;
                     data.field.operateFlag = 0;
@@ -522,7 +523,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
                     }, function (data) {
                         top.layer.close(loading);
                         layer.msg("操作失败！" + data.responseJSON.message, {icon: 2});
-                    },true);
+                    }, true);
                     ajax.set(data.field);
                     ajax.start();
                     return false;
@@ -540,7 +541,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      */
     CardInfo.onDeleteItem = function (data) {
         var operation = function () {
-            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/delete", function (data) {
                 layer.close(loading);
                 Feng.success("删除成功!");
@@ -548,7 +549,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
-            },true);
+            }, true);
             ajax.set("cardId", data.cardId);
             ajax.set("cardCode", data.cardCode);
             ajax.set("appId", data.appId);
@@ -564,7 +565,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      */
     CardInfo.itemProhibition = function (obj) {
         var operation = function () {
-            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                 layer.close(loading);
                 Feng.success("封禁成功!");
@@ -572,7 +573,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 layer.close(loading);
                 Feng.error("封禁失败!" + data.responseJSON.message + "!");
-            },true);
+            }, true);
             ajax.set("ids", obj.data.cardId);
             ajax.set("operateFlag", 0);
             ajax.set("event", "prohibition");
@@ -588,7 +589,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      */
     CardInfo.itemUntying = function (obj) {
         var operation = function () {
-            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                 layer.close(loading);
                 Feng.success("解绑成功!");
@@ -596,7 +597,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 layer.close(loading);
                 Feng.error("解绑失败!" + data.responseJSON.message + "!");
-            },true);
+            }, true);
             ajax.set("ids", obj.data.cardId);
             ajax.set("operateFlag", 0);
             ajax.set("event", "untying");
@@ -612,7 +613,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
      */
     CardInfo.itemUnsealing = function (obj) {
         var operation = function () {
-            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
                 layer.close(loading);
                 Feng.success("解封成功!");
@@ -620,7 +621,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 layer.close(loading);
                 Feng.error("解封失败!" + data.responseJSON.message + "!");
-            },true);
+            }, true);
             ajax.set("ids", obj.data.cardId);
             ajax.set("operateFlag", 0);
             ajax.set("event", "unsealing");
@@ -646,7 +647,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         }
         ids = ids.substr(0, ids.length - 1);
         var operation = function () {
-            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/batchRemove", function (data) {
                 layer.close(loading);
                 Feng.success("删除成功!");
@@ -654,7 +655,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
             }, function (data) {
                 layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
-            },true);
+            }, true);
             ajax.set("ids", ids);
             ajax.start();
         };
@@ -664,7 +665,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + CardInfo.tableId,
-        url: Feng.ctxPath + '/cardInfo/list?type='+$('#type').val(),
+        url: Feng.ctxPath + '/cardInfo/list?type=' + $('#type').val(),
         // page: true,
         toolbar: '#' + CardInfo.tableId + '-toolbar',
         defaultToolbar: ['filter'],
@@ -773,26 +774,26 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         } else if (obj.event === 'export') {
             CardInfo.openEditDlg(obj)
             //批量封禁
-        }else if (obj.event === 'prohibition') {
+        } else if (obj.event === 'prohibition') {
             obj.name = '批量封禁';
             CardInfo.openEditDlg(obj);
             //批量解封
-        }else if (obj.event === 'unsealing') {
+        } else if (obj.event === 'unsealing') {
             obj.name = '批量解封';
             CardInfo.openEditDlg(obj);
             //批量加时
-        }else if (obj.event === 'overtime') {
+        } else if (obj.event === 'overtime') {
             obj.name = '批量加时';
             CardInfo.openEditDlg(obj);
             //批量解绑
-        }else if (obj.event === 'untying') {
+        } else if (obj.event === 'untying') {
             obj.name = '批量解绑';
             CardInfo.openEditDlg(obj);
             //修改备注
-        }else if (obj.event === 'editRemark') {
+        } else if (obj.event === 'editRemark') {
             obj.name = '修改备注';
             CardInfo.openEditDlg(obj);
-        }else if (obj.event === 'batchRemove') {
+        } else if (obj.event === 'batchRemove') {
             CardInfo.batchRemove(obj);
         }
     });
@@ -815,7 +816,7 @@ layui.use(['table', 'form','dropdown', 'admin', 'ax', 'xmSelect','laydate', 'sel
         } else if (layEvent === 'itemProhibition') {
             obj.name = '卡密封禁';
             CardInfo.itemProhibition(obj)
-        }  else if (layEvent === 'itemUnsealing') {
+        } else if (layEvent === 'itemUnsealing') {
             obj.name = '卡密解封';
             CardInfo.itemUnsealing(obj)
         } else if (layEvent === 'itemOvertime') {

@@ -29,4 +29,10 @@ public class OperationException extends RuntimeException {
         this.errorMessage = exception.getMessage();
     }
 
+    public OperationException(String errorMessage) {
+        super(errorMessage);
+        this.code = 400;
+        this.errorMessage = errorMessage;
+    }
+
 }

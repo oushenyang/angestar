@@ -26,6 +26,16 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
      */
     private Long cardId;
 
+    /**
+     * 导入范围 0-单个卡密；1-多个卡密
+     */
+    private Integer operateFlag;
+
+    /**
+     * 多个卡密 格式：卡密#卡密类型#激活时间#到期时间
+     */
+    private String txtMoreCard;
+
     private Integer type;
 
     /**

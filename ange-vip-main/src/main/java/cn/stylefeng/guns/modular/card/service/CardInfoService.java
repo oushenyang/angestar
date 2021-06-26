@@ -165,4 +165,10 @@ public interface CardInfoService extends IService<CardInfo> {
     void exportCard(HttpServletRequest request, HttpServletResponse response, BatchCardInfoParam param);
 
     void yyImportItem(Long appId, String yyCardAddress, String txtFileName);
+
+    /**
+     * 自定义导入
+     * @param param
+     */
+    void customImportItem(CardInfoParam param);
 }
