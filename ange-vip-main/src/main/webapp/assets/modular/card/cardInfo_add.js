@@ -129,31 +129,6 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
                 url: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards,
                 tpl: true,
                 success: function (layero, dIndex) {
-                    // 添加按钮点击事件
-                    $('.cardStr').click(function () {
-                        var value = this.value;
-                        var cla = '.cardStr' + value;
-                        var clipboard = new ClipboardJS(cla, {
-                            text: function () {
-                                return value;
-                            }
-                        });
-                        clipboard.on('success', function (e) {
-                            e.clearSelection();
-                            Feng.success("已复制到粘贴板");
-                            return false;
-                        });
-                        clipboard.on('error', function (e) {
-                            e.clearSelection();
-                            Feng.error("复制失败");
-                            return false;
-                        });
-                    });
-                    //表单提交事件
-                    form.on('submit(exportSubmit)', function (data) {
-                        window.location.href=Feng.ctxPath + "/cardInfo/addExport?cards=" + Feng.getUrlParam("cards");
-                        return false;
-                    });
                     // 禁止弹窗出现滚动条
                     // $(layero).children('.layui-layer-content').css('overflow', 'visible');
                 }

@@ -24,6 +24,7 @@ import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -114,6 +115,7 @@ public class CardInfoController extends BaseController {
     public String addResult(Model model,String cards) {
         List<String> cardList = Arrays.asList(cards.split(","));
         model.addAttribute("cards", cardList);
+        model.addAttribute("cardsStr", cards);
         return PREFIX + "/cardInfo_add_result.html";
     }
 
@@ -230,6 +232,9 @@ public class CardInfoController extends BaseController {
      */
     @RequestMapping("/addExport")
     public void addExport(HttpServletResponse response,String cards) {
+//        if (StringUtils.isNotEmpty(cards)){
+//            cards = cards.replaceAll("\\[","").replaceAll("]","").replaceAll("%20","");
+//        }
         List<String> cardList = Arrays.asList(cards.split(","));
         ExportTextUtil.writeToTxt(response,cardList, String.valueOf(DateUtil.date()));
     }

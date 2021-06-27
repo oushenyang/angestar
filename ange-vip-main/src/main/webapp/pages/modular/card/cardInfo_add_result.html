@@ -3,14 +3,37 @@
         background-color: aliceblue;
     }
 </style>
-<form id="cardAddResultForm" lay-filter="cardAddResultForm" class="layui-form model-form">
-    <div class="layui-fluid" style="max-height: 500px;padding-bottom: 45px;overflow: auto;">
+<!--<form id="cardAddResultForm" lay-filter="cardAddResultForm" class="layui-form model-form">-->
+    <div class="layui-fluid" id="cardAddResult" style="max-height: 500px;padding-bottom: 45px;overflow: auto;">
         @for(card in cards) {
-        <div class="layui-form-item"><span style="color: red;margin-right: 5px;">${cardLP.index}、</span>${card} &nbsp;<button type="button" style="float: right;" value="${card}" class="layui-badge layui-badge-blue cardStr cardStr${card}">复制</button></div>
+        <div class="layui-form-item"><span style="color: red;margin-right: 5px;">${cardLP.index}、</span>${card} &nbsp;<button type="button" style="float: right;" value="${card}" onclick="copy(this)" class="layui-badge layui-badge-blue cardStr cardStr${card}">复制</button></div>
         @}
     </div>
     <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
-        <button class="layui-btn" id="cardEditSubmit" lay-filter="exportSubmit" lay-submit>导出</button>
+        <a href="${ctxPath}/cardInfo/addExport?cards=${cardsStr}" class="layui-btn" id="exportSubmit" >导出</a>
     </div>
-</form>
+<!--</form>-->
+<script src="${ctxPath}/assets/expand/plugins/jquery/clipboard.min.js"></script>
+<script>
+    function copy(even){
+        var value = even.value;
+        var cla = '.cardStr' + value;
+        var clipboard = new ClipboardJS(cla, {
+            text: function () {
+                return value;
+            }
+        });
+        clipboard.on('success', function (e) {
+            e.clearSelection();
+            Feng.success("已复制到粘贴板");
+            return false;
+        });
+        clipboard.on('error', function (e) {
+            e.clearSelection();
+            Feng.error("复制失败");
+            return false;
+        });
+    }
+
+</script>
