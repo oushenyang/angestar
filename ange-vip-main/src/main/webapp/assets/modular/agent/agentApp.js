@@ -172,7 +172,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         top.layui.admin.open({
             type: 2,
             title: '代理充值',
-            area: '500px',
+            area: ['500px','368px'],
             content: Feng.ctxPath + '/agentApp/recharge?agentAppId=' + data[0].agentAppId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
@@ -195,7 +195,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         top.layui.admin.open({
             type: 2,
             title: '权限配置',
-            area: '700px',
+            area: ['700px','404px'],
             content: Feng.ctxPath + '/agentApp/power?agentPowerId=' + data[0].agentPowerId + '&agentAppId=' + data[0].agentAppId+ '&type=' + Feng.getUrlParam("type"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);
@@ -218,8 +218,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool','dropdown'], func
         top.layui.admin.open({
             type: 2,
             title: '卡密配置',
-            area: '800px',
-            // area: ['800px', '1000px'], //宽高
+            // area: '800px',
+            area: ['800px', '632px'], //宽高
             content: Feng.ctxPath + '/agentApp/card?agentAppId=' + data[0].agentAppId + '&appId=' + data[0].appId+ '&type=' + Feng.getUrlParam("type"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(AgentApp.tableId);

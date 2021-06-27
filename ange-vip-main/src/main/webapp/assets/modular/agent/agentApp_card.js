@@ -143,7 +143,7 @@ layui.use(['table', 'form', 'formX', 'admin', 'ax', 'element', 'notice'], functi
         cols: AgentApp.initColumn(),
     });
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
+    // admin.iframeAuto();
 
     /**
      * 初始化单码卡类
