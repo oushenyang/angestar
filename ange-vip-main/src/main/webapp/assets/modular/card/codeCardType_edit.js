@@ -27,7 +27,7 @@ layui.use(['form','formX','admin', 'ax'], function () {
     var admin = layui.admin;
 
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
+    // admin.iframeAuto();
 
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/codeCardType/detail?cardTypeId=" + Feng.getUrlParam("cardTypeId"));

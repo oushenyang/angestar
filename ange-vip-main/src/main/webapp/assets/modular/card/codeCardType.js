@@ -73,7 +73,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
             {field: 'createTime', sort: true, title: '创建时间'},
             {field: 'status',  templet: '#statusTpl', title: '状态'},
             {field: 'sort', title: '排序'},
-            {align: 'center', toolbar: '#tableBar', width: 80, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 90, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -94,8 +94,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加单码卡类列表',
-            area: '700px',
+            title: '新增单码卡类',
+            area: ['700px','499px'],
             content: Feng.ctxPath + '/codeCardType/add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(CodeCardType.tableId);
@@ -124,8 +124,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '修改单码卡类列表',
-            area: '700px',
+            title: '编辑单码卡类',
+            area: ['700px','499px'],
             content: Feng.ctxPath + '/codeCardType/edit?cardTypeId=' + data.cardTypeId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(CodeCardType.tableId);
