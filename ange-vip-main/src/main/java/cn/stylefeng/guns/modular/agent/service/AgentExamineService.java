@@ -71,4 +71,12 @@ public interface AgentExamineService extends IService<AgentExamine> {
      * @param agentExamineParam
      */
     void actRefuse(AgentExamineParam agentExamineParam);
+
+    /**
+     * 代理端申请代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    void agentApplyAddItem(AgentExamineParam agentExamineParam);
 }

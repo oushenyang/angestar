@@ -75,9 +75,6 @@ public class ActAppController extends BaseController {
      */
     @RequestMapping("/add")
     public String add(Model model) {
-        //获取当前用户应用列表
-        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
-        model.addAttribute("appInfoParams", appInfoParams);
         return PREFIX + "/actApp_add.html";
     }
 

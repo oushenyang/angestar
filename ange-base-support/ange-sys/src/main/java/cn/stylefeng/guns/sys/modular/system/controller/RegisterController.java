@@ -22,7 +22,10 @@ import cn.stylefeng.guns.sys.core.constant.state.ManagerStatus;
 import cn.stylefeng.guns.sys.core.exception.InvalidKaptchaException;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.SaltUtil;
+import cn.stylefeng.guns.sys.modular.system.entity.DictType;
+import cn.stylefeng.guns.sys.modular.system.entity.Role;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
+import cn.stylefeng.guns.sys.modular.system.service.RoleService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -30,6 +33,7 @@ import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.response.SuccessResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.code.kaptcha.Constants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +58,9 @@ public class RegisterController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private SessionManager sessionManager;
@@ -107,7 +114,11 @@ public class RegisterController extends BaseController {
         user.setAccount(username);
         user.setPhone(username);
         user.setName(name);
+        QueryWrapper<Role> wrapper = new QueryWrapper<>();
+        wrapper.eq("description", "agent");
+        Role role = roleService.getOne(wrapper);
         user.setRoleCode("agent");
+        user.setRoleId(String.valueOf(role.getRoleId()));
 //        user.setUserType(1);
         user.setCreateTime(new Date());
         user.setStatus(ManagerStatus.OK.getCode());

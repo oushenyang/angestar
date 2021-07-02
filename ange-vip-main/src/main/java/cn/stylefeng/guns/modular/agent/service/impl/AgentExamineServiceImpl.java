@@ -14,6 +14,8 @@ import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentExamineResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import  cn.stylefeng.guns.modular.agent.service.AgentExamineService;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -25,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.rmi.ServerException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +46,12 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
 
     private final UserService userService;
     private final AgentAppService agentAppService;
+    private final AppInfoService appInfoService;
 
-    public AgentExamineServiceImpl(UserService userService, AgentAppService agentAppService) {
+    public AgentExamineServiceImpl(UserService userService, AgentAppService agentAppService, AppInfoService appInfoService) {
         this.userService = userService;
         this.agentAppService = agentAppService;
+        this.appInfoService = appInfoService;
     }
 
     /**
@@ -219,6 +222,59 @@ public class AgentExamineServiceImpl extends ServiceImpl<AgentExamineMapper, Age
         agentExamineParam.setUpdateTime(new Date());
         AgentExamine entity = getEntity(agentExamineParam);
         this.updateById(entity);
+    }
+
+    /**
+     * 代理端申请代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    @Override
+    public void agentApplyAddItem(AgentExamineParam param) {
+        AppInfo appInfo = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_no",param.getAppNo()));
+        if (ObjectUtil.isNull(appInfo)){
+            throw new OperationException(APP_NOT_EXISTED);
+        }
+        Long userId = LoginContextHolder.getContext().getUserId();
+        AgentExamine agentExamine = baseMapper.selectOne(new QueryWrapper<AgentExamine>()
+                .eq("app_id",appInfo.getAppId())
+                .eq("developer_user_id",appInfo.getCreateUser())
+                .eq("agent_user_id",userId)
+//                .eq("agent_grade",1)
+                .eq("examine_status",ExamineStatus.WAITING_DEVELOPER_REVIEW.getCode()));
+        if (ObjectUtil.isNotNull(agentExamine)){
+            if (agentExamine.getPid().equals(appInfo.getCreateUser())){
+                throw new OperationException(INVITED_DEVELOPER);
+            }else {
+                throw new OperationException(INVITED_OTHER_AGENT);
+            }
+
+        }
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>()
+                .eq("app_id",appInfo.getAppId())
+                .eq("agent_user_id",userId));
+        if (ObjectUtil.isNotNull(agentApp)){
+            if (agentApp.getPid().equals(appInfo.getCreateUser())){
+                //您已经是该应用代理，请勿重复操作
+                throw new OperationException(ALREADY_APP_AGENT);
+            }else {
+                //该用户已经代理过该软件，请勿重复操作
+                throw new OperationException(ALREADY_AGENT_APP);
+            }
+        }
+        param.setDeveloperUserId(appInfo.getCreateUser());
+        param.setAppId(appInfo.getAppId());
+        param.setAgentUserId(userId);
+        param.setAgentGrade(1);
+        param.setPid(appInfo.getCreateUser());
+        param.setPids("[" + appInfo.getCreateUser() + "]," + "[" + userId + "],");
+        //申请类型（邀请代理）
+        param.setApplyType(ApplyType.APPLY_AGENT.getCode());
+        //审核状态（等待代理审核）
+        param.setExamineStatus(ExamineStatus.WAITING_DEVELOPER_REVIEW.getCode());
+        AgentExamine entity = getEntity(param);
+        this.save(entity);
     }
 
     private Serializable getKey(AgentExamineParam param){

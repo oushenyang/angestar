@@ -1,9 +1,11 @@
-layui.use(['table', 'form', 'admin', 'ax'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var form = layui.form;
+    var notice = layui.notice;
+    var textool = layui.textool;
 
     /**
      * 代理软件表管理
@@ -47,6 +49,52 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
         queryData['condition'] = $("#condition").val();
         table.reload(AgentApp.tableId, {where: queryData});
     };
+
+    /**
+     * 点击查询按钮
+     */
+    AgentApp.addActApp = function () {
+        admin.open({
+            type: 1,
+            title: '申请应用',
+            area: '500px',
+            url: Feng.ctxPath + '/actApp/add?type='+Feng.getUrlParam("type"),
+            success: function (layero, dIndex) {
+                form.render('select');
+                form.val('actAppForm', {
+                    "balance": 0
+                });
+                textool.init({
+                    // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+                    eleId: null,
+                    // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+                    maxlength: 128
+                });
+                //表单提交事件
+                form.on('submit(actAppSubmit)', function (data) {
+                    data.field.type = Feng.getUrlParam("type");
+                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+                    var ajax = new $ax(Feng.ctxPath + "/actExamine/agentApplyAddItem", function (data) {
+                        top.layer.close(loading);
+                        layer.close(dIndex);
+                        notice.msg('申请成功，请等待审批!', {icon: 1});
+                        table.reload(AgentApp.tableId);
+                        //关掉对话框
+                        admin.closeThisDialog();
+                    }, function (data) {
+                        top.layer.close(loading);
+                        notice.msg('申请失败！'+ data.responseJSON.message, {icon: 2});
+                    });
+                    ajax.set(data.field);
+                    ajax.start();
+                    return false;
+                });
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
+            }
+        });
+    };
+
 
     /**
      * 弹出添加对话框
@@ -241,6 +289,11 @@ layui.use(['table', 'form', 'admin', 'ax'], function () {
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         AgentApp.search();
+    });
+
+    // 搜索按钮点击事件
+    $('#addActApp').click(function () {
+        AgentApp.addActApp();
     });
 
     // 添加按钮点击事件

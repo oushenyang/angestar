@@ -67,6 +67,20 @@ public class AgentExamineController extends BaseController {
     }
 
     /**
+     * 代理端申请代理接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-09
+     */
+    @RequestMapping("/agentApplyAddItem")
+    @ResponseBody
+    public ResponseData agentApplyAddItem(AgentExamineParam agentExamineParam) {
+        this.agentExamineService.agentApplyAddItem(agentExamineParam);
+        return ResponseData.success();
+    }
+
+
+    /**
      * 代理端端新增二级代理接口
      *
      * @author shenyang.ou

@@ -116,6 +116,7 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 应用相关的异常
      */
     ADD_HEAD_ERROR(400, "生成应用头像失败"),
+    APP_NOT_EXISTED(400, "未找到相关应用"),
 
     /**
      * 应用版本相关的异常
@@ -146,8 +147,10 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 代理审核相关异常
      */
     INVITED_AGENT(400, "您已邀请过该代理，请等待代理审批"),
+    INVITED_DEVELOPER(400, "您已申请过该应用，请等待开发者或总代审批"),
     INVITED_OTHER_AGENT(400, "该应用已有其他用户邀请过该代理，您不能重复邀请"),
     ALREADY_AGENT(400, "该用户已经是您的代理，请勿重复操作"),
+    ALREADY_APP_AGENT(400, "您已经是该应用代理，请勿重复操作"),
     ALREADY_AGENT_APP(400, "该用户已经代理过该软件，请勿重复操作"),
     AGREED_AGENT(400, "已同意代理，请勿重复操作"),
 
