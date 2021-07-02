@@ -52,6 +52,9 @@ public class NoneAuthedResources {
             // 登录接口放开过滤
             "/login",
 
+            // 代理注册接口放开过滤
+            "/agentRegister/**",
+
             // session登录失效之后的跳转
             "/global/sessionError",
 

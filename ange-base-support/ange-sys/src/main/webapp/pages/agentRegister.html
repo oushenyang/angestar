@@ -27,26 +27,34 @@
         </div>
         @}
         <div class="layui-form-item layui-input-icon-group">
+            <i class="layui-icon layui-icon-cellphone"></i>
+            <input class="layui-input" id="username" name="username" placeholder="请输入登录手机号"  autocomplete="off" lay-verType="tips" lay-verify="phone" required/>
+        </div>
+        <div class="layui-form-item layui-input-icon-group">
             <i class="layui-icon layui-icon-username"></i>
-            <input class="layui-input" id="username" name="username" placeholder="请输入登录账号"  autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+            <input class="layui-input" id="name" name="name" placeholder="请输入昵称"  autocomplete="off" lay-verType="tips" lay-verify="required" required/>
         </div>
         <div class="layui-form-item layui-input-icon-group">
             <i class="layui-icon layui-icon-password"></i>
-            <input class="layui-input" id="password" name="password" placeholder="请输入登录密码"  type="password" lay-verType="tips" lay-verify="required" required/>
+            <input class="layui-input" name="password" id="password" autocomplete="new-password" placeholder="请输入登录密码" type="password"
+                   lay-verType="tips" lay-verify="required" required/>
         </div>
-        @if(constants.getKaptchaOpen()){
+        <div class="layui-form-item layui-input-icon-group">
+            <i class="layui-icon layui-icon-key"></i>
+            <input class="layui-input" name="password2" placeholder="请再次输入登录密码" type="password"
+                   lay-verType="tips" lay-verify="equalTo" autocomplete="new-password" lay-equalTo="[name=password]" required/>
+        </div>
         <div class="layui-form-item layui-input-icon-group login-captcha-group">
             <i class="layui-icon layui-icon-auz"></i>
             <input class="layui-input" id="kaptcha" placeholder="请输入验证码" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
             <img class="login-captcha" src="${ctxPath}/kaptcha" alt=""/>
         </div>
-        @}
         <div class="layui-form-item">
-            <input type="checkbox" name="remember" title="记住密码" lay-skin="primary" checked>
-            <a href="${ctxPath}/agentRegister" class="layui-link pull-right">代理注册</a>
+            <a href="${ctxPath}/" class="layui-link">返回登录</a>
+            <a href="#" class="layui-link pull-right">忘记密码</a>
         </div>
-        <div class="layui-form-item">
-            <button class="layui-btn layui-btn-fluid" id="submit">登录</button>
+        <div class="layui-form-item" style="margin-bottom: 20px;">
+            <button class="layui-btn layui-btn-fluid" lay-filter="loginSubmit" lay-submit>注册</button>
         </div>
 <!--        <div class="layui-form-item login-oauth-group text-center">-->
 <!--            <a href="${ctxPath}/oauth/render/qq"><i class="layui-icon layui-icon-login-qq" style="color:#3492ed;"></i></a>&emsp;-->
@@ -56,7 +64,7 @@
 <!--        </div>-->
     </div>
 </div>
-<div class="login-copyright">copyright © 2020 暗格网络验证 all rights reserved.</div>
+<div class="login-copyright">copyright © 2021 暗格网络验证 all rights reserved.</div>
 <style>
     body {
         background-image: url("${ctxPath}/assets/common/images/bg-login.jpg");
@@ -215,7 +223,7 @@
 <script type="text/javascript" src="${ctxPath}/assets/common/libs/layui/layui.js?v=${constants.getReleaseVersion()}"></script>
 <script type="text/javascript" src="${ctxPath}/assets/common/js/common.js?v=${constants.getReleaseVersion()}"></script>
 <script>
-    layui.use(['layer', 'form', 'index', 'ax', 'notice'], function () {
+    layui.use(['layer', 'form', 'index', 'ax', 'notice', 'formX'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
@@ -233,41 +241,37 @@
             layer.msg(errorMsg, {icon: 5, anim: 6});
         }
 
-        @if(constants.getTenantOpen()){
-            //初始化租户列表
-            var ajax = new $ax(Feng.ctxPath + "/tenantInfo/listTenants", function (data) {
-                for (var i = 0; i < data.data.length; i++) {
-                    var name = data.data[i].name;
-                    var code = data.data[i].code;
-                    $("#tenantCode").append('<option value="' + code + '">' + name + '</option>');
-                }
-                form.render();
-            }, function (data) {
-            });
-            ajax.start();
-        @}
-
-
-
-        //登录操作
-        $('#submit').click(function () {
-            var ajax = new $ax(Feng.ctxPath + "/login", function (data) {
-                Feng.success("登录成功!");
+        form.on('submit(loginSubmit)', function (obj) {
+            var ajax = new $ax(Feng.ctxPath + "/agentRegister/save", function (data) {
+                Feng.success("注册成功!");
                 index.clearTabCache();
                 window.location.href = Feng.ctxPath + "/";
             }, function (data) {
-                layer.msg("登录失败！" + data.responseJSON.message, {icon: 5, anim: 6});
+                layer.msg("注册失败！" + data.responseJSON.message, {icon: 5, anim: 6});
             });
+            ajax.set("name", $("#name").val());
             ajax.set("username", $("#username").val());
             ajax.set("password", $("#password").val());
-            @if(constants.getTenantOpen()){
-                ajax.set("tenantCode", $("#tenantCode").val());
-            @}
-            @if(constants.getKaptchaOpen()){
-                ajax.set("kaptcha", $("#kaptcha").val());
-            @}
+            ajax.set("kaptcha", $("#kaptcha").val());
             ajax.start();
+            return false;
         });
+
+        // //注册操作
+        // $('#submit').click(function () {
+        //     var ajax = new $ax(Feng.ctxPath + "/agentRegister/save", function (data) {
+        //         Feng.success("注册成功!");
+        //         index.clearTabCache();
+        //         window.location.href = Feng.ctxPath + "/";
+        //     }, function (data) {
+        //         layer.msg("注册失败！" + data.responseJSON.message, {icon: 5, anim: 6});
+        //     });
+        //     ajax.set("name", $("#name").val());
+        //     ajax.set("username", $("#username").val());
+        //     ajax.set("password", $("#password").val());
+        //     ajax.set("kaptcha", $("#kaptcha").val());
+        //     ajax.start();
+        // });
 
     });
     //回车时，默认是登陆

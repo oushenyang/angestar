@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         HttpMethod.POST,
                         "/login",
+                        "/agentRegister/**",
                         "/quick/**"
                 )
 
