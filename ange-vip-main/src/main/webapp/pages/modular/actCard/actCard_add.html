@@ -3,6 +3,22 @@
     <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
         <input name="cardId" type="hidden"/>
         <div class="layui-form-item">
+            <label class="layui-form-label">所属应用<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select name="appId" id="appId" lay-search="" lay-filter="appId" lay-verify="required" lay-verType="tips" required>
+                    <option value="">请选择所属应用</option>
+                    @if(isNotEmpty(agentApps)){
+                    @for(agentApp in agentApps) {
+                    <option value="${agentApp.appId}"
+                            data-agentAppId = "${agentApp.agentAppId}"
+                            data-developerUserId = "${agentApp.developerUserId}">${agentApp.appName}
+                    </option>
+                    @}
+                    @}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
             <div class="layui-input-block">
                 <select name="cardTypeId" lay-search="" lay-verify="required" readonly="" lay-filter="cardTypeId" lay-verType="tips" required>

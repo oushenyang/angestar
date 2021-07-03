@@ -16,15 +16,12 @@
                                 <label class="layui-form-label">所属应用</label>
                                 <div class="layui-input-inline">
                                     <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                        <option value="">请选择所属应用</option>
                                         @if(isNotEmpty(agentApps)){
                                         @for(agentApp in agentApps) {
                                         <option value="${agentApp.appId}"
                                                 data-agentAppId = "${agentApp.agentAppId}"
-                                                data-developerUserId = "${agentApp.developerUserId}"
-                                                @if(agentAppLP.index == 1) {
-                                                selected="selected"
-                                                @}
-                                        >${agentApp.appName}
+                                                data-developerUserId = "${agentApp.developerUserId}">${agentApp.appName}
                                         </option>
                                         @}
                                         @}
@@ -76,7 +73,7 @@
 </script>
 
 <script type="text/html" id="actCardTable-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>新增卡密
+    <button class="pear-btn pear-btn-orange pear-btn-md" lay-event="btnAdd"><i class="fa fa-right fa-plus"></i>新增卡密
     </button>
     <button class="pear-btn pear-btn-success pear-btn-md" lay-event="export"><i
             class="fa fa-right fa-share-square-o"></i>导出

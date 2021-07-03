@@ -37,7 +37,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
                     }
                 }
             },
-            {align: 'center', toolbar: '#tableBar', width: 250, fixed: 'right', title: '操作'}
+            // {align: 'center', toolbar: '#tableBar', width: 250, fixed: 'right', title: '操作'}
         ]];
     };
 

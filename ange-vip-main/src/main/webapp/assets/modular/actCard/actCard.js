@@ -81,10 +81,10 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
      */
     actCard.initColumn = function () {
         return [[
-            {align: 'center', field: 'cardId', fixed: 'left', type: 'checkbox'},
+            {align: 'center', type: 'checkbox'},
             {field: 'appId', hide: true},
             {
-                align: 'center', field: 'appName', fixed: 'left', width: 100, title: '所属应用', templet: function (d) {
+                align: 'center', field: 'appName', width: 100, title: '所属应用', templet: function (d) {
                     if (!d.appName) {
                         return '通用卡密';
                     } else {
@@ -103,7 +103,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
                 }
             },
             {align: 'center', field: 'userName', title: '申请人名称'},
-            {align: 'center', field: 'cardStatus', sort: true, title: '状态', templet: '#cardStatusTpl'},
+            {align: 'center', field: 'cardStatus', title: '状态', templet: '#cardStatusTpl'},
             {align: 'center', field: 'activeTime', sort: true, title: '激活时间'},
             {align: 'center', field: 'expireTime', sort: true, title: '过期时间'},
             {align: 'center', field: 'cardRemark', title: '备注'},
@@ -177,7 +177,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         top.layui.admin.open({
             type: 2,
             title: '新增卡密',
-            area: '700px',
+            area: ['700px','589px'],
             content: Feng.ctxPath + '/actCard/add?agentAppId='+$("select[name=appId] option:selected").attr("data-agentAppId")+'&appId='+$("select[name=appId]").val()+'&developerUserId='+$("select[name=appId] option:selected").attr("data-developerUserId"),
             end: function () {
                 admin.getTempData('formOk') && table.reload(actCard.tableId);

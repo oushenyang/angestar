@@ -37,6 +37,7 @@
 .pear-btn-danger,
 .pear-btn-warming,
 .pear-btn-success,
+.pear-btn-orange,
 .pear-btn-primary {
 	color: #fff !important
 }
@@ -58,6 +59,10 @@
 
 .pear-btn-warming {
 	background-color: #e6a23c !important
+}
+
+.pear-btn-orange {
+	background-color: #F2711C !important
 }
 
 .pear-btn-success {

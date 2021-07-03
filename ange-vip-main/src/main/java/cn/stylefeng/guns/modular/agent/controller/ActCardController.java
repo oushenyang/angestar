@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.agent.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
@@ -75,10 +76,29 @@ public class ActCardController extends BaseController {
      * @Date 2020-05-22
      */
     @RequestMapping("/add")
-    public String add(Model model,Long agentAppId,Long appId) {
-        List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(appId,agentAppId, CardType.SINGLE_CARD.getCode());
-        model.addAttribute("agentCardResults", agentCardResults);
+    public String add(Model model) {
+        //获取分页参数
+        Page page = new Page(1, 100);
+        AgentAppParam agentAppParam = new AgentAppParam();
+        agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
+        model.addAttribute("agentApps", agentApps);
+        model.addAttribute("agentAppsSize", agentApps.size());
+        if(CollectionUtil.isNotEmpty(agentApps)){
+            List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(agentApps.get(0).getAppId(),agentApps.get(0).getAgentAppId(), CardType.SINGLE_CARD.getCode());
+            model.addAttribute("agentCardResults", agentCardResults);
+        }
+
         return PREFIX + "/actCard_add.html";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/findCardTypeByAppIdAndAgentAppId")
+    public ResponseData findCardTypeByAppIdAndAgentAppId(Long appId, Long agentAppId) {
+        List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(appId,agentAppId, CardType.SINGLE_CARD.getCode());
+        return ResponseData.success(agentCardResults);
     }
 
     /**
