@@ -4,6 +4,8 @@ layui.use(['form', 'formX', 'admin', 'ax', 'notice'], function () {
     var form = layui.form;
     var admin = layui.admin;
     var notice = layui.notice;
+    var laydate = layui.laydate;
+    var textool = layui.textool;
     //表单初始赋值
     layui.form.val('cardInfoForm', {
         "addNum": 1
@@ -52,10 +54,15 @@ layui.use(['form', 'formX', 'admin', 'ax', 'notice'], function () {
                 cards += data.data[i] + ",";
             }
             top.layui.admin.open({
-                type: 2,
+                // type: 1,
                 title: '结果导出',
                 area: '600px',
-                content: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards
+                url: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards,
+                tpl: true,
+                success: function (layero, dIndex) {
+                    // 禁止弹窗出现滚动条
+                    // $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                }
             });
             return false;
         }, function (data) {

@@ -770,8 +770,9 @@ layui.use(['table', 'form', 'dropdown', 'admin', 'ax', 'xmSelect', 'laydate', 's
             //批量封禁
         } else if (obj.event === 'customImport') {
             CardInfo.openImportDlg(obj)
-            //批量封禁
+            //导出
         } else if (obj.event === 'export') {
+            obj.name = '导出';
             CardInfo.openEditDlg(obj)
             //批量封禁
         } else if (obj.event === 'prohibition') {

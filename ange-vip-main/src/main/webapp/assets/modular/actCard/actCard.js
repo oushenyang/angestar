@@ -1,11 +1,32 @@
-layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
+layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'laydate'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var form = layui.form;
     var element = layui.element;
+    var laydate = layui.laydate;
+    var textool = layui.textool;
     var dropdown = layui.dropdown;
+
+
+    //日期范围
+    laydate.render({
+        elem: '#createTimeStr',
+        range: true,
+        trigger: 'click',
+
+    });
+    laydate.render({
+        elem: '#activeTimeStr',
+        range: true,
+        trigger: 'click',
+    });
+    laydate.render({
+        elem: '#expireTimeStr',
+        range: true,
+        trigger: 'click',
+    });
 
     /**
      * 代理软件表管理
@@ -22,40 +43,6 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
         queryData['actCardAppId'] = $("select[name=appId]").val();
         table.reload(actCard.tableId, {page:{curr:1},where: queryData});
     });
-
-    // //tab事件监听
-    // element.on('tab(actCardTabBrief)', function(data){
-    //     agentAppId = $(this).attr('data-appId');
-    //     table.render({
-    //         elem: '#' + actCard.tableId + agentAppId,
-    //         url: Feng.ctxPath + '/actCard/list',
-    //         page: true,
-    //         height: "full-115",
-    //         cellMinWidth: 100,
-    //         where:{
-    //             'actCardAppId':$(this).attr('data-appId')
-    //         },
-    //         cols: actCard.initColumn()
-    //     });
-    //     // 行内工具条点击事件
-    //     table.on('tool(' + actCard.tableId + agentAppId+')', function (obj) {
-    //         var data = obj.data;
-    //         var layEvent = obj.event;
-    //         if (layEvent === 'edit') {
-    //             actCard.openEditDlg(data);
-    //         } else if (layEvent === 'delete') {
-    //             actCard.onDeleteItem(data);
-    //         } else if (layEvent === 'recharge') {
-    //             actCard.openRechargeDlg(data);
-    //         } else if (layEvent === 'power') {
-    //             actCard.openPowerDlg(data);
-    //         } else if (layEvent === 'card') {
-    //             actCard.openCardDlg(data);
-    //         } else if (layEvent === 'copy') {
-    //             actCard.copy(data)
-    //         }
-    //     });
-    // });
 
     actCard.copy = function (data) {
         var cla = '.cardCode' + data.cardId;
@@ -82,7 +69,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     actCard.initColumn = function () {
         return [[
             {align: 'center', type: 'checkbox'},
-            {field: 'appId', hide: true},
+            // {field: 'appId', hide: true},
             {
                 align: 'center', field: 'appName', width: 100, title: '所属应用', templet: function (d) {
                     if (!d.appName) {
@@ -94,7 +81,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             },
             {align: 'center', field: 'cardCode', width: 300, title: '卡密', templet: '#cardCodeTpl'},
             {
-                align: 'center', field: 'cardTypeName', sort: true, title: '卡类', templet: function (d) {
+                align: 'center', field: 'cardTypeName', title: '卡类', templet: function (d) {
                     if (!d.cardTypeName) {
                         return '自定义';
                     } else {
@@ -128,45 +115,21 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
      */
     actCard.onDeleteItem = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/actCard/delete", function (data) {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/delete", function (data) {
+                layer.close(loading);
                 Feng.success("删除成功!");
                 table.reload(actCard.tableId);
             }, function (data) {
+                layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("actCardId", data.actCardId);
+            }, true);
+            ajax.set("cardId", data.cardId);
+            ajax.set("cardCode", data.cardCode);
+            ajax.set("appId", data.appId);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);
-    };
-
-    /**
-     * 批量删除
-     *
-     * @param obj 选择的行数据
-     */
-    actCard.batchRemove = function (obj) {
-        let data = table.checkStatus(obj.config.id).data;
-        if (data.length === 0) {
-            Feng.error("未选中数据!");
-            return false;
-        }
-        let ids = "";
-        for (let i = 0; i < data.length; i++) {
-            ids += data[i].actCardId + ",";
-        }
-        ids = ids.substr(0, ids.length - 1);
-        var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/actCard/batchRemove", function (data) {
-                Feng.success("删除成功!");
-                table.reload(actCard.tableId);
-            }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("ids", ids);
-            ajax.start();
-        };
-        Feng.confirm("确定要删除这些数据?", operation);
     };
 
     /**
@@ -203,11 +166,11 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
     var tableResult = table.render({
         elem: '#' + actCard.tableId,
         url: Feng.ctxPath + '/actCard/list',
-        page: true,
-        height: "full-115",
         cellMinWidth: 100,
         toolbar: '#' + actCard.tableId + '-toolbar',
-        defaultToolbar: ['filter', 'print'],
+        defaultToolbar: ['filter'],
+        height: "full-80",
+        page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         where:{
             actCardAppId:$("select[name=appId]").val()
         },
@@ -220,27 +183,423 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown'], function () {
             actCard.openAddDlg();
         } else if (obj.event === 'refresh') {
             table.reload(actCard.tableId);
-        } else if (obj.event === 'batchRemove') {
-            actCard.batchRemove(obj)
+        } else if (obj.event === 'export') {
+            obj.name = '导出';
+            actCard.openEditDlg(obj)
         }
     });
+    /**
+     * 弹出详情
+     */
+    actCard.openDetailDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '详情',
+            area: ['700px', '700px'],
+            content: Feng.ctxPath + '/cardInfo/detail?cardId=' + data.cardId,
+            end: function () {
+                admin.getTempData('formOk');
+            }
+        });
+    };
+
+    /**
+     * 弹出卡密配置
+     */
+    actCard.openConfigEditlDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '卡密配置',
+            area: ['700px', '560px'],
+            content: Feng.ctxPath + '/cardInfo/configEdit?cardId=' + data.cardId,
+            end: function () {
+                admin.getTempData('formOk');
+            }
+        });
+    };
+
+    /**
+     * 点击编辑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.openEditDlg = function (obj) {
+        var url = Feng.ctxPath + '/cardInfo/edit?type=1';
+        admin.open({
+            // type: 1,
+            title: obj.name,
+            area: '600px',
+            url: url,
+            data: {
+                event: obj.event
+            },
+            tpl: true,
+            success: function (layero, dIndex) {
+                //封禁备注
+                textool.init({
+                    // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+                    eleId: null,
+                    // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+                    maxlength: 128
+                });
+                if (obj.event == 'unsealing') {
+                    form.val('cardEditForm', {
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 5
+                    });
+                } else if (obj.event == 'overtime') {
+                    form.val('cardEditForm', {
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
+                    });
+                    laydate.render({
+                        elem: '#addTime',
+                        position: 'fixed',
+                        type: 'datetime',
+                        trigger: 'click',
+                        done: function (value, date) { //监听日期被切换
+                            if (value) {
+                                $("input[name=addDayNum]").attr("disabled", "disabled");
+                                $("input[name=addDayNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addDayNum]").val("");
+                                $("input[name=addHourNum]").attr("disabled", "disabled");
+                                $("input[name=addHourNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addHourNum]").val("");
+                                $("input[name=addMinuteNum]").attr("disabled", "disabled");
+                                $("input[name=addMinuteNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addMinuteNum]").val("");
+                            } else {
+                                $("input[name=addDayNum]").attr("disabled", false);
+                                $("input[name=addDayNum]").attr("class", "layui-input");
+                                $("input[name=addHourNum]").attr("disabled", false);
+                                $("input[name=addHourNum]").attr("class", "layui-input");
+                                $("input[name=addMinuteNum]").attr("disabled", false);
+                                $("input[name=addMinuteNum]").attr("class", "layui-input");
+                            }
+                        }
+                    });
+                } else {
+                    form.val('cardEditForm', {
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
+                    });
+                }
+
+                // form.val('cardEditForm', data);
+                //单选框事件监听
+                form.on('radio(operateFlag)', function (data) {
+                    if (data.value == 0) {
+                        $("select[name=operateApp]").attr("disabled", "disabled");
+                        $("select[name=cardType]").attr("disabled", "disabled");
+                        $("select[name=cardStatus]").attr("disabled", "disabled");
+                        form.render('select');
+                    } else {
+                        $("select[name=operateApp]").attr("disabled", false);
+                        $("select[name=cardType]").attr("disabled", false);
+                        $("select[name=cardStatus]").attr("disabled", false);
+                        form.render('select');
+                    }
+                });
+                //单选框事件监听
+                form.on('radio(exportFlag)', function (data) {
+                    if (data.value == 0) {
+                        $("select[name=splitSymbol]").attr("disabled", false);
+                        form.render('select');
+                    } else {
+                        $("select[name=splitSymbol]").attr("disabled", "disabled");
+                        form.render('select');
+                    }
+                });
+                //表单提交事件
+                form.on('submit(cardEditSubmit)', function (data) {
+                    // admin.showLoading(undefined, 3, '.8');
+                    var loading = layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+                    let idData = table.checkStatus(obj.config.id).data;
+                    let ids = "";
+                    for (let i = 0; i < idData.length; i++) {
+                        ids += idData[i].cardId + ",";
+                    }
+                    ids = ids.substr(0, ids.length - 1);
+                    if (data.field.operateFlag == 0 && idData.length == 0) {
+                        layer.close(loading);
+                        layer.msg('未选中数据!', {icon: 2});
+                        return false;
+                    }
+                    data.field.ids = ids;
+                    data.field.event = obj.event;
+                    if (obj.event == 'export') {
+                        layer.close(loading);
+                        window.location.href = Feng.ctxPath + "/cardInfo/exportCard?data=" + JSON.stringify(data.field);
+                    } else {
+                        var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                            layer.close(loading);
+                            layer.closeAll();
+                            layer.msg("更新成功！", {icon: 1});
+                            table.reload(CardInfo.tableId);
+                            //关掉对话框
+                            admin.closeThisDialog();
+                        }, function (data) {
+                            layer.close(loading);
+                            layer.msg("更新失败！" + data.responseJSON.message, {icon: 2});
+                        }, true);
+                        ajax.set(data.field);
+                        ajax.start();
+                    }
+                    return false;
+                });
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
+            }
+        });
+    };
+
+    /**
+     * 点击编辑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.openItemEditDlg = function (obj) {
+        var url = Feng.ctxPath + '/cardInfo/itemEdit?type=1';
+        admin.open({
+            // type: 1,
+            title: obj.name,
+            area: '600px',
+            url: url,
+            data: {
+                event: obj.event
+            },
+            tpl: true,
+            success: function (layero, dIndex) {
+                //封禁备注
+                textool.init({
+                    // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+                    eleId: 'prohibitRemark',
+                    // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+                    maxlength: 128
+                });
+                //封禁备注
+                textool.init({
+                    // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
+                    eleId: 'cardData',
+                    // 批量设置输入框最大长度，可结合 eleId 单独设置最大长度
+                    maxlength: 255
+                });
+                if (obj.event === 'unsealing') {
+                    form.val('cardEditForm', {
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 5
+                    });
+                } else if (obj.event === 'itemEdit') {
+                    table.render({
+                        elem: '#device',
+                        url: Feng.ctxPath + '/device/list',
+                        page: true,
+                        defaultToolbar: [],
+                        height: "full-398",
+                        cellMinWidth: 100,
+                        where: {
+                            'cardType': 1,
+                            'cardOrUserId': obj.data.cardId
+                        },
+                        cols: [[
+                            {field: 'mac', align: 'center', title: 'MAC'},
+                            {field: 'ip', align: 'center', title: 'IP'},
+                            {field: 'ipAddress', align: 'center', title: 'IP地址'},
+                            {field: 'loginNum', align: 'center', title: '登录次数'},
+                            {field: 'updateTime', align: 'center', width: 100, sort: true, title: '上次登录时间'},
+                            {align: 'center', toolbar: '#tableBar', width: 50, fixed: 'right', title: '操作'}
+                        ]],
+                    });
+                } else if (obj.event === 'itemOvertime') {
+                    obj.event = 'overtime';
+                    laydate.render({
+                        elem: '#addTime',
+                        position: 'fixed',
+                        type: 'datetime',
+                        trigger: 'click',
+                        done: function (value, date) { //监听日期被切换
+                            if (value) {
+                                $("input[name=addDayNum]").attr("disabled", "disabled");
+                                $("input[name=addDayNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addDayNum]").val("");
+                                $("input[name=addHourNum]").attr("disabled", "disabled");
+                                $("input[name=addHourNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addHourNum]").val("");
+                                $("input[name=addMinuteNum]").attr("disabled", "disabled");
+                                $("input[name=addMinuteNum]").attr("class", "layui-input layui-disabled");
+                                $("input[name=addMinuteNum]").val("");
+                            } else {
+                                $("input[name=addDayNum]").attr("disabled", false);
+                                $("input[name=addDayNum]").attr("class", "layui-input");
+                                $("input[name=addHourNum]").attr("disabled", false);
+                                $("input[name=addHourNum]").attr("class", "layui-input");
+                                $("input[name=addMinuteNum]").attr("disabled", false);
+                                $("input[name=addMinuteNum]").attr("class", "layui-input");
+                            }
+                        }
+                    });
+                } else if (obj.event === 'itemData') {
+                    obj.event = 'data';
+                } else {
+                    form.val('cardEditForm', {
+                        "organizationType": 1,
+                        "cardType": 1,
+                        "cardStatus": 1
+                    });
+                }
+                //单选框事件监听
+                form.on('radio(operateFlag)', function (data) {
+                    if (data.value == 0) {
+                        $("select[name=operateApp]").attr("disabled", "disabled");
+                        $("select[name=cardType]").attr("disabled", "disabled");
+                        $("select[name=cardStatus]").attr("disabled", "disabled");
+                        form.render('select');
+                    } else {
+                        $("select[name=operateApp]").attr("disabled", false);
+                        $("select[name=cardType]").attr("disabled", false);
+                        $("select[name=cardStatus]").attr("disabled", false);
+                        form.render('select');
+                    }
+                });
+                //表单提交事件
+                form.on('submit(cardItemEditSubmit)', function (data) {
+                    var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+                    data.field.ids = obj.data.cardId;
+                    data.field.event = obj.event;
+                    data.field.operateFlag = 0;
+                    var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                        top.layer.close(loading);
+                        layer.closeAll();
+                        layer.msg("操作成功！", {icon: 1});
+                        table.reload(actCard.tableId);
+                        //关掉对话框
+                        admin.closeThisDialog();
+                    }, function (data) {
+                        top.layer.close(loading);
+                        layer.msg("操作失败！" + data.responseJSON.message, {icon: 2});
+                    }, true);
+                    ajax.set(data.field);
+                    ajax.start();
+                    return false;
+                });
+                // 禁止弹窗出现滚动条
+                $(layero).children('.layui-layer-content').css('overflow', 'visible');
+            }
+        });
+    };
+
+    /**
+     * 点击封禁
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.itemProhibition = function (obj) {
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                layer.close(loading);
+                Feng.success("封禁成功!");
+                table.reload(actCard.tableId);
+            }, function (data) {
+                layer.close(loading);
+                Feng.error("封禁失败!" + data.responseJSON.message + "!");
+            }, true);
+            ajax.set("ids", obj.data.cardId);
+            ajax.set("operateFlag", 0);
+            ajax.set("event", "prohibition");
+            ajax.start();
+        };
+        Feng.confirm("是否封禁?", operation);
+    };
+
+    /**
+     * 点击解绑
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.itemUntying = function (obj) {
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                layer.close(loading);
+                Feng.success("解绑成功!");
+                table.reload(actCard.tableId);
+            }, function (data) {
+                layer.close(loading);
+                Feng.error("解绑失败!" + data.responseJSON.message + "!");
+            }, true);
+            ajax.set("ids", obj.data.cardId);
+            ajax.set("operateFlag", 0);
+            ajax.set("event", "untying");
+            ajax.start();
+        };
+        Feng.confirm("是否解绑?", operation);
+    };
+
+    /**
+     * 点击解封
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.itemUnsealing = function (obj) {
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
+                layer.close(loading);
+                Feng.success("解封成功!");
+                table.reload(actCard.tableId);
+            }, function (data) {
+                layer.close(loading);
+                Feng.error("解封失败!" + data.responseJSON.message + "!");
+            }, true);
+            ajax.set("ids", obj.data.cardId);
+            ajax.set("operateFlag", 0);
+            ajax.set("event", "unsealing");
+            ajax.start();
+        };
+        Feng.confirm("是否解封?", operation);
+    };
+
     // 行内工具条点击事件
-    table.on('tool(' + actCard.tableId +')', function (obj) {
+    table.on('tool(' + actCard.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
 
-        if (layEvent === 'edit') {
+        if (layEvent === 'detail') {
+            actCard.openDetailDlg(data);
+        } else if (layEvent === 'edit') {
             actCard.openEditDlg(data);
         } else if (layEvent === 'delete') {
             actCard.onDeleteItem(data);
-        } else if (layEvent === 'recharge') {
-            actCard.openRechargeDlg(data);
-        } else if (layEvent === 'power') {
-            actCard.openPowerDlg(data);
-        } else if (layEvent === 'card') {
-            actCard.openCardDlg(data);
         } else if (layEvent === 'copy') {
             actCard.copy(data)
+        } else if (layEvent === 'itemEdit') {
+            obj.name = '卡密编辑';
+            actCard.openItemEditDlg(obj)
+        } else if (layEvent === 'itemProhibition') {
+            obj.name = '卡密封禁';
+            actCard.itemProhibition(obj)
+        } else if (layEvent === 'itemUnsealing') {
+            obj.name = '卡密解封';
+            actCard.itemUnsealing(obj)
+        } else if (layEvent === 'itemOvertime') {
+            obj.name = '卡密加时';
+            actCard.openItemEditDlg(obj)
+        } else if (layEvent === 'itemConfig') {
+            obj.name = '卡密配置';
+            actCard.openConfigEditlDlg(data)
+        } else if (layEvent === 'itemData') {
+            obj.name = '卡密数据';
+            actCard.openItemEditDlg(obj)
+        } else if (layEvent === 'itemUntying') {
+            obj.name = '卡密解绑';
+            actCard.itemUntying(obj)
         }
     });
 });
