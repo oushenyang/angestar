@@ -47,6 +47,12 @@ public class AgentApp implements Serializable {
     private String agentAppNo;
 
     /**
+     * 应用快捷页面编号
+     */
+    @TableField("agent_app_quick")
+    private String agentAppQuick;
+
+    /**
      * 应用id
      */
     @TableField("app_id")
@@ -155,6 +161,14 @@ public class AgentApp implements Serializable {
 
     public void setAgentAppNo(String agentAppNo) {
         this.agentAppNo = agentAppNo;
+    }
+
+    public String getAgentAppQuick() {
+        return agentAppQuick;
+    }
+
+    public void setAgentAppQuick(String agentAppQuick) {
+        this.agentAppQuick = agentAppQuick;
     }
 
     public Long getAppId() {

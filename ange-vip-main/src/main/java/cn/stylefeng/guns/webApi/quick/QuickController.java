@@ -1,9 +1,17 @@
 package cn.stylefeng.guns.webApi.quick;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
-import cn.stylefeng.guns.modular.agent.entity.AgentPower;
+import cn.stylefeng.guns.core.constant.type.CardType;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
+import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
+import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -19,10 +27,9 @@ import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
-import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.DISABLE_AGENT;
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 
 @Controller
@@ -45,15 +51,20 @@ public class QuickController {
     private final AppInfoService appInfoService;
 
     private final CodeCardTypeService codeCardTypeService;
+    private final AgentCardService agentCardService;
+
+    private final AgentAppService agentAppService;
 
     private final CardInfoService cardInfoService;
     private final UserService userService;
     private final DeviceService deviceService;
     private final RedisUtil redisUtil;
 
-    public QuickController(AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, CardInfoService cardInfoService, UserService userService, DeviceService deviceService, RedisUtil redisUtil) {
+    public QuickController(AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, AgentCardService agentCardService, AgentAppService agentAppService, CardInfoService cardInfoService, UserService userService, DeviceService deviceService, RedisUtil redisUtil) {
         this.appInfoService = appInfoService;
         this.codeCardTypeService = codeCardTypeService;
+        this.agentCardService = agentCardService;
+        this.agentAppService = agentAppService;
         this.cardInfoService = cardInfoService;
         this.userService = userService;
         this.deviceService = deviceService;
@@ -129,6 +140,21 @@ public class QuickController {
     }
 
     /**
+     * 代理卡密新增接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/agentAddItem")
+    @ResponseBody
+    public ResponseData agentAddItem(CardInfoParam cardInfoParam) {
+        User user = userService.getById(cardInfoParam.getUserId());
+        cardInfoParam.setUserName(user.getName());
+        List<String> cardInfos = this.cardInfoService.actAddItem(cardInfoParam);
+        return ResponseData.success(cardInfos);
+    }
+
+    /**
      * 新增结果导出txt
      *
      * @author shenyang.ou
@@ -151,6 +177,27 @@ public class QuickController {
         List<String> cardList = Arrays.asList(cards.split(","));
         model.addAttribute("cards", cardList);
         return PREFIX + "/cardInfo_add_result.html";
+    }
+
+    /**
+     * 代理卡密生成页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @RequestMapping("/agentCardAdd/{agentAppQuick}")
+    public String agentCardAdd(@PathVariable String agentAppQuick, Model model) {
+        //获取当前用户应用
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>().eq("agent_app_quick",agentAppQuick));
+        if (ObjectUtil.isNull(agentApp)){
+            return "/index.html";
+        }
+        AppInfo appInfo = appInfoService.getById(agentApp.getAppId());
+        model.addAttribute("agentApp", agentApp);
+        model.addAttribute("appInfo", appInfo);
+        List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(agentApp.getAppId(),agentApp.getAgentAppId(), CardType.SINGLE_CARD.getCode());
+        model.addAttribute("agentCardResults", agentCardResults);
+        return PREFIX + "/actCard_add.html";
     }
 
 }

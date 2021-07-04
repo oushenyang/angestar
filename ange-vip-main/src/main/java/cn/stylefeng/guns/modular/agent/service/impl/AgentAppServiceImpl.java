@@ -19,6 +19,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
+import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.guns.sys.core.util.NumToChUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
@@ -92,6 +93,8 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         agentApp.setAppId(entity.getAppId());
         agentApp.setDeveloperUserId(entity.getDeveloperUserId());
         agentApp.setAgentUserId(entity.getAgentUserId());
+        agentApp.setAgentAppNo(CardStringRandom.num("",12));
+        agentApp.setAgentAppQuick(CardStringRandom.wordAndNum("",12));
         agentApp.setAgentGrade(1);
         agentApp.setBalance(new BigDecimal(BigInteger.ZERO));
         agentApp.setAgentAppIdPid(0L);

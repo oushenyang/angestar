@@ -8,6 +8,7 @@
         <result column="agent_app_id_pid" property="agentAppIdPid" />
         <result column="agent_app_id_pids" property="agentAppIdPids" />
         <result column="agent_app_no" property="agentAppNo" />
+        <result column="agent_app_quick" property="agentAppQuick" />
         <result column="app_id" property="appId" />
         <result column="developer_user_id" property="developerUserId" />
         <result column="agent_user_id" property="agentUserId" />
@@ -31,6 +32,7 @@
         aa.agent_app_id_pid AS "agentAppIdPid",
         aa.agent_app_id_pids AS "agentAppIdPids",
         aa.agent_app_no AS "agentAppNo",
+        aa.agent_app_quick AS "agentAppQuick",
         aa.app_id AS "appId",
         aa.developer_user_id AS "developerUserId",
         aa.agent_user_id AS "agentUserId",

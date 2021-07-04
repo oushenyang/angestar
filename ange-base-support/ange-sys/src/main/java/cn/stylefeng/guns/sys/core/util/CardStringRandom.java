@@ -121,7 +121,7 @@ public class CardStringRandom {
     /**
      * 生成数字
      */
-    private static String num(String cardTypePrefix,Integer cardTypeLength){
+    public static String num(String cardTypePrefix, Integer cardTypeLength){
         String base = "0123456789";
         Random random = new Random();
 //        StringBuilder sb = new StringBuilder(cardTypePrefix);

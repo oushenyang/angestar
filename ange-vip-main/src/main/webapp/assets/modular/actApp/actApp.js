@@ -1,8 +1,9 @@
-layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool', 'func'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var func = layui.func;
     var form = layui.form;
     var notice = layui.notice;
     var textool = layui.textool;
@@ -23,6 +24,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
             // {field: 'agentPowerId', hide: true},
             // {field: 'appId', hide: true},
             {align: 'center', field: 'appName', title: '应用名称'},
+            {align: 'center', field: 'agentAppNo', title: '应用编号'},
             {align: 'center', field: 'pidUserName', title: '上级名称'},
             {align: 'center', field: 'agentGradeName', sort: true, title: '代理等级'},
             // {align: 'center', field: 'agentUserAccount', rowspan: 2, title: '代理账号'},
@@ -41,7 +43,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
                     }
                 }
             },
-            // {align: 'center', toolbar: '#tableBar', width: 250, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -246,6 +248,24 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
     };
 
     /**
+     * 快捷页面
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    AgentApp.openQuickDlg = function (data) {
+        admin.putTempData('formOk', false);
+        func.open({
+            type: 2,
+            area: '700px',
+            title: '快捷页面',
+            content: Feng.ctxPath + '/actApp/quick?agentAppId=' + data.agentAppId,
+            endCallback: function () {
+                // AgentApp.loadAppInfo();
+            }
+        });
+    };
+
+    /**
      * 批量删除
      *
      * @param obj 选择的行数据
@@ -336,6 +356,8 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
             AgentApp.openPowerDlg(data);
         } else if (layEvent === 'card') {
             AgentApp.openCardDlg(data);
+        } else if (layEvent === 'quick') {
+            AgentApp.openQuickDlg(data);
         }
     });
 });

@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.agent.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
@@ -139,8 +140,11 @@ public class ActCardController extends BaseController {
     @RequestMapping("/checkPower")
     @ResponseBody
     public ResponseData checkPower(Long appId,String powerStr) {
+        Boolean su = false;
         AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>().eq("app_id",appId).eq("agent_user_id", LoginContextHolder.getContext().getUserId()));
-        Boolean su = agentPowerService.checkPower(agentApp.getAgentAppId(),powerStr);
+        if (ObjectUtil.isNotNull(agentApp)){
+            su = agentPowerService.checkPower(agentApp.getAgentAppId(),powerStr);
+        }
         return ResponseData.success(su);
     }
 

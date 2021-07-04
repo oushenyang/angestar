@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.agent.model.result;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import java.util.Date;
 import java.io.Serializable;
@@ -43,6 +44,11 @@ public class AgentAppResult implements Serializable {
      * 代理应用编号
      */
     private String agentAppNo;
+
+    /**
+     * 应用快捷页面编号
+     */
+    private String agentAppQuick;
 
     /**
      * 应用id

@@ -451,9 +451,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     @Override
     @Transactional
     public List<String> actAddItem(CardInfoParam cardInfoParam) {
-        cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
-        cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
-        cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
+        if (cardInfoParam.getUserId()==null){
+            cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
+            cardInfoParam.setCreateUser(cardInfoParam.getDeveloperUserId());
+            cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
+        }
+
         //先检查有没有新增权限
         AgentPower agentPower = agentPowerService.getOne(new QueryWrapper<AgentPower>()
                 .eq("agent_app_id",cardInfoParam.getAgentAppId()));
@@ -527,7 +530,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     deductionAmount));
         }
         param.setCreateTime(new Date());
-        param.setCreateUser(LoginContextHolder.getContext().getUserId());
+        param.setCreateUser(cardInfoParam.getUserId());
         agentBuyCardService.add(param);
         //生成批次号
         cardInfoParam.setBatchNo(batchNo);

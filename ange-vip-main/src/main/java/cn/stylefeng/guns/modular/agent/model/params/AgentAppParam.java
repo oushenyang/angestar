@@ -47,6 +47,11 @@ public class AgentAppParam implements Serializable, BaseValidatingParam {
     private String agentAppNo;
 
     /**
+     * 应用快捷页面编号
+     */
+    private String agentAppQuick;
+
+    /**
      * 应用id
      */
     private Long appId;

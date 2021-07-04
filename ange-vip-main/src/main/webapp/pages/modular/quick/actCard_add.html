@@ -1,0 +1,68 @@
+@layout("/common/_form.html",{plugins:["clipboard"],bg:"bg-white",js:["/assets/modular/quick/actCard_add.js"]}){
+<form id="cardInfoForm" lay-filter="cardInfoForm" style="padding:10px!important;" class="layui-form layui-form-pane model-form">
+    <fieldset class="layui-elem-field">
+        <legend style="text-align: center!important;">${appInfo.appName}-卡密生成</legend>
+        <div class="layui-field-box">
+            <div class="layui-fluid" style="padding-bottom: 25px;margin-top: -15px;">
+                <input name="cardId" type="hidden"/>
+                <input name="appId" id="appId" value="${appInfo.appId}" type="hidden"/>
+                <input name="agentAppId" id="agentAppId" value="${agentApp.agentAppId}" type="hidden"/>
+                <input name="userId" id="userId" value="${agentApp.agentUserId}" type="hidden"/>
+                <input name="createUser" id="createUser" value="${agentApp.developerUserId}" type="hidden"/>
+                <input name="developerUserId" id="developerUserId" value="${agentApp.developerUserId}" type="hidden"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <select name="cardTypeId" lay-search="" lay-verify="required" readonly=""
+                                lay-filter="cardTypeId" lay-verType="tips" required>
+                            <option value="">请选择卡密类型</option>
+                            @if(isNotEmpty(agentCardResults)){
+                            @for(codeCardType in agentCardResults) {
+                            <option value="${codeCardType.cardTypeId}">${codeCardType.cardTypeName}</option>
+                            @}
+                            @}
+                        </select>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">自定义头</label>
+                    <div class="layui-input-block">
+                        <input id="cardTypePrefix" name="cardTypePrefix" placeholder="请输入自定义头" maxlength="5" type="text"
+                               lay-verify="noChina" class="layui-input" lay-verType="tips"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
+                    <div class="layui-input-block">
+                        <input id="addNum" name="addNum" placeholder="请输入新增数量" type="number" class="layui-input" min="1"
+                               max="200" lay-verify="required|numberX|h5"
+                               oninput="if(value>200)value=200;if(value<1)value=1" lay-verType="tips" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">卡密备注</label>
+                    <div class="layui-input-block">
+                        <textarea id="cardRemark" name="cardRemark" placeholder="请输入卡密备注" maxlength="128"
+                                  class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text"  id="cardAddResultBar">
+                    <label class="layui-form-label">卡密结果</label>
+                    <div class="layui-input-block">
+                        <!--                        <textarea class="layui-textarea">-->
+                        <div class="layui-fluid" style="max-height: 500px;overflow: auto;border-width: 1px;border-style: solid;border-color: #e6e6e6;background-color: #fff;" id="cardAddResultBarItem">
+                        </div>
+                        <!--                        </textarea>-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group-bottom text-right">
+                <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">重置</button>
+                <button class="layui-btn" lay-filter="exportSubmit" lay-submit>导出</button>
+                <button class="layui-btn" lay-filter="cardBtnSubmit" lay-submit>提交</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+@}

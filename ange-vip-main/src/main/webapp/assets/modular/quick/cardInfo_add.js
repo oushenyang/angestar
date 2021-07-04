@@ -100,6 +100,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
             //关掉对话框
             admin.closeThisDialog();
             $('#cardAddResultBar').show();
+            cards = "";
             $('#cardAddResultBarItem').html("");
             for (let i = 0; i < result.data.length; i++) {
                 cards += result.data[i] + ",";

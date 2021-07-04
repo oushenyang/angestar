@@ -65,7 +65,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
             type: 2,
             area: '700px',
             title: '快捷页面',
-            content: Feng.ctxPath + '/appInfo/quick?appId=' + data.appId +'&appNum='+data.appNum,
+            content: Feng.ctxPath + '/appInfo/quick?appId=' + data.appId +'&appNum='+data.agentAppQuick,
             endCallback: function () {
                 AppInfo.loadAppInfo();
             }

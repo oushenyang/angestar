@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -113,6 +115,19 @@ public class ActAppController extends BaseController {
     @RequestMapping("/power")
     public String power() {
         return PREFIX + "/agentApp_power.html";
+    }
+
+    /**
+     * 快捷页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @RequestMapping("/quick")
+    public String quick(Long agentAppId, Model model) {
+        AgentApp agentApp = this.agentAppService.getById(agentAppId);
+        model.addAttribute("agentApp", agentApp);
+        return PREFIX + "/actApp_quick.html";
     }
 
     /**

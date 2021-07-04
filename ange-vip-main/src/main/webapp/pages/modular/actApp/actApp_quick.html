@@ -1,0 +1,22 @@
+@layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/actApp/actApp_quick.js"]}){
+<style>
+    .layui-form-select dl{
+        z-index: 19891018;
+    }
+</style>
+<form id="actAppForm" lay-filter="actAppForm" style="padding:0!important;" class="layui-form layui-form-pane model-form agentAppAdd">
+    <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 15px;">
+        <input name="agentAppId" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">卡密新增<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <input id="cardAddUrl" name="cardAddUrl" readonly value="${constants.getApiUrl()}quick/agentCardAdd/${agentApp.agentAppQuick!}" type="text" class="layui-input"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right" style="position: absolute;bottom: 0;left: 0;right: 0;background-color: #fff;padding: 10px 20px;border-top: 1px solid #f0f0f0;text-align: right;">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">关闭</button>
+<!--        <button class="layui-btn actAppSubmit" lay-filter="actAppSubmit" lay-submit>提交</button>-->
+    </div>
+</form>
+@}
