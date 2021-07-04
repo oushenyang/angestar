@@ -137,11 +137,17 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
      * 激活时间
      */
     private Date activeTime;
+    private String activeTimeStr;
+    private String activeTimeStart;
+    private String activeTimeEnd;
 
     /**
      * 过期时间
      */
     private Date expireTime;
+    private String expireTimeStr;
+    private String expireTimeStart;
+    private String expireTimeEnd;
 
     /**
      * 绑机配置 0-默认；1-关闭；2-MAC；3-IP；4-混合；
@@ -227,6 +233,9 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
      * 创建时间
      */
     private Date createTime;
+    private String createTimeStr;
+    private String createTimeStart;
+    private String createTimeEnd;
 
     /**
      * 更新人

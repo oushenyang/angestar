@@ -17,6 +17,7 @@ import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -207,6 +208,18 @@ public class ActCardController extends BaseController {
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
         cardInfoParam.setUserId(LoginContextHolder.getContext().getUserId());
+        if (StringUtils.isNotEmpty(cardInfoParam.getCreateTimeStr())){
+            cardInfoParam.setCreateTimeStart(cardInfoParam.getCreateTimeStr().substring(0, 10));
+            cardInfoParam.setCreateTimeEnd(cardInfoParam.getCreateTimeStr().substring(12, 23));
+        }
+        if (StringUtils.isNotEmpty(cardInfoParam.getActiveTimeStr())){
+            cardInfoParam.setActiveTimeStart(cardInfoParam.getActiveTimeStr().substring(0, 10));
+            cardInfoParam.setActiveTimeEnd(cardInfoParam.getActiveTimeStr().substring(12, 23));
+        }
+        if (StringUtils.isNotEmpty(cardInfoParam.getExpireTimeStr())){
+            cardInfoParam.setExpireTimeStart(cardInfoParam.getExpireTimeStr().substring(0, 10));
+            cardInfoParam.setExpireTimeEnd(cardInfoParam.getExpireTimeStr().substring(12, 23));
+        }
         //根据条件查询操作日志
         List<Map<String, Object>> result = cardInfoService.findListBySpec(page, cardInfoParam);
         page.setRecords(result);

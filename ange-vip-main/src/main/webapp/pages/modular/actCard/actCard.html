@@ -10,23 +10,59 @@
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
             <div class="layui-card">
                 <div class="layui-card-body">
-                    <div class="layui-form toolbar layui-form-pane">
+                    <div class="layui-form toolbar">
                         <div class="layui-form-item">
-                            <div class="layui-form-item layui-inline">
-                                <label class="layui-form-label">所属应用</label>
-                                <div class="layui-input-inline">
-                                    <select name="appId" id="appId" lay-search="" lay-filter="appId">
-                                        <option value="">请选择所属应用</option>
-                                        @if(isNotEmpty(agentApps)){
-                                        @for(agentApp in agentApps) {
-                                        <option value="${agentApp.appId}"
-                                                data-agentAppId = "${agentApp.agentAppId}"
-                                                data-developerUserId = "${agentApp.developerUserId}">${agentApp.appName}
-                                        </option>
-                                        @}
-                                        @}
-                                    </select>
-                                </div>
+                            <div class="layui-inline">
+                                <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                    <option value="">请选择所属应用</option>
+                                    @if(isNotEmpty(agentApps)){
+                                    @for(agentApp in agentApps) {
+                                    <option value="${agentApp.appId}"
+                                            data-agentAppId = "${agentApp.agentAppId}"
+                                            data-developerUserId = "${agentApp.developerUserId}">${agentApp.appName}
+                                    </option>
+                                    @}
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <input id="cardCode" class="layui-input" type="text" placeholder="卡密"/>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
+                                    <option value="">卡密类型</option>
+                                </select>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <select name="cardStatus" id="cardStatus" lay-search="" lay-filter="cardStatus">
+                                    <option value="">卡密状态</option>
+                                    <option value="0">未激活</option>
+                                    <option value="1">已激活</option>
+                                    <option value="2">已过期</option>
+                                    <option value="3">已禁用</option>
+                                </select>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <input id="cardRemark" class="layui-input" type="text" placeholder="卡密备注"/>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <input id="createTimeStr" readonly class="layui-input" type="text" placeholder="创建时间"/>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <input id="activeTimeStr" readonly class="layui-input" type="text" placeholder="激活时间"/>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
+                                <input id="expireTimeStr" readonly class="layui-input" type="text" placeholder="过期时间"/>
+                            </div>
+
+                            <!--                            <div class="layui-inline">-->
+                            <!--                                <input id="cardStatus" class="layui-input" type="text" placeholder="卡密状态"/>-->
+                            <!--                            </div>-->
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
+                                <button id="btnReset" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
+                                <a class="layui-btn form-search-expand" search-expand>
+                                    展开 <i class="layui-icon layui-icon-down"></i></a>
                             </div>
                         </div>
                     </div>

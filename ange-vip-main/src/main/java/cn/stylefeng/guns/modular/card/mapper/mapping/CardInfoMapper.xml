@@ -289,6 +289,15 @@
             <if test="param.cardRemark != null and param.cardRemark !=''">
                 and cci.card_remark like CONCAT('%',#{param.cardRemark},'%')
             </if>
+            <if test="param.activeTimeStr != null and param.activeTimeStr !=''">
+                and date_format(cci.active_time, '%Y-%m-%d') BETWEEN date_format(#{param.activeTimeStart}, '%Y-%m-%d') AND date_format(#{param.activeTimeEnd}, '%Y-%m-%d')
+            </if>
+            <if test="param.expireTimeStr != null and param.expireTimeStr !=''">
+                and date_format(cci.expire_time, '%Y-%m-%d') BETWEEN date_format(#{param.expireTimeStart}, '%Y-%m-%d') AND date_format(#{param.expireTimeEnd}, '%Y-%m-%d')
+            </if>
+            <if test="param.createTimeStr != null and param.createTimeStr !=''">
+                and date_format(cci.create_time, '%Y-%m-%d') BETWEEN date_format(#{param.createTimeStart}, '%Y-%m-%d') AND date_format(#{param.createTimeEnd}, '%Y-%m-%d')
+            </if>
         </where>
         order by cci.create_time DESC
     </select>

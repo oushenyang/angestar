@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -403,6 +404,18 @@ public class CardInfoController extends BaseController {
         //获取分页参数
         Page page = LayuiPageFactory.defaultPage();
         cardInfoParam.setCreateUser(LoginContextHolder.getContext().getUserId());
+        if (StringUtils.isNotEmpty(cardInfoParam.getCreateTimeStr())){
+            cardInfoParam.setCreateTimeStart(cardInfoParam.getCreateTimeStr().substring(0, 10));
+            cardInfoParam.setCreateTimeEnd(cardInfoParam.getCreateTimeStr().substring(12, 23));
+        }
+        if (StringUtils.isNotEmpty(cardInfoParam.getActiveTimeStr())){
+            cardInfoParam.setActiveTimeStart(cardInfoParam.getActiveTimeStr().substring(0, 10));
+            cardInfoParam.setActiveTimeEnd(cardInfoParam.getActiveTimeStr().substring(12, 23));
+        }
+        if (StringUtils.isNotEmpty(cardInfoParam.getExpireTimeStr())){
+            cardInfoParam.setExpireTimeStart(cardInfoParam.getExpireTimeStr().substring(0, 10));
+            cardInfoParam.setExpireTimeEnd(cardInfoParam.getExpireTimeStr().substring(12, 23));
+        }
         //根据条件查询操作日志
         List<Map<String, Object>> result = cardInfoService.findListBySpec(page, cardInfoParam);
         page.setRecords(result);

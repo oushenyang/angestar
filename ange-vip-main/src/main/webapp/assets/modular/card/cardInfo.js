@@ -102,12 +102,12 @@ layui.use(['table', 'form', 'dropdown', 'admin', 'ax', 'xmSelect', 'laydate', 's
         var queryData = {};
         queryData['appId'] = $("#appId").val();
         queryData['cardTypeId'] = $("#cardTypeId").val();
-        queryData['cardCode'] = $("#cardCode").val();
+        queryData['cardCode'] = $("#cardCode").val().trim();
         queryData['cardStatus'] = $("#cardStatus").val();
         queryData['createTimeStr'] = $("#createTimeStr").val();
         queryData['activeTimeStr'] = $("#activeTimeStr").val();
         queryData['expireTimeStr'] = $("#expireTimeStr").val();
-        queryData['cardRemark'] = $("#cardRemark").val();
+        queryData['cardRemark'] = $("#cardRemark").val().trim();
         table.reload(CardInfo.tableId, {
             where: queryData, page: {curr: 1}
         });

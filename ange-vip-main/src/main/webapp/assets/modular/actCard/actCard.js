@@ -103,9 +103,42 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
      */
     actCard.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
-        table.reload(actCard.tableId, {page:{curr:1},where: queryData});
+        queryData['appId'] = $("#appId").val();
+        queryData['cardTypeId'] = $("#cardTypeId").val();
+        queryData['cardCode'] = $("#cardCode").val().trim();
+        queryData['cardStatus'] = $("#cardStatus").val();
+        queryData['createTimeStr'] = $("#createTimeStr").val();
+        queryData['activeTimeStr'] = $("#activeTimeStr").val();
+        queryData['expireTimeStr'] = $("#expireTimeStr").val();
+        queryData['cardRemark'] = $("#cardRemark").val().trim();
+        table.reload(actCard.tableId, {
+            where: queryData, page: {curr: 1}
+        });
     };
+
+    //应用选择下拉框事件监听
+    form.on('select(appId)', function (data) {
+        $("select[name=cardTypeId]").empty();
+        form.render('select');
+        var appId = $("select[name=appId]").val();
+        var agentAppId = $("select[name=appId] option:selected").attr("data-agentAppId");
+        var ajax = new $ax(Feng.ctxPath + "/actCard/findCardTypeByAppIdAndAgentAppId", function (result) {
+            var list = result.data;
+            if (list.length > 0) {
+                var html="<option value=''>请选择卡密类型</option>";
+                for (var key in list) {
+                    html += "<option value='" + list[key].cardTypeId + "'>" + list[key].cardTypeName + "</option>";
+                }
+                $("select[name=cardTypeId]").append(html);
+                form.render('select');
+            }
+        }, function (data) {
+            Feng.error("获取卡类信息失败！" + data.responseJSON.message)
+        }, true);
+        ajax.set('appId', appId);
+        ajax.set('agentAppId', agentAppId);
+        ajax.start();
+    });
 
 
     /**
@@ -151,6 +184,31 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         actCard.search();
+    });
+
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#cardTypeId").val("");
+        $("#cardCode").val("");
+        $("#cardStatus").val("");
+        $("#createTimeStr").val("");
+        $("#activeTimeStr").val("");
+        $("#expireTimeStr").val("");
+        $("#cardRemark").val("");
+        queryData['appId'] = "";
+        queryData['cardTypeId'] = "";
+        queryData['cardCode'] = "";
+        queryData['cardStatus'] = "";
+        queryData['createTimeStr'] = "";
+        queryData['activeTimeStr'] = "";
+        queryData['expireTimeStr'] = "";
+        queryData['cardRemark'] = "";
+        form.render();
+        table.reload(actCard.tableId, {
+            where: queryData, page: {curr: 1}
+        });
     });
 
     // 添加按钮点击事件

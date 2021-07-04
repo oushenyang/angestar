@@ -99,12 +99,12 @@ public class QuickController {
     @RequestMapping("/cardUnBind/unBindItem")
     @ResponseBody
     public ResponseData unBindItem(String card,Long appId) {
-        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card));
+        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card.trim()));
         if (ObjectUtil.isNull(cardInfo)){
             throw new OperationException(UN_FIND_CARD);
         }
         //删除卡密缓存
-        redisUtil.del(RedisType.CARD_INFO.getCode() + card);
+        redisUtil.del(RedisType.CARD_INFO.getCode() + card.trim());
         deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
         return ResponseData.success();
     }
