@@ -93,7 +93,9 @@
     <ul class="dropdown-menu-nav dropdown-bottom-right layui-hide" id="dropUser{{d.LAY_INDEX}}">
         <div class="dropdown-anchor"></div>
         <!--        <li><a lay-event="itemEdit"><i class="fa fa-right fa-edit fa-fw"></i>卡密编辑</a></li>-->
-        {{# if(d.cardStatus != 3){ }}
+        {{# if(d.cardStatus == 3){ }}
+        <li><a lay-event="itemUnsealing"><i class="fa fa-right fa-check-circle fa-fw"></i>卡密解封</a></li>
+        {{# } else { }}
         <li><a lay-event="itemProhibition"><i class="fa fa-right fa-ban fa-fw"></i>卡密封禁</a></li>
         {{# } }}
         <li><a lay-event="itemOvertime"><i class="fa fa-right fa-clock-o fa-fw"></i>卡密加时</a></li>

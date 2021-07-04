@@ -27,10 +27,14 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
             {align: 'center', field: 'agentGradeName', sort: true, title: '代理等级'},
             // {align: 'center', field: 'agentUserAccount', rowspan: 2, title: '代理账号'},
             {align: 'center', field: 'createTime', sort: true, title: '合作时间'},
-            {align: 'center', field: 'balance',title: '余额'},
+            {
+                align: 'center', field: 'balance', title: '余额', templet: function (d) {
+                    return '<span style="color: #fd6b00">' + '¥' + d.balance + '</span>';
+                }
+            },
             {
                 align: 'center', field: 'status', title: '状态', templet: function (d) {
-                    if (d.status==0) {
+                    if (d.status == 0) {
                         return '正常';
                     } else {
                         return '冻结';
@@ -46,7 +50,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
      */
     AgentApp.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appId'] = $("#appId").val();
         table.reload(AgentApp.tableId, {where: queryData});
     };
 
@@ -58,7 +62,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
             type: 1,
             title: '申请应用',
             area: '500px',
-            url: Feng.ctxPath + '/actApp/add?type='+Feng.getUrlParam("type"),
+            url: Feng.ctxPath + '/actApp/add?type=' + Feng.getUrlParam("type"),
             success: function (layero, dIndex) {
                 form.render('select');
                 form.val('actAppForm', {
@@ -83,7 +87,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
                         admin.closeThisDialog();
                     }, function (data) {
                         top.layer.close(loading);
-                        notice.msg('申请失败！'+ data.responseJSON.message, {icon: 2});
+                        notice.msg('申请失败！' + data.responseJSON.message, {icon: 2});
                     });
                     ajax.set(data.field);
                     ajax.start();
@@ -281,7 +285,7 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool'], function () {
         //     layEvent: 'refresh',
         //     icon: 'layui-icon-refresh',
         // }, 'filter', 'print'],
-        height: "full-115",
+        height: "full-80",
         cellMinWidth: 100,
         cols: AgentApp.initColumn()
     });

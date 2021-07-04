@@ -137,7 +137,11 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         param.setCreateTime(date);
 //        param.setUserName(LoginContextHolder.getContext().getUserName());
         param.setCardStatus(CardStatus.NOT_ACTIVE.getCode());
-        param.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+        if (StringUtils.isNotEmpty(param.getBatchNo())){
+            param.setBatchNo(param.getBatchNo());
+        }else {
+            param.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+        }
         param.setCardBindType(0);
         param.setCardSignType(1);
         param.setCardOpenRange(0);

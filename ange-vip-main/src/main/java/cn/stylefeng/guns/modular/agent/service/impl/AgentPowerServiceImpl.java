@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.agent.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
@@ -34,9 +35,6 @@ import java.util.List;
  */
 @Service
 public class AgentPowerServiceImpl extends ServiceImpl<AgentPowerMapper, AgentPower> implements AgentPowerService {
-//    @Autowired
-//    AgentAppService agentAppService;
-
     @Override
     public void add(AgentPowerParam param){
         AgentPower entity = getEntity(param);
@@ -148,6 +146,45 @@ public class AgentPowerServiceImpl extends ServiceImpl<AgentPowerMapper, AgentPo
         QueryWrapper<AgentPower> objectQueryWrapper = new QueryWrapper<>();
         IPage page = this.page(pageContext, objectQueryWrapper);
         return LayuiPageFactory.createPageInfo(page);
+    }
+
+    /**
+     * 查看是否有权限
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    @Override
+    public Boolean checkPower(Long agentAppId, String powerStr) {
+        AgentPower agentPower = baseMapper.selectOne(new QueryWrapper<AgentPower>().eq("agent_app_id",agentAppId));
+        Boolean su = false;
+        switch (powerStr){
+            case "cardDisable":
+                su = agentPower.getCardDisable();
+                break;
+            case "cardLook":
+                su = agentPower.getCardLook();
+                break;
+            case "cardData":
+                su = agentPower.getCardData();
+                break;
+            case "cardTime":
+                su = agentPower.getCardTime();
+                break;
+            case "cardDelete":
+                su = agentPower.getCardDelete();
+                break;
+            case "cardEdit":
+                su = agentPower.getCardEdit();
+                break;
+            case "cardConfig":
+                su = agentPower.getCardConfig();
+                break;
+            case "cardRelieve":
+                su = agentPower.getCardRelieve();
+                break;
+        }
+        return su;
     }
 
     private Serializable getKey(AgentPowerParam param){

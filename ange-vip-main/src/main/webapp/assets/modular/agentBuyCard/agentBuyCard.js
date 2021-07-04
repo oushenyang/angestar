@@ -59,7 +59,7 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AgentBuyCard.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appId'] = $("#appId").val();
         table.reload(AgentBuyCard.tableId, {where: queryData});
     };
 
@@ -96,17 +96,35 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    AgentBuyCard.openEditDlg = function (data) {
-        admin.putTempData('formOk', false);
-        top.layui.admin.open({
-            type: 2,
-            title: '修改代理购卡记录',
-            area: '700px',
-            content: Feng.ctxPath + '/agentBuyCard/edit?agentBuyCardId=' + data.agentBuyCardId,
-            end: function () {
-                admin.getTempData('formOk') && table.reload(AgentBuyCard.tableId);
+    AgentBuyCard.openDetailDlg = function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/agentBuyCard/getCardsByBatchNo", function (result) {
+            console.log(result.data)
+            if (result.data.length>0){
+                let cards = "";
+                for (let i = 0; i < result.data.length; i++) {
+                    cards += result.data[i].cardCode + ",";
+                }
+                top.layui.admin.open({
+                    // type: 1,
+                    title: '结果导出',
+                    area: '600px',
+                    url: Feng.ctxPath + '/cardInfo/addResult?cards=' + cards,
+                    tpl: true,
+                    success: function (layero, dIndex) {
+                        // 禁止弹窗出现滚动条
+                        // $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                    }
+                });
+                return false;
+            }else {
+                Feng.error("无卡密!");
             }
+
+        }, function (data) {
+            Feng.error(data.responseJSON.message + "!");
         });
+        ajax.set("batchNo", data.batchNo);
+        ajax.start();
     };
 
     /**
@@ -202,8 +220,8 @@ layui.use(['table', 'admin', 'ax'], function () {
         var data = obj.data;
         var layEvent = obj.event;
 
-        if (layEvent === 'edit') {
-            AgentBuyCard.openEditDlg(data);
+        if (layEvent === 'detail') {
+            AgentBuyCard.openDetailDlg(data);
         } else if (layEvent === 'delete') {
             AgentBuyCard.onDeleteItem(data);
         }

@@ -88,4 +88,11 @@ public interface AgentPowerService extends IService<AgentPower> {
      */
      LayuiPageInfo findPageBySpec(AgentPowerParam param);
 
+    /**
+     * 查看是否有权限
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    Boolean checkPower(Long agentAppId, String powerStr);
 }

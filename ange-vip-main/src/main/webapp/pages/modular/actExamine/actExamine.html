@@ -13,10 +13,20 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                                <select name="appId" id="appId" lay-search="" lay-filter="appId">
+                                    <option value="">请选择应用</option>
+                                    @if(isNotEmpty(agentApps)){
+                                    @for(agentApp in agentApps) {
+                                    <option value="${agentApp.appId}"
+                                            data-agentAppId = "${agentApp.agentAppId}"
+                                            data-developerUserId = "${agentApp.developerUserId}">${agentApp.appName}
+                                    </option>
+                                    @}
+                                    @}
+                                </select>
                             </div>
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
                             </div>
                         </div>
                     </div>

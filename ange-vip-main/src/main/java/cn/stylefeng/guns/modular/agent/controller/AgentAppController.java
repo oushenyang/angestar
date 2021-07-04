@@ -63,8 +63,18 @@ public class AgentAppController extends BaseController {
     @RequestMapping("")
     public String index(Model model,Integer type) {
         //获取当前用户应用列表
-        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
-        model.addAttribute("appInfoParams", appInfoParams);
+        if (type==1){
+            List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+            model.addAttribute("appInfoParams", appInfoParams);
+        }else {
+            //获取分页参数
+            Page page = new Page(1, 100);
+            AgentAppParam agentAppParam = new AgentAppParam();
+            agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
+            //根据条件查询操作日志
+            List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
+            model.addAttribute("agentApps", agentApps);
+        }
         model.addAttribute("type", type);
         return PREFIX + "/agentApp.html";
     }

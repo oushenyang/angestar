@@ -4,8 +4,11 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentExamine;
+import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentExamineService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
@@ -35,6 +38,9 @@ public class AgentExamineController extends BaseController {
     @Autowired
     private AgentExamineService agentExamineService;
 
+    @Autowired
+    private AgentAppService agentAppService;
+
     /**
      * 跳转到主页面
      *
@@ -44,6 +50,13 @@ public class AgentExamineController extends BaseController {
     @RequestMapping("")
     public String index(Model model, Integer type) {
         model.addAttribute("type", type);
+        //获取分页参数
+        Page page = new Page(1, 100);
+        AgentAppParam agentAppParam = new AgentAppParam();
+        agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
+        model.addAttribute("agentApps", agentApps);
         return PREFIX + "/actExamine.html";
     }
 

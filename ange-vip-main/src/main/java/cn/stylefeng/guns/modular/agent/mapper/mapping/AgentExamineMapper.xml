@@ -58,6 +58,9 @@
             <if test="param.developerUserId != null and param.developerUserId !=''">
                 and aae.developer_user_id = #{param.developerUserId}
             </if>
+            <if test="param.appId != null and param.appId !=''">
+                and aae.app_id = #{param.appId}
+            </if>
             <if test="param.agentUserId != null and param.agentUserId !=''">
                 and aae.agent_user_id = #{param.agentUserId}
             </if>

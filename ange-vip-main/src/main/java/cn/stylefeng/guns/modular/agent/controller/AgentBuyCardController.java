@@ -4,10 +4,16 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.agent.entity.AgentBuyCard;
+import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentBuyCardParam;
+import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
+import cn.stylefeng.guns.modular.card.entity.CardInfo;
+import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +40,12 @@ public class AgentBuyCardController extends BaseController {
     @Autowired
     private AgentBuyCardService agentBuyCardService;
 
+    @Autowired
+    private CardInfoService cardInfoService;
+
+    @Autowired
+    private AgentAppService agentAppService;
+
     /**
      * 跳转到主页面
      *
@@ -43,6 +55,13 @@ public class AgentBuyCardController extends BaseController {
     @RequestMapping("")
     public String index(Model model, Integer type) {
         model.addAttribute("type", type);
+        //获取分页参数
+        Page page = new Page(1, 100);
+        AgentAppParam agentAppParam = new AgentAppParam();
+        agentAppParam.setAgentUserId(LoginContextHolder.getContext().getUserId());
+        //根据条件查询操作日志
+        List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
+        model.addAttribute("agentApps", agentApps);
         return PREFIX + "/agentBuyCard.html";
     }
 
@@ -84,6 +103,19 @@ public class AgentBuyCardController extends BaseController {
     public ResponseData detail(AgentBuyCardParam agentBuyCardParam) {
         AgentBuyCard detail = this.agentBuyCardService.getById(agentBuyCardParam.getAgentBuyCardId());
         return ResponseData.success(detail);
+    }
+
+    /**
+     * 通过卡密批次号查询相关卡密
+     *
+     * @author shenyang.ou
+     * @Date 2020-12-11
+     */
+    @RequestMapping("/getCardsByBatchNo")
+    @ResponseBody
+    public ResponseData getCardsByBatchNo(AgentBuyCardParam agentBuyCardParam) {
+        List<CardInfo> cardInfos = this.cardInfoService.list(new QueryWrapper<CardInfo>().eq("batch_no",agentBuyCardParam.getBatchNo()));
+        return ResponseData.success(cardInfos);
     }
 
     /**

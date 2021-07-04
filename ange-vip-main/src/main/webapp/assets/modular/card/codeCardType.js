@@ -165,10 +165,10 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         if (checked) {
             var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/unfreeze", function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 notice.msg('解除冻结成功!', {icon: 1});
             }, function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 notice.msg("解除冻结失败!" + data.responseJSON.message + "!", {icon: 2});
                 table.reload(CodeCardType.tableId);
             },true);
@@ -177,10 +177,10 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         } else {
             var loading = top.layer.msg('导入中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/codeCardType/freeze", function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 notice.msg('冻结成功!', {icon: 1});
             }, function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 notice.msg("冻结失败!" + data.responseJSON.message + "!", {icon: 2});
                 table.reload(CodeCardType.tableId);
             },true);

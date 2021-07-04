@@ -5,6 +5,7 @@ import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.core.constant.type.CardType;
+import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.entity.AgentCard;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentCardParam;
@@ -12,13 +13,14 @@ import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
 import cn.stylefeng.guns.modular.agent.model.result.AgentCardResult;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
+import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -42,12 +44,14 @@ public class ActCardController extends BaseController {
     private String PREFIX = "/modular/actCard";
 
     private final AgentCardService agentCardService;
+    private final AgentPowerService agentPowerService;
     private final AgentAppService agentAppService;
     private final CardInfoService cardInfoService;
 
-    public ActCardController(AgentAppService agentAppService, AgentCardService agentCardService,CardInfoService cardInfoService) {
+    public ActCardController(AgentAppService agentAppService, AgentCardService agentCardService, AgentPowerService agentPowerService, CardInfoService cardInfoService) {
         this.agentAppService = agentAppService;
         this.agentCardService = agentCardService;
+        this.agentPowerService = agentPowerService;
         this.cardInfoService = cardInfoService;
     }
 
@@ -124,6 +128,20 @@ public class ActCardController extends BaseController {
     public ResponseData addItem(AgentCardParam agentCardParam) {
         this.agentCardService.add(agentCardParam);
         return ResponseData.success();
+    }
+
+    /**
+     * 查看是否有权限
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-22
+     */
+    @RequestMapping("/checkPower")
+    @ResponseBody
+    public ResponseData checkPower(Long appId,String powerStr) {
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>().eq("app_id",appId).eq("agent_user_id", LoginContextHolder.getContext().getUserId()));
+        Boolean su = agentPowerService.checkPower(agentApp.getAgentAppId(),powerStr);
+        return ResponseData.success(su);
     }
 
     /**

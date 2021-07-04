@@ -552,6 +552,30 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         });
     };
 
+
+    /**
+     * 查看权限
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    actCard.checkPower = function (obj) {
+        var su = false;
+        var ajax = new $ax(Feng.ctxPath + "/actCard/checkPower", function (result) {
+            if (result.data){
+                su =  true;
+            }else {
+                Feng.error("暂无操作权限，请联系上级开通此权限！");
+            }
+        }, function (data) {
+            Feng.error(data.responseJSON.message + "!");
+            return false;
+        });
+        ajax.set("appId", obj.data.appId);
+        ajax.set("powerStr", obj.powerStr);
+        ajax.start();
+        return su;
+    };
+
     /**
      * 点击封禁
      *
@@ -561,11 +585,11 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         var operation = function () {
             var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/cardInfo/editItem", function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 Feng.success("封禁成功!");
                 table.reload(actCard.tableId);
             }, function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 Feng.error("封禁失败!" + data.responseJSON.message + "!");
             }, true);
             ajax.set("ids", obj.data.cardId);
@@ -630,11 +654,17 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         var layEvent = obj.event;
 
         if (layEvent === 'detail') {
-            actCard.openDetailDlg(data);
+            obj.powerStr = 'cardLook';
+            if (actCard.checkPower(obj)){
+                actCard.openDetailDlg(data)
+            }
         } else if (layEvent === 'edit') {
             actCard.openEditDlg(data);
         } else if (layEvent === 'delete') {
-            actCard.onDeleteItem(data);
+            obj.powerStr = 'cardDelete';
+            if (actCard.checkPower(obj)){
+                actCard.onDeleteItem(data)
+            }
         } else if (layEvent === 'copy') {
             actCard.copy(data)
         } else if (layEvent === 'itemEdit') {
@@ -642,22 +672,40 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
             actCard.openItemEditDlg(obj)
         } else if (layEvent === 'itemProhibition') {
             obj.name = '卡密封禁';
-            actCard.itemProhibition(obj)
+            obj.powerStr = 'cardDisable';
+            if (actCard.checkPower(obj)){
+                actCard.itemProhibition(obj)
+            }
         } else if (layEvent === 'itemUnsealing') {
             obj.name = '卡密解封';
-            actCard.itemUnsealing(obj)
+            obj.powerStr = 'cardDisable';
+            if (actCard.checkPower(obj)){
+                actCard.itemUnsealing(obj)
+            }
         } else if (layEvent === 'itemOvertime') {
             obj.name = '卡密加时';
-            actCard.openItemEditDlg(obj)
+            obj.powerStr = 'cardTime';
+            if (actCard.checkPower(obj)){
+                actCard.openItemEditDlg(obj)
+            }
         } else if (layEvent === 'itemConfig') {
             obj.name = '卡密配置';
-            actCard.openConfigEditlDlg(data)
+            obj.powerStr = 'cardConfig';
+            if (actCard.checkPower(obj)){
+                actCard.openConfigEditlDlg(data)
+            }
         } else if (layEvent === 'itemData') {
             obj.name = '卡密数据';
-            actCard.openItemEditDlg(obj)
+            obj.powerStr = 'cardData';
+            if (actCard.checkPower(obj)){
+                actCard.openItemEditDlg(obj)
+            }
         } else if (layEvent === 'itemUntying') {
             obj.name = '卡密解绑';
-            actCard.itemUntying(obj)
+            obj.powerStr = 'cardRelieve';
+            if (actCard.checkPower(obj)){
+                actCard.itemUntying(obj)
+            }
         }
     });
 });
