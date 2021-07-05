@@ -267,6 +267,8 @@ public class CreateNamePicture {
         if(nameWritten.length() ==1) {
             // 中文
             if(isChinese(nameWritten)) {
+//                Font newFont = Font.createFont(Font.TRUETYPE_FONT, in);
+
                 font = new Font("黑体", Font.PLAIN, 50);
                 g2.setFont(font);
                 g2.drawString(nameWritten, 25, 70);

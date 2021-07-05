@@ -50,21 +50,21 @@
     <select id="findListBySpec" resultType="cn.stylefeng.guns.modular.agent.model.result.AgentAppResult">
         select
         (SELECT COUNT(aci.serial_id) FROM ag_serial_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )
         and aci.active_time is null) AS accountNoActiveNum,
         (SELECT COUNT(aci.serial_id) FROM ag_serial_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )
         and aci.active_time is not null) AS accountActiveNum,
         (SELECT COUNT(aci.serial_id) FROM ag_serial_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )) AS accountAllNum,
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )) AS accountAllNum,
         (SELECT COUNT(aci.card_id) FROM ag_card_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )
         and aci.active_time is null) AS cardNoActiveNum,
         (SELECT COUNT(aci.card_id) FROM ag_card_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )
         and aci.active_time is not null) AS cardActiveNum,
         (SELECT COUNT(aci.card_id) FROM ag_card_info aci WHERE
-        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.pid, '$]%') escape '$' )) AS cardAllNum,
+        aci.user_id in (select aaa.agent_user_id from ag_agent_app aaa where aaa.pids like CONCAT('%$[', aa.agent_user_id, '$]%') escape '$' )) AS cardAllNum,
         su.`name` AS agentUserName,
         su.`account` AS agentUserAccount,
         (select `name` from sys_user where user_id = aa.pid) AS pidUserName,
