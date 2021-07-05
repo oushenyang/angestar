@@ -3,6 +3,7 @@ package cn.stylefeng.guns.sys.core.util;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
@@ -19,11 +20,14 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Resources;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -225,72 +229,45 @@ public class CreateNamePicture {
             }
         }
         //Font font = new Font("微软雅黑", Font.PLAIN, 30);
+        InputStream inputStream = ResourceUtil.getStreamSafe("weiruan.ttf");
+//        InputStream inputStream = Resources.class.getResourceAsStream("/weiruan.ttf");
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+            font = font.deriveFont(Font.PLAIN, 50);
+            GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            localGraphicsEnvironment.registerFont(font);
+            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = localGraphicsEnvironment.createGraphics(bi);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setFont(font);
 
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            g2.setBackground(getRandomColor());
 
-        Graphics2D g2 = (Graphics2D) bi.getGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.clearRect(0, 0, width, height);
 
-        g2.setBackground(getRandomColor());
-
-        g2.clearRect(0, 0, width, height);
-
-        g2.setPaint(Color.WHITE);
-
-
-        Font font = null;
-        // 两个字及以上
-//        if(nameWritten.length() >= 2) {
-//            font = new Font("微软雅黑", Font.PLAIN, 30);
-//            g2.setFont(font);
-//
-//            String firstWritten = nameWritten.substring(0, 1);
-//            String secondWritten = nameWritten.substring(1, 2);
-//
-//            // 两个中文 如 张三
-//            if (isChinese(firstWritten) && isChinese(secondWritten)) {
-//                g2.drawString(nameWritten, 20, 60);
-//            }
-//            // 首中次英 如 张S
-//            else if (isChinese(firstWritten) && !isChinese(secondWritten)) {
-//                g2.drawString(nameWritten, 27, 60);
-//
-//            }
-//            // 首英,如 ZS
-//            else {
-//                nameWritten = nameWritten.substring(0,1);
-//            }
-//
-//        }
-        // 一个字
-        if(nameWritten.length() ==1) {
-            // 中文
-            if(isChinese(nameWritten)) {
-//                Font newFont = Font.createFont(Font.TRUETYPE_FONT, in);
-
-                font = new Font("黑体", Font.PLAIN, 50);
-                g2.setFont(font);
-                g2.drawString(nameWritten, 25, 70);
+            g2.setPaint(Color.WHITE);
+            // 一个字
+            if(nameWritten.length() ==1) {
+                // 中文
+                if(isChinese(nameWritten)) {
+                    g2.drawString(nameWritten, 25, 70);
+                }// 英文
+                else {
+                    g2.drawString(nameWritten.toUpperCase(), 33, 67);
+                }
             }
-            // 英文
-            else {
-                font = new Font("黑体", Font.PLAIN, 55);
-                g2.setFont(font);
-                g2.drawString(nameWritten.toUpperCase(), 33, 67);
-            }
-
+            BufferedImage rounded = makeRoundedCorner(bi, 99);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();//io流
+            ImageIO.write(rounded, "png", baos);//写入流中
+            byte[] bytes = baos.toByteArray();//转换成字节
+            BASE64Encoder encoder = new BASE64Encoder();
+            String png_base64 = encoder.encodeBuffer(bytes).trim();//转换成base64串
+            png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");//删除 \r\n
+            return "data:image/jpg;base64,"+png_base64;
+        } catch (FontFormatException e) {
+            e.printStackTrace();
         }
-
-        BufferedImage rounded = makeRoundedCorner(bi, 99);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();//io流
-        ImageIO.write(rounded, "png", baos);//写入流中
-        byte[] bytes = baos.toByteArray();//转换成字节
-        BASE64Encoder encoder = new BASE64Encoder();
-        String png_base64 = encoder.encodeBuffer(bytes).trim();//转换成base64串
-        png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");//删除 \r\n
-        return "data:image/jpg;base64,"+png_base64;
-//        ImageIO.write(rounded, "png", file);
+        return null;
     }
 
 

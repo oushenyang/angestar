@@ -110,9 +110,9 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
                 if (data.length === 0){
                     $('#ew-datagrid-page-appInfoTable').hide();
                     $('#appInfoTable').attr("style",'min-height: 650px;position: relative;');
-                    $('#appInfoTable').html('<div class="no_result">' +
+                    $('#appInfoTable').html('<div class="no_result" style="padding: 200px 0;">' +
                         '<p><img width="106" height="130" src="'+Feng.ctxPath+'/assets/expand/images/no_result.png" alt="找不到结果为空相关搜索结果"></p>' +
-                        '<p class="words"><span class="line">没有找到合适的应用</span>' +
+                        '<p class="words"><span class="line" style="color: #aaa">暂无数据</span>' +
                         '</p>' +
                         '</div>')
                 }

@@ -58,6 +58,11 @@ body {
     overflow: hidden;
 }
 
+/* 表格表头颜色 */
+.layui-table thead tr, .layui-table-click, .layui-table-header,  .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even){
+    background-color: #F9FAFB!important;
+}
+
 .layui-layout-admin .layui-header .layui-logo img {
     height: 28px;
     vertical-align: middle;
