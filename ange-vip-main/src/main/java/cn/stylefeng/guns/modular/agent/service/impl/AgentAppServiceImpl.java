@@ -270,6 +270,17 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         return baseMapper.agentNum(userId);
     }
 
+    /**
+     * 获取下级代理
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    @Override
+    public List<User> getAgentUserByUserId(Long userId) {
+        return baseMapper.getAgentUserByUserId(userId);
+    }
+
     private Serializable getKey(AgentAppParam param) {
         return param.getAgentAppId();
     }

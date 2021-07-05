@@ -112,5 +112,13 @@
         count(agent_app_id)
         from ag_agent_app where developer_user_id = #{userId} and agent_app_id_pid = 0
     </select>
+    <select id="getAgentUserByUserId" resultType="cn.stylefeng.guns.sys.modular.system.entity.User">
+       SELECT
+       su.*
+       FROM
+       ag_agent_app  aaa
+       LEFT JOIN sys_user su ON su.user_id = aaa.agent_user_id
+       WHERE aaa.pids like CONCAT('%$[', #{userId}, '$]%') escape '$'
+    </select>
 
 </mapper>

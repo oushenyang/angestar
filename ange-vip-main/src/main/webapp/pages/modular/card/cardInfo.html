@@ -28,6 +28,14 @@
                                 <input id="cardCode" class="layui-input" type="text" placeholder="卡密"/>
                             </div>
                             <div class="layui-inline form-search-show-expand">
+                                <select name="userIdParam" id="userIdParam"  lay-filter="userIdParam">
+                                    <option value="">申请人</option>
+                                    @for(user in userList!) {
+                                    <option value="${user.userId}">${user.name!}</option>
+                                    @}
+                                </select>
+                            </div>
+                            <div class="layui-inline form-search-show-expand">
                                 <select name="cardTypeId" id="cardTypeId" lay-search="" lay-filter="cardTypeId">
                                     <option value="">卡密类型</option>
                                     @if(tool.isNotEmpty(type)){

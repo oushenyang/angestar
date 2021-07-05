@@ -365,7 +365,7 @@ public class ConstantsContext {
      * 获取系统地密钥过期时间（单位：秒）
      */
     public static Long getJwtSecretExpireSec() {
-        Long defaultSecs = 86400L;
+        Long defaultSecs = 604800L;
         String systemReleaseVersion = (String) CONSTNTS_HOLDER.get("GUNS_JWT_SECRET_EXPIRE");
         if (ToolUtil.isEmpty(systemReleaseVersion)) {
             log.error("jwt密钥存在空值！常量名称：GUNS_JWT_SECRET_EXPIRE，采用默认值：1天" + TIPS_END);

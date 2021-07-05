@@ -72,6 +72,7 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
      * 申请人ID
      */
     private Long userId;
+    private Long userIdParam;
 
     /**
      * 申请人名称

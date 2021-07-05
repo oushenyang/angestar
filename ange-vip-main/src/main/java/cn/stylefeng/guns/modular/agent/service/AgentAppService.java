@@ -7,6 +7,7 @@ import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppRechargeParam;
 import cn.stylefeng.guns.modular.agent.model.params.AgentExamineParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -116,4 +117,11 @@ public interface AgentAppService extends IService<AgentApp> {
      * @return 数量
      */
     Integer agentNum(Long userId);
+
+    /**
+     * 获取下级代理
+     * @param userId 用户id
+     * @return 数量
+     */
+    List<User> getAgentUserByUserId(Long userId);
 }

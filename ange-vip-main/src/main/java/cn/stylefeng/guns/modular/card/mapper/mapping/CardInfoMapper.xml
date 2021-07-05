@@ -265,6 +265,9 @@
             <if test="param.userId != null and param.userId != ''">
                 and (cci.user_id = #{param.userId} or cci.user_id in ( select agent_user_id from ag_agent_app where pids like CONCAT('%$[', #{param.userId}, '$]%') escape '$' ))
             </if>
+            <if test="param.userIdParam != null and param.userIdParam != ''">
+                and cci.user_id = #{param.userIdParam}
+            </if>
             <if test="param.appId != null and param.appId !=''">
                 and cci.app_id = #{param.appId}
             </if>

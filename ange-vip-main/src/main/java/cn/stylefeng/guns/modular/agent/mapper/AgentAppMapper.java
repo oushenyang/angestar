@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.agent.mapper;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
 import cn.stylefeng.guns.modular.agent.model.result.AgentAppResult;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -43,4 +44,12 @@ public interface AgentAppMapper extends BaseMapper<AgentApp> {
      * @return 数量
      */
     Integer agentNum(@Param("userId") Long userId);
+
+    /**
+     * 获取下级代理
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    List<User> getAgentUserByUserId(@Param("userId") Long userId);
 }

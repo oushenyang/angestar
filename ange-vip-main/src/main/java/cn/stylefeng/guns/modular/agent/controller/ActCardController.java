@@ -17,6 +17,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -72,6 +73,8 @@ public class ActCardController extends BaseController {
         List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
         model.addAttribute("agentApps", agentApps);
         model.addAttribute("agentAppsSize", agentApps.size());
+        List<User> userList = agentAppService.getAgentUserByUserId(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("userList", userList);
         return PREFIX + "/actCard.html";
     }
 

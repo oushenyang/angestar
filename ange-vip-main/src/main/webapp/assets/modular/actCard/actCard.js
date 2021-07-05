@@ -105,6 +105,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         var queryData = {};
         queryData['appId'] = $("#appId").val();
         queryData['cardTypeId'] = $("#cardTypeId").val();
+        queryData['userIdParam'] = $("#userIdParam").val();
         queryData['cardCode'] = $("#cardCode").val().trim();
         queryData['cardStatus'] = $("#cardStatus").val();
         queryData['createTimeStr'] = $("#createTimeStr").val();
@@ -191,6 +192,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         var queryData = {};
         $("#appId").val("");
         $("#cardTypeId").val("");
+        $("#userIdParam").val("");
         $("#cardCode").val("");
         $("#cardStatus").val("");
         $("#createTimeStr").val("");
@@ -199,6 +201,7 @@ layui.use(['table', 'form', 'admin', 'ax','element','dropdown', 'textool', 'layd
         $("#cardRemark").val("");
         queryData['appId'] = "";
         queryData['cardTypeId'] = "";
+        queryData['userIdParam'] = "";
         queryData['cardCode'] = "";
         queryData['cardStatus'] = "";
         queryData['createTimeStr'] = "";

@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
@@ -20,6 +21,8 @@ import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
+import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.alibaba.fastjson.JSONObject;
@@ -34,7 +37,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +61,19 @@ public class CardInfoController extends BaseController {
 
     private final CodeCardTypeService codeCardTypeService;
 
+    private final AgentAppService agentAppService;
+
+    private final UserService userService;
+
     private final DeviceService deviceService;
 
-    public CardInfoController(CardInfoService cardInfoService, TokenService tokenService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, DeviceService deviceService) {
+    public CardInfoController(CardInfoService cardInfoService, TokenService tokenService, AppInfoService appInfoService, CodeCardTypeService codeCardTypeService, AgentAppService agentAppService, UserService userService, DeviceService deviceService) {
         this.cardInfoService = cardInfoService;
         this.tokenService = tokenService;
         this.appInfoService = appInfoService;
         this.codeCardTypeService = codeCardTypeService;
+        this.agentAppService = agentAppService;
+        this.userService = userService;
         this.deviceService = deviceService;
     }
 
@@ -85,6 +93,10 @@ public class CardInfoController extends BaseController {
         model.addAttribute("type", type);
         model.addAttribute("codeCardTypes", codeCardTypes);
         model.addAttribute("codeCardTypeList", codeCardTypes);
+        List<User> userList = agentAppService.getAgentUserByUserId(LoginContextHolder.getContext().getUserId());
+        User user = userService.getById(LoginContextHolder.getContext().getUserId());
+        userList.add(user);
+        model.addAttribute("userList", userList);
         return PREFIX + "/cardInfo.html";
     }
 
