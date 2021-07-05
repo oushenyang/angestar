@@ -111,7 +111,7 @@ public class LogController extends BaseController {
      */
     @BussinessLog(value = "清空业务日志")
     @RequestMapping("/delLog")
-    @Permission(Const.ADMIN_NAME)
+//    @Permission(Const.ADMIN_NAME)
     @ResponseBody
     public Object delLog() {
         SqlExe.delete("delete from sys_operation_log", null);
