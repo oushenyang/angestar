@@ -87,4 +87,8 @@ public interface CardInfoMapper extends BaseMapper<CardInfo> {
      */
     void updateCardLoginNumByCardId(@Param("cardId") Long cardId);
 
+    /**
+     * 检查到期卡密并设置过期
+     */
+    List<CardInfo> checkCardExpire();
 }

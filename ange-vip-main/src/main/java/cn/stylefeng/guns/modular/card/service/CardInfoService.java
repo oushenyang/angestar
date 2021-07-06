@@ -171,4 +171,9 @@ public interface CardInfoService extends IService<CardInfo> {
      * @param param
      */
     void customImportItem(CardInfoParam param);
+
+    /**
+     * 检查到期卡密并设置过期
+     */
+    List<CardInfo> checkCardExpireAndSet();
 }

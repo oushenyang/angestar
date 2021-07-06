@@ -866,6 +866,21 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         }
     }
 
+    /**
+     * 检查到期卡密并设置过期
+     */
+    @Override
+    public List<CardInfo> checkCardExpireAndSet() {
+        List<CardInfo> cardInfos = baseMapper.checkCardExpire();
+        cardInfos.forEach(cardInfo -> {
+            cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+            baseMapper.updateById(cardInfo);
+            //删除redis缓存
+//            redisUtil.del(RedisType.CARD_INFO.getCode() + cardInfo.getCardCode());
+        });
+        return cardInfos;
+    }
+
     public void setCardTypeId(String cardTypeName, CardInfo cardInfo,Long createUser){
         if ("小时卡".equals(cardTypeName)){
             Long cardTypeId = codeCardTypeService.findByCardTimeTypeAndCardTypeData(createUser,CardTimeType.HOUR.getCode(),1);

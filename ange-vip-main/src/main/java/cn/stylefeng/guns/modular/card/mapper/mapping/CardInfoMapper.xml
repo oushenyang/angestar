@@ -383,5 +383,13 @@
         ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d')
         GROUP BY s.date
     </select>
+    <select id="checkCardExpire" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">
+        SELECT
+        *
+        FROM
+        ag_card_info
+        WHERE card_status = 1
+        AND expire_time &lt;= NOW()
+    </select>
 
 </mapper>

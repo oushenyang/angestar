@@ -63,7 +63,7 @@ public class TaskJobController extends BaseController {
      */
     @RequestMapping("/job_add")
     public String add() {
-        return PREFIX + "/job_add.html";
+        return PREFIX + "job_add.html";
     }
 
     /**
