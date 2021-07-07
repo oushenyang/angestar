@@ -96,9 +96,9 @@ public class AESECBUtil {
         /*
          * 此处使用AES-128-ECB加密模式，key需要为16位。
          */
-        String cKey = "0b31c497990cc6ee";
+        String cKey = "4f47dz48pk1cv4am";
         // 需要加密的字串
-        String cSrc = "{\"status\": 0, \"appurl\": \"www.lanzous.com/clone\", \"leftmoney\": \"0\", \"inchina\": 1, \"versioncode\": \"10\", \"tag\": 0, \"oldinviteid\": \"\", \"stonetime\": 1546272000000, \"validnum\": 0, \"googleversioncode\": \"6\", \"proxyratio\": \"0.1\", \"totalnum\": 0, \"totalmoney\": \"0\", \"points\": 0, \"closed\": 0, \"viptype\": 6, \"username\": \"15156041422\", \"realname\": \"\", \"inviteid\": \"5D8CLY\", \"zfb\": \"\", \"imsis\": \"\", \"virtual_id\": \"8b3b3057811a9f29f2726fb769af7fbb\", \"imeis\": \"Xiaomi_RedmiK20ProPremiumEdition|XhAxKdCn3TwDAFwETYuwio1m\", \"invitenum\": 0, \"proxyid\": \"5D8CLY\", \"fatherid\": \"0\", \"userid\": \"Xiaomi_RedmiK20ProPremiumEdition|WvMZuYLQ0W4DAArXTsQddFXj\", \"vipphone\": \"None\", \"channel\": \"china\", \"starttime\": 1558276363000, \"deadline\": 3818997416000}";
+        String cSrc = "{\"card\":\"1111\",\"mac\":\"111\"}";
 //        // 加密
 //        String enString = AESECBUtil.Encrypt(cSrc, cKey);
 //        System.out.println("加密后的字串是：" + enString);

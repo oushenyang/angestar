@@ -2,30 +2,30 @@
 <form id="appInfoForm" lay-filter="appInfoForm" class="layui-form layui-form-pane">
     <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
         <input name="appId" type="hidden"/>
-        <div class="layui-form-item">
-            <label class="layui-form-label">卡密新增</label>
-            <div class="layui-input-block">
-                <input id="cardAddUrl" name="cardAddUrl" readonly value="${constants.getApiUrl()}quick/cardAdd/${appInfo.appQuick!}" type="text" class="layui-input"/>
+        <fieldset class="layui-elem-field">
+            <legend>卡密新增</legend>
+            <div class="layui-field-box">
+                <a style="color: blue;margin-right: 5px;" target="_blank" href="${constants.getApiUrl()}quick/cardAdd/${appInfo.appQuick!}">${constants.getApiUrl()}quick/cardAdd/${appInfo.appQuick!} &nbsp;</a><button type="button" style="float: right;" class="layui-badge layui-badge-blue cardStr">复制</button>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">卡密查询</label>
-            <div class="layui-input-block">
-                <input id="cardSearchUrl" name="cardSearchUrl" readonly type="text" value="${constants.getApiUrl()}quick/cardSearch/${appInfo.appQuick!}" class="layui-input"/>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>卡密查询</legend>
+            <div class="layui-field-box">
+                <a style="color: blue;margin-right: 5px;" target="_blank" href="${constants.getApiUrl()}quick/cardSearch/${appInfo.appQuick!}">${constants.getApiUrl()}quick/cardSearch/${appInfo.appQuick!} &nbsp;</a><button type="button" style="float: right;" class="layui-badge layui-badge-blue cardStr">复制</button>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">卡密解绑</label>
-            <div class="layui-input-block">
-                <input id="cardUnBindUrl" name="cardUnBindUrl" readonly type="text" value="${constants.getApiUrl()}quick/cardUnBind/${appInfo.appQuick!}" class="layui-input"/>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>卡密解绑</legend>
+            <div class="layui-field-box">
+                <a style="color: blue;margin-right: 5px;" target="_blank" href="${constants.getApiUrl()}quick/cardUnBind/${appInfo.appQuick!}">${constants.getApiUrl()}quick/cardUnBind/${appInfo.appQuick!} &nbsp;</a><button type="button" style="float: right;" class="layui-badge layui-badge-blue cardStr">复制</button>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">卡密加时</label>
-            <div class="layui-input-block">
-                <input id="cardAddTimeUrl" name="cardAddTimeUrl" readonly type="text" value="${constants.getApiUrl()}quick/cardAddTime/${appInfo.appQuick!}" class="layui-input"/>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>卡密加时</legend>
+            <div class="layui-field-box">
+                <a style="color: blue;margin-right: 5px;" target="_blank" href="${constants.getApiUrl()}quick/cardAddTime/${appInfo.appQuick!}">${constants.getApiUrl()}quick/cardAddTime/${appInfo.appQuick!} &nbsp;</a><button type="button" style="float: right;" class="layui-badge layui-badge-blue cardStr">复制</button>
             </div>
-        </div>
+        </fieldset>
     </div>
     <div class="form-group-bottom text-right">
         <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">关闭</button>

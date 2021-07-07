@@ -19,7 +19,7 @@
 <form id="apiManageForm" lay-filter="apiManageForm"  style="padding:0!important;" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 45px;margin-top: 0px;">
         <input name="apiManageId" type="hidden"/>
-        <blockquote class="layui-elem-quote layui-quote-nm" style="font-size: 15px!important;">${apiManage.apiName} POST-<span style="color: blue">${constants.getApiUrl()}${apiManage.apiCode}/${apiManage.callCode}</span></blockquote>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="font-size: 15px!important;min-width: 330px;">${apiManage.apiName} POST-<span style="color: blue">${constants.getApiUrl()}${apiManage.apiCode}/${apiManage.callCode}</span></blockquote>
         <fieldset class="layui-elem-field">
             <legend>请求参数</legend>
             <div class="layui-field-box">
@@ -34,7 +34,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><input style="height: 25px" id="parameterOne" name="parameterOne" value="${apiManage.parameterOne}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterOne" name="parameterOne" value="${apiManage.parameterOne}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterOneRequired==true){
                             <span style="color: red">YES</span>
@@ -49,7 +49,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><input style="height: 25px" id="parameterTwo" name="parameterTwo" value="${apiManage.parameterTwo}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterTwo" name="parameterTwo" value="${apiManage.parameterTwo}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterTwoRequired==true){
                             <span style="color: red">YES</span>
@@ -64,7 +64,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><input style="height: 25px" id="parameterThree" name="parameterThree" value="${apiManage.parameterThree}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterThree" name="parameterThree" value="${apiManage.parameterThree}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterThreeRequired==true){
                             <span style="color: red">YES</span>
@@ -83,7 +83,7 @@
                     </tr>
                     @if(isNotEmpty(apiManage.parameterFour)){
                     <tr>
-                        <td><input style="height: 25px" id="parameterFour" name="parameterFour" value="${apiManage.parameterFour}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterFour" name="parameterFour" value="${apiManage.parameterFour}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterFourRequired==true){
                             <span style="color: red">YES</span>
@@ -103,7 +103,7 @@
                     @}
                     @if(isNotEmpty(apiManage.parameterFive)){
                     <tr>
-                        <td><input style="height: 25px" id="parameterFive1" name="parameterFive" value="${apiManage.parameterFive}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterFive1" name="parameterFive" value="${apiManage.parameterFive}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterFiveRequired==true){
                             <span style="color: red">YES</span>
@@ -123,7 +123,7 @@
                     @}
                     @if(isNotEmpty(apiManage.parameterSix)){
                     <tr>
-                        <td><input style="height: 25px" id="parameterSix1" name="parameterSix" value="${apiManage.parameterSix}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterSix1" name="parameterSix" value="${apiManage.parameterSix}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterSixRequired==true){
                             <span style="color: red">YES</span>
@@ -143,7 +143,7 @@
                     @}
                     @if(isNotEmpty(apiManage.parameterSeven)){
                     <tr>
-                        <td><input style="height: 25px" id="parameterSeven1" name="parameterSeven" value="${apiManage.parameterSeven}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
+                        <td><input style="height: 25px;min-width: 80px" id="parameterSeven1" name="parameterSeven" value="${apiManage.parameterSeven}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
                         <td>@if(apiManage.parameterSevenRequired==true){
                             <span style="color: red">YES</span>
@@ -171,7 +171,7 @@
         </fieldset>
         <fieldset class="layui-elem-field">
             <legend>返回说明</legend>
-            <div class="layui-field-box">
+            <div class="layui-field-box" style="min-width: 330px">
                 @if(apiManage.apiCode=='cardLogin'||apiManage.apiCode=='checkCardStatus'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 

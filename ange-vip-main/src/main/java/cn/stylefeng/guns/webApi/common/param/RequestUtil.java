@@ -70,8 +70,8 @@ public class RequestUtil {
             try {
                 JSONObject jsonObject = JSON.parseObject(decryptStr);
                 singleCode = jsonObject.getString(apiManage.getParameterOne());
-                edition = jsonObject.getString(apiManage.getParameterTwo());
-                mac = jsonObject.getString(apiManage.getParameterThree());
+                mac = jsonObject.getString(apiManage.getParameterTwo());
+                edition = jsonObject.getString(apiManage.getParameterThree());
                 model = jsonObject.getString(apiManage.getParameterFour());
                 holdCheck = jsonObject.getString(apiManage.getParameterFive());
                 sign = jsonObject.getString(apiManage.getParameterSix());
@@ -81,7 +81,7 @@ public class RequestUtil {
             }
         }
 
-        if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(edition)||StringUtils.isEmpty(mac)){
+        if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(mac)){
             throw new SystemApiException(2, "必传参数存在空值","",false);
         }
         if (appInfoApi.getSignFlag()&&StringUtils.isEmpty(sign)){

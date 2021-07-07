@@ -121,13 +121,13 @@ public class AESCBCUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "Fk0ohGl0x899L61axE/40qcMSsKy6Xjwj5EaPOY4trx5qJLUIAHKt2hbY8/dFWqw+kGngOCNQouBLlr301OlE0nqwVHGC4xi8Yd9N9Ipcvsv5bdhuQplIoDsGpF8MIIjOz9lfz2zxM40l/tRYCOJ29e3A1SRdsySNk1ru+38jIY648N55N2sqPYxEJbqlTwL47WxxwWZNeweLiooJdvL+xfBOoLQZa+4TyVo/OobHclLJICeaJ2yO9LvEUpMVG4zRIp30P6yP0JEsTEnqQVwG1neTAkOwk7y6usNsjiYVU4SYfydRApU7qdZsfLwVXRUd8d1Uyy0u87EgpMPVv0lLJ9ZzThYhLkS6+NPlE4SyIhuFHmkaf1qV2EEttP/6bxPbHPH80Ed457sb3uXlIeOXT1aip0bDm/+1Q27hi/DWaH2OQQQ+1rlO9ZPjmptArpWMBrR0NexlUcTzPW3Z+8WygwUF96RNR8QP+TvbUe24cmpt72NFQziFVU8QJY+EI5uCn0/xukbgSNdDGiKWJClNl9SoNpwNpQ8879QF0YeCnsWOtI4xb68WqAwXASGOlx0V9SfCUMeKp55l4JLf3Ti8gBIjoH19VxkyimjtdhB0CAQ+CfXc3o7yGCi8SA6kNPvFtDNZkrphWWTl5w45HYYIe+nT0UEslygAXx+FfDAPdXHEbc8iwJg3eNZ5FgpIy4P";
+        String str = "{\"card\":\"1111\",\"mac\":\"111\"}";
         //必须为16位
-        String key = "0b31c497990cc6ee";
+        String key = "4f47dz48pk1cv4am";
         //生成加密密钥
         String key2 = byte2hex(key.getBytes());
         System.out.println(key2);
-        String encryptStr = decrypt(str, key2);
+        String encryptStr = encrypt(str, key2);
         System.out.println(encryptStr);
 //        System.out.println(decrypt(encryptStr, key2));
     }
