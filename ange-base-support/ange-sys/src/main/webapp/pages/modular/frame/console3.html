@@ -370,17 +370,30 @@
                         <div class="layui-text" style="padding-top: 10px;">
                             <div class="info-list-item">
                                 <i class="layui-icon layui-icon-notice"></i>
+                                @if(isNotEmpty(email)){
                                 <p>${email!}</p>
+                                @}else{
+                                <p>暂无</p>
+                                @}
+
                             </div>
 
                             <div class="info-list-item">
                                 <i class="layui-icon layui-icon-cellphone"></i>
-                                <p>${phone!}</p>
+                                @if(isNotEmpty(user.phone)){
+                                <p>${user.phone!}</p>
+                                @}else{
+                                <p>暂无</p>
+                                @}
                             </div>
                             <div class="info-list-item">
-                                <i class="layui-icon layui-icon-location"></i>
-                                <p>中国 北京市 朝阳区 xxx街道 000号</p>
+                                <i class="layui-icon layui-icon-auz"></i>
+                                <p style="color: #00A65A">${user.birthday!,dateFormat='yyyy-MM-dd HH:mm:ss'} 到期</p>
                             </div>
+<!--                            <div class="info-list-item">-->
+<!--                                <i class="layui-icon layui-icon-location"></i>-->
+<!--                                <p>中国 北京市 朝阳区 xxx街道 000号</p>-->
+<!--                            </div>-->
                         </div>
                         <!--                        <div class="dash"></div>-->
                         <!--                        <h3>标签</h3>-->

@@ -167,6 +167,23 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
     };
 
     /**
+     * 重置密码
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    MgrUser.noPassLogin = function (data) {
+        Feng.confirm("是否无密码登录此用户？", function () {
+            var ajax = new $ax(Feng.ctxPath + "/mgr/noPassLogin", function (data) {
+                location.reload();
+            }, function (data) {
+                Feng.error("重置密码失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("userId", data.userId);
+            ajax.start();
+        });
+    };
+
+    /**
      * 修改用户状态
      *
      * @param userId 用户id
@@ -251,6 +268,8 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
             MgrUser.roleAssign(data);
         } else if (layEvent === 'reset') {
             MgrUser.resetPassword(data);
+        } else if (layEvent === 'noPassLogin') {
+            MgrUser.noPassLogin(data);
         }
     });
 

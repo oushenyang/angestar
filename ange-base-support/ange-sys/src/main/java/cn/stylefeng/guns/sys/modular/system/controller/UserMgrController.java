@@ -17,6 +17,7 @@ package cn.stylefeng.guns.sys.modular.system.controller;
 
 import cn.stylefeng.guns.base.auth.annotion.Permission;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
+import cn.stylefeng.guns.base.auth.service.AuthService;
 import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.base.log.BussinessLog;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
@@ -73,6 +74,8 @@ public class UserMgrController extends BaseController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private AuthService authService;
 
     /**
      * 跳转到查看管理员列表的页面
@@ -217,6 +220,25 @@ public class UserMgrController extends BaseController {
     public ResponseData edit(UserDto user) {
         this.userService.editUser(user);
         return SUCCESS_TIP;
+    }
+
+    /**
+     * 删除管理员（逻辑删除）
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/noPassLogin")
+    @BussinessLog(value = "无密码登录", key = "userId", dict = UserDict.class)
+    @ResponseBody
+    public ResponseData noPassLogin(@RequestParam Long userId) {
+        if (ToolUtil.isEmpty(userId)) {
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+        User user = userService.getById(userId);
+        //登录并创建token
+        String token = authService.login(user.getName());
+        return new SuccessResponseData(token);
     }
 
     /**

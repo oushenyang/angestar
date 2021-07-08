@@ -350,7 +350,7 @@
 
     <select id="getCardMonth" resultType="cn.stylefeng.guns.modular.card.model.result.CardMonth">
        select
-       (SELECT count(card_id) FROM ag_card_info WHERE DATE(expire_time) = s.date) expireNum,
+       (SELECT count(card_id) FROM ag_card_info WHERE DATE(expire_time) = s.date and create_user = #{userId}) expireNum,
        count(u.card_id) as activeNum,
        s.date as activeTime
        from
@@ -362,14 +362,14 @@
         </foreach>
         ) as tmp,
        (select @i:= -1) t
-       ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d')
+       ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d') and u.create_user = #{userId}
        GROUP BY s.date
     </select>
     <select id="getIncomeStatistics" resultType="cn.stylefeng.guns.modular.card.model.result.IncomeStatistics">
         select
-        (SELECT SUM(acct.card_type_price) FROM ag_card_info aci
+        (SELECT COALESCE(SUM(acct.card_type_price),0) FROM ag_card_info aci
         LEFT JOIN ag_code_card_type acct ON acct.card_type_id = aci.card_type_id
-        WHERE DATE(aci.active_time) = s.date) price,
+        WHERE DATE(aci.active_time) = s.date and acct.create_user = #{userId}) price,
         s.date as activeTime
         from
         (select date_add(#{date},interval @i:=@i+1 day) as date
@@ -380,7 +380,7 @@
         </foreach>
         ) as tmp,
         (select @i:= -1) t
-        ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d')
+        ) s left join ag_card_info u on s.date = date_format(u.active_time,'%Y-%m-%d') and u.create_user = #{userId}
         GROUP BY s.date
     </select>
     <select id="checkCardExpire" resultType="cn.stylefeng.guns.modular.card.entity.CardInfo">

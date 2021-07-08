@@ -124,6 +124,7 @@ public class SystemController extends BaseController {
         model.addAttribute("roleName", ConstantFactory.me().getRoleName(user.getRoleId()));
         model.addAttribute("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
         model.addAttribute("avatar", DefaultImages.defaultAvatarUrl());
+        model.addAttribute("user", user);
         return "/modular/frame/console3.html";
     }
 

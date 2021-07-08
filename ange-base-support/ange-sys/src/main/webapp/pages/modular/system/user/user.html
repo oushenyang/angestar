@@ -58,6 +58,7 @@
     @if(shiro.hasPermission("/mgr/reset")){
     <a class="layui-btn layui-btn-xs" lay-event="reset">${lang.get("BTN_RESET_PASSWORD","重置密码")}</a>
     @}
+    <a class="layui-btn layui-btn-xs" lay-event="noPassLogin">无密码登录</a>
 </script>
 
 <script type="text/html" id="statusTpl">

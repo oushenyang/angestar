@@ -83,7 +83,7 @@
     </select>
     <select id="getAccountMonth" resultType="cn.stylefeng.guns.modular.account.model.result.AccountMonth">
         select
-        (SELECT count(account_id) FROM ag_account_info WHERE DATE(expire_time) = s.date) expireNum,
+        (SELECT count(account_id) FROM ag_account_info WHERE DATE(expire_time) = s.date and create_user = #{userId}) expireNum,
         count(u.account_id) as activeNum,
         s.date as registrationTime
         from
@@ -95,7 +95,7 @@
         </foreach>
         ) as tmp,
         (select @i:= -1) t
-        ) s left join ag_account_info u on s.date = date_format(u.registration_time,'%Y-%m-%d')
+        ) s left join ag_account_info u on s.date = date_format(u.registration_time,'%Y-%m-%d') and u.create_user = #{userId}
         GROUP BY s.date
     </select>
 
