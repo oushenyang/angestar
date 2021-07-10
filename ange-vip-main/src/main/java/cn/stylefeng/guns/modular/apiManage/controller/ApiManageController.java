@@ -102,6 +102,17 @@ public class ApiManageController extends BaseController {
     }
 
     /**
+     * 用户配置密匙页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-21
+     */
+    @RequestMapping("/configPassword")
+    public String configPassword() {
+        return PREFIX + "/appApiManage_password.html";
+    }
+
+    /**
      * 用户编辑页面
      *
      * @author shenyang.ou

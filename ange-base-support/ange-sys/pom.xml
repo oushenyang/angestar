@@ -65,6 +65,12 @@
             <artifactId>hutool-json</artifactId>
             <version>5.4.4</version>
         </dependency>
+        <!-- PKCS7Padding -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+            <version>1.68</version>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>cn.hutool</groupId>-->

@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'form', 'ax'], function () {
+layui.use(['table', 'admin', 'form', 'ax', 'func'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var form = layui.form;
+    var func = layui.func;
     var admin = layui.admin;
 
     /**
@@ -51,9 +52,10 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
             {align: 'center',field: 'apiName', title: '接口名称'},
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
-            // {align: 'center',field: 'parameterNum', title: '返回加密'},
+            {align: 'center',field: 'parameterNum', title: '传参加密'},
+            {align: 'center',field: 'parameterNum', title: '返回加密'},
             {align: 'left',field: 'callCode',  width: 360, title: '调用地址',templet: '#callCodeTpl'},
-            {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 140, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -92,6 +94,29 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
         } else {
             table.exportFile(tableResult.config.id, checkRows.data, 'xls');
         }
+    };
+
+    /**
+     * 点击密匙配置
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    ApiManage.openConfigPasswordDlg = function (data) {
+        func.open({
+            title: '配置加密',
+            width: '800px',
+            content: Feng.ctxPath + '/apiManage/configPassword?apiManageId=' + data.apiManageId,
+            tableId: ApiManage.tableId
+        });
+        // top.layui.admin.open({
+        //     type: 2,
+        //     title: '配置加密',
+        //     area: '800px',
+        //     content: Feng.ctxPath + '/apiManage/configPassword?apiManageId=' + data.apiManageId,
+        //     end: function () {
+        //         admin.getTempData('formOk') && table.reload(ApiManage.tableId);
+        //     }
+        // });
     };
 
     /**
@@ -244,7 +269,9 @@ layui.use(['table', 'admin', 'form', 'ax'], function () {
 
         if (layEvent === 'edit') {
             ApiManage.openEditDlg(data);
-        } else if (layEvent === 'delete') {
+        }else if (layEvent === 'configPassword') {
+            ApiManage.openConfigPasswordDlg(data);
+        }else if (layEvent === 'delete') {
             ApiManage.onDeleteItem(data);
         }else if (layEvent === 'copy') {
             ApiManage.copy(data)

@@ -1,6 +1,12 @@
 package cn.stylefeng.guns.sys.core.util;
 
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.HexUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.symmetric.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,15 +127,27 @@ public class AESCBCUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "{\"card\":\"1111\",\"mac\":\"111\"}";
-        //必须为16位
-        String key = "4f47dz48pk1cv4am";
-        //生成加密密钥
-        String key2 = byte2hex(key.getBytes());
-        System.out.println(key2);
-        String encryptStr = encrypt(str, key2);
-        System.out.println(encryptStr);
-//        System.out.println(decrypt(encryptStr, key2));
+
+        SM4 aes = new SM4("OFB", "PKCS7Padding",
+                // 密钥，可以自定义
+                "DYgjCEIMDYgjCEIM".getBytes(),
+                // iv加盐，按照实际需求添加
+                "DYgjCEIMDYgjCEIM".getBytes());
+
+
+        String privateKeyBase64 = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIliGHFUa/PTm4PDjLB1Gjl0lo3Jt3busWRvbyS7upXQvE3wxK8QovyxYtY3TUSIpD6mx2JHGd2XT/gG897x07/TNmPLCs4xVTerqS1eIn2QwU5/23bKmWA83ssk+ZsffvxSdqryAjHMi0t1pDENhF58/9HOnp+LBI4ccqoBE+p1AgMBAAECgYAzXWjUHoNKI4jWh+t3IiFO8AdGNfARWIccjQlaC5JkZymwXl+7MJYvskbI3t5VzFzUS9jqJrlF/0fX7QmLBpFrb9QgV8y2qf26zwfLGLJuvjMjy6YmvySKiD4C0Bd1VCrIopcDE+D0lRKx/yENPrtVkx+wFqdX64PwcC1skFvC1QJBAL7W9ALSEHekanu+VFwn3+uarMYP4uL81DqY89B8da5vMAS5pC9IkNj4u87Cm/coPcX2RSASf2vFx8iXDjCu2wcCQQC4SpTMkTpxULdSmPJj+Q3zh+EFJ7Dk3wduCQDr14O0aAqZcjQVeyLeSaKt0WUdH7n3r1eFNjVCXIUR7IFaL6OjAkEAj+/kfzQdQ3/46Hg3fIJ+u18gLQrSX8297KxsSLV2tSgbmZTDJv6ecWe5j0rtA8+QN/11Salp/clg1ARKqaFYhQJAWtEmEsleq4jDTojgqjOJlIFZeljc62ydFLSLJ63E0ZqT3ppQ4GUWAcT3zgBqe7euxUg7MQJNrK47RWHvPKpNUQJAHv7dGXo/4i7bUG+nqpxBO6DBUj/OD7YwCBe5cuFoQJiElge4HYPCsShAIFlzmoZsuEfXFvmWUCuZQ5mBbhURjA==";
+        String publicKeyBase64 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJYhhxVGvz05uDw4ywdRo5dJaNybd27rFkb28ku7qV0LxN8MSvEKL8sWLWN01EiKQ+psdiRxndl0/4BvPe8dO/0zZjywrOMVU3q6ktXiJ9kMFOf9t2yplgPN7LJPmbH378Unaq8gIxzItLdaQxDYRefP/Rzp6fiwSOHHKqARPqdQIDAQAB";
+        RSA rsa = new RSA(privateKeyBase64,publicKeyBase64);
+        //公钥加密，私钥解密
+        String encrypt = rsa.encryptBase64("我是一段测试aaaa", KeyType.PublicKey);
+        System.out.println(encrypt);
+        String decrypt = rsa.decryptStr(encrypt, KeyType.PrivateKey);
+        System.out.println(decrypt);
+        SymmetricCrypto des = new SymmetricCrypto(SymmetricAlgorithm.DESede, "0123456789ABHAEQ01234567".getBytes());
+        String encryptHex = aes.encryptHex("测试");
+        System.out.println(encryptHex);
+        String decryptStr = aes.decryptStr(encryptHex);
+        System.out.println(decryptStr);
     }
 
 }

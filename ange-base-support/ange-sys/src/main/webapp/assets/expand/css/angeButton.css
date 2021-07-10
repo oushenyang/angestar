@@ -111,6 +111,17 @@
 	background-color: #e6a23c !important
 }
 
+.pear-btn-orange[plain] {
+	color: #F2711C !important;
+	background: #fdf6ec !important;
+	border-color: #f5dab1 !important;
+}
+
+.pear-btn-orange[plain]:hover {
+	color: white !important;
+	background-color: #F2711C !important
+}
+
 .pear-btn-danger[plain] {
 	color: #f56c6c !important;
 	background: #fef0f0 !important;

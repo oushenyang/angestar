@@ -47,9 +47,6 @@ public class DESContext {
                 case 5:
                     mode = Mode.OFB;
                     break;
-                case 6:
-                    mode = Mode.PCBC;
-                    break;
             }
 
             switch (appInfoApi.getFill()){
@@ -57,21 +54,12 @@ public class DESContext {
                     padding = Padding.PKCS5Padding;
                     break;
                 case 2:
-                    padding = Padding.PKCS1Padding;
-                    break;
-                case 3:
                     padding = Padding.ISO10126Padding;
                     break;
-                case 4:
-                    padding = Padding.SSL3Padding;
-                    break;
-                case 5:
+                case 3:
                     padding = Padding.ZeroPadding;
                     break;
-                case 6:
-                    padding = Padding.OAEPPadding;
-                    break;
-                case 7:
+                case 4:
                     padding = Padding.NoPadding;
                     break;
             }

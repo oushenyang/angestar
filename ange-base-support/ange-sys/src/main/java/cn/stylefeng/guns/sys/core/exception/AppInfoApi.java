@@ -185,7 +185,7 @@ public class AppInfoApi {
     private Integer webAlgorithmType;
 
     /**
-     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB；6-PCBC
+     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB
      */
     private Integer encryptionMode;
 
