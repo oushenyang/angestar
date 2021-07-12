@@ -9,7 +9,7 @@
                 <input name="userId" id="userId" value="${appInfoResult.createUser}" type="hidden"/>
                 <input name="createUser" id="createUser" value="${appInfoResult.createUser}" type="hidden"/>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">卡密类型<span style="color: red;">*</span></label>
+                    <label class="layui-form-label">卡密类型</label>
                     <div class="layui-input-block">
                         <select name="cardTypeId" lay-verify="required" lay-filter="cardTypeId" lay-verType="tips" required>
                             <option value="">请选择卡密类型</option>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">新增数量<span style="color: red;">*</span></label>
+                    <label class="layui-form-label">新增数量</label>
                     <div class="layui-input-block">
                         <input id="addNum" name="addNum" placeholder="请输入新增数量" type="number" class="layui-input" min="1" max="200" lay-verify="required|numberX|h5" oninput="if(value>200)value=200;" lay-verType="tips" required/>
                     </div>
@@ -71,7 +71,7 @@
             <div class="form-group-bottom text-right">
                 <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">重置</button>
                 <button class="layui-btn" lay-filter="exportSubmit" lay-submit>导出</button>
-                <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>
+                <button class="layui-btn pear-btn-orange" lay-filter="btnSubmit" lay-submit>生成</button>
             </div>
         </div>
     </fieldset>

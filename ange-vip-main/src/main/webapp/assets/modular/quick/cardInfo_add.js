@@ -35,6 +35,8 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
     var form = layui.form;
     var admin = layui.admin;
     var notice = layui.notice;
+    // var numberInput = layui.numberInput;
+    // numberInput.init("#addNum");
     var CardInfo = {};
     var cards = "";
 

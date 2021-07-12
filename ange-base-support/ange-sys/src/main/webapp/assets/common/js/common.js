@@ -116,6 +116,7 @@ layui.config({
     introJs: 'introJs/introJs',
     zTree: 'zTree/zTree',
     textool: 'textool/textool.min',
+    numberInput: 'numberInput/js/index',
 
     //一下是Guns用的插件
     formSelects: '../../expand/module/formSelects/formSelects-v4',
