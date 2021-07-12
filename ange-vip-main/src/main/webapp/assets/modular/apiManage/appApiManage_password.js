@@ -29,16 +29,24 @@ layui.use(['form', 'formX','admin', 'ax', 'textool'], function () {
             $('.encryptionMode').hide();
             $('.webKey').hide();
             $('.webSalt').hide();
+            $("#webKey").removeAttr("lay-verify");
+            $("#webSalt").removeAttr("lay-verify");
             $('.publicKey').show();
             $('.privateKey').show();
+            $("#publicKey").attr("lay-verify","required");
+            $("#privateKey").attr("lay-verify","required");
             $('.webAlgorithmOutput').attr("style","margin-top: 20px;");
             form.render();
         }else {
             $('.encryptionMode').show();
             $('.webKey').show();
             $('.webSalt').show();
+            $("#webKey").attr("lay-verify","required");
+            $("#webSalt").attr("lay-verify","required");
             $('.publicKey').hide();
             $('.privateKey').hide();
+            $("#publicKey").removeAttr("lay-verify");
+            $("#privateKey").removeAttr("lay-verify");
             $('.webAlgorithmOutput').attr("style","margin-top: 0;");
             form.render();
         }
@@ -49,9 +57,11 @@ layui.use(['form', 'formX','admin', 'ax', 'textool'], function () {
         console.log(data.value);
         if (data.value==0){
             $('.webSalt').hide();
+            $("#webSalt").removeAttr("lay-verify");
             form.render();
         }else {
             $('.webSalt').show();
+            $("#webSalt").attr("lay-verify","required");
             form.render();
         }
     });

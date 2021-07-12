@@ -11,6 +11,8 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
+import cn.stylefeng.guns.sys.modular.system.entity.User;
+import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -46,6 +48,9 @@ public class AgentBuyCardController extends BaseController {
     @Autowired
     private AgentAppService agentAppService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 跳转到主页面
      *
@@ -62,6 +67,10 @@ public class AgentBuyCardController extends BaseController {
         //根据条件查询操作日志
         List<AgentAppResult> agentApps = agentAppService.findListBySpec(page, agentAppParam);
         model.addAttribute("agentApps", agentApps);
+        List<User> userList = agentAppService.getAgentUserByUserId(LoginContextHolder.getContext().getUserId());
+//        User user = userService.getById(LoginContextHolder.getContext().getUserId());
+//        userList.add(user);
+        model.addAttribute("userList", userList);
         return PREFIX + "/agentBuyCard.html";
     }
 

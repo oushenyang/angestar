@@ -88,7 +88,7 @@ public class CardStringRandom {
      * 生成大写字母
      */
     private static String capitalWord(String cardTypePrefix,Integer cardTypeLength){
-        String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String base = "ABCDEFGHKMNPQRSTUVWXYZ";
         Random random = new Random();
 //        StringBuilder sb = new StringBuilder(cardTypePrefix);
         StrBuilder sb = StrBuilder.create();
@@ -105,7 +105,7 @@ public class CardStringRandom {
      * 生成小写字母
      */
     private static String word(String cardTypePrefix,Integer cardTypeLength){
-        String base = "abcdefghijklmnopqrstuvwxyz";
+        String base = "abcdeghkmnpqrsuvwxyz";
         Random random = new Random();
 //        StringBuilder sb = new StringBuilder(cardTypePrefix);
         StrBuilder sb = StrBuilder.create();

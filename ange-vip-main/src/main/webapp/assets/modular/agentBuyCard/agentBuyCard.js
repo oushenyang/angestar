@@ -60,6 +60,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     AgentBuyCard.search = function () {
         var queryData = {};
         queryData['appId'] = $("#appId").val();
+        queryData['userIdParam'] = $("#userIdParam").val();
         table.reload(AgentBuyCard.tableId, {where: queryData});
     };
 

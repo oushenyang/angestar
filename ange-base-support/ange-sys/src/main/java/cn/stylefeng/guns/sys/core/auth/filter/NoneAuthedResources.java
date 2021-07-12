@@ -52,6 +52,11 @@ public class NoneAuthedResources {
             // 登录接口放开过滤
             "/login",
 
+            // 卡类价格接口放开过滤
+            "/cardInfo/addPriceEdit",
+            "/codeCardType/editItem",
+            "/codeCardType/detail",
+
             // 代理注册接口放开过滤
             "/agentRegister/**",
 

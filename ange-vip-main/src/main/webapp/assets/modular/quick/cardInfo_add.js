@@ -120,7 +120,7 @@ layui.use(['form', 'formX','admin', 'ax', 'notice'], function () {
                 layui.admin.open({
                     type: 2,
                     title: data.field.cardTypeName,
-                    area: '500px',
+                    area: ['500px','252px'],
                     content: Feng.ctxPath + '/cardInfo/addPriceEdit?cardTypeId=' + cardTypeId
                 });
                 return false;

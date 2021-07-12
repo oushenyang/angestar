@@ -61,6 +61,9 @@
             <if test="param.agentUserId != null and param.agentUserId !=''">
                 and aaa.agent_user_id = #{param.agentUserId}
             </if>
+            <if test="param.userIdParam != null and param.userIdParam !=''">
+                and aaa.agent_user_id = #{param.userIdParam}
+            </if>
             <if test="param.appId != null and param.appId !=''">
                 and aaa.app_id = #{param.appId}
             </if>
