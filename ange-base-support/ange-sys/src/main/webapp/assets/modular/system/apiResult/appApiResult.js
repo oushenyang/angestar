@@ -151,12 +151,12 @@ layui.use(['table', 'admin', 'ax', 'form'], function () {
     var tableResult = table.render({
         elem: '#' + ApiResult.tableId,
         url: Feng.ctxPath + '/apiResult/list',
-        page: true,
+        page: {limit: 50, limits: [50, 100, 150, 200, 250, 300]},
         where:{
             type:1,
             appId:$('#firstAppId').val()
         },
-        height: "full-98",
+        // height: "full-98",
         cellMinWidth: 100,
         cols: ApiResult.initColumn(),
         done : function(res, curr, count) {

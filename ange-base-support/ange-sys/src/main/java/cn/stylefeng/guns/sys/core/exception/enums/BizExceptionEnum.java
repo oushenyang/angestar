@@ -136,6 +136,7 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     UN_FIND_CARD(400, "未找到相关卡密"),
     FIND_CARD_EXISTED(400, "卡密已存在"),
     FORMAT_ERROR(400, "第{}行数据格式不正确,请检查"),
+    CARD_MORE_TAN(400, "卡密未激活数量超过2000，不可继续生成"),
 
     /**
      * 卡类相关的异常

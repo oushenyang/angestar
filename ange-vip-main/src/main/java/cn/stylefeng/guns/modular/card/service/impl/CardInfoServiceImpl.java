@@ -153,6 +153,12 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         if (null==codeCardType.getCardTypePrice()||null==codeCardType.getCardTypeAgentPrice()){
             throw new OperationException(BizExceptionEnum.CARD_TYPE_PRICE_NULL);
         }
+        //获取卡密未激活数量
+        List<CardInfo> cardInfoList = baseMapper.selectList(new QueryWrapper<CardInfo>().eq("create_user",param.getCreateUser()).eq("user_id",param.getUserId()).eq("card_status",CardStatus.NOT_ACTIVE.getCode()));
+        //如果卡密未激活数量超过2000
+        if (cardInfoList.size()+param.getAddNum()>2000){
+            throw new OperationException(BizExceptionEnum.CARD_MORE_TAN);
+        }
         //自定义时间
         if (param.getIsCustomTime()){
             param.setCardTypeId(0L);

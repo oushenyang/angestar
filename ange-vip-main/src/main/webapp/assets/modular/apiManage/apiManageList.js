@@ -195,7 +195,7 @@ layui.use(['table', 'admin', 'form', 'ax', 'func'], function () {
         //             layEvent: 'refresh',
         //             icon: 'layui-icon-refresh',
         //         }, 'filter', 'print'],
-        height: "full-80",
+        // height: "full-80",
         page: {limit: 50, limits: [50, 100, 150, 200, 250, 300]},
         where:{
             type:$('#type').val(),
