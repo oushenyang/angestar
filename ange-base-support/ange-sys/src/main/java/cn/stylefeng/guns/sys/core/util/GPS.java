@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import javax.validation.constraints.NotNull;
 
 public class GPS {
-    private  double latitude;
+    private  Double latitude;
 
-    private double longitude;
+    private Double longitude;
     private long t;
     private long t1;
     private String w;
@@ -36,7 +36,7 @@ public class GPS {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
@@ -44,7 +44,7 @@ public class GPS {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
