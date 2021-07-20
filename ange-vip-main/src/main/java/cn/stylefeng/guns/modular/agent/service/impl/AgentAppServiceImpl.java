@@ -177,7 +177,12 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
         AgentBuyCardParam param = new AgentBuyCardParam();
         //充值
         if (agentAppRechargeParam.getRechargeType() == 0) {
-            agentApp.setBalance(agentAppRechargeParam.getBalance().add(agentAppRechargeParam.getRechargeBalance()));
+            //上级代理充值
+            BigDecimal allBalance = agentAppRechargeParam.getBalance().add(agentAppRechargeParam.getRechargeBalance());
+            if (allBalance.compareTo(new BigDecimal(999999999))>0){
+                throw new OperationException(RECHARGE_AMOUNT_THAN_MAXIMUM_LIMIT);
+            }
+            agentApp.setBalance(allBalance);
             param.setAmount(agentAppRechargeParam.getRechargeBalance());
             //设置明细
             if (agentApp.getAgentGrade()>1){
@@ -207,7 +212,11 @@ public class AgentAppServiceImpl extends ServiceImpl<AgentAppMapper, AgentApp> i
             if (agentApp.getAgentGrade()>1){
                 AgentApp superiorAgentApp =this.getById(agentApp.getAgentAppIdPid());
                 //上级代理充值
-                superiorAgentApp.setBalance(superiorAgentApp.getBalance().add(agentAppRechargeParam.getRechargeBalance()));
+                BigDecimal allBalance = superiorAgentApp.getBalance().add(agentAppRechargeParam.getRechargeBalance());
+                if (allBalance.compareTo(new BigDecimal(999999999))>0){
+                    throw new OperationException(RECHARGE_AMOUNT_THAN_MAXIMUM_LIMIT);
+                }
+                superiorAgentApp.setBalance(allBalance);
                 this.updateById(superiorAgentApp);
                 param.setDetailed(StrUtil.format(BuyCardType.SUBORDINATE_AGENT_DEDUCT.getDetailed(),
                         NumToChUtil.to(agentApp.getAgentGrade()),

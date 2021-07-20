@@ -1,4 +1,4 @@
-layui.use(['form', 'admin', 'ax','element', 'textool'], function () {
+layui.use(['form', 'admin', 'ax','element', 'textool', 'formX'], function () {
     //表单初始赋值
     layui.form.val('appInfoForm', {
         "codeBindOption":1,
@@ -25,6 +25,7 @@ layui.use(['form', 'admin', 'ax','element', 'textool'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
+    var formX = layui.formX;
     var admin = layui.admin;
     var element = layui.element;
     var textool = layui.textool;

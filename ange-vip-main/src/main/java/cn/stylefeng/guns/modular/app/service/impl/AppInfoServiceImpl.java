@@ -116,6 +116,14 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     public void update(AppInfoParam param){
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
+        if (!oldEntity.getAppName().substring(0,1).equals(newEntity.getAppName().substring(0,1))){
+            //生成应用头像
+            try {
+                newEntity.setAppHead(CreateNamePicture.generateImg(newEntity.getAppName()));
+            } catch (IOException e) {
+                throw new ServiceException(ADD_HEAD_ERROR);
+            }
+        }
         ToolUtil.copyProperties(newEntity, oldEntity);
         redisUtil.del(RedisType.APP_INFO.getCode() + oldEntity.getAppNum());
         this.updateById(newEntity);

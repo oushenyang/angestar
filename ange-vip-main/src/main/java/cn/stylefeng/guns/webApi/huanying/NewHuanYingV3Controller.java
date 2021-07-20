@@ -118,7 +118,7 @@ public class NewHuanYingV3Controller {
                     "1+cG6rgC+tJMFFPyjL/D2aFMT7VK5J6h8DSIyaMKuuuaKcN0D8jCNQ/C0wu18Tah12ShyORTCjtz" +
                     "W5Ko1AhnUliZ4s3bzW7q5eI+HqN0cUOanflu2jCnT/tvslNru4J5c0DaLfCpUlxuaod4mHJH19yB" +
                     "Beda3MnLDr9Tsx6VVENLio3EjxNaPWy3Ja5dJQhFy3SlEx7qNSYgfwiXKSAqWVtS0EnpJg==");
-        }else if (appversioncode.equals("131")){
+        }else if (appversioncode.equals("131")||appversioncode.equals("132")){
             HyUserResult hyUserResult = new HyUserResult();
             hyUserResult.setStatus(0);
             hyUserResult.setAppurl("www.lanzous.com/clone");
