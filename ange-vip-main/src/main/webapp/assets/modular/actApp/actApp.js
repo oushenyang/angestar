@@ -1,10 +1,11 @@
-layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool', 'func'], function () {
+layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool', 'func','dataGrid'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var func = layui.func;
     var form = layui.form;
+    var dataGrid = layui.dataGrid;
     var notice = layui.notice;
     var textool = layui.textool;
 
@@ -295,20 +296,54 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice', 'textool', 'func'], functio
     };
 
     // 渲染表格
-    var tableResult = table.render({
-        elem: '#' + AgentApp.tableId,
-        url: Feng.ctxPath + '/actApp/list',
-        page: true,
-        // toolbar: '#' + AgentApp.tableId + '-toolbar',
-        // defaultToolbar: [{
-        //     title: '刷新',
-        //     layEvent: 'refresh',
-        //     icon: 'layui-icon-refresh',
-        // }, 'filter', 'print'],
-        height: "full-80",
-        cellMinWidth: 100,
-        cols: AgentApp.initColumn()
-    });
+    // var tableResult = table.render({
+    //     elem: '#' + AgentApp.tableId,
+    //     url: Feng.ctxPath + '/actApp/list',
+    //     page: true,
+    //     // toolbar: '#' + AgentApp.tableId + '-toolbar',
+    //     // defaultToolbar: [{
+    //     //     title: '刷新',
+    //     //     layEvent: 'refresh',
+    //     //     icon: 'layui-icon-refresh',
+    //     // }, 'filter', 'print'],
+    //     height: "full-80",
+    //     cellMinWidth: 100,
+    //     cols: AgentApp.initColumn()
+    // });
+
+    AgentApp.loadAppInfo = function (appName) {
+        dataGrid.render({
+            elem: '#appInfoTable',  // 容器
+            templet: '#appInfoItem',  // 模板
+            height: '1200',
+            defaultToolbar: ['filter'],
+            data: Feng.ctxPath + '/actApp/list', // url
+            page: {limit: 12, limits: [12, 24, 36, 48, 60]},
+            where: {
+                'appName':appName
+            },
+            done:function(data){
+                if (data.length === 0){
+                    $('#ew-datagrid-page-appInfoTable').hide();
+                    $('#appInfoTable').attr("style",'min-height: 650px;position: relative;');
+                    $('#appInfoTable').html('<div class="no_result" style="padding: 200px 0;">' +
+                        '<p><img width="106" height="130" src="'+Feng.ctxPath+'/assets/expand/images/no_result.png" alt="找不到结果为空相关搜索结果"></p>' +
+                        '<p class="words"><span class="line" style="color: #aaa">暂无数据</span>' +
+                        '</p>' +
+                        '</div>')
+                }
+            },
+            onToolBarClick: function (obj) {  // toolBar事件
+                var event = obj.event;
+                var data = obj.data;
+                if (event == 'quick') {
+                    AgentApp.openQuickDlg(data);
+                }
+            }
+        });
+    };
+    //渲染应用列表
+    AgentApp.loadAppInfo();
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {

@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{js:["/assets/modular/actApp/actApp.js"]}){
+@layout("/common/_container.html",{css:["/assets/modular/frame/app.css"],js:["/assets/modular/actApp/actApp.js"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">代理软件表管理</span>
@@ -32,13 +32,74 @@
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="agentAppTable" lay-filter="agentAppTable"></table>
+<!--                    <table class="layui-table" id="agentAppTable" lay-filter="agentAppTable"></table>-->
+
+                    <div class="layui-row layui-col-space30" id="appInfoTable" style="min-height: 650px;">
+                        <div class="layui-col-md3">
+                            <div class="application-list-item">
+                                <div class="application-list-item-body">
+                                </div>
+                                <div class="application-list-item-tool">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<!-- 应用模板 -->
+<script type="text/html" id="appInfoItem">
+    <div class="layui-col-md3">
+        <!--        <div class="ribbon-two ribbon-two-success"><span>100012</span></div>-->
+        <!--        <div class="ribbon ribbon-warning float-right">编号：00012</div>-->
+        <div class="application-list-item">
+            <div class="application-list-item-header">
+                <div class="text-item" style="float: left">
+                    <img class="head" src="{{d.appHead}}"/>
+                </div>
+                <div class="text-item" style="float: left">
+                    <h2><div class="text-num-item-text">{{d.appName}}</div></h2>
+                </div>
+                <div class="text-item" style="float: right;color: #999;">
+                    <h3><div class="text-num-item-text">编号:{{d.agentAppNo}}</div></h3>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="application-list-item-body">
+                <div class="text-num-item">
+                    <div class="text-num-item-title">余额</div>
+                    <div class="text-num-item-text" style="font-size:20px;color: orange" >{{d.balance}}</div>
+                </div>
+                <div class="text-num-item">
+                    <div class="text-num-item-title">上级名称</div>
+                    <div class="text-num-item-text" style="font-size:18px" >{{d.pidUserName}}</div>
+                    <!--                    <small>万</small>-->
+                </div>
+                <div class="text-num-item">
+                    <div class="text-num-item-title">代理等级</div>
+                    <div class="text-num-item-text" style="font-size:18px" >{{d.agentGradeName}}</div>
+                </div>
+            </div>
+            <div class="application-list-item-tool">
+                <!--                <span class="application-list-item-tool-item" lay-event="download">-->
+                <!--                    <i class="layui-icon layui-icon-download-circle" lay-tips="下载" lay-offset="0,-8px"></i>-->
+                <!--                </span>-->
+                <span class="application-list-item-tool-item" lay-event="quick">
+                    <i class="layui-icon layui-icon-release" lay-tips="快捷页面" lay-offset="0,-8px"></i>
+                </span>
+                <span class="application-list-item-tool-item" ew-href="/actCard" ew-title="卡密列表">
+                    <i class="layui-icon layui-icon-file-b" lay-tips="卡密列表" lay-offset="0,-8px"></i>
+                </span>
+                <span class="application-list-item-tool-item" ew-href="/agentBuyCard?type=2" ew-title="购卡记录">
+                    <i class="layui-icon layui-icon-log" lay-tips="购卡记录"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</script>
 <script type="text/html" id="tableBar">
     <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="quick">快捷页面</a>
 </script>

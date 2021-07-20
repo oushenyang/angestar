@@ -61,6 +61,11 @@ public class AgentAppResult implements Serializable {
     private String appName;
 
     /**
+     * 应用头像
+     */
+    private String appHead;
+
+    /**
      * 开发者用户id
      */
     private Long developerUserId;
