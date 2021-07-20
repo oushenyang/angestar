@@ -100,7 +100,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
         //删除缓存
         DictType dictType = dictTypeService.getById(param.getDictTypeId());
         if (ObjectUtil.isNotNull(dictType)){
-            redisUtil.del("dict" + dictType.getCode());
+            redisUtil.del(DICT.getCode() + dictType.getCode());
         }
         this.removeById(getKey(param));
     }
@@ -129,7 +129,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
         //删除缓存
         DictType dictType = dictTypeService.getById(param.getDictTypeId());
         if (ObjectUtil.isNotNull(dictType)){
-            redisUtil.del("dict" + dictType.getCode());
+            redisUtil.del(DICT.getCode() + dictType.getCode());
         }
 
         //设置pids

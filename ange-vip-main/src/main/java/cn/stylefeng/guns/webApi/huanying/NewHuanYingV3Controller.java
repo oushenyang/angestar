@@ -70,6 +70,9 @@ public class NewHuanYingV3Controller {
         if ("131".equals(appversioncode)&&StringUtils.isEmpty(application)){
             return null;
         }
+        if ("132".equals(appversioncode)&&StringUtils.isEmpty(application)){
+            return null;
+        }
         if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
             return null;
         }else {
@@ -95,6 +98,8 @@ public class NewHuanYingV3Controller {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
         }else if ("131".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
+        }else if ("132".equals(appversioncode)){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin132");
         }else {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
         }
@@ -226,6 +231,8 @@ public class NewHuanYingV3Controller {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
         }else if ("131".equals(appversioncode)){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
+        }else if ("132".equals(appversioncode)){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin132");
         }else {
             whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
         }
@@ -401,6 +408,9 @@ public class NewHuanYingV3Controller {
         }
         if (appversioncode == 131){
             whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,virtualId,"huanyin131");
+        }
+        if (appversioncode == 132){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,virtualId,"huanyin132");
         }
 
         if (StringUtils.isNotEmpty(packAge)){

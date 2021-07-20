@@ -66,6 +66,7 @@
         from ag_code_card_type cct
         where
         cct.create_user = #{userId}
+        and cct.status = 1
         order by cct.sort ASC
     </select>
 
@@ -76,6 +77,7 @@
         from ag_code_card_type cct
         where
         cct.create_user = #{userId}
+        and cct.status = 1
         <if test="cardTypeIds != null and cardTypeIds.size > 0">
             and cct.card_type_id not in
             <foreach collection="cardTypeIds" index="index" item="item" separator="," open="(" close=")">
@@ -91,6 +93,7 @@
         from ag_code_card_type cct
         where
         cct.create_user = #{userId}
+        and cct.status = 1
         order by cct.sort ASC
     </select>
     <select id="findByCardTimeTypeAndCardTypeData"

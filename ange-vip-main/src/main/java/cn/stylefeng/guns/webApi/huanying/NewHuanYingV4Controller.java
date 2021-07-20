@@ -123,6 +123,8 @@ public class NewHuanYingV4Controller {
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
         }else if ("131".equals(appversioncode)){
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
+        }else if ("132".equals(appversioncode)){
+            isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin132");
         }else {
             isShow = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
         }
@@ -139,13 +141,15 @@ public class NewHuanYingV4Controller {
             String code;
             if (appversioncode.equals("129")||appversioncode.equals("131")){
                 code = "HUANYING_TOKEN129";
+            }else if(appversioncode.equals("132")){
+                code = "HUANYING_TOKEN132";
             }else {
                 code = "HUANYING_TOKEN";
             }
             Dict dict = dictService.getDictByCodeAndNameByRedis(code,app_version);
             boolean isChu = false;
             if (ObjectUtil.isNotNull(dict)){
-                    if (appversioncode.equals("129")||appversioncode.equals("131")){
+                    if (appversioncode.equals("129")||appversioncode.equals("131")||appversioncode.equals("132")){
                         String appkey = dict.getDescription();
                         if (StringUtils.isEmpty(appkey)){
                             appkey = "Abandoned";
