@@ -63,6 +63,7 @@
                             @}
                         </td>
                     </tr>
+                    @if(isNotEmpty(apiManage.parameterThree)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterThree" name="parameterThree" value="${apiManage.parameterThree}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
                         <td>String</td>
@@ -81,6 +82,7 @@
                             @}
                         </td>
                     </tr>
+                    @}
                     @if(isNotEmpty(apiManage.parameterFour)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterFour" name="parameterFour" value="${apiManage.parameterFour}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>

@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class CustomEnAndDe {
     public static void main(String[] args) throws Exception {
-        String a = deCrypto("06AF4F7EF4CB167381441E4070100A27D54AC3E77D30720A");
+        String a = deCrypto("961800CA30B85562725DF7A4F73ED2588BBFA88E1C877C55");
         System.out.println(a);
 
     }

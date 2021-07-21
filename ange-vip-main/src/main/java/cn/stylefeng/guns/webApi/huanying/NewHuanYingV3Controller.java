@@ -292,10 +292,45 @@ public class NewHuanYingV3Controller {
     //1.2.9版本新增
     @RequestMapping("/regps")
     @ResponseBody
-    public String regps(){
+    public String regps(@RequestHeader(value = "User-Token", required = false) String token){
         double lat = Double.parseDouble(HttpContext.getRequest().getParameter("lat"));
         double lon = Double.parseDouble(HttpContext.getRequest().getParameter("lon"));
         String appversioncode = HttpContext.getRequest().getParameter("appversioncode");
+        //应用名称
+        String virtualId = HttpContext.getRequest().getParameter("virtual_id");
+        String application = HttpContext.getRequest().getParameter("an");
+        String sign;
+        String applicationName = null;
+        if (StringUtils.isEmpty(virtualId)||StringUtils.isEmpty(token)){
+            return null;
+        }else {
+            String deSign = CustomEnAndDe.deCrypto(token);
+            if (StringUtils.isNotEmpty(application)){
+                applicationName = CustomEnAndDe.deCrypto(application);
+            }
+//            String time =  deSign.substring(deSign.length() -7);
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMd");
+//            Date date = new Date(System.currentTimeMillis());
+//            String newTime = simpleDateFormat.format(date);
+//            //说明盗版
+//            if (!time.equals(newTime)){
+//                sign = deSign;
+//            }else {
+            //从数据库里查是否正版
+            //去除最后七位
+            sign = deSign.substring(0,deSign.length()-8);
+//            }
+        }
+        boolean whetherLegal = false;
+        if ("129".equals(appversioncode)){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin129");
+        }else if ("131".equals(appversioncode)){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin131");
+        }else if ("132".equals(appversioncode)){
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin132");
+        }else {
+            whetherLegal = appPowerService.whetherLegalBySignAndAppCodeNoInsert(sign,applicationName,virtualId,"huanyin125");
+        }
         GPS aps = new GPS();
         if ("131".equals(appversioncode)){
             aps.setLatitude(GPSNewUtils.f(lat,lon)[0]);
@@ -312,9 +347,17 @@ public class NewHuanYingV3Controller {
         assert aaa != null;
         aaa = aaa.replaceAll("\r|\n", "");
         Map<String, Object> map = new HashMap<>();
-        map.put("data",aaa);
-        map.put("message", "success");
-        map.put("code", 200);
+        if (whetherLegal){
+            map.put("data","6oIAOO7jOPBxvKkw8KidV+M1bdckWOy4uajt6punusfFsof11q81+nOqONfmg7cY6t79ObBtr6ZaLytpq8v89w==");
+            map.put("message", "您当前使用的是盗版软件！！！已限制虚拟定位！使用盗版软件会造成隐私泄露和财产损失！如您用盗版来钉钉打卡，钉钉会检测到！请立即卸载购买正版！！！正版联系QQ：2109214630，欢迎贴牌代理！");
+            map.put("code", 141);
+        }else {
+            map.put("data",aaa);
+            map.put("message", "success");
+            map.put("code", 200);
+        }
+//        map.put("message", "success");
+//        map.put("code", 200);
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
