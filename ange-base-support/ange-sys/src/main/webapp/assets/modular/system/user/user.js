@@ -174,9 +174,11 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
     MgrUser.noPassLogin = function (data) {
         Feng.confirm("是否无密码登录此用户？", function () {
             var ajax = new $ax(Feng.ctxPath + "/mgr/noPassLogin", function (data) {
-                location.reload();
+                Feng.success("登录成功!");
+                top.window.location.reload();
+                admin.closeAllTabs();
             }, function (data) {
-                Feng.error("重置密码失败!" + data.responseJSON.message + "!");
+                Feng.error("登录失败!" + data.responseJSON.message + "!");
             });
             ajax.set("userId", data.userId);
             ajax.start();

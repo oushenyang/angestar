@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,7 +117,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     public void update(AppInfoParam param){
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
-        if (!oldEntity.getAppName().substring(0,1).equals(newEntity.getAppName().substring(0,1))){
+        if (StringUtils.isNotEmpty(newEntity.getAppName())&& StringUtils.isNotEmpty(oldEntity.getAppName())&&!oldEntity.getAppName().substring(0,1).equals(newEntity.getAppName().substring(0,1))){
             //生成应用头像
             try {
                 newEntity.setAppHead(CreateNamePicture.generateImg(newEntity.getAppName()));

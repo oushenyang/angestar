@@ -237,7 +237,7 @@ public class UserMgrController extends BaseController {
         }
         User user = userService.getById(userId);
         //登录并创建token
-        String token = authService.login(user.getName());
+        String token = authService.login(user.getAccount());
         return new SuccessResponseData(token);
     }
 
