@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
+import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.CARD_BINDED;
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.UN_FIND_CARD;
 
 @Controller
@@ -98,7 +99,7 @@ public class QuickController {
         //获取当前用户应用
         AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick",appQuick));
         model.addAttribute("appInfoResult", appInfoResult);
-        return PREFIX + "/cardInfo_unBind.html";
+        return PREFIX + "/cardInfo_unBindNew.html";
     }
 
     /**
@@ -113,6 +114,10 @@ public class QuickController {
         CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card.trim()));
         if (ObjectUtil.isNull(cardInfo)){
             throw new OperationException(UN_FIND_CARD);
+        }
+        List<Device> devices = deviceService.list(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
+        if (CollectionUtil.isEmpty(devices)){
+            throw new OperationException(CARD_BINDED);
         }
         //删除卡密缓存
         redisUtil.del(RedisType.CARD_INFO.getCode() + card.trim());

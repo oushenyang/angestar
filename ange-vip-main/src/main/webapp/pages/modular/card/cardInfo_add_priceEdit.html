@@ -1,19 +1,24 @@
 @layout("/common/_form.html",{bg:"bg-white",js:["/assets/modular/card/codeCardType_edit.js"]}){
-<form id="codeCardTypeForm" lay-filter="codeCardTypeForm" class="layui-form model-form">
+<form id="codeCardTypeForm" lay-filter="codeCardTypeForm" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 75px;margin-top: -15px;">
         <input name="cardTypeId" type="hidden"/>
         <input name="appId" id="appId" type="hidden"/>
         <div class="layui-form-item">
-            <label class="layui-form-label">售价<span style="color: red;">*</span></label>
+            <label class="layui-form-label layui-form-required">零售价格</label>
             <div class="layui-input-block">
-                <input id="cardTypePrice" name="cardTypePrice" placeholder="请输入售价" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+                <input id="cardTypePrice" name="cardTypePrice" placeholder="请输入零售价格" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">代理售价<span style="color: red;">*</span></label>
+            <label class="layui-form-label layui-form-required">代理价格</label>
             <div class="layui-input-block">
-                <input id="cardTypeAgentPrice" name="cardTypeAgentPrice" placeholder="请输入代理售价" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+                <input id="cardTypeAgentPrice" name="cardTypeAgentPrice" placeholder="请输入代理价格" type="number" class="layui-input" lay-verType="tips" lay-verify="required" required/>
             </div>
+        </div>
+        <div class="layui-form-item markdown-section">
+            <blockquote class="tip">
+                <p>请填写相关价格信息，方便系统统计您的收入情况在主页展示</p>
+            </blockquote>
         </div>
     </div>
     <div class="form-group-bottom text-right">

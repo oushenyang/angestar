@@ -58,6 +58,51 @@ body {
     overflow: hidden;
 }
 
+/* 引用样式 blockquote蓝色*/
+.markdown-section blockquote {
+    font-size: 14px;
+    margin: 0em 0;
+    padding: 0.45em 0.8em 0.45em 2.4em;;
+    background: #e6f7ff;
+    border-color: #91d5ff;;
+    border-style: solid;
+    border-radius:  2px;
+    border-width: 1px;
+    font-weight: normal;
+    position: relative
+}
+
+.markdown-section .tip:before, .markdown-section .warn:before, .markdown-section blockquote:before {
+    content: "";
+    position: absolute;
+    top:  50%;
+    left: 0.8em;
+    width: 1.1em;
+    height: 1.1em;
+    margin: -0.52em 0 0 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='64 64 896 896' fill='%231890ff'%3E%3Cpath d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 010-96 48.01 48.01 0 010 96z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+}
+/* 引用样式 blockquote警告色*/
+.markdown-section .warn {
+    border-color: #ffe58f;
+    background: #fffbe6;
+}
+
+.markdown-section .warn:before {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='64 64 896 896' fill='%23faad14'%3E%3Cpath d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z'/%3E%3C/svg%3E");
+}
+
+/* 引用样式 blockquote危险色*/
+.markdown-section .tip {
+    border-color: #ffccc7;
+    background: #fff2f0;
+}
+
+.markdown-section .tip:before {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='64 64 896 896' fill='%23ff4d4f'%3E%3Cpath d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z'/%3E%3C/svg%3E");
+}
+
 /* 表格表头颜色 */
 .layui-table thead tr, .layui-table-click, .layui-table-header,  .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even){
     background-color: #F9FAFB!important;

@@ -63,20 +63,20 @@
                         <div class="layui-input-block">
 <!--                            <input type="radio" class="layui-input" name="codeBindOption" value="0" title="每天" checked="">-->
 <!--                            <input type="radio" class="layui-input" name="codeBindOption" value="1" title="永久">-->
-                            <input id="codeBindNum" name="codeBindNum" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                            <input id="codeBindNum" name="codeBindNum" placeholder="请输入绑机数量" min="1" max="50" type="number" oninput="if(value>50)value=50;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label layui-form-required">重绑次数</label>
                             <div class="layui-input-inline">
-                                <input id="codeAfreshBindNum" name="codeAfreshBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                                <input id="codeAfreshBindNum" name="codeAfreshBindNum" placeholder="请输入重绑次数" min="0" max="200" type="number" oninput="if(value>2000)value=2000;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">重绑扣时</label>
                             <div class="layui-input-inline">
-                                <input id="codeAfreshBindTime" name="codeAfreshBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                                <input id="codeAfreshBindTime" name="codeAfreshBindTime" placeholder="请输入重绑扣时(分钟)" min="0" max="525600" type="number" oninput="if(value>525600)value=525600;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                             </div>
                         </div>
                     </div>
@@ -99,29 +99,35 @@
                         <div class="layui-input-block">
 <!--                            <input type="radio" class="layui-input" name="accountBindOption" value="0" title="每天" checked="">-->
 <!--                            <input type="radio" class="layui-input" name="accountBindOption" value="1" title="永久">-->
-                            <input id="accountBindNum" name="accountBindNum" placeholder="请输入绑机数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                            <input id="accountBindNum" name="accountBindNum" placeholder="请输入绑机数量" min="1" max="50" type="number" oninput="if(value>50)value=50;"  class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label layui-form-required">重绑次数</label>
                             <div class="layui-input-inline">
-                                <input id="accountAfreshBindNum" name="accountAfreshBindNum" placeholder="请输入重绑次数" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                                <input id="accountAfreshBindNum" name="accountAfreshBindNum" placeholder="请输入重绑次数" min="0" max="2000" type="number" oninput="if(value>2000)value=2000;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">重绑扣时</label>
                             <div class="layui-input-inline">
-                                <input id="accountAfreshBindTime" name="accountAfreshBindTime" placeholder="请输入重绑扣时(分钟)" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                                <input id="accountAfreshBindTime" name="accountAfreshBindTime" placeholder="请输入重绑扣时(分钟)" min="0" max="525600" type="number" oninput="if(value>525600)value=525600;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                             </div>
                         </div>
                     </div>
                 </div>
             </fieldset>
+            <div class="markdown-section" style="margin-bottom: 0px;">
+                <blockquote>
+                    <p>绑机数量最大50个，重绑次数为0代表不限制，重绑扣时单位为分钟</p>
+                </blockquote>
+            </div>
         </div>
         @}
         @if(event=='open'){
         <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
+
             <fieldset class="layui-elem-field">
                 <legend>单码模式</legend>
                 <div class="layui-field-box">
@@ -152,7 +158,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label layui-form-required">多开数量</label>
                         <div class="layui-input-block">
-                            <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                            <input id="codeOpenNum" name="codeOpenNum" placeholder="请输入多开数量" min="0" max="525600" type="number" oninput="if(value>100)value=100;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                         </div>
                     </div>
                 </div>
@@ -185,15 +191,21 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label layui-form-required">多开数量</label>
                         <div class="layui-input-block">
-                            <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" type="number" class="layui-input" lay-verify="required" lay-verType="tips" required/>
+                            <input id="accountOpenNum" name="accountOpenNum" placeholder="请输入多开数量" min="0" max="525600" type="number" oninput="if(value>100)value=100;" class="layui-input" lay-verify="required|numberX|h5" lay-verType="tips" required/>
                         </div>
                     </div>
                 </div>
             </fieldset>
+            <div class="markdown-section" style="margin-bottom: 0px;">
+                <blockquote>
+                    <p>清理间隔是指用户多长时间不校验则自动踢下线，校验api接口为<strong>检测单码用户状态(checkCardStatus)</strong>和<strong>检测账号用户状态(checkAccountStatus)</strong></p>
+                </blockquote>
+            </div>
         </div>
         @}
         @if(event=='trial'){
         <div class="layui-fluid" style="padding-bottom: 75px;margin-top: 0px;">
+
             <fieldset class="layui-elem-field">
                 <legend>单码模式</legend>
                 <div class="layui-field-box">
@@ -247,6 +259,11 @@
                     </div>
                 </div>
             </fieldset>
+            <div class="markdown-section" style="margin-bottom: 0px;">
+                <blockquote>
+                    <p>试用时长为分钟或次数，注册限制根据客户端ip判断，当注册限制为每天，注册次数为1，则表示同一个ip同一天只能注册一个账号，以此类推</p>
+                </blockquote>
+            </div>
         </div>
         @}
         @if(event=='password'){
