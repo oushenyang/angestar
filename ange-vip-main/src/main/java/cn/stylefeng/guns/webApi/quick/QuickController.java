@@ -103,6 +103,20 @@ public class QuickController {
     }
 
     /**
+     * 卡密查询页面
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-01
+     */
+    @RequestMapping("/cardSearch/{appQuick}")
+    public String cardSearch(@PathVariable String appQuick, Model model) {
+        //获取当前用户应用
+        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick",appQuick));
+        model.addAttribute("appInfoResult", appInfoResult);
+        return PREFIX + "/cardInfo_search.html";
+    }
+
+    /**
      * 卡密解绑接口
      *
      * @author shenyang.ou
@@ -123,6 +137,22 @@ public class QuickController {
         redisUtil.del(RedisType.CARD_INFO.getCode() + card.trim());
         deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
         return ResponseData.success();
+    }
+
+    /**
+     * 卡密查询接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-04-20
+     */
+    @RequestMapping("/cardSearch/searchItem")
+    @ResponseBody
+    public ResponseData searchItem(String card,Long appId) {
+        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card.trim()));
+        if (ObjectUtil.isNull(cardInfo)){
+            throw new OperationException(UN_FIND_CARD);
+        }
+        return ResponseData.success(cardInfo);
     }
 
     /**

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="${ctxPath}/assets/expand/images/favicon.ico" rel="icon">
+    <title>暗格网络验证-卡密查询</title>
+    <link rel="stylesheet" href="${ctxPath}/assets/app/css/weui.css?v=${constants.getReleaseVersion()}">
+        <link rel="stylesheet" href="${ctxPath}/assets/app/css/example.css?v=${constants.getReleaseVersion()}">
+    <!--    <link rel="stylesheet" href="${ctxPath}/assets/app/css/jquery-weui.min.css?v=${constants.getReleaseVersion()}">-->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .demos-title {
+        text-align: center;
+        font-size: 27px;
+        color: #3cc51f;
+        font-weight: 400;
+        margin: 0 15%;
+    }
+
+    .weui-footer {
+        margin: 25px 0 10px 0;
+    }
+
+    .weui-footer_fixed-bottom {
+        position: fixed;
+        /*bottom: .52em;*/
+        left: 0;
+        right: 0;
+    }
+
+    .weui-cells__group_form .weui-label{
+        max-width: 3em!important;
+        margin-right: 0px!important;
+    }
+
+    \@media screen and (max-height: 500px) {
+    .weui-form__extra-area{
+        display:none;
+    }
+    }
+</style>
+<body>
+<div class="page">
+    <div class="weui-form">
+        <div class="weui-form__text-area">
+            <h2 class="weui-form__title">卡密查询</h2>
+            <div class="weui-form__desc">${appInfoResult.appName}</div>
+        </div>
+        <div class="weui-form__control-area">
+            <input name="appId" id="appId" value="${appInfoResult.appId}" type="hidden"/>
+            <div class="weui-cells__group weui-cells__group_form">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell weui-cell_active">
+                        <div class="weui-cell__hd"><label class="weui-label">卡密</label></div>
+                        <div class="weui-cell__bd weui-flex">
+                            <!--                                                <input id="js_input" class="weui-input" placeholder="填写卡密"/>-->
+                            <input id="js_input" class="weui-input" autofocus type="text" placeholder="填写卡密" maxlength="32"/>
+                            <button id="js_input_clear1" onclick="clearInput()" style="cursor:pointer;" class="weui-btn_reset weui-btn_icon weui-btn_input-clear">
+                                <i class="weui-icon-clear" onclick="clearInput()"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-form__opr-area">
+            <a class="weui-btn weui-btn_primary weui-btn_disabled" style="pointer-events:none" href="javascript:" id="showTooltips">查询</a>
+        </div>
+        <div class="weui-form__extra-area weui-footer_fixed-bottom" style="margin-bottom: 0px!important;">
+            <div class="weui-footer">
+<!--                <p class="weui-footer__links">-->
+<!--                    <a href="http://data.angestar.com" class="weui-footer__link">暗格网络验证</a>-->
+<!--                </p>-->
+                <p class="weui-footer__text">Copyright © 2020 data.angestar.com</p>
+            </div>
+        </div>
+    </div>
+    <!-- loading toast -->
+    <div id="loadingToast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <span class="weui-primary-loading weui-icon_toast">
+              <span class="weui-primary-loading__dot"></span>
+            </span>
+            <p class="weui-toast__content">加载中</p>
+        </div>
+    </div>
+
+    <!--BEGIN dialog1-->
+    <div class="js_dialog" id="iosDialog1" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title">查询结果</strong></div>
+            <div class="weui-dialog__bd detail"></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:" id="know" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- js部分 -->
+@/* 加入contextPath属性和session超时的配置 */
+<script type="text/javascript">
+    var Feng = {
+        ctxPath: "${ctxPath}",
+        version: '${constants.getReleaseVersion()}'
+    };
+</script>
+<script src="${ctxPath}/assets/app/js/zepto.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/app/js/jweixin-1.0.0.js?v=${constants.getReleaseVersion()}"></script>
+<script type="text/javascript" src="${ctxPath}/assets/app/js/weui.min.js?v=${constants.getReleaseVersion()}"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/libs/layui/layui.js?v=${constants.getReleaseVersion()}"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/js/common.js?v=${constants.getReleaseVersion()}"></script>
+<script type="text/javascript" src="${ctxPath}/assets/modular/quick/cardInfo_search.js?v=${constants.getReleaseVersion()}"></script>
+<script>
+
+
+</script>
+</body>
+</html>
