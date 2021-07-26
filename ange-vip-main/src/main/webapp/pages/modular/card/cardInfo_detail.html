@@ -71,26 +71,42 @@
         <fieldset class="layui-elem-field">
             <legend>绑机详情</legend>
             <div class="layui-field-box">
+                @for(device in deviceList!) {
                 <table class="layui-table">
                     <thead>
                     <tr class="tr">
                         <th>设备MAC</th>
                         <th>IP</th>
-                        <th>登录次数</th>
-                        <th>上次登录时间</th>
+                        <th>地理位置</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @for(device in deviceList!) {
                     <tr>
                         <td>${device.mac!}</td>
                         <td>${device.ip!}</td>
-                        <td>${device.loginNum!}</td>
-                        <td>${device.updateTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                        <td>${device.ipAddress!}</td>
                     </tr>
-                    @}
+                    </tbody>
+                    <thead>
+                    <tr class="tr">
+                        <th>设备型号</th>
+                        <th>上次登录时间</th>
+                        <th>登录次数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        @if(isNotEmpty(device.model)){
+                        <td>${device.model!}</td>
+                        @}else{
+                        <td>暂无</td>
+                        @}
+                        <td>${device.updateTime!,dateFormat='yyyy-MM-dd HH:mm:ss'}</td>
+                        <td>${device.loginNum!}</td>
+                    </tr>
                     </tbody>
                 </table>
+                @}
             </div>
         </fieldset>
     </div>

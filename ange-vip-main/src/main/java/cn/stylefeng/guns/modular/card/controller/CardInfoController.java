@@ -21,6 +21,7 @@ import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
+import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -146,6 +147,9 @@ public class CardInfoController extends BaseController {
         deviceParam.setCardType(1);
         deviceParam.setCardOrUserId(cardId);
         List<Device> deviceList = deviceService.findListBySpec(deviceParam);
+        for (Device device : deviceList){
+            device.setIpAddress(IpToRegionUtil.ipToRegion(device.getIp()));
+        }
         model.addAttribute("cardInfo", cardInfo);
         model.addAttribute("token", token);
         model.addAttribute("deviceList", deviceList);

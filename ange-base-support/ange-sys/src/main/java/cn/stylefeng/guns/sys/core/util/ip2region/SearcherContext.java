@@ -14,7 +14,9 @@ public class SearcherContext {
     public static DbSearcher getInstance() {
         if (searcher == null) {
             try {
-                InputStream asStream = new FileInputStream("D:\\project\\ip2region\\data\\ip2region.db");
+                InputStream asStream = ResourceUtil.getStreamSafe("ip2region.db");
+
+//                InputStream asStream = new FileInputStream("D:\\project\\ip2region\\data\\ip2region.db");
                 searcher = new DbSearcher(new DbConfig(), IOUtils.toByteArray(asStream));
             } catch (DbMakerConfigException | IOException e) {
                 e.printStackTrace();
