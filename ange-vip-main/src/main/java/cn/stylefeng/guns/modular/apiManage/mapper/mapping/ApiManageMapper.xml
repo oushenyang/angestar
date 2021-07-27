@@ -42,6 +42,19 @@
         <result column="parameter_seven_required" property="parameterSevenRequired" />
         <result column="return_remark" property="returnRemark" />
         <result column="remark" property="remark" />
+        <result column="web_algorithm_range" property="webAlgorithmRange" />
+        <result column="post_type" property="postType" />
+        <result column="web_algorithm_type" property="webAlgorithmType" />
+        <result column="encryption_mode" property="encryptionMode" />
+        <result column="character_set" property="characterSet" />
+        <result column="fill" property="fill" />
+        <result column="web_algorithm_output" property="webAlgorithmOutput" />
+        <result column="web_key" property="webKey" />
+        <result column="web_salt" property="webSalt" />
+        <result column="public_key" property="publicKey" />
+        <result column="private_key" property="privateKey" />
+        <result column="sign_flag" property="signFlag" />
+        <result column="data_overtime" property="dataOvertime" />
         <result column="sort" property="sort" />
         <result column="revision" property="revision" />
         <result column="create_user" property="createUser" />
@@ -91,6 +104,19 @@
         am.parameter_seven_required AS "parameterSevenRequired",
         am.return_remark AS "returnRemark",
         am.remark AS "remark",
+        am.web_algorithm_range AS "webAlgorithmRange",
+        am.post_type AS "postType",
+        am.web_algorithm_type AS "webAlgorithmType",
+        am.encryption_mode AS "encryptionMode",
+        am.character_set AS "characterSet",
+        am.fill AS "fill",
+        am.web_algorithm_output AS "webAlgorithmOutput",
+        am.web_key AS "webKey",
+        am.web_salt AS "webSalt",
+        am.public_key AS "publicKey",
+        am.private_key AS "privateKey",
+        am.sign_flag AS "signFlag",
+        am.data_overtime AS "dataOvertime",
         am.sort AS "sort",
         am.revision AS "revision",
         am.create_user AS "createUser",
@@ -132,7 +158,20 @@
         am.parameter_five AS "parameterFive",
         am.parameter_six AS "parameterSix",
         am.parameter_seven AS "parameterSeven",
-        am.return_remark AS "returnRemark"
+        am.return_remark AS "returnRemark",
+        am.web_algorithm_range AS "webAlgorithmRange",
+        am.post_type AS "postType",
+        am.web_algorithm_type AS "webAlgorithmType",
+        am.encryption_mode AS "encryptionMode",
+        am.character_set AS "characterSet",
+        am.fill AS "fill",
+        am.web_algorithm_output AS "webAlgorithmOutput",
+        am.web_key AS "webKey",
+        am.web_salt AS "webSalt",
+        am.public_key AS "publicKey",
+        am.private_key AS "privateKey",
+        am.sign_flag AS "signFlag",
+        am.data_overtime AS "dataOvertime"
         from ag_api_manage am
         <where>
             <if test="apiCode != null and apiCode != ''">
@@ -158,7 +197,20 @@
         am.parameter_five AS "parameterFive",
         am.parameter_six AS "parameterSix",
         am.parameter_seven AS "parameterSeven",
-        am.return_remark AS "returnRemark"
+        am.return_remark AS "returnRemark",
+        am.web_algorithm_range AS "webAlgorithmRange",
+        am.post_type AS "postType",
+        am.web_algorithm_type AS "webAlgorithmType",
+        am.encryption_mode AS "encryptionMode",
+        am.character_set AS "characterSet",
+        am.fill AS "fill",
+        am.web_algorithm_output AS "webAlgorithmOutput",
+        am.web_key AS "webKey",
+        am.web_salt AS "webSalt",
+        am.public_key AS "publicKey",
+        am.private_key AS "privateKey",
+        am.sign_flag AS "signFlag",
+        am.data_overtime AS "dataOvertime",
         from ag_api_manage am
         <where>
             <if test="callCode != null and callCode !=''">

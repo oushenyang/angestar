@@ -154,6 +154,19 @@ public class ApiManageController extends BaseController {
     }
 
     /**
+     * 同步接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-21
+     */
+    @RequestMapping("/sync")
+    @ResponseBody
+    public ResponseData sync() {
+        this.apiManageService.sync();
+        return ResponseData.success();
+    }
+
+    /**
      * 删除接口
      *
      * @author shenyang.ou

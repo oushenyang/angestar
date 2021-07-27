@@ -81,13 +81,13 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
         var operation = function () {
             var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
             var ajax = new $ax(Feng.ctxPath + "/appInfo/delete", function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 Feng.success("删除成功!");
                 AppInfo.loadAppInfo();
             }, function (data) {
-                layer.close(loading);
+                top.layer.close(loading);
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
+            },true);
             ajax.set("appId", data.appId);
             ajax.set("appNum", data.appNum);
             ajax.start();

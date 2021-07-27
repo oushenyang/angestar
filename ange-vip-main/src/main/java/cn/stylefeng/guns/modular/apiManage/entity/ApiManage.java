@@ -250,6 +250,85 @@ public class ApiManage implements Serializable {
     private String remark;
 
     /**
+     * webApi加密范围 0-全部加密；1-仅加密api参数提交；2-仅加密api参数返回；
+     */
+    @TableField("web_algorithm_range")
+    private Integer webAlgorithmRange;
+
+    /**
+     * 传参加密方式：0-请求参数封装为json再加密；1-分别为每个请求参数加密
+     */
+    @TableField("post_type")
+    private Integer postType;
+
+    /**
+     * webApi加密算法 0-关闭；1-DES；2-AES；3-DESede；4-SM4；5-RSA
+     */
+    @TableField("web_algorithm_type")
+    private Integer webAlgorithmType;
+
+    /**
+     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB；
+     */
+    @TableField("encryption_mode")
+    private Integer encryptionMode;
+
+    /**
+     * 字符集：0-utf8；1-gb2312；2-gbk；
+     */
+    @TableField("character_set")
+    private Integer characterSet;
+
+    /**
+     * 填充：0-PKCS5Padding；1-PKCS7Padding；2-ISO10126Padding；3-ZeroPadding；4-NoPadding
+     */
+    @TableField("fill")
+    private Integer fill;
+
+    /**
+     * 输出：0-base64；1-hex；
+     */
+    @TableField("web_algorithm_output")
+    private Integer webAlgorithmOutput;
+
+    /**
+     * webApi加密key
+     */
+    @TableField("web_key")
+    private String webKey;
+
+    /**
+     * webApi签名盐
+     */
+    @TableField("web_salt")
+    private String webSalt;
+
+    /**
+     * 公钥
+     */
+    @TableField("public_key")
+    private String publicKey;
+
+    /**
+     * 私匙
+     */
+    @TableField("private_key")
+    private String privateKey;
+
+    /**
+     * Sign验证开关
+     */
+    @TableField("sign_flag")
+    private Boolean signFlag;
+
+    /**
+     * 数据包超时时间
+     */
+    @TableField("data_overtime")
+    private Integer dataOvertime;
+
+
+    /**
      * 排序
      */
     @TableField("sort")
@@ -588,6 +667,110 @@ public class ApiManage implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getWebAlgorithmRange() {
+        return webAlgorithmRange;
+    }
+
+    public void setWebAlgorithmRange(Integer webAlgorithmRange) {
+        this.webAlgorithmRange = webAlgorithmRange;
+    }
+
+    public Integer getPostType() {
+        return postType;
+    }
+
+    public void setPostType(Integer postType) {
+        this.postType = postType;
+    }
+
+    public Integer getWebAlgorithmType() {
+        return webAlgorithmType;
+    }
+
+    public void setWebAlgorithmType(Integer webAlgorithmType) {
+        this.webAlgorithmType = webAlgorithmType;
+    }
+
+    public Integer getEncryptionMode() {
+        return encryptionMode;
+    }
+
+    public void setEncryptionMode(Integer encryptionMode) {
+        this.encryptionMode = encryptionMode;
+    }
+
+    public Integer getCharacterSet() {
+        return characterSet;
+    }
+
+    public void setCharacterSet(Integer characterSet) {
+        this.characterSet = characterSet;
+    }
+
+    public Integer getFill() {
+        return fill;
+    }
+
+    public void setFill(Integer fill) {
+        this.fill = fill;
+    }
+
+    public Integer getWebAlgorithmOutput() {
+        return webAlgorithmOutput;
+    }
+
+    public void setWebAlgorithmOutput(Integer webAlgorithmOutput) {
+        this.webAlgorithmOutput = webAlgorithmOutput;
+    }
+
+    public String getWebKey() {
+        return webKey;
+    }
+
+    public void setWebKey(String webKey) {
+        this.webKey = webKey;
+    }
+
+    public String getWebSalt() {
+        return webSalt;
+    }
+
+    public void setWebSalt(String webSalt) {
+        this.webSalt = webSalt;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    public Boolean getSignFlag() {
+        return signFlag;
+    }
+
+    public void setSignFlag(Boolean signFlag) {
+        this.signFlag = signFlag;
+    }
+
+    public Integer getDataOvertime() {
+        return dataOvertime;
+    }
+
+    public void setDataOvertime(Integer dataOvertime) {
+        this.dataOvertime = dataOvertime;
     }
 
     public Integer getSort() {

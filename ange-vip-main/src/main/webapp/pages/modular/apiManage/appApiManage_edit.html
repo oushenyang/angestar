@@ -35,7 +35,11 @@
                     <tbody>
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterOne" name="parameterOne" value="${apiManage.parameterOne}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterOneRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterOneRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
@@ -50,8 +54,17 @@
                     </tr>
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterTwo" name="parameterTwo" value="${apiManage.parameterTwo}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
-                        <td>@if(apiManage.parameterTwoRequired==true){
+                        @if(apiManage.parameterTwoRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        @if(apiManage.parameterTwoRemark=='黑名单类型'){
+                        <td>int</td>
+                        @}else{
+                        <td>string</td>
+                        @}
+                        @}
+                        <td>
+                            @if(apiManage.parameterTwoRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
                             <span>NO</span>
@@ -66,7 +79,11 @@
                     @if(isNotEmpty(apiManage.parameterThree)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterThree" name="parameterThree" value="${apiManage.parameterThree}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterThreeRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterThreeRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
@@ -86,7 +103,11 @@
                     @if(isNotEmpty(apiManage.parameterFour)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterFour" name="parameterFour" value="${apiManage.parameterFour}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterFourRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterFourRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
@@ -106,7 +127,11 @@
                     @if(isNotEmpty(apiManage.parameterFive)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterFive1" name="parameterFive" value="${apiManage.parameterFive}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterFiveRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterFiveRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
@@ -126,7 +151,11 @@
                     @if(isNotEmpty(apiManage.parameterSix)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterSix1" name="parameterSix" value="${apiManage.parameterSix}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterSixRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterSixRequired==true){
                             <span style="color: red">YES</span>
                             @}else{
@@ -146,7 +175,11 @@
                     @if(isNotEmpty(apiManage.parameterSeven)){
                     <tr>
                         <td><input style="height: 25px;min-width: 80px" id="parameterSeven1" name="parameterSeven" value="${apiManage.parameterSeven}" type="text" class="layui-input" lay-verify="required" lay-verType="tips"/></td>
-                        <td>String</td>
+                        @if(apiManage.parameterSevenRemark=='13位时间戳'){
+                        <td>long</td>
+                        @}else{
+                        <td>string</td>
+                        @}
                         <td>@if(apiManage.parameterSevenRequired==true){
                             <span style="color: red">YES</span>
                             @}else{

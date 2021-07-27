@@ -3,6 +3,8 @@ package cn.stylefeng.guns.modular.apiManage.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
@@ -26,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,9 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private AppInfoService appInfoService;
 
 
     @Override
@@ -112,6 +118,47 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
             }
         }
         return apiManageApi;
+    }
+
+    @Override
+    public void sync() {
+        List<ApiManage> apiManages = baseMapper.selectList(new QueryWrapper<ApiManage>().eq("app_id",1));
+        List<AppInfo> appInfos = appInfoService.list();
+        for (AppInfo appInfo : appInfos){
+            List<ApiManage> appApiManages = baseMapper.selectList(new QueryWrapper<ApiManage>().eq("app_id",appInfo.getAppId()));
+            for (ApiManage apiManage : apiManages){
+                boolean isBe = false;
+                for (ApiManage appApiManage : appApiManages){
+                    if(appApiManage.getApiCode().equals(apiManage.getApiCode())){
+                        appApiManage.setParameterOneRemark(apiManage.getParameterOneRemark());
+                        appApiManage.setParameterOneNote(apiManage.getParameterOneNote());
+                        appApiManage.setParameterTwoRemark(apiManage.getParameterTwoRemark());
+                        appApiManage.setParameterTwoNote(apiManage.getParameterTwoNote());
+                        appApiManage.setParameterThreeRemark(apiManage.getParameterThreeRemark());
+                        appApiManage.setParameterThreeNote(apiManage.getParameterThreeNote());
+                        appApiManage.setParameterFourRemark(apiManage.getParameterFourRemark());
+                        appApiManage.setParameterFourNote(apiManage.getParameterFourNote());
+                        appApiManage.setParameterFiveRemark(apiManage.getParameterFiveRemark());
+                        appApiManage.setParameterFiveNote(apiManage.getParameterFiveNote());
+                        appApiManage.setParameterSixRemark(apiManage.getParameterSixRemark());
+                        appApiManage.setParameterSixNote(apiManage.getParameterSixNote());
+                        appApiManage.setParameterSevenRemark(apiManage.getParameterSevenRemark());
+                        appApiManage.setParameterSevenNote(apiManage.getParameterSevenNote());
+                        appApiManage.setParameterNum(apiManage.getParameterNum());
+                        baseMapper.updateById(appApiManage);
+                        isBe = true;
+                        break;
+                    }
+                }
+                if (!isBe){
+                    apiManage.setApiManageId(null);
+                    apiManage.setCallCode(appInfo.getAppNum());
+                    apiManage.setAppId(appInfo.getAppId());
+                    baseMapper.insert(apiManage);
+                }
+            }
+        }
+
     }
 
     //限流

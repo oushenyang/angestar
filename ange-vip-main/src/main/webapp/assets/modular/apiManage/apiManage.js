@@ -131,6 +131,28 @@ layui.use(['table', 'admin', 'ax'], function () {
         Feng.confirm("确定要删除这些数据?", operation);
     };
 
+    /**
+     * 同步
+     *
+     * @param obj 选择的行数据
+     */
+    ApiManage.sync = function(obj){
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade:[0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/apiManage/sync", function (data) {
+                top.layer.close(loading);
+                Feng.success("同步成功!");
+                table.reload(ApiManage.tableId);
+            }, function (data) {
+                top.layer.close(loading);
+                Feng.error("同步失败!" + data.responseJSON.message + "!");
+            },true);
+            // ajax.set("ids", ids);
+            ajax.start();
+        };
+        Feng.confirm("确定同步?", operation);
+    };
+
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + ApiManage.tableId,
@@ -205,6 +227,8 @@ layui.use(['table', 'admin', 'ax'], function () {
             table.reload(ApiManage.tableId);
         } else if(obj.event === 'batchRemove'){
             ApiManage.batchRemove(obj)
+        } else if(obj.event === 'sync'){
+            ApiManage.sync(obj)
         }
     });
     // 行内工具条点击事件

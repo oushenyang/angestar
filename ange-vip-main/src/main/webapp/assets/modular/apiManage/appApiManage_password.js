@@ -1,9 +1,11 @@
-layui.use(['form', 'formX','admin', 'ax', 'textool'], function () {
+layui.use(['form', 'formX','admin', 'ax', 'textool', 'formX'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
+    var formX = layui.formX;
     var admin = layui.admin;
     var textool = layui.textool;
+    var pass = {};
 
     textool.init({
         // 根据元素 id 值单独渲染，为空默认根据 class='layext-text-tool' 批量渲染
@@ -24,7 +26,7 @@ layui.use(['form', 'formX','admin', 'ax', 'textool'], function () {
 
     // 加密算法单选框事件
     form.on('radio(webAlgorithmType)', function (data) {
-        console.log(data.value);
+        // console.log(data.value);
         if (data.value==5){
             $('.encryptionMode').hide();
             $('.webKey').hide();
@@ -50,27 +52,95 @@ layui.use(['form', 'formX','admin', 'ax', 'textool'], function () {
             $('.webAlgorithmOutput').attr("style","margin-top: 0;");
             form.render();
         }
+        pass.refresh(data.value,$('#encryptionMode').val());
     });
 
     // 加密模式事件
     form.on('select(encryptionMode)', function (data) {
         console.log(data.value);
-        if (data.value==0){
-            $('.webSalt').hide();
-            $("#webSalt").removeAttr("lay-verify");
-            form.render();
-        }else {
-            $('.webSalt').show();
-            $("#webSalt").attr("lay-verify","required");
-            form.render();
-        }
+        pass.refresh($("input[name='webAlgorithmType']:checked").val(),data.value);
+        // if (data.value==0){
+        //     $('.webSalt').hide();
+        //     $("#webSalt").removeAttr("lay-verify");
+        //     form.render();
+        // }else {
+        //     $('.webSalt').show();
+        //     $("#webSalt").attr("lay-verify","required");
+        //     var webAlgorithmType = $('#webAlgorithmType').val();
+        //     //0-明文；1-DES；2-AES；3-DESede；4-SM4；
+        //     if (Number(webAlgorithmType)===0){
+        //
+        //     }
+        //     form.render();
+        // }
     });
 
+    pass.refresh = function (webAlgorithmType,encryptionMode){
+        console.log(webAlgorithmType)
+        console.log(encryptionMode)
+        //0-明文；1-DES；2-AES；3-DESede；4-SM4；
+        if (Number(webAlgorithmType) === 0){
+            $("#webKey").removeAttr("lay-verify");
+            $("#webSalt").removeAttr("lay-verify");
+            form.render();
+        }else if (Number(webAlgorithmType) === 1){
+            if (Number(encryptionMode)===0){
+                $('.webSalt').hide();
+                $("#webSalt").removeAttr("lay-verify");
+                form.render();
+            }else {
+                $('.webSalt').show();
+                $("#webKey").attr("lay-verify","required|noChina|h5");
+                $("#webKey").attr("minlength","16");
+                $("#webKey").attr("maxlength","16");
+
+                $("#webSalt").attr("lay-verify","required|noChina|h5");
+                $("#webSalt").attr("minlength","8");
+                $("#webSalt").attr("maxlength","8");
+                form.render();
+            }
+        }else if (Number(webAlgorithmType) === 2||Number(webAlgorithmType) === 4){
+            if (Number(encryptionMode)===0){
+                $('.webSalt').hide();
+                $("#webSalt").removeAttr("lay-verify");
+                form.render();
+            }else {
+                $('.webSalt').show();
+                $("#webKey").attr("lay-verify","required|noChina|h5");
+                $("#webKey").attr("minlength","16");
+                $("#webKey").attr("maxlength","16");
+
+                $("#webSalt").attr("lay-verify","required|noChina|h5");
+                $("#webSalt").attr("minlength","16");
+                $("#webSalt").attr("maxlength","16");
+                form.render();
+            }
+        }else if (Number(webAlgorithmType) === 3){
+            if (Number(encryptionMode)===0){
+                $('.webSalt').hide();
+                $("#webSalt").removeAttr("lay-verify");
+                form.render();
+            }else {
+                $('.webSalt').show();
+                $("#webKey").attr("lay-verify","required|noChina|h5");
+                $("#webKey").attr("minlength","24");
+                $("#webKey").attr("maxlength","24");
+
+                $("#webSalt").attr("lay-verify","required|noChina|h5");
+                $("#webSalt").attr("minlength","16");
+                $("#webSalt").attr("maxlength","16");
+                form.render();
+            }
+        }
+
+    }
 
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/apiManage/detail?apiManageId=" + Feng.getUrlParam("apiManageId"));
     var result = ajax.start();
     form.val('apiManageForm', result.data);
+    pass.refresh($("input[name='webAlgorithmType']:checked").val(),$('#encryptionMode').val());
+
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {

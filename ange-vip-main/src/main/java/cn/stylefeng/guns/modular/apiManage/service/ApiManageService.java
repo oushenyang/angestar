@@ -84,4 +84,9 @@ public interface ApiManageService extends IService<ApiManage> {
      * @return 接口信息
      */
     ApiManageApi getApiManageByRedis(String apiCode, String callCode);
+
+    /**
+     * 同步api接口
+     */
+    void sync();
 }
