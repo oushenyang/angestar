@@ -5,13 +5,12 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.mapper.ApiManageMapper;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import  cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
@@ -28,8 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -130,6 +129,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
                 boolean isBe = false;
                 for (ApiManage appApiManage : appApiManages){
                     if(appApiManage.getApiCode().equals(apiManage.getApiCode())){
+                        appApiManage.setApiStatus(apiManage.getApiStatus());
                         appApiManage.setParameterOneRemark(apiManage.getParameterOneRemark());
                         appApiManage.setParameterOneNote(apiManage.getParameterOneNote());
                         appApiManage.setParameterTwoRemark(apiManage.getParameterTwoRemark());
@@ -154,6 +154,8 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
                     apiManage.setApiManageId(null);
                     apiManage.setCallCode(appInfo.getAppNum());
                     apiManage.setAppId(appInfo.getAppId());
+                    apiManage.setCreateTime(new Date());
+                    apiManage.setCreateUser(appInfo.getCreateUser());
                     baseMapper.insert(apiManage);
                 }
             }

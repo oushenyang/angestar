@@ -3,10 +3,9 @@ package cn.stylefeng.guns.webApi.card;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.state.CardTimeType;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -21,7 +20,7 @@ import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.HttpClientUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
-import cn.stylefeng.guns.webApi.common.param.RequestUtil;
+import cn.stylefeng.guns.webApi.common.util.RequestUtil;
 import cn.stylefeng.guns.webApi.common.param.CardLoginParam;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -67,20 +66,17 @@ public class CardLoginController {
     @RequestMapping("/{callCode}")
     @ResponseBody
     public String cardLogin(@PathVariable String callCode, @RequestBody(required=false) String body) {
-        if (ConstantsContext.getYiYouOpen()&&"s4c4rcpqzf3q".equals(callCode)){
-            return "11111111111111111111111111111111";
-        }
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("cardLogin",callCode);
         AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
         //获取参数
-        CardLoginParam param = RequestUtil.getCardLoginParameter(apiManage,appInfoApi,body);
+        CardLoginParam param = RequestUtil.getCardLoginParameter(apiManage,body);
         if (appInfoApi.getCydiaFlag()==2){
             //应用已关闭
-            throw new CardLoginException(1000, apiManage.getAppId(),"",new Date(),param.getHoldCheck(),appInfoApi,false);
+            throw new CardLoginException(1000, apiManage.getAppId(),"",new Date(),param.getHoldCheck(),apiManage,false);
         }else if (appInfoApi.getCydiaFlag()==1){
             //该应用免费
-            throw new CardLoginException(2000, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),param.getHoldCheck(),appInfoApi,true);
+            throw new CardLoginException(2000, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),param.getHoldCheck(),apiManage,true);
         }
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getSingleCode());
         //如果卡密查不到
@@ -90,7 +86,7 @@ public class CardLoginController {
                 getYiYouByCard(apiManage,appInfoApi,param.getSingleCode(),param.getMac(),param.getModel(),param.getHoldCheck());
                 //从万捷查
             }else {
-                throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),param.getHoldCheck(),appInfoApi,false);
+                throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),param.getHoldCheck(),apiManage,false);
             }
         }
         //如果未激活
@@ -121,16 +117,16 @@ public class CardLoginController {
                     cardInfo1.setCardStatus(CardStatus.EXPIRED.getCode());
                     //异步更新卡密和删除缓存
                     asyncService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,param.getSingleCode());
-                    throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),appInfoApi,false);
+                    throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),apiManage,false);
                 }
                 createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, param.getMac(), param.getModel(),param.getHoldCheck(), cardInfoApi.getExpireTime());
                 break;
             //已过期
             case 2:
-                throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),appInfoApi,false);
+                throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),apiManage,false);
             //已禁用
             case 3:
-                throw new CardLoginException(2005, apiManage.getAppId(),"卡密已被禁用",new Date(),param.getHoldCheck(),appInfoApi,false);
+                throw new CardLoginException(2005, apiManage.getAppId(),"卡密已被禁用",new Date(),param.getHoldCheck(),apiManage,false);
         }
         return param.getSingleCode();
     }
@@ -184,11 +180,11 @@ public class CardLoginController {
                 }else {
                     switch (cardInfoApi.getCardBindType()-1){
                         case 1:
-                            throw new CardLoginException(2002, apiManage.getAppId(),"卡密未在绑定的设备上登录！",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2002, apiManage.getAppId(),"卡密未在绑定的设备上登录！",new Date(),holdCheck,apiManage,false);
                         case 2:
-                            throw new CardLoginException(2003, apiManage.getAppId(),"卡密未在绑定的ip上登录！",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2003, apiManage.getAppId(),"卡密未在绑定的ip上登录！",new Date(),holdCheck,apiManage,false);
                         case 3:
-                            throw new CardLoginException(2004, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录！",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2004, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录！",new Date(),holdCheck,apiManage,false);
                     }
                 }
             }
@@ -206,11 +202,11 @@ public class CardLoginController {
                 }else {
                     switch (appInfoApi.getCodeBindType()){
                         case 1:
-                            throw new CardLoginException(2002, apiManage.getAppId(),"卡密未在绑定的设备上登录",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2002, apiManage.getAppId(),"卡密未在绑定的设备上登录",new Date(),holdCheck,apiManage,false);
                         case 2:
-                            throw new CardLoginException(2003, apiManage.getAppId(),"卡密未在绑定的ip上登录",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2003, apiManage.getAppId(),"卡密未在绑定的ip上登录",new Date(),holdCheck,apiManage,false);
                         case 3:
-                            throw new CardLoginException(2004, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录",new Date(),holdCheck,appInfoApi,false);
+                            throw new CardLoginException(2004, apiManage.getAppId(),"卡密未在绑定的设备或ip上登录",new Date(),holdCheck,apiManage,false);
                     }
                 }
             }
@@ -223,9 +219,9 @@ public class CardLoginController {
     public void getYiYouByCard(ApiManageApi apiManage,AppInfoApi appInfoApi, String singleCode,String mac,String model,String holdCheck){
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("k", singleCode);
-        String result= HttpClientUtil.postParams(appInfoApi.getProvingUrl(), paramMap,appInfoApi.getAppId(),holdCheck,appInfoApi);
+        String result= HttpClientUtil.postParams(appInfoApi.getProvingUrl(), paramMap,appInfoApi.getAppId(),holdCheck,apiManage);
         if(StringUtils.contains(result, "无此卡密")){
-            throw new CardLoginException(2001, appInfoApi.getAppId(),"卡密不存在！",new Date(),holdCheck,appInfoApi,false);
+            throw new CardLoginException(2001, appInfoApi.getAppId(),"卡密不存在！",new Date(),holdCheck,apiManage,false);
         }
         Document doc = Jsoup.parse(result);
         Elements rows = doc.select("form").get(0).select("span");
@@ -259,7 +255,7 @@ public class CardLoginController {
             if (DateUtil.parse(expireTime).compareTo(DateUtil.date())<0) {
                 cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
                 cardInfoService.save(cardInfo);
-                throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,appInfoApi,false);
+                throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),holdCheck,apiManage,false);
             }
             cardInfoService.save(cardInfo);
             //生成token

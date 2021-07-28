@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.modular.apiManage.model.result;
+package cn.stylefeng.guns.sys.core.exception;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;

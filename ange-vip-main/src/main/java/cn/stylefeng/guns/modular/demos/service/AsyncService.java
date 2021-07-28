@@ -29,6 +29,7 @@ import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
+import cn.stylefeng.guns.sys.core.util.CardStringRandom;
 import cn.stylefeng.guns.sys.core.util.SpringUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
@@ -147,6 +148,10 @@ public class AsyncService {
             apiManage.setCallCode(appNum);
             apiManage.setCreateTime(new Date());
             apiManage.setCreateUser(userId);
+            //生成加密密匙
+            apiManage.setWebKey(CardStringRandom.wordAndNum(16));
+            //生成加密盐
+            apiManage.setWebSalt(CardStringRandom.wordAndNum(8));
             apiManage.setUpdateTime(null);
             apiManage.setUpdateUser(null);
         });

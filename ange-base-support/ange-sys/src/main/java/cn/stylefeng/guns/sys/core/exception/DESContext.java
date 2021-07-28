@@ -16,7 +16,7 @@ public class DESContext {
     private static String webKey = "0";
     private static String webSalt = "0";
 
-    public static DES getInstance(AppInfoApi appInfoApi) {
+    public static DES getInstance(ApiManageApi appInfoApi) {
 
         if (des == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
                 ||!fill.equals(appInfoApi.getFill())

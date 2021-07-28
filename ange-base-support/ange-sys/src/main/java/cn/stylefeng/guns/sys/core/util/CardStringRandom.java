@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 
 import cn.hutool.core.text.StrBuilder;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import java.util.Random;
 
@@ -80,6 +81,20 @@ public class CardStringRandom {
             } else {
                 val.append(random.nextInt(10));
             }
+        }
+        return val.toString();
+    }
+
+    //生成小写字母+数字,
+    public static String wordAndNum(Integer cardTypeLength) {
+//        StringBuilder val = new StringBuilder(cardTypePrefix);
+        StrBuilder val = StrBuilder.create();
+        String base = "abcdefghkmnpqrstuvwxyz123456789";
+        Random random = new Random();
+        for ( int i = 0; i < cardTypeLength; i++ )
+        {
+            int number = random.nextInt( base.length() );
+            val.append( base.charAt( number ) );
         }
         return val.toString();
     }

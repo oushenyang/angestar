@@ -16,7 +16,7 @@ public class DESedeContext {
     private static String webKey = "0";
     private static String webSalt = "0";
 
-    public static DESede getInstance(AppInfoApi appInfoApi) {
+    public static DESede getInstance(ApiManageApi appInfoApi) {
         if (deSede == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
                 ||!fill.equals(appInfoApi.getFill())
                 ||!webKey.equals(appInfoApi.getWebKey())

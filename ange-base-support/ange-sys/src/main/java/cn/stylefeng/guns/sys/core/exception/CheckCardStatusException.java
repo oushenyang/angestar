@@ -18,17 +18,17 @@ public class CheckCardStatusException extends RuntimeException {
     private Object data;
     private Date expireTime;
     private String holdCheck;
-    private AppInfoApi appInfoApi;
+    private ApiManageApi apiManageApi;
     private Boolean success;
 
-    public CheckCardStatusException(Integer code, Long appId, Object data, Date expireTime, String holdCheck, AppInfoApi appInfoApi, Boolean success) {
+    public CheckCardStatusException(Integer code, Long appId, Object data, Date expireTime, String holdCheck, ApiManageApi apiManageApi, Boolean success) {
 //        super(errorMessage);
         this.code = code;
         this.appId = appId;
         this.data = data;
         this.expireTime = expireTime;
         this.holdCheck = holdCheck;
-        this.appInfoApi = appInfoApi;
+        this.apiManageApi = apiManageApi;
         this.success = success;
     }
 }

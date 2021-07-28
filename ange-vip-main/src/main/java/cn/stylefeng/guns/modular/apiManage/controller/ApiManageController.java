@@ -8,6 +8,7 @@ import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.modular.card.model.params.CodeCardTypeParam;
 import cn.stylefeng.guns.sys.modular.system.entity.Dict;
 import cn.stylefeng.guns.sys.modular.system.service.DictService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -190,6 +192,38 @@ public class ApiManageController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseData batchRemove(String ids) {
         this.apiManageService.batchRemove(ids);
+        return ResponseData.success();
+    }
+
+    /**
+     * 冻结
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/freeze")
+    @ResponseBody
+    public ResponseData freeze(@RequestParam Long apiManageId) {
+        ApiManageParam param = new ApiManageParam();
+        param.setApiManageId(apiManageId);
+        param.setApiStatus(1);
+        this.apiManageService.update(param);
+        return ResponseData.success();
+    }
+
+    /**
+     * 解除冻结
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/unfreeze")
+    @ResponseBody
+    public ResponseData unfreeze(@RequestParam Long apiManageId) {
+        ApiManageParam param = new ApiManageParam();
+        param.setApiManageId(apiManageId);
+        param.setApiStatus(0);
+        this.apiManageService.update(param);
         return ResponseData.success();
     }
 

@@ -1,9 +1,6 @@
 package cn.stylefeng.guns.webApi.remote;
 
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
-import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
-import cn.stylefeng.guns.modular.remote.entity.RemoteData;
 import cn.stylefeng.guns.modular.remote.model.result.RemoteDataApi;
 import cn.stylefeng.guns.modular.remote.service.RemoteDataService;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;

@@ -1,10 +1,11 @@
-layui.use(['table', 'admin', 'form', 'ax', 'func'], function () {
+layui.use(['table', 'admin', 'form', 'ax', 'func', 'notice'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var form = layui.form;
     var func = layui.func;
     var admin = layui.admin;
+    var notice = layui.notice;
 
     /**
      * 接口管理管理
@@ -157,6 +158,46 @@ layui.use(['table', 'admin', 'form', 'ax', 'func'], function () {
     };
 
     /**
+     * 修改api状态
+     *
+     * @param userId 用户id
+     * @param checked 是否选中（true,false），选中就是解锁用户，未选中就是锁定用户
+     */
+    ApiManage.changeApiStatus = function (apiManageId, checked) {
+        if (checked) {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/apiManage/unfreeze", function (data) {
+                top.layer.close(loading);
+                notice.msg('打开成功!', {icon: 1});
+            }, function (data) {
+                top.layer.close(loading);
+                notice.msg("打开失败!" + data.responseJSON.message + "!", {icon: 2});
+                table.reload(ApiManage.tableId);
+            },true);
+            ajax.set("apiManageId", apiManageId);
+            ajax.start();
+        } else {
+            var loading = top.layer.msg('处理中', {icon: 16, shade: [0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/apiManage/freeze", function (data) {
+                top.layer.close(loading);
+                notice.msg('关闭成功!', {icon: 1});
+            }, function (data) {
+                top.layer.close(loading);
+                notice.msg("关闭失败!" + data.responseJSON.message + "!", {icon: 2});
+                table.reload(ApiManage.tableId);
+            },true);
+            ajax.set("apiManageId", apiManageId);
+            ajax.start();
+        }
+    };
+    // 修改卡密类型状态
+    form.on('switch(apiStatus)', function (obj) {
+        var apiManageId = obj.elem.value;
+        var checked = obj.elem.checked ? true : false;
+        ApiManage.changeApiStatus(apiManageId, checked);
+    });
+
+    /**
      * 批量删除
      *
      * @param obj 选择的行数据
@@ -205,7 +246,6 @@ layui.use(['table', 'admin', 'form', 'ax', 'func'], function () {
         cols: ApiManage.initColumn(),
         done : function(res, curr, count) {
             var data = res.data;
-            console.log(res.data)
             var mergeIndex = 0;//定位需要添加合并属性的行数
             var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
             var columsName = ['apiTypeName'];//需要合并的列名称

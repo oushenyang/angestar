@@ -1,7 +1,7 @@
 package cn.stylefeng.guns.webApi.card;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 /**
- * <p>获取单码用户到期时间</p>
+ * <p>获取单码用户信息</p>
  *
  * @author shenyang.ou
  * @version 1.0
@@ -28,7 +28,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("/getCardExpired")
+@RequestMapping("/getCardInfo")
 public class GetCardExpiredController {
     private final ApiManageService apiManageService;
     private final CardInfoService cardInfoService;
@@ -57,9 +57,9 @@ public class GetCardExpiredController {
         AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,appInfoApi,false);
+            throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),holdCheck,apiManage,false);
         }else {
-            throw new CardLoginException(2000, apiManage.getAppId(),"成功！",new Date(),holdCheck,appInfoApi,false);
+            throw new CardLoginException(2000, apiManage.getAppId(),"成功！",new Date(),holdCheck,apiManage,false);
         }
     }
 

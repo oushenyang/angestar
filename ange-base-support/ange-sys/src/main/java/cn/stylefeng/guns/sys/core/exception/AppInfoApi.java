@@ -174,45 +174,45 @@ public class AppInfoApi {
      */
     private Integer accountRegisterTime;
 
-    /**
-     * webApi加密范围 0-全部加密；1-仅加密api参数提交；2-仅加密api参数返回；
-     */
-    private Integer webAlgorithmRange;
-
-    /**
-     * webApi加密算法 0-关闭；1-DES；2-AES；3-DESede
-     */
-    private Integer webAlgorithmType;
-
-    /**
-     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB
-     */
-    private Integer encryptionMode;
-
-    /**
-     * 填充：0-PKCS5Padding；1-PKCS7Padding；2-PKCS1Padding；3-ISO10126Padding；4-SSL3Padding；5-ZeroPadding；6-OAEPPadding；7-NoPadding；
-     */
-    private Integer fill;
-
-    /**
-     * 输出：0-base64；1-hex；
-     */
-    private Integer webAlgorithmOutput;
-
-    /**
-     * webApi加密key
-     */
-    private String webKey;
-
-    /**
-     * webApi签名盐
-     */
-    private String webSalt;
-
-    /**
-     * Sign验证开关
-     */
-    private Boolean signFlag;
+//    /**
+//     * webApi加密范围 0-全部加密；1-仅加密api参数提交；2-仅加密api参数返回；
+//     */
+//    private Integer webAlgorithmRange;
+//
+//    /**
+//     * webApi加密算法 0-关闭；1-DES；2-AES；3-DESede
+//     */
+//    private Integer webAlgorithmType;
+//
+//    /**
+//     * 加密模式：0-ECB；1-CBC；2-CTR；3-CTS；4-CFB；5-OFB
+//     */
+//    private Integer encryptionMode;
+//
+//    /**
+//     * 填充：0-PKCS5Padding；1-PKCS7Padding；2-PKCS1Padding；3-ISO10126Padding；4-SSL3Padding；5-ZeroPadding；6-OAEPPadding；7-NoPadding；
+//     */
+//    private Integer fill;
+//
+//    /**
+//     * 输出：0-base64；1-hex；
+//     */
+//    private Integer webAlgorithmOutput;
+//
+//    /**
+//     * webApi加密key
+//     */
+//    private String webKey;
+//
+//    /**
+//     * webApi签名盐
+//     */
+//    private String webSalt;
+//
+//    /**
+//     * Sign验证开关
+//     */
+//    private Boolean signFlag;
 
     /**
      * 外部验证：0-关闭；1-易游；2-万捷；

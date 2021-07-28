@@ -1,7 +1,6 @@
 package cn.stylefeng.guns.modular.device.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -10,7 +9,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.mapper.TokenMapper;
@@ -20,11 +19,9 @@ import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
-import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static cn.hutool.core.date.DateUtil.offsetMinute;
 import static cn.stylefeng.roses.core.util.HttpContext.getIp;
 
 /**
@@ -168,29 +164,29 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
 //                    }
 //                } else {
                     //开启
-                    String tokenStr1 = updateAndInsertToken(tokens, appInfoApi.getCodeSignType(), appInfoApi.getCodeOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
-                    throw new CardLoginException(2000, apiManage.getAppId(),tokenStr1,expireTime,holdCheck,appInfoApi,true);
+                    String tokenStr1 = updateAndInsertToken(apiManage,tokens, appInfoApi.getCodeSignType(), appInfoApi.getCodeOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
+                    throw new CardLoginException(2000, apiManage.getAppId(),tokenStr1,expireTime,holdCheck,apiManage,true);
 //                }
             case 1:
                 //关闭，只允许一个
                 if (CollectionUtils.isEmpty(tokens)) {
                     List<Token> tokenList = new ArrayList<>();
                     String tokenStr = insertToken(tokenList, appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
-                    throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,appInfoApi,true);
+                    throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,apiManage,true);
                 } else {
                     //顶号登录，直接生成新的
                     if (appInfoApi.getCodeSignType() == 1) {
                         String tokenStr = delAndInsertToken(tokens,1, 1,appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
-                        throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,appInfoApi,true);
+                        throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,apiManage,true);
                         //非顶号，提示
                     } else {
-                        throw new CardLoginException(2008, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), holdCheck,appInfoApi,false);
+                        throw new CardLoginException(2008, apiManage.getAppId(),"卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！",new Date(), holdCheck,apiManage,false);
                     }
                 }
             case 2:
                 //开启
-                String tokenStr = updateAndInsertToken(tokens, cardInfoApi.getCardSignType(), cardInfoApi.getCardOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
-                throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,appInfoApi,true);
+                String tokenStr = updateAndInsertToken(apiManage,tokens, cardInfoApi.getCardSignType(), cardInfoApi.getCardOpenNum(), appInfoApi, cardInfoApi.getCardId(), cardInfoApi.getCardCode(), mac, model,expireTime);
+                throw new CardLoginException(2000, apiManage.getAppId(),tokenStr,expireTime,holdCheck,apiManage,true);
         }
         return true;
     }
@@ -281,7 +277,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         return tokenStr;
     }
 
-    private String updateAndInsertToken(List<Token> tokenList, Integer cardSignType, Integer codeOpenNumLong, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
+    private String updateAndInsertToken(ApiManageApi apiManage,List<Token> tokenList, Integer cardSignType, Integer codeOpenNumLong, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = null;
         //顶号登录
         if (cardSignType == 1) {
@@ -303,7 +299,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
                 if (tokenList.size() < codeOpenNumLong) {
                     tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);
                 } else if (tokenList.size() >= codeOpenNumLong) {
-                    throw new CardLoginException(2008,appInfoApi.getAppId(), "卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！", new Date(),"", appInfoApi,false);
+                    throw new CardLoginException(2008,appInfoApi.getAppId(), "卡密超过最大登录数,如果确定已经下线,请等60分钟后重试！", new Date(),"", apiManage,false);
                 }
             } else {
                 tokenStr = insertToken(tokenList, appInfoApi, cardId, cardCode, mac, model,expireTime);

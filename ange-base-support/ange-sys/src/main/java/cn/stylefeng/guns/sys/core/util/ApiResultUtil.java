@@ -4,6 +4,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.DES;
 import cn.hutool.crypto.symmetric.DESede;
+import cn.hutool.crypto.symmetric.SM4;
 import cn.stylefeng.guns.sys.core.exception.*;
 import com.alibaba.fastjson.JSONObject;
 
@@ -17,29 +18,52 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class ApiResultUtil {
     //对返回参数加密
-    public static Object setAlgorithm(Object object, AppInfoApi appInfoApi){
-        if (appInfoApi.getWebAlgorithmType()!=0&&appInfoApi.getWebAlgorithmRange()!=1){
+    public static Object setAlgorithm(Object object, ApiManageApi apiManageApi){
+        if (apiManageApi.getWebAlgorithmType()!=0&&apiManageApi.getWebAlgorithmRange()!=1){
             //des解密
-            if (appInfoApi.getWebAlgorithmType()==1){
-                DES des = DESContext.getInstance(appInfoApi);
+            if (apiManageApi.getWebAlgorithmType()==1){
+                DES des = DESContext.getInstance(apiManageApi);
                 try {
-                    return des.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    if (apiManageApi.getWebAlgorithmOutput()==0){
+                        return des.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }else {
+                        return des.encryptHex(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }
                 }catch (Exception ignored){
                     throw new SystemApiException(4, "系统错误","",false);
                 }
                 //aes解密
-            }else if (appInfoApi.getWebAlgorithmType()==2){
-                AES aes = AESContext.getInstance(appInfoApi);
+            }else if (apiManageApi.getWebAlgorithmType()==2){
+                AES aes = AESContext.getInstance(apiManageApi);
                 try {
-                    return aes.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    if (apiManageApi.getWebAlgorithmOutput()==0){
+                        return aes.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }else {
+                        return aes.encryptHex(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }
                 }catch (Exception ignored){
                     throw new SystemApiException(4, "系统错误","",false);
                 }
                 //DESede解密
-            }else if (appInfoApi.getWebAlgorithmType()==3){
-                DESede deSede = DESedeContext.getInstance(appInfoApi);
+            }else if (apiManageApi.getWebAlgorithmType()==3){
+                DESede deSede = DESedeContext.getInstance(apiManageApi);
                 try {
-                    return deSede.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    if (apiManageApi.getWebAlgorithmOutput()==0){
+                        return deSede.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }else {
+                        return deSede.encryptHex(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }
+                }catch (Exception ignored){
+                    throw new SystemApiException(4, "系统错误","",false);
+                }
+            }else if (apiManageApi.getWebAlgorithmType()==4){
+                SM4 sm4 = SM4Context.getInstance(apiManageApi);
+                try {
+                    if (apiManageApi.getWebAlgorithmOutput()==0){
+                        return sm4.encryptBase64(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }else {
+                        return sm4.encryptHex(JSONObject.toJSONString(object), CharsetUtil.CHARSET_UTF_8);
+                    }
                 }catch (Exception ignored){
                     throw new SystemApiException(4, "系统错误","",false);
                 }

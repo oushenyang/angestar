@@ -79,6 +79,12 @@ public class NoneAuthedResources {
             //单码登录
             "/cardLogin/*",
 
+            //检测单码用户状态
+            "/checkCardStatus/*",
+
+            //获取单码用户信息
+            "/getCardInfo/*",
+
             //快捷页面
             "/quick/**",
 
@@ -86,8 +92,6 @@ public class NoneAuthedResources {
             "/getRemoteData/**",
             "/getTrial/*",
             "/urule/frame",
-            //检测单码用户状态
-            "/checkCardStatus/*",
             "/api/**",
             "/new/api/**",
             "/shenqi/**",

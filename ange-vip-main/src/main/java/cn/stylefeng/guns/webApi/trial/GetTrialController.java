@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.trial.entity.Trial;
@@ -14,7 +14,6 @@ import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.TrialException;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.IpUtils;
-import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -61,9 +60,9 @@ public class GetTrialController {
         if (StringUtils.isEmpty(mac)){
             throw new SystemApiException(2, "必传参数存在空值","",false);
         }
-        if (appInfoApi.getSignFlag()&&StringUtils.isEmpty(sign)){
+        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
             throw new SystemApiException(2, "签名不正确","",false);
-        }else if (appInfoApi.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
+        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
             throw new SystemApiException(2, "签名不正确","",false);
         }else if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
             String md5 = SecureUtil.md5(mac+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));

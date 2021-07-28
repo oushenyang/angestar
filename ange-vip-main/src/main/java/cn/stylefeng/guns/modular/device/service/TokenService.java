@@ -1,7 +1,7 @@
 package cn.stylefeng.guns.modular.device.service;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
-import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.modular.device.model.params.TokenParam;

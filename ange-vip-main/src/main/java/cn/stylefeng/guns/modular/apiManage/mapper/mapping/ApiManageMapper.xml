@@ -144,7 +144,7 @@
         </where>
         order by am.sort ASC
     </select>
-    <select id="findApiManageApi" resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi">
+    <select id="findApiManageApi" resultType="cn.stylefeng.guns.sys.core.exception.ApiManageApi">
         select
         am.api_manage_id AS "apiManageId",
         am.app_id AS "appId",
@@ -183,7 +183,7 @@
         </where>
     </select>
     <select id="findApiManageApiListByCallCode"
-            resultType="cn.stylefeng.guns.modular.apiManage.model.result.ApiManageApi">
+            resultType="cn.stylefeng.guns.sys.core.exception.ApiManageApi">
         select
         am.api_manage_id AS "apiManageId",
         am.app_id AS "appId",

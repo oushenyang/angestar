@@ -281,7 +281,7 @@ public class GlobalExceptionHandler {
             }
             object = customResultData;
         }
-        object = ApiResultUtil.setAlgorithm(object,e.getAppInfoApi());
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
     }
 
@@ -340,7 +340,7 @@ public class GlobalExceptionHandler {
             }
             object = customResultData;
         }
-        object = ApiResultUtil.setAlgorithm(object,e.getAppInfoApi());
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
     }
 

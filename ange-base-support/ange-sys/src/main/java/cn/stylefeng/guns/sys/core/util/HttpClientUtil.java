@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.sys.core.util;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
+import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import com.alibaba.fastjson.JSON;
@@ -140,7 +141,7 @@ public class HttpClientUtil {
 
 
     //适用于post请求并传送form-data数据（同样适用于post的Raw类型的application-json格式）
-    public static String postParams(String url, Map<String, String> params, Long appId, String holdCheck, AppInfoApi appInfoApi) {
+    public static String postParams(String url, Map<String, String> params, Long appId, String holdCheck, ApiManageApi apiManageApi) {
         SSLContext sslcontext = createIgnoreVerifySSL();
         // 设置协议http和https对应的处理socket链接工厂的对象
         Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
@@ -167,17 +168,17 @@ public class HttpClientUtil {
             HttpEntity entity = res.getEntity();
             return EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
-            throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+            throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,apiManageApi,false);
         } finally {
             try {
                 if (ObjectUtil.isNotNull(res)){
                     res.close();
                     client.close();
                 }else {
-                    throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+                    throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,apiManageApi,false);
                 }
             } catch (IOException e) {
-                throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,appInfoApi,false);
+                throw new CardLoginException(2009, appId,"外部验证接口连接超时，请在应用设置中关闭外部应用对接",new Date(),holdCheck,apiManageApi,false);
             }
         }
     }
