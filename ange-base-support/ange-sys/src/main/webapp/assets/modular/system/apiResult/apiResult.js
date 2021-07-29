@@ -197,6 +197,28 @@ layui.use(['table', 'admin', 'ax'], function () {
         ApiResult.exportExcel();
     });
 
+    /**
+     * 同步
+     *
+     * @param obj 选择的行数据
+     */
+    ApiResult.sync = function(obj){
+        var operation = function () {
+            var loading = top.layer.msg('处理中', {icon: 16, shade:[0.1, '#000'], time: false});
+            var ajax = new $ax(Feng.ctxPath + "/apiResult/sync", function (data) {
+                top.layer.close(loading);
+                Feng.success("同步成功!");
+                table.reload(ApiResult.tableId);
+            }, function (data) {
+                top.layer.close(loading);
+                Feng.error("同步失败!" + data.responseJSON.message + "!");
+            },true);
+            // ajax.set("ids", ids);
+            ajax.start();
+        };
+        Feng.confirm("确定同步?", operation);
+    };
+
     // 表头工具条点击事件
     table.on('toolbar(' + ApiResult.tableId + ')', function(obj){
         //添加
@@ -206,6 +228,8 @@ layui.use(['table', 'admin', 'ax'], function () {
             table.reload(ApiResult.tableId);
         } else if(obj.event === 'batchRemove'){
             ApiResult.batchRemove(obj)
+        } else if(obj.event === 'sync'){
+            ApiResult.sync(obj)
         }
     });
     // 行内工具条点击事件

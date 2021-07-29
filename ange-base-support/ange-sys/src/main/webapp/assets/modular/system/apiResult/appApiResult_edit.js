@@ -131,6 +131,12 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     form.val('apiResultForm', result.data);
     $("#codeText").append(HTMLDecode( result.data.resultDataText));
     $("#edit").append(HTMLDecode( result.data.customResultDataText));
+    if (result.data.resultVariables.indexOf("appNotice") != -1){
+        $(".appNotice").show();
+    }
+    if (result.data.resultVariables.indexOf("customData") != -1){
+        $(".customData").show();
+    }
     if (result.data.resultVariables.indexOf("token") != -1){
         $(".token").show();
     }

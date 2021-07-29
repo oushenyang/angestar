@@ -141,6 +141,7 @@
         app_quick AS "appQuick",
         cydia_flag AS "cydiaFlag",
         app_notice AS "appNotice",
+        custom_data1 AS "customData1",
         code_bind_type AS "codeBindType",
         code_bind_option AS "codeBindOption",
         code_bind_num AS "codeBindNum",

@@ -6,6 +6,7 @@ import cn.hutool.crypto.symmetric.DES;
 import cn.hutool.crypto.symmetric.DESede;
 import cn.hutool.crypto.symmetric.SM4;
 import cn.stylefeng.guns.sys.core.exception.*;
+import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.webApi.common.param.CardLoginParam;
 import cn.stylefeng.guns.webApi.common.param.CommonParam;
 import cn.stylefeng.roses.core.util.HttpContext;
@@ -14,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 public class CommonUtil {
+    //传入数据处理
     public static CommonParam requestDec(ApiManageApi apiManage, String body){
         String decryptStr = null;
         String parameterOne = null;
@@ -206,5 +208,25 @@ public class CommonUtil {
             }
         }
         return new CommonParam(parameterOne,parameterTwo,parameterThree,parameterFour,parameterFive,parameterSix,parameterSeven);
+    }
+
+    public static void overtime(ApiManageApi apiManage, String timestamp){
+        if (apiManage.getDataOvertime()>0){
+            if (StringUtils.isEmpty(timestamp)){
+                throw new SystemApiException(2, "必传参数存在空值","",false);
+            }
+            if (!StringUtils.isNumeric(timestamp)||timestamp.length()<10){
+                throw new SystemApiException(3, "传入数据包错误","",false);
+            }
+            long timestamp1 = Long.parseLong(timestamp.substring(0,10));
+            long now = Long.parseLong(String.format("%010d", System.currentTimeMillis()/1000));
+            if ((now-timestamp1)>apiManage.getDataOvertime()){
+                throw new CommonException(10, "数据包超时",timestamp,apiManage,false);
+            }
+        }
+        if (apiManage.getApiStatus()==1){
+            //接口未开启
+            throw new CommonException(ApiExceptionEnum.API_CLOSE.getCode(), ApiExceptionEnum.API_CLOSE.getMessage(), timestamp,apiManage, false);
+        }
     }
 }

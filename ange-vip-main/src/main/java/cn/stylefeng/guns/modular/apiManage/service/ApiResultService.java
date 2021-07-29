@@ -78,4 +78,9 @@ public interface ApiResultService extends IService<ApiResult> {
      LayuiPageInfo findPageBySpec(ApiResultParam param);
 
     ApiResultApi findApiResultApi(Long appId, Integer resultCode);
+
+    /**
+     * 同步api返回接口
+     */
+    void sync();
 }

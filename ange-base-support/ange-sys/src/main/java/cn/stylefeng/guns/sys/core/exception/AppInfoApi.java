@@ -45,6 +45,11 @@ public class AppInfoApi {
     private String appNotice;
 
     /**
+     * 应用自定义数据1
+     */
+    private String customData1;
+
+    /**
      * 卡密数量
      */
     private Integer cardNum;

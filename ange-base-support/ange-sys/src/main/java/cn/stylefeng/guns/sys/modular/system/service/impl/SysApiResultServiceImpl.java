@@ -1,7 +1,10 @@
 package cn.stylefeng.guns.sys.modular.system.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
 import cn.stylefeng.guns.sys.modular.system.mapper.SysApiResultMapper;
 import cn.stylefeng.guns.sys.modular.system.model.params.ApiResultParam;
@@ -13,6 +16,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -30,6 +34,9 @@ import java.util.Map;
  */
 @Service
 public class SysApiResultServiceImpl extends ServiceImpl<SysApiResultMapper, ApiResult> implements SysApiResultService {
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public void add(ApiResultParam param){
@@ -76,7 +83,14 @@ public class SysApiResultServiceImpl extends ServiceImpl<SysApiResultMapper, Api
 
     @Override
     public ApiResultApi findApiResultApi(Long appId, Integer resultCode) {
-        return baseMapper.findApiResultApi(appId,resultCode);
+        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + appId + "-" +  resultCode);
+        if (ObjectUtil.isNull(apiResultApi)){
+            apiResultApi = baseMapper.findApiResultApi(appId,resultCode);
+            if (ObjectUtil.isNotNull(apiResultApi)){
+                redisUtil.set(RedisType.API_RESULT.getCode() + appId + "-" +  resultCode, apiResultApi,604800);
+            }
+        }
+        return apiResultApi;
     }
 
     private Serializable getKey(ApiResultParam param){

@@ -115,8 +115,8 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        data.field.hasOwnProperty('resultSuccess')?'': data.field.resultSuccess = 'off'; //true 值为on,false 值给赋off
-        data.field.hasOwnProperty('whetherEdit')?'': data.field.whetherEdit = 'off'; //true 值为on,false 值给赋off
+        // data.field.hasOwnProperty('resultSuccess')?'': data.field.resultSuccess = 'off'; //true 值为on,false 值给赋off
+        // data.field.hasOwnProperty('whetherEdit')?'': data.field.whetherEdit = 'off'; //true 值为on,false 值给赋off
         var textM = $('#edit').html();
         var html = textM.replace(/<span\s*[^>]*>(.*?)<\/span>/g, function ($1, $2) {
             var el = document.createElement('div');

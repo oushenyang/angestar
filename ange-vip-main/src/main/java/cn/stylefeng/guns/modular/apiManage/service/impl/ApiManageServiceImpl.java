@@ -14,6 +14,7 @@ import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import  cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.CommonException;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.IpUtils;
@@ -111,6 +112,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
             //不存在则查询
             apiManageApi = baseMapper.findApiManageApi(apiCode, callCode);
             if (ObjectUtil.isNull(apiManageApi)) {
+                //接口不正确
                 throw new SystemApiException(ApiExceptionEnum.API_BAD.getCode(), ApiExceptionEnum.API_BAD.getMessage(), "", false);
             } else {
                 redisUtil.hset(RedisType.API_MANAGE.getCode() + callCode, apiCode, apiManageApi, RedisExpireTime.WEEK.getCode());
@@ -129,22 +131,32 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
                 boolean isBe = false;
                 for (ApiManage appApiManage : appApiManages){
                     if(appApiManage.getApiCode().equals(apiManage.getApiCode())){
+                        appApiManage.setApiType(apiManage.getApiType());
                         appApiManage.setApiStatus(apiManage.getApiStatus());
                         appApiManage.setParameterOneRemark(apiManage.getParameterOneRemark());
                         appApiManage.setParameterOneNote(apiManage.getParameterOneNote());
+                        appApiManage.setParameterOneRequired(apiManage.getParameterOneRequired());
                         appApiManage.setParameterTwoRemark(apiManage.getParameterTwoRemark());
                         appApiManage.setParameterTwoNote(apiManage.getParameterTwoNote());
+                        appApiManage.setParameterTwoRequired(apiManage.getParameterTwoRequired());
                         appApiManage.setParameterThreeRemark(apiManage.getParameterThreeRemark());
                         appApiManage.setParameterThreeNote(apiManage.getParameterThreeNote());
+                        appApiManage.setParameterThreeRequired(apiManage.getParameterThreeRequired());
                         appApiManage.setParameterFourRemark(apiManage.getParameterFourRemark());
                         appApiManage.setParameterFourNote(apiManage.getParameterFourNote());
+                        appApiManage.setParameterFourRequired(apiManage.getParameterFourRequired());
                         appApiManage.setParameterFiveRemark(apiManage.getParameterFiveRemark());
                         appApiManage.setParameterFiveNote(apiManage.getParameterFiveNote());
+                        appApiManage.setParameterFiveRequired(apiManage.getParameterFiveRequired());
                         appApiManage.setParameterSixRemark(apiManage.getParameterSixRemark());
                         appApiManage.setParameterSixNote(apiManage.getParameterSixNote());
+                        appApiManage.setParameterSixRequired(apiManage.getParameterSixRequired());
                         appApiManage.setParameterSevenRemark(apiManage.getParameterSevenRemark());
                         appApiManage.setParameterSevenNote(apiManage.getParameterSevenNote());
+                        appApiManage.setParameterSevenRequired(apiManage.getParameterSevenRequired());
                         appApiManage.setParameterNum(apiManage.getParameterNum());
+                        appApiManage.setReturnRemark(apiManage.getReturnRemark());
+                        appApiManage.setRemark(apiManage.getRemark());
                         baseMapper.updateById(appApiManage);
                         isBe = true;
                         break;
@@ -175,7 +187,7 @@ public class ApiManageServiceImpl extends ServiceImpl<ApiManageMapper, ApiManage
         }else if(maxTimes < times){
             redisUtil.set(key, maxTimes+1, second);
         }else{
-            throw new SystemApiException(5, "请求过于频繁,请稍后再试","",false);
+            throw new SystemApiException(5, "请求过于频繁，请稍后再试","",false);
         }
     }
 

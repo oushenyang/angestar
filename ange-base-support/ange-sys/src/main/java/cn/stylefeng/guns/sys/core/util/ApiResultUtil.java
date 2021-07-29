@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.sys.core.util;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.DES;
@@ -7,6 +8,7 @@ import cn.hutool.crypto.symmetric.DESede;
 import cn.hutool.crypto.symmetric.SM4;
 import cn.stylefeng.guns.sys.core.exception.*;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>返回处理工具</p>
@@ -17,6 +19,26 @@ import com.alibaba.fastjson.JSONObject;
  * @since JDK 1.8
  */
 public class ApiResultUtil {
+    public static String setCustomResultData(String customResultData,String timestamp){
+        //TODO
+        if (StringUtils.contains(customResultData, "%holdCheck%")){
+            if (StringUtils.isNotEmpty(timestamp)){
+                customResultData = customResultData.replaceAll("%holdCheck%",timestamp);
+            }else {
+                customResultData = customResultData.replaceAll("%holdCheck%","");
+            }
+        }
+        if (StringUtils.contains(customResultData, "%timestamp10%")){
+            customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
+        }
+        if (StringUtils.contains(customResultData, "%timestamp13%")){
+            customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
+        }
+        if (StringUtils.contains(customResultData, "%currentTime%")){
+            customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
+        }
+        return customResultData;
+    }
     //对返回参数加密
     public static Object setAlgorithm(Object object, ApiManageApi apiManageApi){
         if (apiManageApi.getWebAlgorithmType()!=0&&apiManageApi.getWebAlgorithmRange()!=1){

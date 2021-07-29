@@ -218,6 +218,80 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 接口公共返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(CommonException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object commonException(CommonException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                cn.hutool.json.JSONObject json = JSONUtil.createObj();
+                json.set("timestamp",e.getTimestamp());
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
+            }
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            object = customResultData;
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
+     * 应用返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(AppInfoException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object appInfoException(AppInfoException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            Map<String, Object> map = new HashMap<>();
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                map.put("timestamp", e.getTimestamp());
+                map.put("appNotice", e.getAppInfoApi().getAppNotice());
+                map.put("customData", e.getAppInfoApi().getCustomData1());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                map.put("appNotice", e.getAppInfoApi().getAppNotice());
+                map.put("customData", e.getAppInfoApi().getCustomData1());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            if (StringUtils.contains(customResultData, "%appNotice%")){
+                customResultData = customResultData.replaceAll("%appNotice%",String.valueOf(e.getAppInfoApi().getAppNotice()));
+            }
+            if (StringUtils.contains(customResultData, "%customData%")){
+                customResultData = customResultData.replaceAll("%customData%",String.valueOf(e.getAppInfoApi().getCustomData1()));
+            }
+            object = customResultData;
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
      * 接口单码登录自定义返回异常
      *
      * @author fengshuonan
@@ -227,13 +301,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object cardLoginException(CardLoginException e) {
-        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
-        if (ObjectUtil.isNull(apiResultApi)){
-            apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
-            if (ObjectUtil.isNotNull(apiResultApi)){
-                redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
-            }
-        }
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
         Object object = null;
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
@@ -256,28 +324,13 @@ public class GlobalExceptionHandler {
             }
         }else {
             String customResultData = apiResultApi.getCustomResultData();
-            //TODO
-            if (StringUtils.contains(customResultData, "%holdCheck%")){
-                if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    customResultData = customResultData.replaceAll("%holdCheck%",e.getHoldCheck());
-                }else {
-                    customResultData = customResultData.replaceAll("%holdCheck%","");
-                }
-            }
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getHoldCheck());
             if (StringUtils.contains(customResultData, "%token%")){
                 customResultData = customResultData.replaceAll("%token%",String.valueOf(e.getData()));
             }
-            if (StringUtils.contains(customResultData, "%timestamp10%")){
-                customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
-            }
-            if (StringUtils.contains(customResultData, "%timestamp13%")){
-                customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
-            }
             if (StringUtils.contains(customResultData, "%expireTime%")){
                 customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
-            }
-            if (StringUtils.contains(customResultData, "%currentTime%")){
-                customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
             }
             object = customResultData;
         }

@@ -31,6 +31,18 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     PARAMETER_HAS_NULL(2, "必传参数存在空值"),
     DATA_ERROR(3, "传入数据包错误"),
     SYSTEM_ERROR(4, "系统错误"),
+    REQUESTS_TOO_FREQUENT(5, "请求过于频繁，请稍后再试"),
+
+    /**
+     * 公共相关
+     */
+    DATA_OVERTIME(10, "数据包超时"),
+    API_CLOSE(11, "接口未开启"),
+
+    /**
+     * 应用相关
+     */
+    APPINFO_SUCCESS(1000, "获取应用信息成功"),
 
     /**
      * 单码相关

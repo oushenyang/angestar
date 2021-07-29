@@ -151,6 +151,20 @@ public class ApiResultController extends BaseController {
     }
 
     /**
+     * 同步接口
+     *
+     * @author shenyang.ou
+     * @Date 2020-05-21
+     */
+    @RequestMapping("/sync")
+    @ResponseBody
+    public ResponseData sync() {
+        this.apiResultService.sync();
+        return ResponseData.success();
+    }
+
+
+    /**
      * 批量删除接口
      *
      * @author shenyang.ou

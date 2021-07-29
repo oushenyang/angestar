@@ -2,10 +2,13 @@ package cn.stylefeng.guns.modular.apiManage.service.impl;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.mapper.ApiResultMapper;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiResultParam;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiResultApi;
 import cn.stylefeng.guns.modular.apiManage.service.ApiResultService;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.modular.system.entity.ApiResult;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +40,9 @@ public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private AppInfoService appInfoService;
 
     @Override
     public void add(ApiResultParam param){
@@ -85,6 +92,41 @@ public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult
     @Override
     public ApiResultApi findApiResultApi(Long appId, Integer resultCode) {
         return baseMapper.findApiResultApi(appId,resultCode);
+    }
+
+    @Override
+    public void sync() {
+        List<ApiResult> apiApiResult = baseMapper.selectList(new QueryWrapper<ApiResult>().eq("app_id",1));
+        List<AppInfo> appInfos = appInfoService.list();
+        for (AppInfo appInfo : appInfos){
+            List<ApiResult> appApiApiResult = baseMapper.selectList(new QueryWrapper<ApiResult>().eq("app_id",appInfo.getAppId()));
+            for (ApiResult apiResult : apiApiResult){
+                boolean isBe = false;
+                for (ApiResult appApiResult : appApiApiResult){
+                    if(appApiResult.getResultCode().equals(apiResult.getResultCode())){
+                        appApiResult.setResultType(apiResult.getResultType());
+                        appApiResult.setResultSuccess(apiResult.getResultSuccess());
+                        appApiResult.setResultVariables(apiResult.getResultVariables());
+                        appApiResult.setResultData(apiResult.getResultData());
+                        appApiResult.setResultDataText(apiResult.getResultDataText());
+                        appApiResult.setResultRemark(apiResult.getResultRemark());
+                        appApiResult.setWhetherEdit(apiResult.getWhetherEdit());
+                        appApiResult.setOutputFormat(apiResult.getOutputFormat());
+                        appApiResult.setSort(apiResult.getSort());
+                        baseMapper.updateById(appApiResult);
+                        isBe = true;
+                        break;
+                    }
+                }
+                if (!isBe){
+                    apiResult.setApiResultId(null);
+                    apiResult.setAppId(appInfo.getAppId());
+                    apiResult.setCreateTime(new Date());
+                    apiResult.setCreateUser(appInfo.getCreateUser());
+                    baseMapper.insert(apiResult);
+                }
+            }
+        }
     }
 
     private Serializable getKey(ApiResultParam param){
