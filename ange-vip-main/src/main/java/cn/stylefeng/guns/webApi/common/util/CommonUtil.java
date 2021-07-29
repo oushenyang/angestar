@@ -223,7 +223,7 @@ public class CommonUtil {
         if (StringUtils.isNotEmpty(timestamp)){
             if (!StringUtils.isNumeric(timestamp)||timestamp.length()<10||timestamp.length()>13){
                 //传入时间戳格式错误
-                throw new CommonException(ApiExceptionEnum.TIMESTAMP_TYPE_ERROR.getCode(), ApiExceptionEnum.TIMESTAMP_TYPE_ERROR.getMessage(),"",apiManage,false);
+                throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(), ApiExceptionEnum.DATA_TYPE_ERROR.getMessage(),"",apiManage,false);
             }
         }
         if (apiManage.getDataOvertime()>0){

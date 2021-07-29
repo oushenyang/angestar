@@ -39,7 +39,7 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     DATA_OVERTIME(10, "数据包超时"),
     API_CLOSE(11, "接口未开启"),
     TIMESTAMP_NULL(12, "已开启超时验证，时间戳必传"),
-    TIMESTAMP_TYPE_ERROR(13, "传入时间戳格式错误"),
+    DATA_TYPE_ERROR(13, "传入数据类型或格式错误"),
 
     /**
      * 应用相关
@@ -47,6 +47,7 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     APPINFO_SUCCESS(1000, "获取应用信息成功"),
     ALREADY_LATEST_VERSION(1001, "已经是最新版本"),
     CHECK_UPDATE_SUCCESS(1002, "检查版本更新成功"),
+    ONLINE_NUM_SUCCESS(1003, "取在线人数成功"),
 
     /**
      * 单码相关

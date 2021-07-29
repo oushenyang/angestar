@@ -155,6 +155,10 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     if (result.data.resultVariables.indexOf("updateDescribe") != -1){
         $(".updateDescribe").show();
     }
+    //在线人数
+    if (result.data.resultVariables.indexOf("onlineNum") != -1){
+        $(".onlineNum").show();
+    }
     if (result.data.resultVariables.indexOf("token") != -1){
         $(".token").show();
     }

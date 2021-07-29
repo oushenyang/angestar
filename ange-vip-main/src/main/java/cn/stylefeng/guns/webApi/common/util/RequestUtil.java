@@ -67,6 +67,39 @@ public class RequestUtil {
         }
         return new GetEditionParam(edition,timestamp,sign);
     }
+    //取在线人数
+    public static GetOnlineNumParam getOnlineNum(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String edition = commonParam.getParameterOne();
+        String limit = commonParam.getParameterTwo();
+        String timestamp = commonParam.getParameterThree();
+        String sign = commonParam.getParameterFour();
+        if (StringUtils.isNotEmpty(limit)&&!StringUtils.isNumeric(limit)){
+            //传入数据类型或格式错误
+            throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(), ApiExceptionEnum.DATA_TYPE_ERROR.getMessage(),"",apiManage,false);
+        }
+        if (StringUtils.isNotEmpty(limit)){
+            if (Integer.parseInt(limit)<0||Integer.parseInt(limit)>1440){
+                limit = "60";
+            }
+        }else {
+            limit = "60";
+        }
+        //启用超时和验证接口是否开启
+        CommonUtil.overtime(apiManage,timestamp);
+        //验证签名
+        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
+            throw new SystemApiException(4, "签名不正确","",false);
+        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
+            throw new SystemApiException(4, "签名不正确","",false);
+        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
+            String md5 = SecureUtil.md5(StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(limit)+timestamp);
+            if (!md5.equals(sign)){
+                throw new SystemApiException(4, "签名不正确","",false);
+            }
+        }
+        return new GetOnlineNumParam(edition,limit,timestamp,sign);
+    }
     //单码登录
     public static CardLoginParam getCardLoginParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);

@@ -370,6 +370,47 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 在线人数返回
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(OnlineNumException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object onlineNumException(OnlineNumException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            Map<String, Object> map = new HashMap<>();
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                map.put("timestamp", Long.parseLong(e.getTimestamp()));
+                //版本名称
+                map.put("onlineNum", e.getOnlineNum());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                //版本名称
+                map.put("onlineNum", e.getOnlineNum());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }
+            object = JSONObject.toJSONString(object);
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            if (StringUtils.contains(customResultData, "%onlineNum%")){
+                customResultData = customResultData.replaceAll("%onlineNum%",String.valueOf(e.getOnlineNum()));
+            }
+            object = customResultData;
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
      * 接口单码登录自定义返回异常
      *
      * @author fengshuonan
