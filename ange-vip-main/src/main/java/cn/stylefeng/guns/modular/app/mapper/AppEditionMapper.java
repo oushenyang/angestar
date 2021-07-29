@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.app.mapper;
 
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
+import cn.stylefeng.guns.sys.core.exception.ApiAppEdition;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,13 @@ public interface AppEditionMapper extends BaseMapper<AppEdition> {
      * @Date 2020-04-12
      */
     List<AppEdition> editIsAlreadyAppEdition(@Param("appId")Long appId, @Param("editionId")Long editionId, @Param("editionNum")String editionNum);
+
+    /**
+     * 获取最新版本信息
+     *
+     * @param appId 应用id
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    ApiAppEdition getNewestAppEdition(@Param("appId")Long appId);
 }

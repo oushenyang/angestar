@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -9,6 +10,12 @@ import cn.stylefeng.guns.modular.app.mapper.AppEditionMapper;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.model.result.AppEditionResult;
 import  cn.stylefeng.guns.modular.app.service.AppEditionService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.exception.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
+import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -40,11 +47,16 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     @Autowired
     private AppInfoService appInfoService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add(AppEditionParam param){
         AppEdition entity = getEntity(param);
         this.save(entity);
+        //删除缓存
+        redisUtil.del(RedisType.EDITION.getCode() + entity.getAppId());
         //更新应用最新版本id
         if (!updateAppEditionId(param.getAppId())){
             throw new ServiceException(UPDATE_APPEDITION_ERROR);
@@ -66,6 +78,28 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         appEdition.setAppId(appId);
         List<AppEdition> list = this.list(new QueryWrapper<>(appEdition));
         return CollectionUtils.isNotEmpty(list);
+    }
+
+    /**
+     * 获取最新版本信息
+     *
+     * @param appId 应用id
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    @Override
+    public ApiAppEdition getNewestAppEditionByRedis(Long appId) {
+        ApiAppEdition apiAppEdition;
+        Object object = redisUtil.get(RedisType.EDITION.getCode() + appId);
+        if (ObjectUtil.isNull(object)){
+            apiAppEdition = baseMapper.getNewestAppEdition(appId);
+            if (ObjectUtil.isNotNull(apiAppEdition)){
+                redisUtil.set(RedisType.EDITION.getCode() + appId , apiAppEdition, RedisExpireTime.WEEK.getCode());
+            }
+        }else {
+            apiAppEdition = (ApiAppEdition)object;
+        }
+        return apiAppEdition;
     }
 
     /**
@@ -113,7 +147,10 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(AppEditionParam param){
+        AppEdition oldEntity = getOldEntity(param);
         this.removeById(getKey(param));
+        //删除缓存
+        redisUtil.del(RedisType.EDITION.getCode() + param.getAppId());
         //更新应用最新版本id
         if (!updateAppEditionId(param.getAppId())){
             throw new ServiceException(UPDATE_APPEDITION_ERROR);
@@ -132,6 +169,8 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         AppEdition newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
+        //删除缓存
+        redisUtil.del(RedisType.EDITION.getCode() + oldEntity.getAppId());
         //更新应用最新版本id
         if (!updateAppEditionId(param.getAppId())){
             throw new ServiceException(UPDATE_APPEDITION_ERROR);

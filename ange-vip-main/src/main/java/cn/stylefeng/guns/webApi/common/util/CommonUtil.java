@@ -32,7 +32,8 @@ public class CommonUtil {
                 try {
                     decryptStr = des.decryptStr(body, CharsetUtil.CHARSET_UTF_8);
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //aes解密
             }else if (apiManage.getWebAlgorithmType()==2){
@@ -40,7 +41,8 @@ public class CommonUtil {
                 try {
                     decryptStr = aes.decryptStr(body, CharsetUtil.CHARSET_UTF_8);
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //DESede解密
             }else if (apiManage.getWebAlgorithmType()==3){
@@ -48,7 +50,8 @@ public class CommonUtil {
                 try {
                     decryptStr = deSede.decryptStr(body, CharsetUtil.CHARSET_UTF_8);
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //SM4解密
             }else if (apiManage.getWebAlgorithmType()==4){
@@ -56,7 +59,8 @@ public class CommonUtil {
                 try {
                     decryptStr = deSede.decryptStr(body, CharsetUtil.CHARSET_UTF_8);
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
             }
         }
@@ -95,7 +99,8 @@ public class CommonUtil {
                         parameterSeven = des.decryptStr(parameterSeven, CharsetUtil.CHARSET_UTF_8);
                     }
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //aes解密
             }else if (apiManage.getWebAlgorithmType()==2){
@@ -123,7 +128,8 @@ public class CommonUtil {
                         parameterSeven = aes.decryptStr(parameterSeven, CharsetUtil.CHARSET_UTF_8);
                     }
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //DESede解密
             }else if (apiManage.getWebAlgorithmType()==3){
@@ -151,7 +157,8 @@ public class CommonUtil {
                         parameterSeven = deSede.decryptStr(parameterSeven, CharsetUtil.CHARSET_UTF_8);
                     }
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
                 //SM4解密
             }else if (apiManage.getWebAlgorithmType()==4){
@@ -179,7 +186,8 @@ public class CommonUtil {
                         parameterSeven = sm4.decryptStr(parameterSeven, CharsetUtil.CHARSET_UTF_8);
                     }
                 }catch (Exception ignored){
-                    throw new SystemApiException(3, "传入数据包错误","",false);
+                    //传入数据包错误
+                    throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
                 }
             }
         }
@@ -204,24 +212,30 @@ public class CommonUtil {
                 parameterSix = jsonObject.getString(apiManage.getParameterSix());
                 parameterSeven = jsonObject.getString(apiManage.getParameterSeven());
             }catch (Exception ignored){
-                throw new SystemApiException(3, "传入数据包错误","",false);
+                //传入数据包错误
+                throw new SystemApiException(ApiExceptionEnum.DATA_ERROR.getCode(), ApiExceptionEnum.DATA_ERROR.getMessage(),"",false);
             }
         }
         return new CommonParam(parameterOne,parameterTwo,parameterThree,parameterFour,parameterFive,parameterSix,parameterSeven);
     }
 
     public static void overtime(ApiManageApi apiManage, String timestamp){
+        if (StringUtils.isNotEmpty(timestamp)){
+            if (!StringUtils.isNumeric(timestamp)||timestamp.length()<10||timestamp.length()>13){
+                //传入时间戳格式错误
+                throw new CommonException(ApiExceptionEnum.TIMESTAMP_TYPE_ERROR.getCode(), ApiExceptionEnum.TIMESTAMP_TYPE_ERROR.getMessage(),"",apiManage,false);
+            }
+        }
         if (apiManage.getDataOvertime()>0){
             if (StringUtils.isEmpty(timestamp)){
-                throw new SystemApiException(2, "必传参数存在空值","",false);
-            }
-            if (!StringUtils.isNumeric(timestamp)||timestamp.length()<10){
-                throw new SystemApiException(3, "传入数据包错误","",false);
+                //已开启超时验证，时间戳必传
+                throw new CommonException(ApiExceptionEnum.TIMESTAMP_NULL.getCode(), ApiExceptionEnum.TIMESTAMP_NULL.getMessage(),timestamp,apiManage,false);
             }
             long timestamp1 = Long.parseLong(timestamp.substring(0,10));
             long now = Long.parseLong(String.format("%010d", System.currentTimeMillis()/1000));
             if ((now-timestamp1)>apiManage.getDataOvertime()){
-                throw new CommonException(10, "数据包超时",timestamp,apiManage,false);
+                //数据包超时
+                throw new CommonException(ApiExceptionEnum.DATA_OVERTIME.getCode(), ApiExceptionEnum.DATA_OVERTIME.getMessage(),timestamp,apiManage,false);
             }
         }
         if (apiManage.getApiStatus()==1){

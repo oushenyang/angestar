@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.model.result.AppEditionResult;
+import cn.stylefeng.guns.sys.core.exception.ApiAppEdition;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -35,6 +36,15 @@ public interface AppEditionService extends IService<AppEdition> {
      * @Date 2020-04-12
      */
     boolean addIsAlreadyAppEdition(Long appId, String editionNum);
+
+    /**
+     * 获取最新版本信息
+     *
+     * @param appId 应用id
+     * @author shenyang.ou
+     * @Date 2020-04-12
+     */
+    ApiAppEdition getNewestAppEditionByRedis(Long appId);
 
     /**
      * 编辑判断版本号是否存在

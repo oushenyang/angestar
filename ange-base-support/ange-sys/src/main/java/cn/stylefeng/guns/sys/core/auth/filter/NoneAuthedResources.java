@@ -79,6 +79,9 @@ public class NoneAuthedResources {
             //获取应用信息
             "/getAppInfo/*",
 
+            //检查版本更新
+            "/checkUpdate/*",
+
             //单码登录
             "/cardLogin/*",
 

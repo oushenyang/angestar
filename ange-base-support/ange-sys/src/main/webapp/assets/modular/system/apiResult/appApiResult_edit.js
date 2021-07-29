@@ -137,6 +137,24 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     if (result.data.resultVariables.indexOf("customData") != -1){
         $(".customData").show();
     }
+    if (result.data.resultVariables.indexOf("editionName") != -1){
+        $(".editionName").show();
+    }
+    if (result.data.resultVariables.indexOf("editionNum") != -1){
+        $(".editionNum").show();
+    }
+    if (result.data.resultVariables.indexOf("editionStatus") != -1){
+        $(".editionStatus").show();
+    }
+    if (result.data.resultVariables.indexOf("needUpdate") != -1){
+        $(".needUpdate").show();
+    }
+    if (result.data.resultVariables.indexOf("updateUrl") != -1){
+        $(".updateUrl").show();
+    }
+    if (result.data.resultVariables.indexOf("updateDescribe") != -1){
+        $(".updateDescribe").show();
+    }
     if (result.data.resultVariables.indexOf("token") != -1){
         $(".token").show();
     }

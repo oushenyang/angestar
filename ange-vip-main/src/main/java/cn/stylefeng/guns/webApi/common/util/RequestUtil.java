@@ -6,10 +6,8 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.*;
 import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.*;
-import cn.stylefeng.guns.webApi.common.param.CardLoginParam;
-import cn.stylefeng.guns.webApi.common.param.CheckCardStatusParam;
-import cn.stylefeng.guns.webApi.common.param.CommonParam;
-import cn.stylefeng.guns.webApi.common.param.GetAppInfoParam;
+import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
+import cn.stylefeng.guns.webApi.common.param.*;
 import cn.stylefeng.roses.core.util.HttpContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -43,6 +41,31 @@ public class RequestUtil {
             }
         }
         return new GetAppInfoParam(timestamp,sign);
+    }
+    //获取版本信息
+    public static GetEditionParam getEdition(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String edition = commonParam.getParameterOne();
+        String timestamp = commonParam.getParameterTwo();
+        String sign = commonParam.getParameterThree();
+        if (StringUtils.isEmpty(edition)){
+            //必传参数存在空值
+            throw new SystemApiException(ApiExceptionEnum.PARAMETER_HAS_NULL.getCode(), ApiExceptionEnum.PARAMETER_HAS_NULL.getMessage(),"",false);
+        }
+        //启用超时和验证接口是否开启
+        CommonUtil.overtime(apiManage,timestamp);
+        //验证签名
+        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
+            throw new SystemApiException(4, "签名不正确","",false);
+        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
+            throw new SystemApiException(4, "签名不正确","",false);
+        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
+            String md5 = SecureUtil.md5(edition+timestamp);
+            if (!md5.equals(sign)){
+                throw new SystemApiException(4, "签名不正确","",false);
+            }
+        }
+        return new GetEditionParam(edition,timestamp,sign);
     }
     //单码登录
     public static CardLoginParam getCardLoginParameter(ApiManageApi apiManage, String body){

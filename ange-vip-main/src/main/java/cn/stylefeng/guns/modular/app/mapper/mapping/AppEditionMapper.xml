@@ -47,4 +47,23 @@
         and ae.edition_num = #{editionNum}
         and ae.edition_id != #{editionId}
     </select>
+    <select id="getNewestAppEdition" resultType="cn.stylefeng.guns.sys.core.exception.ApiAppEdition">
+        select
+        edition_serial AS "editionSerial",
+        edition_name AS "editionName",
+        edition_num AS "editionNum",
+        edition_status AS "editionStatus",
+        need_update AS "needUpdate",
+        edition_md5 AS "editionMd5",
+        update_url AS "updateUrl",
+        update_describe AS "updateDescribe",
+        remark AS "remark",
+        create_time AS "createTime"
+        from ag_app_edition
+        where app_id = #{appId}
+        and
+        edition_status !=2
+        order by edition_num DESC
+        LIMIT 1
+    </select>
 </mapper>

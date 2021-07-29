@@ -8,13 +8,14 @@ import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
+import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -42,9 +43,12 @@ public class AppEditionController extends BaseController {
 
     private final AppInfoService appInfoService;
 
-    public AppEditionController(AppEditionService appEditionService, AppInfoService appInfoService) {
+    private final RedisUtil redisUtil;
+
+    public AppEditionController(AppEditionService appEditionService, AppInfoService appInfoService, RedisUtil redisUtil) {
         this.appEditionService = appEditionService;
         this.appInfoService = appInfoService;
+        this.redisUtil = redisUtil;
     }
 
     /**
@@ -182,6 +186,8 @@ public class AppEditionController extends BaseController {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
         AppEdition detail = this.appEditionService.getById(editionId);
+        //删除缓存
+        redisUtil.del(RedisType.EDITION.getCode() + detail.getAppId());
         detail.setNeedUpdate(needUpdate);
         this.appEditionService.updateById(detail);
         return SUCCESS_TIP;

@@ -44,7 +44,7 @@ public class AppEditionResult implements Serializable {
     private String editionNum;
 
     /**
-     * 版本状态 0-启用；1-关闭；2-测试；
+     * 版本状态 0-启用；1-测试；2-关闭；
      */
     private Integer editionStatus;
 

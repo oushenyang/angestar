@@ -208,14 +208,58 @@
         <fieldset class="layui-elem-field">
             <legend>返回说明</legend>
             <div class="layui-field-box" style="min-width: 330px">
+                @if(apiManage.apiCode=='getAppInfo'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ {
+   "code": 返回状态码,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）,
+  	      "appNotice":	"应用公告",
+	      "customData":	"应用自定义数据"
+          }
+   "msg": "提示信息",
+   "success": 是否成功
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
+<!--                检查版本更新-->
+                @if(apiManage.apiCode=='checkUpdate'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ {
+   "code": 返回状态码,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）,
+  	      "editionName":	"版本名称",
+	      "editionNum":	"版本号",
+	      "editionStatus":	版本状态：0-正式；1-测试,
+	      "needUpdate":	强制更新：0-否；1-是,
+	      "updateUrl":	"更新地址",
+	      "updateDescribe":	"更新描述"
+          }
+   "msg": "提示信息",
+   "success": 是否成功
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
                 @if(apiManage.apiCode=='cardLogin'||apiManage.apiCode=='checkCardStatus'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
  {
    "code": 返回状态码,
    "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）,
   	      "expireTime":	卡密到期时间,
-	      "token":	"登录状态码", //鉴权用的令牌
+	      "token":	"登录状态码" //鉴权用的令牌
           }
    "msg": "提示信息",
    "success": 是否成功

@@ -233,7 +233,7 @@ public class GlobalExceptionHandler {
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (StringUtils.isNotEmpty(e.getTimestamp())){
                 cn.hutool.json.JSONObject json = JSONUtil.createObj();
-                json.set("timestamp",e.getTimestamp());
+                json.set("timestamp",Long.parseLong(e.getTimestamp()));
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
                 object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
@@ -264,7 +264,7 @@ public class GlobalExceptionHandler {
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             Map<String, Object> map = new HashMap<>();
             if (StringUtils.isNotEmpty(e.getTimestamp())){
-                map.put("timestamp", e.getTimestamp());
+                map.put("timestamp", Long.parseLong(e.getTimestamp()));
                 map.put("appNotice", e.getAppInfoApi().getAppNotice());
                 map.put("customData", e.getAppInfoApi().getCustomData1());
                 JSONObject json = new JSONObject(map);
@@ -292,6 +292,81 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 版本返回异常
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(CheckUpdateException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object checkUpdateException(CheckUpdateException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            Map<String, Object> map = new HashMap<>();
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                map.put("timestamp", Long.parseLong(e.getTimestamp()));
+                //版本名称
+                map.put("editionName", e.getApiAppEdition().getEditionName());
+                //版本号
+                map.put("editionNum", e.getApiAppEdition().getEditionNum());
+                //版本状态
+                map.put("editionStatus", e.getApiAppEdition().getEditionStatus());
+                //强制更新
+                map.put("needUpdate", e.getApiAppEdition().getNeedUpdate()?1:0);
+                //更新地址
+                map.put("updateUrl", e.getApiAppEdition().getUpdateUrl());
+                //更新描述
+                map.put("updateDescribe", e.getApiAppEdition().getUpdateDescribe());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                //版本名称
+                map.put("editionName", e.getApiAppEdition().getEditionName());
+                //版本号
+                map.put("editionNum", e.getApiAppEdition().getEditionNum());
+                //版本状态
+                map.put("editionStatus", e.getApiAppEdition().getEditionStatus());
+                //强制更新
+                map.put("needUpdate", e.getApiAppEdition().getNeedUpdate()?1:0);
+                //更新地址
+                map.put("updateUrl", e.getApiAppEdition().getUpdateUrl());
+                //更新描述
+                map.put("updateDescribe", e.getApiAppEdition().getUpdateDescribe());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            if (StringUtils.contains(customResultData, "%editionName%")){
+                customResultData = customResultData.replaceAll("%editionName%",String.valueOf(e.getApiAppEdition().getEditionName()));
+            }
+            if (StringUtils.contains(customResultData, "%editionNum%")){
+                customResultData = customResultData.replaceAll("%editionNum%",e.getApiAppEdition().getEditionNum());
+            }
+            if (StringUtils.contains(customResultData, "%editionStatus%")){
+                customResultData = customResultData.replaceAll("%editionStatus%", String.valueOf(e.getApiAppEdition().getEditionStatus()));
+            }
+            if (StringUtils.contains(customResultData, "%needUpdate%")){
+                customResultData = customResultData.replaceAll("%needUpdate%",e.getApiAppEdition().getNeedUpdate()?"1":"0");
+            }
+            if (StringUtils.contains(customResultData, "%updateUrl%")){
+                customResultData = customResultData.replaceAll("%updateUrl%",e.getApiAppEdition().getUpdateUrl());
+            }
+            if (StringUtils.contains(customResultData, "%updateDescribe%")){
+                customResultData = customResultData.replaceAll("%updateDescribe%",e.getApiAppEdition().getUpdateDescribe());
+            }
+            object = customResultData;
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
      * 接口单码登录自定义返回异常
      *
      * @author fengshuonan
@@ -310,13 +385,13 @@ public class GlobalExceptionHandler {
                 json.set("expireTime",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
                 json.set("token",e.getData());
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    json.set("holdCheck", e.getHoldCheck());
+                    json.set("timestamp", Long.parseLong(e.getHoldCheck()));
                 }
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
                     cn.hutool.json.JSONObject json = JSONUtil.createObj();
-                    json.set("holdCheck",e.getHoldCheck());
+                    json.set("timestamp",Long.parseLong(e.getHoldCheck()));
                     object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
                 }else {
                     object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
@@ -348,19 +423,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object checkCardStatusException(CheckCardStatusException e) {
-        ApiResultApi apiResultApi = (ApiResultApi) redisUtil.get(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode());
-        if (ObjectUtil.isNull(apiResultApi)){
-            apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
-            if (ObjectUtil.isNotNull(apiResultApi)){
-                redisUtil.set(RedisType.API_RESULT.getCode() + e.getAppId() + "-" +  e.getCode(), apiResultApi,604800);
-            }
-        }
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getAppId(),e.getCode());
         Object object = null;
         //如果没有自定义
         if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
             if (StringUtils.isNotEmpty(e.getHoldCheck())){
                 Map<String, Object> map = new HashMap<>(2);
-                map.put("holdCheck", e.getHoldCheck());
+                map.put("holdCheck", Long.parseLong(e.getHoldCheck()));
                 JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
@@ -368,28 +437,13 @@ public class GlobalExceptionHandler {
             }
         }else {
             String customResultData = apiResultApi.getCustomResultData();
-            //TODO
-            if (StringUtils.contains(customResultData, "%holdCheck%")){
-                if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    customResultData = customResultData.replaceAll("%holdCheck%",e.getHoldCheck());
-                }else {
-                    customResultData = customResultData.replaceAll("%holdCheck%","");
-                }
-            }
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getHoldCheck());
             if (StringUtils.contains(customResultData, "%token%")){
                 customResultData = customResultData.replaceAll("%token%",String.valueOf(e.getData()));
             }
-            if (StringUtils.contains(customResultData, "%timestamp10%")){
-                customResultData = customResultData.replaceAll("%timestamp10%",String.valueOf(System.currentTimeMillis() / 1000));
-            }
-            if (StringUtils.contains(customResultData, "%timestamp13%")){
-                customResultData = customResultData.replaceAll("%timestamp13%",String.valueOf(System.currentTimeMillis()));
-            }
             if (StringUtils.contains(customResultData, "%expireTime%")){
                 customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
-            }
-            if (StringUtils.contains(customResultData, "%currentTime%")){
-                customResultData = customResultData.replaceAll("%currentTime%",DateUtil.now());
             }
             object = customResultData;
         }

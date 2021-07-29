@@ -1,38 +1,25 @@
-package cn.stylefeng.guns.modular.app.model.params;
+package cn.stylefeng.guns.sys.core.exception;
 
 import lombok.Data;
-import cn.stylefeng.roses.kernel.model.validator.BaseValidatingParam;
+
 import java.util.Date;
-import java.io.Serializable;
+
 
 /**
  * <p>
- * 应用版本表 
+ * 接口管理 
  * </p>
  *
  * @author shenyang.ou
- * @since 2020-04-12
+ * @since 2020-06-02
  */
 @Data
-public class AppEditionParam implements Serializable, BaseValidatingParam {
-
-    private static final long serialVersionUID = 1L;
-
-
-    /**
-     * 版本id
-     */
-    private Long editionId;
+public class ApiAppEdition {
 
     /**
      * 版本编号
      */
     private String editionSerial;
-
-    /**
-     * 软件id
-     */
-    private Long appId;
 
     /**
      * 版本名称
@@ -75,33 +62,8 @@ public class AppEditionParam implements Serializable, BaseValidatingParam {
     private String remark;
 
     /**
-     * 乐观锁
-     */
-    private Integer revision;
-
-    /**
-     * 创建人
-     */
-    private Long createUser;
-
-    /**
      * 创建时间
      */
     private Date createTime;
-
-    /**
-     * 更新人
-     */
-    private Long updateUser;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    @Override
-    public String checkParam() {
-        return null;
-    }
 
 }
