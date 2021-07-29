@@ -50,8 +50,8 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         admin.putTempData('formOk', false);
         admin.open({
             type: 2,
-            area: '700px',
-            title: '添加版本表',
+            area: ['700px','541px'],
+            title: '新增版本',
             content: Feng.ctxPath + '/appEdition/add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(AppEdition.tableId);
@@ -80,8 +80,8 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         admin.putTempData('formOk', false);
         admin.open({
             type: 2,
-            area: '700px',
-            title: '修改版本表',
+            area: ['700px','541px'],
+            title: '编辑版本',
             content: Feng.ctxPath + '/appEdition/edit?editionId=' + data.editionId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AppEdition.tableId);

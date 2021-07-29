@@ -21,14 +21,15 @@ var AppEditionInfoDlg = {
     }
 };
 
-layui.use(['form', 'admin', 'ax'], function () {
+layui.use(['form', 'admin', 'ax', 'formX'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
+    var formX = layui.formX;
 
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
+    // admin.iframeAuto();
 
 
 

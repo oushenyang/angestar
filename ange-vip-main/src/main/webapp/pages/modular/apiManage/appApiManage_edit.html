@@ -57,7 +57,7 @@
                         @if(apiManage.parameterTwoRemark=='13位时间戳'){
                         <td>long</td>
                         @}else{
-                        @if(apiManage.parameterTwoRemark=='黑名单类型'){
+                        @if(apiManage.parameterTwoRemark=='黑名单类型'||apiManage.parameterTwoRemark=='时间限制（单位：分钟）'){
                         <td>int</td>
                         @}else{
                         <td>string</td>

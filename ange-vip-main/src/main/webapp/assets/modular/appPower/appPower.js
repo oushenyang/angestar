@@ -28,7 +28,7 @@ layui.use(['table', 'admin', 'ax'], function () {
             // {align: 'center',field: 'customData', title: '应用自定义数据'},
             {align: 'center',field: 'sanctionTime', sort: true, title: '制裁时间'},
             {align: 'center',field: 'createTime', title: '创建时间'},
-            {align: 'center',toolbar: '#tableBar', width: 200, fixed: 'right', title: '操作'}
+            {align: 'center',toolbar: '#tableBar', width: 200,title: '操作'}
         ]];
     };
 

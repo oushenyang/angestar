@@ -25,14 +25,14 @@
                 <label class="layui-form-label">版本名称<span style="color: red;">*</span></label>
                 <div class="layui-input-inline">
                     <input id="editionName" name="editionName" placeholder="请输入版本名称" maxlength="10" type="text" class="layui-input"
-                           lay-verify="required" required/>
+                           lay-verify="required|h5" lay-verType="tips" required/>
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">版本号<span style="color: red;">*</span></label>
                 <div class="layui-input-inline">
-                    <input id="editionNum" name="editionNum" placeholder="请输入版本号" maxlength="10" type="number" class="layui-input"
-                           lay-verify="required|digital" required/>
+                    <input id="editionNum" name="editionNum" placeholder="请输入版本号" oninput="if(value.length>7)value=value.slice(0,7)" maxlength="10" type="number" class="layui-input"
+                           lay-verify="required|digital" lay-verType="tips" required/>
                 </div>
             </div>
         </div>
@@ -56,13 +56,13 @@
         <div class="layui-form-item" style="margin-top: 0px">
             <label class="layui-form-label">更新URL</label>
             <div class="layui-input-block">
-                <input id="updateUrl" name="updateUrl" placeholder="请输入更新URL" maxlength="148" type="text" class="layui-input"/>
+                <input id="updateUrl" name="updateUrl" placeholder="请输入更新URL" maxlength="148" lay-verify="noChina|h5|urlX" lay-verType="tips" type="text" class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">更新描述</label>
             <div class="layui-input-block">
-                <textarea id="updateDescribe" name="updateDescribe" maxlength="512" placeholder="请输入更新描述" class="layui-textarea"></textarea>
+                <textarea id="updateDescribe" name="updateDescribe" maxlength="512" placeholder="请输入更新描述" lay-verify="h5" lay-verType="tips" class="layui-textarea"></textarea>
             </div>
         </div>
         <!--    <div class="layui-form-item layui-form-text">-->

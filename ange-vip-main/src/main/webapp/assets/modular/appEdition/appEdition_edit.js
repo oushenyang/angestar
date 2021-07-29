@@ -21,14 +21,15 @@ var AppEditionInfoDlg = {
     }
 };
 
-layui.use(['form', 'admin', 'ax'], function () {
+layui.use(['form', 'admin', 'ax', 'formX'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
+    var formX = layui.formX;
     var admin = layui.admin;
 
     //让当前iframe弹层高度适应
-    admin.iframeAuto();
+    // admin.iframeAuto();
 
     //获取详情信息，填充表单
     var ajax = new $ax(Feng.ctxPath + "/appEdition/detail?editionId=" + Feng.getUrlParam("editionId"));

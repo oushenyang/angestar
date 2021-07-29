@@ -78,7 +78,7 @@ public class CommonUtil {
                 DES des = DESContext.getInstance(apiManage);
                 try {
                     if (StringUtils.isNotEmpty(parameterOne)){
-                        parameterOne = des.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
+                        parameterOne = des.decryptStr(parameterOne, CharsetUtil.CHARSET_UTF_8);
                     }
                     if (StringUtils.isNotEmpty(parameterTwo)){
                         parameterTwo = des.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
@@ -107,7 +107,7 @@ public class CommonUtil {
                 AES aes = AESContext.getInstance(apiManage);
                 try {
                     if (StringUtils.isNotEmpty(parameterOne)){
-                        parameterOne = aes.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
+                        parameterOne = aes.decryptStr(parameterOne, CharsetUtil.CHARSET_UTF_8);
                     }
                     if (StringUtils.isNotEmpty(parameterTwo)){
                         parameterTwo = aes.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
@@ -136,7 +136,7 @@ public class CommonUtil {
                 DESede deSede = DESedeContext.getInstance(apiManage);
                 try {
                     if (StringUtils.isNotEmpty(parameterOne)){
-                        parameterOne = deSede.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
+                        parameterOne = deSede.decryptStr(parameterOne, CharsetUtil.CHARSET_UTF_8);
                     }
                     if (StringUtils.isNotEmpty(parameterTwo)){
                         parameterTwo = deSede.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
@@ -165,7 +165,7 @@ public class CommonUtil {
                 SM4 sm4 = SM4Context.getInstance(apiManage);
                 try {
                     if (StringUtils.isNotEmpty(parameterOne)){
-                        parameterOne = sm4.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
+                        parameterOne = sm4.decryptStr(parameterOne, CharsetUtil.CHARSET_UTF_8);
                     }
                     if (StringUtils.isNotEmpty(parameterTwo)){
                         parameterTwo = sm4.decryptStr(parameterTwo, CharsetUtil.CHARSET_UTF_8);
