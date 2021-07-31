@@ -19,8 +19,8 @@
 <form id="apiManageForm" lay-filter="apiManageForm"  style="padding:0!important;" class="layui-form layui-form-pane model-form">
     <div class="layui-fluid" style="padding-bottom: 45px;margin-top: 0px;">
         <input name="apiManageId" type="hidden"/>
-        <blockquote class="layui-elem-quote layui-quote-nm" style="font-size: 15px!important;min-width: 330px;">${apiManage.apiName} POST-<span style="color: blue">${constants.getApiUrl()}${apiManage.apiCode}/${apiManage.callCode}</span></blockquote>
-        <fieldset class="layui-elem-field">
+        <blockquote class="layui-elem-quote layui-quote-nm" style="font-size: 15px!important;min-width: 390px;">${apiManage.apiName} POST-<span style="color: blue">${constants.getApiUrl()}${apiManage.apiCode}/${apiManage.callCode}</span></blockquote>
+        <fieldset class="layui-elem-field" style="min-width: 420px">
             <legend>请求参数</legend>
             <div class="layui-field-box">
                 <table class="layui-table">
@@ -205,21 +205,23 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset class="layui-elem-field">
+        <fieldset class="layui-elem-field" style="min-width: 420px">
             <legend>返回说明</legend>
-            <div class="layui-field-box" style="min-width: 330px">
+            <div class="layui-field-box">
                 @if(apiManage.apiCode=='getAppInfo'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
+ 成功示例：
+
  {
-   "code": 返回状态码,
+   "code": 1000,
    "data":{
   	      "timestamp":	传入的时间戳（不传则不返回）,
   	      "appNotice":	"应用公告",
 	      "customData":	"应用自定义数据"
           }
-   "msg": "提示信息",
-   "success": 是否成功
+   "msg": "获取应用信息成功",
+   "success": true
  }
 
  注意：
@@ -231,8 +233,10 @@
                 @if(apiManage.apiCode=='checkUpdate'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
+ 成功示例：
+
  {
-   "code": 返回状态码,
+   "code": 1002,
    "data":{
   	      "timestamp":	传入的时间戳（不传则不返回）,
   	      "editionName":	"版本名称",
@@ -242,8 +246,8 @@
 	      "updateUrl":	"更新地址",
 	      "updateDescribe":	"更新描述"
           }
-   "msg": "提示信息",
-   "success": 是否成功
+   "msg": "检查版本更新成功",
+   "success": true
  }
 
  注意：
@@ -251,18 +255,60 @@
  2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
                </pre>
                 @}
-                @if(apiManage.apiCode=='cardLogin'||apiManage.apiCode=='checkCardStatus'){
+                <!--                取在线人数-->
+                @if(apiManage.apiCode=='getOnlineNum'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
+ 成功示例：
+
  {
-   "code": 返回状态码,
+   "code": 1003,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）,
+  	      "onlineNum":	在线人数
+          }
+   "msg": "取在线人数成功",
+   "success": true
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
+                @if(apiManage.apiCode=='cardLogin'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ 成功示例：
+
+ {
+   "code": 2000,
    "data":{
   	      "timestamp":	传入的时间戳（不传则不返回）,
   	      "expireTime":	卡密到期时间,
 	      "token":	"登录状态码" //鉴权用的令牌
           }
-   "msg": "提示信息",
-   "success": 是否成功
+   "msg": "登录成功",
+   "success": true
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
+                @if(apiManage.apiCode=='checkCardStatus'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ 成功示例：
+
+ {
+   "code": 2011,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）
+          }
+   "msg": "单码用户状态正常",
+   "success": true
  }
 
  注意：

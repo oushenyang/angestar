@@ -50,10 +50,10 @@ public class GetAppInfoController {
         AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
         if (appInfoApi.getCydiaFlag()==2){
             //应用已关闭
-            throw new AppInfoException(ApiExceptionEnum.APP_CLOSED.getCode(), ApiExceptionEnum.APP_CLOSED.getMessage(),param.getTimestamp(),apiManage,appInfoApi,false);
+            throw new AppInfoException(ApiExceptionEnum.APP_CLOSED.getCode(),param.getTimestamp(),apiManage,appInfoApi,false);
         }
         //获取应用信息成功
-        throw new AppInfoException(ApiExceptionEnum.APPINFO_SUCCESS.getCode(), ApiExceptionEnum.APPINFO_SUCCESS.getMessage(),param.getTimestamp(),apiManage,appInfoApi,true);
+        throw new AppInfoException(ApiExceptionEnum.APPINFO_SUCCESS.getCode(),param.getTimestamp(),apiManage,appInfoApi,true);
     }
 
 }

@@ -18,10 +18,8 @@ public class CheckUpdateException extends RuntimeException {
     private ApiAppEdition apiAppEdition;
     private Boolean success;
 
-    public CheckUpdateException(Integer code, String errorMessage, String timestamp, ApiManageApi apiManageApi, ApiAppEdition apiAppEdition, Boolean success) {
-        super(errorMessage);
+    public CheckUpdateException(Integer code, String timestamp, ApiManageApi apiManageApi, ApiAppEdition apiAppEdition, Boolean success) {
         this.code = code;
-        this.errorMessage = errorMessage;
         this.timestamp = timestamp;
         this.apiManageApi = apiManageApi;
         this.apiAppEdition = apiAppEdition;

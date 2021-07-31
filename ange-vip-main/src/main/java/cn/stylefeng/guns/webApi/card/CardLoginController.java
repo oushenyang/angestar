@@ -72,7 +72,7 @@ public class CardLoginController {
         CardLoginParam param = RequestUtil.getCardLoginParameter(apiManage,body);
         if (appInfoApi.getCydiaFlag()==2){
             //应用已关闭
-            throw new AppInfoException(ApiExceptionEnum.APP_CLOSED.getCode(), ApiExceptionEnum.APP_CLOSED.getMessage(),param.getHoldCheck(),apiManage,appInfoApi,false);
+            throw new AppInfoException(ApiExceptionEnum.APP_CLOSED.getCode(),param.getHoldCheck(),apiManage,appInfoApi,false);
         }else if (appInfoApi.getCydiaFlag()==1){
             //该应用免费
             throw new CardLoginException(2000, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),param.getHoldCheck(),apiManage,true);
@@ -86,7 +86,7 @@ public class CardLoginController {
                 //从万捷查
             }else {
                 //卡密不存在
-                throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_NO.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
+                throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),"",new Date(),param.getHoldCheck(),apiManage,false);
             }
         }
         //如果未激活

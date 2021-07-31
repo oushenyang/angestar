@@ -43,9 +43,9 @@ public class CheckUpdateController {
         ApiAppEdition apiAppEdition =  appEditionService.getNewestAppEditionByRedis(apiManage.getAppId());
         //如果版本号相等，说明没有更新
         if (ObjectUtil.isNull(apiAppEdition)||apiAppEdition.getEditionNum().equals(param.getEdition())){
-            throw new CommonException(ApiExceptionEnum.ALREADY_LATEST_VERSION.getCode(), ApiExceptionEnum.ALREADY_LATEST_VERSION.getMessage(),param.getTimestamp(),apiManage,false);
+            throw new CommonException(ApiExceptionEnum.ALREADY_LATEST_VERSION.getCode(),param.getTimestamp(),apiManage,false);
         }else {
-            throw new CheckUpdateException(ApiExceptionEnum.CHECK_UPDATE_SUCCESS.getCode(), ApiExceptionEnum.CHECK_UPDATE_SUCCESS.getMessage(),param.getTimestamp(),apiManage,apiAppEdition,true);
+            throw new CheckUpdateException(ApiExceptionEnum.CHECK_UPDATE_SUCCESS.getCode(),param.getTimestamp(),apiManage,apiAppEdition,true);
         }
     }
 

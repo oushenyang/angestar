@@ -18,10 +18,10 @@ public class AppInfoException extends RuntimeException {
     private AppInfoApi appInfoApi;
     private Boolean success;
 
-    public AppInfoException(Integer code, String errorMessage, String timestamp, ApiManageApi apiManageApi,AppInfoApi appInfoApi, Boolean success) {
-        super(errorMessage);
+    public AppInfoException(Integer code, String timestamp, ApiManageApi apiManageApi,AppInfoApi appInfoApi, Boolean success) {
+//        super(errorMessage);
         this.code = code;
-        this.errorMessage = errorMessage;
+//        this.errorMessage = errorMessage;
         this.timestamp = timestamp;
         this.apiManageApi = apiManageApi;
         this.appInfoApi = appInfoApi;

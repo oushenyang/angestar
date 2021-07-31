@@ -17,10 +17,8 @@ public class CommonException extends RuntimeException {
     private ApiManageApi apiManageApi;
     private Boolean success;
 
-    public CommonException(Integer code, String errorMessage, String timestamp, ApiManageApi apiManageApi,Boolean success) {
-        super(errorMessage);
+    public CommonException(Integer code, String timestamp, ApiManageApi apiManageApi,Boolean success) {
         this.code = code;
-        this.errorMessage = errorMessage;
         this.timestamp = timestamp;
         this.apiManageApi = apiManageApi;
         this.success = success;

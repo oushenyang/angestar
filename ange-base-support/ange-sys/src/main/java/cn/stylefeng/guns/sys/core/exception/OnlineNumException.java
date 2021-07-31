@@ -18,10 +18,8 @@ public class OnlineNumException extends RuntimeException {
     private Integer onlineNum;
     private Boolean success;
 
-    public OnlineNumException(Integer code, String errorMessage, String timestamp, ApiManageApi apiManageApi, Integer onlineNum, Boolean success) {
-        super(errorMessage);
+    public OnlineNumException(Integer code, String timestamp, ApiManageApi apiManageApi, Integer onlineNum, Boolean success) {
         this.code = code;
-        this.errorMessage = errorMessage;
         this.timestamp = timestamp;
         this.apiManageApi = apiManageApi;
         this.onlineNum = onlineNum;

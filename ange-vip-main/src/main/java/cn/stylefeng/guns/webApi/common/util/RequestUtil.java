@@ -58,7 +58,7 @@ public class RequestUtil {
         String sign = commonParam.getParameterFour();
         if (StringUtils.isNotEmpty(limit)&&!StringUtils.isNumeric(limit)){
             //传入数据类型或格式错误
-            throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(), ApiExceptionEnum.DATA_TYPE_ERROR.getMessage(),"",apiManage,false);
+            throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(),"",apiManage,false);
         }
         if (StringUtils.isNotEmpty(limit)){
             if (Integer.parseInt(limit)<0||Integer.parseInt(limit)>1440){

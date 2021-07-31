@@ -9,15 +9,12 @@ import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
-import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.*;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
 import cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
-import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
-import cn.stylefeng.guns.sys.core.exception.CardLoginException;
-import cn.stylefeng.guns.sys.core.exception.CheckCardStatusException;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.webApi.common.param.CheckCardStatusParam;
@@ -123,7 +120,7 @@ public class CheckCardStatusController {
                    token.setUpdateTime(new Date());
                    //异步调用更新token
                    asyncService.updateTokenAndRedis(param.getSingleCode(),token);
-                   throw new CheckCardStatusException(2011, apiManage.getAppId(),"单码用户状态正常",cardInfoApi.getExpireTime(),param.getHoldCheck(),apiManage,true);
+                   throw new CommonException(ApiExceptionEnum.CARD_STATE_NORMAL.getCode(),param.getHoldCheck(),apiManage,false);
                }
            }
         }else {

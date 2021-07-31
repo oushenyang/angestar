@@ -224,24 +224,24 @@ public class CommonUtil {
         if (StringUtils.isNotEmpty(timestamp)){
             if (!StringUtils.isNumeric(timestamp)||timestamp.length()<10||timestamp.length()>13){
                 //传入时间戳格式错误
-                throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(), ApiExceptionEnum.DATA_TYPE_ERROR.getMessage(),"",apiManage,false);
+                throw new CommonException(ApiExceptionEnum.DATA_TYPE_ERROR.getCode(),"",apiManage,false);
             }
         }
         if (apiManage.getDataOvertime()>0){
             if (StringUtils.isEmpty(timestamp)){
                 //已开启超时验证，时间戳必传
-                throw new CommonException(ApiExceptionEnum.TIMESTAMP_NULL.getCode(), ApiExceptionEnum.TIMESTAMP_NULL.getMessage(),timestamp,apiManage,false);
+                throw new CommonException(ApiExceptionEnum.TIMESTAMP_NULL.getCode(),timestamp,apiManage,false);
             }
             long timestamp1 = Long.parseLong(timestamp.substring(0,10));
             long now = Long.parseLong(String.format("%010d", System.currentTimeMillis()/1000));
             if ((now-timestamp1)>apiManage.getDataOvertime()){
                 //数据包超时
-                throw new CommonException(ApiExceptionEnum.DATA_OVERTIME.getCode(), ApiExceptionEnum.DATA_OVERTIME.getMessage(),timestamp,apiManage,false);
+                throw new CommonException(ApiExceptionEnum.DATA_OVERTIME.getCode(),timestamp,apiManage,false);
             }
         }
         if (apiManage.getApiStatus()==1){
             //接口未开启
-            throw new CommonException(ApiExceptionEnum.API_CLOSE.getCode(), ApiExceptionEnum.API_CLOSE.getMessage(), timestamp,apiManage, false);
+            throw new CommonException(ApiExceptionEnum.API_CLOSE.getCode(), timestamp,apiManage, false);
         }
     }
 
@@ -249,15 +249,15 @@ public class CommonUtil {
         //验证签名
         if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
             //签名不正确
-            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), timestamp,apiManage, false);
         }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
             //签名不正确
-            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), timestamp,apiManage, false);
         }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
             String md5 = SecureUtil.md5(signStr);
             if (!md5.equals(sign)){
                 //签名不正确
-                throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+                throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), timestamp,apiManage, false);
             }
         }
     }

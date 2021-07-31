@@ -46,7 +46,7 @@ public class GetOnlineNumController {
         //取在线人数
         Integer onlineNum =  tokenService.getOnlineNumByRedis(apiManage.getAppId(),param.getLimit(),param.getEdition());
         //取在线人数成功
-        throw new OnlineNumException(ApiExceptionEnum.ONLINE_NUM_SUCCESS.getCode(), ApiExceptionEnum.ONLINE_NUM_SUCCESS.getMessage(),param.getTimestamp(),apiManage,onlineNum,true);
+        throw new OnlineNumException(ApiExceptionEnum.ONLINE_NUM_SUCCESS.getCode(),param.getTimestamp(),apiManage,onlineNum,true);
     }
 
 }
