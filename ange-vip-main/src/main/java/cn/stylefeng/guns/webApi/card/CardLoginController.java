@@ -86,7 +86,7 @@ public class CardLoginController {
                 //从万捷查
             }else {
                 //卡密不存在
-                throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_NO.getCode(),new Date(),param.getHoldCheck(),apiManage,false);
+                throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_NO.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
             }
         }
         //如果未激活
@@ -118,18 +118,18 @@ public class CardLoginController {
                     //异步更新卡密和删除缓存
                     asyncService.updateCardAndRedis(apiManage.getAppId(),cardInfo1,param.getSingleCode());
                     //卡密已过期
-                    throw new CardLoginException(ApiExceptionEnum.CARD_EXPIRE.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_EXPIRE.getCode(),new Date(),param.getHoldCheck(),apiManage,false);
+                    throw new CardLoginException(ApiExceptionEnum.CARD_EXPIRE.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_EXPIRE.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
                 }
                 createTokenAndDevice(cardInfoApi, apiManage, appInfoApi, param.getMac(), param.getModel(),param.getHoldCheck(), cardInfoApi.getExpireTime());
                 break;
             //已过期
             case 2:
                 //卡密已过期
-                throw new CardLoginException(ApiExceptionEnum.CARD_EXPIRE.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_EXPIRE.getCode(),new Date(),param.getHoldCheck(),apiManage,false);
+                throw new CardLoginException(ApiExceptionEnum.CARD_EXPIRE.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_EXPIRE.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
             //已禁用
             case 3:
                 //卡密已被禁用
-                throw new CardLoginException(ApiExceptionEnum.CARD_DISABLED.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_DISABLED.getCode(),new Date(),param.getHoldCheck(),apiManage,false);
+                throw new CardLoginException(ApiExceptionEnum.CARD_DISABLED.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_DISABLED.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
         }
         return param.getSingleCode();
     }

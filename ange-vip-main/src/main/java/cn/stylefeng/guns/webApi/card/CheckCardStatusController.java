@@ -18,6 +18,7 @@ import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.CardLoginException;
 import cn.stylefeng.guns.sys.core.exception.CheckCardStatusException;
+import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.webApi.common.param.CheckCardStatusParam;
 import cn.stylefeng.guns.webApi.common.util.RequestUtil;
@@ -72,7 +73,8 @@ public class CheckCardStatusController {
         CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getSingleCode());
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
-            throw new CardLoginException(2001, apiManage.getAppId(),"卡密不存在！",new Date(),param.getHoldCheck(),apiManage,false);
+            //卡密不存在
+            throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),ApiExceptionEnum.CARD_NO.getMessage(),new Date(),param.getHoldCheck(),apiManage,false);
         }
         if (cardInfoApi.getCardStatus()==2){
             throw new CardLoginException(2006, apiManage.getAppId(),"卡密已过期",new Date(),param.getHoldCheck(),apiManage,false);

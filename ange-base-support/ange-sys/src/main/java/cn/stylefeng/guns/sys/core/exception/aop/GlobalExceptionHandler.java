@@ -238,12 +238,15 @@ public class GlobalExceptionHandler {
             }else {
                 object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
             customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
@@ -276,7 +279,7 @@ public class GlobalExceptionHandler {
                 JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
@@ -288,6 +291,9 @@ public class GlobalExceptionHandler {
                 customResultData = customResultData.replaceAll("%customData%",String.valueOf(e.getAppInfoApi().getCustomData1()));
             }
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
@@ -340,7 +346,7 @@ public class GlobalExceptionHandler {
                 JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
@@ -364,6 +370,9 @@ public class GlobalExceptionHandler {
                 customResultData = customResultData.replaceAll("%updateDescribe%",e.getApiAppEdition().getUpdateDescribe());
             }
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
@@ -396,7 +405,7 @@ public class GlobalExceptionHandler {
                 JSONObject json = new JSONObject(map);
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
@@ -405,6 +414,9 @@ public class GlobalExceptionHandler {
                 customResultData = customResultData.replaceAll("%onlineNum%",String.valueOf(e.getOnlineNum()));
             }
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
@@ -449,7 +461,7 @@ public class GlobalExceptionHandler {
                     object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
                 }
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
@@ -461,6 +473,9 @@ public class GlobalExceptionHandler {
                 customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
             }
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;
@@ -488,7 +503,7 @@ public class GlobalExceptionHandler {
             }else {
                 object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
             }
-            object = JSONObject.toJSONString(object);
+//            object = JSONObject.toJSONString(object);
         }else {
             String customResultData = apiResultApi.getCustomResultData();
             //设置自定义数据公共类
@@ -500,6 +515,9 @@ public class GlobalExceptionHandler {
                 customResultData = customResultData.replaceAll("%expireTime%",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
             }
             object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
         }
         object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
         return object;

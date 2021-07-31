@@ -183,8 +183,22 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
             .replace(/&nbsp;/g, ' ')
             .replace(/(<br>)?<\/div>$/, '');
         data.field.customResultData = text;
-        console.log($('#edit').html())
+        // console.log($('#edit').html())
         data.field.customResultDataText = HTMLEncode($('#edit').html());
+        console.log(data.field.outputFormat)
+        console.log(text)
+        if (Number(data.field.outputFormat)===0&&text){
+            var str = text.replace('%timestamp13%', '1')
+                .replace('%timestamp10%', '1')
+                .replace('%trialTime%', '1')
+                .replace('%holdCheck%', '1')
+                .replace('%onlineNum%', '1')
+                .replace('%editionStatus%', '1')
+            if (!isJSON(str)){
+                Feng.error("请输入正确的JSON格式数据")
+                return false;
+            }
+        }
         var ajax = new $ax(Feng.ctxPath + "/apiResult/editItem", function (data) {
             Feng.success("更新成功！");
 
@@ -200,6 +214,23 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
         ajax.start();
         return false;
     });
+    function isJSON(str) {
+        if (typeof str == 'string') {
+            try {
+                var obj=JSON.parse(str);
+                if(typeof obj == 'object' && obj ){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            } catch(e) {
+                console.log('error：'+str+'!!!'+e);
+                return false;
+            }
+        }
+        console.log('It is not a string!')
+    }
 
     function HTMLEncode(html) {
         var temp = document.createElement("div");
