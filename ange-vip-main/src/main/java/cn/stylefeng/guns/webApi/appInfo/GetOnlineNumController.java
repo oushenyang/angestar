@@ -2,12 +2,11 @@ package cn.stylefeng.guns.webApi.appInfo;
 
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
+import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
-import cn.stylefeng.guns.sys.core.exception.AppInfoException;
 import cn.stylefeng.guns.sys.core.exception.OnlineNumException;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
-import cn.stylefeng.guns.webApi.common.param.GetAppInfoParam;
 import cn.stylefeng.guns.webApi.common.param.GetOnlineNumParam;
 import cn.stylefeng.guns.webApi.common.util.RequestUtil;
 import org.springframework.stereotype.Controller;
@@ -29,10 +28,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GetOnlineNumController {
     private final ApiManageService apiManageService;
     private final AppInfoService appInfoService;
+    private final TokenService tokenService;
 
-    public GetOnlineNumController(ApiManageService apiManageService, AppInfoService appInfoService) {
+    public GetOnlineNumController(ApiManageService apiManageService, AppInfoService appInfoService, TokenService tokenService) {
         this.apiManageService = apiManageService;
         this.appInfoService = appInfoService;
+        this.tokenService = tokenService;
     }
 
     @RequestMapping("/{callCode}")
@@ -43,9 +44,9 @@ public class GetOnlineNumController {
         //获取参数
         GetOnlineNumParam param = RequestUtil.getOnlineNum(apiManage,body);
         //取在线人数
-        AppInfoApi appInfoApi =  appInfoService.getAppInfoByRedis(callCode);
+        Integer onlineNum =  tokenService.getOnlineNumByRedis(apiManage.getAppId(),param.getLimit(),param.getEdition());
         //取在线人数成功
-        throw new OnlineNumException(ApiExceptionEnum.ONLINE_NUM_SUCCESS.getCode(), ApiExceptionEnum.ONLINE_NUM_SUCCESS.getMessage(),param.getTimestamp(),apiManage,0,true);
+        throw new OnlineNumException(ApiExceptionEnum.ONLINE_NUM_SUCCESS.getCode(), ApiExceptionEnum.ONLINE_NUM_SUCCESS.getMessage(),param.getTimestamp(),apiManage,onlineNum,true);
     }
 
 }

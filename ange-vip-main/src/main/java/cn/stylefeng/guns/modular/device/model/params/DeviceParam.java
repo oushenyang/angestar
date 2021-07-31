@@ -72,6 +72,11 @@ public class DeviceParam implements Serializable, BaseValidatingParam {
     private Integer loginNum;
 
     /**
+     * 版本编号
+     */
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     private Long createUser;

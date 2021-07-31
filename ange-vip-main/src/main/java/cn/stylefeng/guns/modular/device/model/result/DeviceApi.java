@@ -70,6 +70,11 @@ public class DeviceApi implements Serializable {
     private Integer loginNum;
 
     /**
+     * 版本编号
+     */
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     private Long createUser;

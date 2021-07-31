@@ -85,6 +85,11 @@ public class TokenResult implements Serializable {
     private String token;
 
     /**
+     * 版本编号
+     */
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     private Long createUser;

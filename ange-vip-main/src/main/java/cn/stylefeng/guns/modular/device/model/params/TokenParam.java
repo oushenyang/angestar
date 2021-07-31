@@ -87,6 +87,11 @@ public class TokenParam implements Serializable, BaseValidatingParam {
     private String token;
 
     /**
+     * 版本编号
+     */
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     private Long createUser;

@@ -103,4 +103,14 @@ public interface TokenService extends IService<Token> {
      * @return
      */
     Integer onlineNum(Long userId);
+
+    /**
+     * 获取指定限制分钟内和版本号的在线人数
+     *
+     * @param appId 应用id
+     * @param limit 指定分钟内
+     * @param edition 版本号
+     * @return 在线人数
+     */
+    Integer getOnlineNumByRedis(Long appId, String limit, String edition);
 }

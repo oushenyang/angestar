@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.webApi.common.util;
 
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.DES;
 import cn.hutool.crypto.symmetric.DESede;
@@ -241,6 +242,23 @@ public class CommonUtil {
         if (apiManage.getApiStatus()==1){
             //接口未开启
             throw new CommonException(ApiExceptionEnum.API_CLOSE.getCode(), ApiExceptionEnum.API_CLOSE.getMessage(), timestamp,apiManage, false);
+        }
+    }
+
+    public static void sign(ApiManageApi apiManage, String sign,String timestamp, String signStr) {
+        //验证签名
+        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
+            //签名不正确
+            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
+            //签名不正确
+            throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
+            String md5 = SecureUtil.md5(signStr);
+            if (!md5.equals(sign)){
+                //签名不正确
+                throw new CommonException(ApiExceptionEnum.SIGN_ERROR.getCode(), ApiExceptionEnum.SIGN_ERROR.getMessage(), timestamp,apiManage, false);
+            }
         }
     }
 }

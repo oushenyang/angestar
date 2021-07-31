@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum RedisExpireTime {
 
     //api接口,hash表
-    DAY(604800L,"三天"),
+    DAY(259200L,"三天"),
     WEEK(604800L,"七天"),
     MONTH(2592000L,"一个月");
     long code;

@@ -33,4 +33,14 @@ public interface TokenMapper extends BaseMapper<Token> {
      * @return
      */
     Integer onlineNum(@Param("userId") Long userId);
+
+    /**
+     * 获取指定限制分钟内和版本号的在线人数
+     *
+     * @param appId 应用id
+     * @param limit 指定分钟内
+     * @param edition 版本号
+     * @return 在线人数
+     */
+    Integer getOnlineNum(@Param("appId") Long appId,@Param("limit") Integer limit,@Param("edition") String edition);
 }

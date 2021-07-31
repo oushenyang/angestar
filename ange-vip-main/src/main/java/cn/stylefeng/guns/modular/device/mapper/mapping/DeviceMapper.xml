@@ -14,6 +14,7 @@
         <result column="model" property="model" />
         <result column="ip_address" property="ipAddress" />
         <result column="login_num" property="loginNum" />
+        <result column="edition_serial" property="editionSerial" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        device_id AS "deviceId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", mac AS "mac", ip AS "ip", model AS "model", ip_address AS "ipAddress", login_num AS "loginNum", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        device_id AS "deviceId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", mac AS "mac", ip AS "ip", model AS "model", ip_address AS "ipAddress", login_num AS "loginNum", edition_serial AS "editionSerial", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
     <update id="updateDeviceLoginNumByDeviceId">
         update ag_device set login_num = login_num+1,update_time = now() where device_id = #{deviceId}

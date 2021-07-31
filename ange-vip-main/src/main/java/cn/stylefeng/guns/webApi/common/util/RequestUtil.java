@@ -29,17 +29,8 @@ public class RequestUtil {
         String sign = commonParam.getParameterTwo();
         //启用超时和验证接口是否开启
         CommonUtil.overtime(apiManage,timestamp);
-        //验证签名
-        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(timestamp);
-            if (!md5.equals(sign)){
-                throw new SystemApiException(4, "签名不正确","",false);
-            }
-        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,timestamp);
         return new GetAppInfoParam(timestamp,sign);
     }
     //获取版本信息
@@ -54,17 +45,8 @@ public class RequestUtil {
         }
         //启用超时和验证接口是否开启
         CommonUtil.overtime(apiManage,timestamp);
-        //验证签名
-        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(edition+timestamp);
-            if (!md5.equals(sign)){
-                throw new SystemApiException(4, "签名不正确","",false);
-            }
-        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,edition+timestamp);
         return new GetEditionParam(edition,timestamp,sign);
     }
     //取在线人数
@@ -87,17 +69,8 @@ public class RequestUtil {
         }
         //启用超时和验证接口是否开启
         CommonUtil.overtime(apiManage,timestamp);
-        //验证签名
-        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(limit)+timestamp);
-            if (!md5.equals(sign)){
-                throw new SystemApiException(4, "签名不正确","",false);
-            }
-        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(limit)+timestamp);
         return new GetOnlineNumParam(edition,limit,timestamp,sign);
     }
     //单码登录
@@ -107,43 +80,27 @@ public class RequestUtil {
         String mac = commonParam.getParameterTwo();
         String edition = commonParam.getParameterThree();
         String model = commonParam.getParameterFour();
-        String holdCheck = commonParam.getParameterFive();
+        String timestamp = commonParam.getParameterFive();
         String sign = commonParam.getParameterSix();
         if (StringUtils.isEmpty(card)||StringUtils.isEmpty(mac)){
             throw new SystemApiException(2, "必传参数存在空值","",false);
         }
-        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if(apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(card+mac+StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(holdCheck));
-            if (!md5.equals(sign)){
-                throw new SystemApiException(4, "签名不正确","",false);
-            }
-        }
-        return new CardLoginParam(card,edition,mac,model,holdCheck,sign);
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,card+mac+StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(timestamp));
+        return new CardLoginParam(card,edition,mac,model,timestamp,sign);
     }
 
     public static CheckCardStatusParam getCheckCardStatusParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
         String statusCode = commonParam.getParameterOne();
         String singleCode = commonParam.getParameterTwo();
-        String holdCheck = commonParam.getParameterThree();
+        String timestamp = commonParam.getParameterThree();
         String sign = commonParam.getParameterFour();
         if (StringUtils.isEmpty(singleCode)||StringUtils.isEmpty(statusCode)){
             throw new SystemApiException(2, "必传参数存在空值","",false);
         }
-        if (apiManage.getSignFlag()&&StringUtils.isEmpty(sign)){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if (apiManage.getSignFlag()&&StringUtils.isNotEmpty(sign)&&sign.length()!=32){
-            throw new SystemApiException(4, "签名不正确","",false);
-        }else if(StringUtils.isNotEmpty(sign)&&sign.length()==32){
-            String md5 = SecureUtil.md5(StringUtils.trimToEmpty(statusCode)+StringUtils.trimToEmpty(singleCode)+StringUtils.trimToEmpty(holdCheck));
-            if (!md5.equals(sign)){
-                throw new SystemApiException(4, "签名不正确","",false);
-            }
-        }
-        return new CheckCardStatusParam(statusCode,singleCode,holdCheck,sign);
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(statusCode)+StringUtils.trimToEmpty(singleCode)+StringUtils.trimToEmpty(timestamp));
+        return new CheckCardStatusParam(statusCode,singleCode,timestamp,sign);
     }
 }

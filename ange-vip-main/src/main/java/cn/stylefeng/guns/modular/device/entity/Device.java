@@ -82,6 +82,12 @@ public class Device implements Serializable {
     private Integer loginNum;
 
     /**
+     * 版本编号
+     */
+    @TableField("edition_serial")
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_user", fill = FieldFill.INSERT)
@@ -184,6 +190,14 @@ public class Device implements Serializable {
 
     public void setLoginNum(Integer loginNum) {
         this.loginNum = loginNum;
+    }
+
+    public String getEditionSerial() {
+        return editionSerial;
+    }
+
+    public void setEditionSerial(String editionSerial) {
+        this.editionSerial = editionSerial;
     }
 
     public Long getCreateUser() {

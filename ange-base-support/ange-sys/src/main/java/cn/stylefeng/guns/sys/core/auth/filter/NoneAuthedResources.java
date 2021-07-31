@@ -79,6 +79,9 @@ public class NoneAuthedResources {
             //获取应用信息
             "/getAppInfo/*",
 
+            //取在线人数
+            "/getOnlineNum/*",
+
             //检查版本更新
             "/checkUpdate/*",
 

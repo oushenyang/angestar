@@ -17,6 +17,7 @@
         <result column="login_time" property="loginTime" />
         <result column="check_time" property="checkTime" />
         <result column="token" property="token" />
+        <result column="edition_serial" property="editionSerial" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />
@@ -25,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        token_id AS "tokenId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", edition_num AS "editionNum", mac AS "mac", ip AS "ip", model AS "model", login_num AS "loginNum", login_time AS "loginTime", check_time AS "checkTime", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
+        token_id AS "tokenId", app_id AS "appId", card_or_user_id AS "cardOrUserId", card_or_user_code AS "cardOrUserCode", card_type AS "cardType", edition_num AS "editionNum", mac AS "mac", ip AS "ip", model AS "model", login_num AS "loginNum", login_time AS "loginTime", check_time AS "checkTime", edition_serial AS "editionSerial", create_user AS "createUser", create_time AS "createTime", update_user AS "updateUser", update_time AS "updateTime"
     </sql>
     <delete id="deleteByCardId">
     DELETE
@@ -43,6 +44,17 @@
     </select>
     <select id="onlineNum" resultType="java.lang.Integer">
         select count(DISTINCT mac) from ag_token where create_user = #{userId} and date_format(create_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+    </select>
+
+    <select id="getOnlineNum" resultType="java.lang.Integer">
+        select count(DISTINCT mac)
+        from ag_token
+        where app_id = #{appId}
+        and TIMESTAMPDIFF(MINUTE,login_time,now()) &lt;= #{limit}
+        or TIMESTAMPDIFF(MINUTE,check_time,now()) &lt;= #{limit}
+        <if test="edition != null and edition !=''">
+            and edition_serial = #{edition}
+        </if>
     </select>
 
 </mapper>

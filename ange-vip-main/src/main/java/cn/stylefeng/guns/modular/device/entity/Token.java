@@ -100,6 +100,12 @@ public class Token implements Serializable {
     private String token;
 
     /**
+     * 版本编号
+     */
+    @TableField("edition_serial")
+    private String editionSerial;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_user", fill = FieldFill.INSERT)
@@ -226,6 +232,14 @@ public class Token implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getEditionSerial() {
+        return editionSerial;
+    }
+
+    public void setEditionSerial(String editionSerial) {
+        this.editionSerial = editionSerial;
     }
 
     public Long getCreateUser() {

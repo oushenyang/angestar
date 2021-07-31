@@ -202,6 +202,24 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         return baseMapper.onlineNum(userId);
     }
 
+    /**
+     * 获取指定限制分钟内和版本号的在线人数
+     *
+     * @param appId   应用id
+     * @param limit   指定分钟内
+     * @param edition 版本号
+     * @return 在线人数
+     */
+    @Override
+    public Integer getOnlineNumByRedis(Long appId, String limit, String edition) {
+        Integer onlineNum = (Integer) redisUtil.get(RedisType.ONLINE_NUM.getCode() + appId + limit);
+        if (onlineNum==null){
+            onlineNum = baseMapper.getOnlineNum(appId, Integer.valueOf(limit),edition);
+            redisUtil.set(RedisType.ONLINE_NUM.getCode() + appId + limit, onlineNum, RedisType.ONLINE_NUM.getTime());
+        }
+        return onlineNum;
+    }
+
     private String insertToken(List<Token> tokenList, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = IdUtil.simpleUUID();
         Date date = new Date();

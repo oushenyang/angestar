@@ -429,13 +429,21 @@ public class GlobalExceptionHandler {
                 json.set("expireTime",DateUtil.format(e.getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
                 json.set("token",e.getData());
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
-                    json.set("timestamp", Long.parseLong(e.getHoldCheck()));
+                    if (StringUtils.isNumeric(e.getHoldCheck())){
+                        json.set("timestamp", Long.parseLong(e.getHoldCheck()));
+                    }else {
+                        json.set("timestamp", e.getHoldCheck());
+                    }
                 }
                 object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
             }else {
                 if (StringUtils.isNotEmpty(e.getHoldCheck())){
                     cn.hutool.json.JSONObject json = JSONUtil.createObj();
-                    json.set("timestamp",Long.parseLong(e.getHoldCheck()));
+                    if (StringUtils.isNumeric(e.getHoldCheck())){
+                        json.set("timestamp", Long.parseLong(e.getHoldCheck()));
+                    }else {
+                        json.set("timestamp", e.getHoldCheck());
+                    }
                     object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
                 }else {
                     object = ApiResult.resultError(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),apiResultApi.getResultSuccess());
