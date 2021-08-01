@@ -110,4 +110,20 @@ public class RequestUtil {
         CommonUtil.sign(apiManage,sign,timestamp,card+StringUtils.trimToEmpty(timestamp));
         return new GetCardInfoParam(card,timestamp,sign);
     }
+
+    //设置单码数据
+    public static SetCardDataParam setCardDataParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String token = commonParam.getParameterOne();
+        String card = commonParam.getParameterTwo();
+        String cardData = commonParam.getParameterThree();
+        String timestamp = commonParam.getParameterFour();
+        String sign = commonParam.getParameterFive();
+        if (StringUtils.isEmpty(token)||StringUtils.isEmpty(card)||StringUtils.isEmpty(cardData)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(cardData)+StringUtils.trimToEmpty(timestamp));
+        return new SetCardDataParam(token,card,cardData,timestamp,sign);
+    }
 }

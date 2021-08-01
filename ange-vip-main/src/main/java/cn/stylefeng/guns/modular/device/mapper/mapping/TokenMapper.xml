@@ -50,8 +50,7 @@
         select count(DISTINCT mac)
         from ag_token
         where app_id = #{appId}
-        and TIMESTAMPDIFF(MINUTE,login_time,now()) &lt;= #{limit}
-        or TIMESTAMPDIFF(MINUTE,check_time,now()) &lt;= #{limit}
+        and TIMESTAMPDIFF(MINUTE,check_time,now()) &lt;= #{limit}
         <if test="edition != null and edition !=''">
             and edition_serial = #{edition}
         </if>

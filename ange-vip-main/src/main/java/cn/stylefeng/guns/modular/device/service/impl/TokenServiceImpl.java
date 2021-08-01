@@ -238,6 +238,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setCheckTime(date);
         token.setCreateTime(date);
         token.setCreateUser(appInfoApi.getCreateUser());
+        token.setUpdateTime(date);
         //异步调用插入
         asyncService.insertTokenToSql(token,appInfoApi);
 //        baseMapper.insert(token);
@@ -286,6 +287,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         token.setCheckTime(date);
         token.setCreateUser(appInfoApi.getCreateUser());
         token.setCreateTime(date);
+        token.setUpdateTime(date);
 //        baseMapper.insert(token);
         //异步调用插入
         asyncService.insertTokenToSql(token,appInfoApi);

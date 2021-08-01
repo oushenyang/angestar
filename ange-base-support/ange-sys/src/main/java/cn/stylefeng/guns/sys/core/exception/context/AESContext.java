@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.sys.core.exception;
+package cn.stylefeng.guns.sys.core.exception.context;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;

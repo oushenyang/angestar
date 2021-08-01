@@ -94,6 +94,12 @@ public class NoneAuthedResources {
             //获取单码用户信息
             "/getCardInfo/*",
 
+            //设置单码数据
+            "/setCardData/*",
+
+            //获取单码数据
+            "/getCardData/*",
+
             //快捷页面
             "/quick/**",
 

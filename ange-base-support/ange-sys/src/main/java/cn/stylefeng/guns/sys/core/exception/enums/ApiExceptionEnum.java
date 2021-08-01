@@ -67,6 +67,8 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     TOKEN_EXPIRE(2010, "卡密登录过期，请重新登录"),
     CARD_STATE_NORMAL(2011, "卡密用户状态正常"),
     GET_CARD_SUCCESS(2012, "获取卡密信息成功"),
+    SET_CARD_DATA_SUCCESS(2013, "设置卡密数据成功"),
+    GET_CARD_DATA_SUCCESS(2014, "获取卡密数据成功"),
 
     /**
      * 试用相关

@@ -1,24 +1,24 @@
-package cn.stylefeng.guns.sys.core.exception;
+package cn.stylefeng.guns.sys.core.exception.context;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.symmetric.SM4;
+import cn.hutool.crypto.symmetric.DES;
 import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * SM4加解密（单例）
+ * des加解密（单例）
  */
-public class SM4Context {
-    private static SM4 sm4 = null;
+public class DESContext {
+    private static DES des = null;
     private static Integer encryptionMode = 10;
     private static Integer fill = 10;
     private static String webKey = "0";
     private static String webSalt = "0";
 
-    public static SM4 getInstance(ApiManageApi appInfoApi) {
+    public static DES getInstance(ApiManageApi appInfoApi) {
 
-        if (sm4 == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
+        if (des == null||!encryptionMode.equals(appInfoApi.getEncryptionMode())
                 ||!fill.equals(appInfoApi.getFill())
                 ||!webKey.equals(appInfoApi.getWebKey())
                 ||!webSalt.equals(appInfoApi.getWebSalt())) {
@@ -65,18 +65,18 @@ public class SM4Context {
             }
             if (StringUtils.isNotEmpty(appInfoApi.getWebSalt())&&appInfoApi.getEncryptionMode()!=0){
                 if (appInfoApi.getFill()==1){
-                    sm4 = new SM4(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }else {
-                    sm4 = new SM4(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
+                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes(),appInfoApi.getWebSalt().getBytes());
                 }
             }else {
                 if (appInfoApi.getFill()==1){
-                    sm4 = new SM4(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
+                    des = new DES(mode.toString(), "PKCS7Padding", appInfoApi.getWebKey().getBytes());
                 }else {
-                    sm4 = new SM4(mode, padding, appInfoApi.getWebKey().getBytes());
+                    des = new DES(mode, padding, appInfoApi.getWebKey().getBytes());
                 }
             }
         }
-        return sm4;
+        return des;
     }
 }
