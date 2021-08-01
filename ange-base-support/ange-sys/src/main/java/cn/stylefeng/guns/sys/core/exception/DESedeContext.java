@@ -3,7 +3,7 @@ package cn.stylefeng.guns.sys.core.exception;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.DESede;
-import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import org.apache.commons.lang3.StringUtils;
 
 /**

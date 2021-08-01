@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.sys.core.exception;
 
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import lombok.Data;
 
 /**

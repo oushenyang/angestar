@@ -3,7 +3,7 @@ package cn.stylefeng.guns.modular.apiManage.service;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.apiManage.model.params.ApiManageParam;
-import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.modular.apiManage.model.result.ApiManageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;

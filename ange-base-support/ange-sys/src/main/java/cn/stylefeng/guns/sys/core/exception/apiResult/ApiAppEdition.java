@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.sys.core.exception;
+package cn.stylefeng.guns.sys.core.exception.apiResult;
 
 import lombok.Data;
 

@@ -159,6 +159,18 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     if (result.data.resultVariables.indexOf("onlineNum") != -1){
         $(".onlineNum").show();
     }
+    //卡密状态
+    if (result.data.resultVariables.indexOf("cardStatus") != -1){
+        $(".cardStatus").show();
+    }
+    //卡类名称
+    if (result.data.resultVariables.indexOf("cardType") != -1){
+        $(".cardType").show();
+    }
+    //卡密激活时间
+    if (result.data.resultVariables.indexOf("activeTime") != -1){
+        $(".activeTime").show();
+    }
     if (result.data.resultVariables.indexOf("token") != -1){
         $(".token").show();
     }

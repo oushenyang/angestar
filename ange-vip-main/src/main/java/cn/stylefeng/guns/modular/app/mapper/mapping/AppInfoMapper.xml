@@ -133,7 +133,7 @@
             </if>
         </where>
     </select>
-    <select id="findAppInfoApi" resultType="cn.stylefeng.guns.sys.core.exception.AppInfoApi">
+    <select id="findAppInfoApi" resultType="cn.stylefeng.guns.sys.core.exception.apiResult.AppInfoApi">
         select
         app_id AS "appId",
         app_no AS "appNo",

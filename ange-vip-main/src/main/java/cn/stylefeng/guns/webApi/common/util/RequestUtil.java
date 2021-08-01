@@ -1,16 +1,9 @@
 package cn.stylefeng.guns.webApi.common.util;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.symmetric.*;
-import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.*;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.webApi.common.param.*;
-import cn.stylefeng.roses.core.util.HttpContext;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -23,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RequestUtil {
     //获取应用信息
-    public static GetAppInfoParam getAppInfo(ApiManageApi apiManage, String body){
+    public static GetAppInfoParam getAppInfoParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
         String timestamp = commonParam.getParameterOne();
         String sign = commonParam.getParameterTwo();
@@ -34,7 +27,7 @@ public class RequestUtil {
         return new GetAppInfoParam(timestamp,sign);
     }
     //获取版本信息
-    public static GetEditionParam getEdition(ApiManageApi apiManage, String body){
+    public static GetEditionParam getEditionParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
         String edition = commonParam.getParameterOne();
         String timestamp = commonParam.getParameterTwo();
@@ -50,7 +43,7 @@ public class RequestUtil {
         return new GetEditionParam(edition,timestamp,sign);
     }
     //取在线人数
-    public static GetOnlineNumParam getOnlineNum(ApiManageApi apiManage, String body){
+    public static GetOnlineNumParam getOnlineNumParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
         String edition = commonParam.getParameterOne();
         String limit = commonParam.getParameterTwo();
@@ -89,7 +82,7 @@ public class RequestUtil {
         CommonUtil.sign(apiManage,sign,timestamp,card+mac+StringUtils.trimToEmpty(edition)+StringUtils.trimToEmpty(model)+StringUtils.trimToEmpty(timestamp));
         return new CardLoginParam(card,edition,mac,model,timestamp,sign);
     }
-
+    //检测单码用户状态
     public static CheckCardStatusParam getCheckCardStatusParameter(ApiManageApi apiManage, String body){
         CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
         String statusCode = commonParam.getParameterOne();
@@ -102,5 +95,19 @@ public class RequestUtil {
         //校验签名
         CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(statusCode)+StringUtils.trimToEmpty(singleCode)+StringUtils.trimToEmpty(timestamp));
         return new CheckCardStatusParam(statusCode,singleCode,timestamp,sign);
+    }
+
+    //获取卡密信息
+    public static GetCardInfoParam getCardInfoParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String card = commonParam.getParameterOne();
+        String timestamp = commonParam.getParameterTwo();
+        String sign = commonParam.getParameterThree();
+        if (StringUtils.isEmpty(card)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,card+StringUtils.trimToEmpty(timestamp));
+        return new GetCardInfoParam(card,timestamp,sign);
     }
 }

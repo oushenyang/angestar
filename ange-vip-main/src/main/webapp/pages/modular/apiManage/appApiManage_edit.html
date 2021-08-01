@@ -276,6 +276,7 @@
  2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
                </pre>
                 @}
+                <!--                卡密登录-->
                 @if(apiManage.apiCode=='cardLogin'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
@@ -297,6 +298,7 @@
  2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
                </pre>
                 @}
+                <!--                检测卡密用户状态-->
                 @if(apiManage.apiCode=='checkCardStatus'){
                 <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
@@ -316,7 +318,30 @@
  2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
                </pre>
                 @}
+                <!--                获取卡密信息-->
+                @if(apiManage.apiCode=='getCardInfo'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
 
+ 成功示例：
+
+ {
+   "code": 2012,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）,
+  	      "cardStatus":	卡密状态 0-未激活；1-已激活；2-已过期；3-已禁用,
+	      "cardType":	"卡类名称",
+	      "activeTime":	"激活时间",
+	      "expireTime":	"到期时间"
+          }
+   "msg": "获取卡密信息成功",
+   "success": true
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
             </div>
         </fieldset>
     </div>

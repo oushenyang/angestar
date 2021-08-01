@@ -3,7 +3,7 @@ package cn.stylefeng.guns.modular.card.mapper;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
-import cn.stylefeng.guns.modular.card.model.result.CardInfoApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardMonth;
 import cn.stylefeng.guns.modular.card.model.result.IncomeStatistics;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

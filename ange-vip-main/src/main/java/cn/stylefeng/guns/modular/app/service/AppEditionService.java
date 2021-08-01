@@ -4,7 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
 import cn.stylefeng.guns.modular.app.model.params.AppEditionParam;
 import cn.stylefeng.guns.modular.app.model.result.AppEditionResult;
-import cn.stylefeng.guns.sys.core.exception.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 

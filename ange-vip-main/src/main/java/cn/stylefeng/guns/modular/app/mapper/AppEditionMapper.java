@@ -1,7 +1,7 @@
 package cn.stylefeng.guns.modular.app.mapper;
 
 import cn.stylefeng.guns.modular.app.entity.AppEdition;
-import cn.stylefeng.guns.sys.core.exception.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;

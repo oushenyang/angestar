@@ -65,7 +65,8 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     CARD_LOGIN_MAX(2008, "卡密超过最大登录数,如果确定已经下线,请等60分钟后重试"),
     OUTSIDE_TIMED_OUT(2009, "外部验证接口连接超时，请在应用设置中关闭外部应用对接"),
     TOKEN_EXPIRE(2010, "卡密登录过期，请重新登录"),
-    CARD_STATE_NORMAL(2011, "单码用户状态正常"),
+    CARD_STATE_NORMAL(2011, "卡密用户状态正常"),
+    GET_CARD_SUCCESS(2012, "获取卡密信息成功"),
 
     /**
      * 试用相关

@@ -323,7 +323,7 @@
             </if>
         </where>
     </select>
-    <select id="getCardInfoApiByAppIdAndCardCode" resultType="cn.stylefeng.guns.modular.card.model.result.CardInfoApi">
+    <select id="getCardInfoApiByAppIdAndCardCode" resultType="cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi">
         select
         cci.*,
         cct.card_time_type,

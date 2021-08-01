@@ -3,7 +3,7 @@ package cn.stylefeng.guns.webApi.remote;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.remote.model.result.RemoteDataApi;
 import cn.stylefeng.guns.modular.remote.service.RemoteDataService;
-import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.roses.core.util.HttpContext;
 import org.apache.commons.lang3.StringUtils;

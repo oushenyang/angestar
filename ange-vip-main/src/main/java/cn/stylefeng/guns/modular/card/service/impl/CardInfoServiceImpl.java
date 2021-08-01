@@ -27,7 +27,6 @@ import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Device;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
-import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
@@ -38,6 +37,7 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.*;
 import cn.stylefeng.guns.sys.modular.system.service.ExcelService;
@@ -419,7 +419,7 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     asyncService.updateCard(cardInfo);
                 }
                 cardInfoApi.setRedisTime(new Date());
-                redisUtil.hset(RedisType.CARD_INFO.getCode()+ singleCode,singleCode,cardInfoApi, RedisExpireTime.DAY.getCode());
+                redisUtil.hset(RedisType.CARD_INFO.getCode()+ singleCode,singleCode,cardInfoApi, RedisType.CARD_INFO.getTime());
             }
         }
         return cardInfoApi;

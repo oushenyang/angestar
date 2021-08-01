@@ -47,7 +47,7 @@
         and ae.edition_num = #{editionNum}
         and ae.edition_id != #{editionId}
     </select>
-    <select id="getNewestAppEdition" resultType="cn.stylefeng.guns.sys.core.exception.ApiAppEdition">
+    <select id="getNewestAppEdition" resultType="cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition">
         select
         edition_serial AS "editionSerial",
         edition_name AS "editionName",

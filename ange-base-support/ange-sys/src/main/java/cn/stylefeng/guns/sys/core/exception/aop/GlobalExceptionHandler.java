@@ -524,6 +524,71 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 获取卡密信息
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(GetCardInfoException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object getCardInfoException(GetCardInfoException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            Map<String, Object> map = new HashMap<>();
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                map.put("timestamp", Long.parseLong(e.getTimestamp()));
+                //状态 0-未激活；1-已激活；2-已过期；3-已禁用；
+                map.put("cardStatus", e.getCardInfoApi().getCardStatus());
+                //卡类名称
+                map.put("cardType", e.getCardInfoApi().getCardTypeName());
+                //激活时间
+                map.put("activeTime", DateUtil.format(e.getCardInfoApi().getActiveTime(),"yyyy-MM-dd HH:mm:ss"));
+                //到期时间
+                map.put("expireTime", DateUtil.format(e.getCardInfoApi().getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                //卡密状态 0-未激活；1-已激活；2-已过期；3-已禁用；
+                map.put("cardStatus", e.getCardInfoApi().getCardStatus());
+                //卡类名称
+                map.put("cardType", e.getCardInfoApi().getCardTypeName());
+                //激活时间
+                map.put("activeTime", DateUtil.format(e.getCardInfoApi().getActiveTime(),"yyyy-MM-dd HH:mm:ss"));
+                //到期时间
+                map.put("expireTime", DateUtil.format(e.getCardInfoApi().getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }
+//            object = JSONObject.toJSONString(object);
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            if (StringUtils.contains(customResultData, "%cardStatus%")){
+                customResultData = customResultData.replaceAll("%cardStatus%",String.valueOf(e.getCardInfoApi().getCardStatus()));
+            }
+            if (StringUtils.contains(customResultData, "%cardType%")){
+                customResultData = customResultData.replaceAll("%cardType%",e.getCardInfoApi().getCardTypeName());
+            }
+            if (StringUtils.contains(customResultData, "%activeTime%")){
+                customResultData = customResultData.replaceAll("%activeTime%", DateUtil.format(e.getCardInfoApi().getActiveTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
+            if (StringUtils.contains(customResultData, "%expireTime%")){
+                customResultData = customResultData.replaceAll("%expireTime%", DateUtil.format(e.getCardInfoApi().getExpireTime(),"yyyy-MM-dd HH:mm:ss"));
+            }
+            object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
      * 试用自定义返回异常
      *
      * @author fengshuonan

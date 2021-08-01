@@ -3,8 +3,7 @@ package cn.stylefeng.guns.webApi.appInfo;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
-import cn.stylefeng.guns.sys.core.exception.ApiManageApi;
-import cn.stylefeng.guns.sys.core.exception.AppInfoApi;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.OnlineNumException;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.webApi.common.param.GetOnlineNumParam;
@@ -42,7 +41,7 @@ public class GetOnlineNumController {
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("getAppInfo",callCode);
         //获取参数
-        GetOnlineNumParam param = RequestUtil.getOnlineNum(apiManage,body);
+        GetOnlineNumParam param = RequestUtil.getOnlineNumParameter(apiManage,body);
         //取在线人数
         Integer onlineNum =  tokenService.getOnlineNumByRedis(apiManage.getAppId(),param.getLimit(),param.getEdition());
         //取在线人数成功

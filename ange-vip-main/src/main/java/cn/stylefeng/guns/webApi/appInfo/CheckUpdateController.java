@@ -3,8 +3,9 @@ package cn.stylefeng.guns.webApi.appInfo;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.modular.apiManage.service.ApiManageService;
 import cn.stylefeng.guns.modular.app.service.AppEditionService;
-import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.exception.*;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.webApi.common.param.GetEditionParam;
 import cn.stylefeng.guns.webApi.common.util.RequestUtil;
@@ -39,7 +40,7 @@ public class CheckUpdateController {
         //获取接口信息
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("checkUpdate",callCode);
         //获取参数
-        GetEditionParam param = RequestUtil.getEdition(apiManage,body);
+        GetEditionParam param = RequestUtil.getEditionParameter(apiManage,body);
         ApiAppEdition apiAppEdition =  appEditionService.getNewestAppEditionByRedis(apiManage.getAppId());
         //如果版本号相等，说明没有更新
         if (ObjectUtil.isNull(apiAppEdition)||apiAppEdition.getEditionNum().equals(param.getEdition())){
