@@ -589,6 +589,50 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 获取卡密数据
+     *
+     * @author fengshuonan
+     * @Date 2020/2/6 11:14 上午
+     */
+    @ExceptionHandler(GetCardDataException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object getCardDataException(GetCardDataException e) {
+        ApiResultApi apiResultApi = sysApiResultService.findApiResultApi(e.getApiManageApi().getAppId(),e.getCode());
+        Object object = null;
+        //如果没有自定义
+        if (StringUtils.isEmpty(apiResultApi.getCustomResultData())){
+            Map<String, Object> map = new HashMap<>();
+            if (StringUtils.isNotEmpty(e.getTimestamp())){
+                map.put("timestamp", Long.parseLong(e.getTimestamp()));
+                //卡密数据
+                map.put("cardData", e.getCardData());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }else {
+                //卡密数据
+                map.put("cardData", e.getCardData());
+                JSONObject json = new JSONObject(map);
+                object = ApiResult.resultSuccess(apiResultApi.getResultCode(), apiResultApi.getResultRemark(),json,apiResultApi.getResultSuccess());
+            }
+//            object = JSONObject.toJSONString(object);
+        }else {
+            String customResultData = apiResultApi.getCustomResultData();
+            //设置自定义数据公共类
+            customResultData = ApiResultUtil.setCustomResultData(customResultData,e.getTimestamp());
+            if (StringUtils.contains(customResultData, "%cardData%")){
+                customResultData = customResultData.replaceAll("%cardData%",String.valueOf(e.getCardData()));
+            }
+            object = customResultData;
+            if (apiResultApi.getOutputFormat()==0&&JSONUtil.isJson(customResultData)){
+                object = JSONUtil.parse(customResultData);
+            }
+        }
+        object = ApiResultUtil.setAlgorithm(object,e.getApiManageApi());
+        return object;
+    }
+
+    /**
      * 试用自定义返回异常
      *
      * @author fengshuonan

@@ -43,14 +43,8 @@ public class GetCardInfoController {
         ApiManageApi apiManage = apiManageService.getApiManageByRedis("getCardInfo",callCode);
         //获取参数
         GetCardInfoParam param = RequestUtil.getCardInfoParameter(apiManage,body);
-        CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getCard());
-        //如果卡密查不到
-        if (ObjectUtil.isNull(cardInfoApi)){
-            //卡密不存在
-            throw new CardLoginException(ApiExceptionEnum.CARD_NO.getCode(), apiManage.getAppId(),"",new Date(),param.getTimestamp(),apiManage,false);
-        }else {
-            throw new GetCardInfoException(ApiExceptionEnum.GET_CARD_SUCCESS.getCode(),param.getTimestamp(),apiManage,cardInfoApi,true);
-        }
+        CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getCard(),param.getTimestamp(),apiManage,false);
+        throw new GetCardInfoException(ApiExceptionEnum.GET_CARD_SUCCESS.getCode(),param.getTimestamp(),apiManage,cardInfoApi,true);
     }
 
 }

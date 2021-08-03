@@ -113,4 +113,11 @@ public interface TokenService extends IService<Token> {
      * @return 在线人数
      */
     Integer getOnlineNumByRedis(Long appId, String limit, String edition);
+
+    /**
+     * 获取卡密的所有token信息
+     * @param card 卡密
+     * @return token集合
+     */
+    List<Token> getTokenListByCardAndRedis(String card);
 }

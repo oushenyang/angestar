@@ -220,6 +220,25 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, Token> implements
         return onlineNum;
     }
 
+    /**
+     * 获取卡密的所有token信息
+     *
+     * @param card 卡密
+     * @return token集合
+     */
+    @Override
+    public List<Token> getTokenListByCardAndRedis(String card) {
+        Object object = redisUtil.hget(RedisType.CARD_INFO.getCode() + card,RedisType.TOKEN.getCode());
+        List<Token> tokens = new ArrayList<>();
+        if (ObjectUtil.isNotNull(object)) {
+            List<Token> tokenList = JSON.parseArray(object.toString(),Token.class);
+            tokens.addAll(tokenList);
+        }else {
+            tokens = baseMapper.selectList(new QueryWrapper<Token>().eq("card_or_user_code", card));
+        }
+        return tokens;
+    }
+
     private String insertToken(List<Token> tokenList, AppInfoApi appInfoApi, Long cardId, String cardCode, String mac, String model,Date expireTime) {
         String tokenStr = IdUtil.simpleUUID();
         Date date = new Date();

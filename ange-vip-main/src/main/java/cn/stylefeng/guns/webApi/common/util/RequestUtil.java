@@ -126,4 +126,19 @@ public class RequestUtil {
         CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(cardData)+StringUtils.trimToEmpty(timestamp));
         return new SetCardDataParam(token,card,cardData,timestamp,sign);
     }
+
+    //获取单码数据
+    public static GetCardDataParam getCardDataParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String token = commonParam.getParameterOne();
+        String card = commonParam.getParameterTwo();
+        String timestamp = commonParam.getParameterThree();
+        String sign = commonParam.getParameterFour();
+        if (StringUtils.isEmpty(token)||StringUtils.isEmpty(card)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(timestamp));
+        return new GetCardDataParam(token,card,timestamp,sign);
+    }
 }

@@ -79,7 +79,7 @@ public class CardLoginController {
             //该应用免费
             throw new CardLoginException(2000, apiManage.getAppId(),IdUtil.simpleUUID(),new Date(),param.getHoldCheck(),apiManage,true);
         }
-        CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getSingleCode());
+        CardInfoApi cardInfoApi = cardInfoService.getCardInfoApiByAppIdAndCardCode(apiManage.getAppId(),param.getSingleCode(),param.getHoldCheck(),apiManage,true);
         //如果卡密查不到
         if (ObjectUtil.isNull(cardInfoApi)){
             //从易游查

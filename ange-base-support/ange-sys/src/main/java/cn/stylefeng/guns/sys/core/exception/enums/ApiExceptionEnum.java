@@ -69,6 +69,7 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     GET_CARD_SUCCESS(2012, "获取卡密信息成功"),
     SET_CARD_DATA_SUCCESS(2013, "设置卡密数据成功"),
     GET_CARD_DATA_SUCCESS(2014, "获取卡密数据成功"),
+    CARD_DATA_NO(2015, "卡密数据不存在"),
 
     /**
      * 试用相关

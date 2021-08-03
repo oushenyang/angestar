@@ -23,6 +23,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
+import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Device;
@@ -37,7 +38,10 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.exception.CommonException;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi;
+import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
 import cn.stylefeng.guns.sys.core.util.*;
 import cn.stylefeng.guns.sys.modular.system.service.ExcelService;
@@ -391,10 +395,13 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
      * 通过应用id和卡密查找卡密信息
      * @param appId 应用id
      * @param singleCode 卡密
+     * @param timestamp 时间戳
+     * @param apiManageApi 接口信息
+     * @param cardLogin 是否为卡密登录
      * @return 卡密信息
      */
     @Override
-    public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode) {
+    public CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode, String timestamp, ApiManageApi apiManageApi,Boolean cardLogin) {
         CardInfoApi cardInfoApi;
         //是否存在该hash表
         boolean isHave = redisUtil.hHasKey(RedisType.CARD_INFO.getCode()+ singleCode,singleCode);
@@ -421,6 +428,19 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                 cardInfoApi.setRedisTime(new Date());
                 redisUtil.hset(RedisType.CARD_INFO.getCode()+ singleCode,singleCode,cardInfoApi, RedisType.CARD_INFO.getTime());
             }
+        }
+        //如果卡密查不到且不是登录接口则校验
+        if (ObjectUtil.isNull(cardInfoApi)&&!cardLogin){
+            //卡密不存在
+            throw new CommonException(ApiExceptionEnum.CARD_NO.getCode(),timestamp,apiManageApi,false);
+        }
+        if (ObjectUtil.isNotNull(cardInfoApi)&&!cardLogin&&cardInfoApi.getCardStatus()==2){
+            //卡密已过期
+            throw new CommonException(ApiExceptionEnum.CARD_EXPIRE.getCode(),timestamp,apiManageApi,false);
+        }
+        if (ObjectUtil.isNotNull(cardInfoApi)&&!cardLogin&&cardInfoApi.getCardStatus()==3){
+            //卡密已被禁用
+            throw new CommonException(ApiExceptionEnum.CARD_DISABLED.getCode(),timestamp,apiManageApi,false);
         }
         return cardInfoApi;
     }

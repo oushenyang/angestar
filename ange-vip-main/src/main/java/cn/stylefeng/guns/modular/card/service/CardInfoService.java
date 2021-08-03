@@ -4,6 +4,7 @@ import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.card.entity.CardInfo;
 import cn.stylefeng.guns.modular.card.model.params.BatchCardInfoParam;
 import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
+import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi;
 import cn.stylefeng.guns.modular.card.model.result.CardInfoResult;
 import cn.stylefeng.guns.modular.card.model.result.CardMonth;
@@ -105,9 +106,12 @@ public interface CardInfoService extends IService<CardInfo> {
      * 通过应用id和卡密查找卡密信息
      * @param appId 应用id
      * @param singleCode 卡密
+     * @param timestamp 时间戳
+     * @param apiManageApi 接口信息
+     * @param cardLogin 是否为卡密登录
      * @return 卡密信息
      */
-    CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode);
+    CardInfoApi getCardInfoApiByAppIdAndCardCode(Long appId, String singleCode, String timestamp, ApiManageApi apiManageApi,Boolean cardLogin);
 
     //更新卡密和删除缓存
     void updateCardAndRedis(Long appId, CardInfo cardInfo, String singleCode);

@@ -171,6 +171,10 @@ layui.use(['form', 'formX','admin', 'ax'], function () {
     if (result.data.resultVariables.indexOf("activeTime") != -1){
         $(".activeTime").show();
     }
+    //卡密数据
+    if (result.data.resultVariables.indexOf("cardData") != -1){
+        $(".cardData").show();
+    }
     if (result.data.resultVariables.indexOf("token") != -1){
         $(".token").show();
     }
