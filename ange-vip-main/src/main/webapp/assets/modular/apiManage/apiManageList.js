@@ -56,7 +56,7 @@ layui.use(['table', 'admin', 'form', 'ax', 'func', 'notice'], function () {
             {align: 'center',field: 'parameterNum', title: '传参加密'},
             {align: 'center',field: 'parameterNum', title: '返回加密'},
             {align: 'left',field: 'callCode',  width: 360, title: '调用地址',templet: '#callCodeTpl'},
-            {align: 'center', toolbar: '#tableBar', width: 140, fixed: 'right', title: '操作'}
+            {align: 'center', toolbar: '#tableBar', width: 150, fixed: 'right', title: '操作'}
         ]];
     };
 

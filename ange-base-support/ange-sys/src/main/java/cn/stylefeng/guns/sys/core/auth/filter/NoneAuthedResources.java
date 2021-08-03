@@ -100,6 +100,9 @@ public class NoneAuthedResources {
             //获取单码数据
             "/getCardData/*",
 
+            //卡密解绑
+            "/cardUnbind/*",
+
             //快捷页面
             "/quick/**",
 

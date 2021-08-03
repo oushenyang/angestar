@@ -141,4 +141,19 @@ public class RequestUtil {
         CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(timestamp));
         return new GetCardDataParam(token,card,timestamp,sign);
     }
+
+    //卡密解绑
+    public static CardUnbindParam cardUnbindParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String card = commonParam.getParameterOne();
+        String mac = commonParam.getParameterTwo();
+        String timestamp = commonParam.getParameterThree();
+        String sign = commonParam.getParameterFour();
+        if (StringUtils.isEmpty(card)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(mac)+StringUtils.trimToEmpty(timestamp));
+        return new CardUnbindParam(card,mac,timestamp,sign);
+    }
 }
