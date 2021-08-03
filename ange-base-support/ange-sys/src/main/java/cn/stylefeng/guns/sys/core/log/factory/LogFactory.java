@@ -17,8 +17,10 @@ package cn.stylefeng.guns.sys.core.log.factory;
 
 import cn.stylefeng.guns.sys.core.constant.state.LogSucceed;
 import cn.stylefeng.guns.sys.core.constant.state.LogType;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
 import cn.stylefeng.guns.sys.modular.system.entity.LoginLog;
 import cn.stylefeng.guns.sys.modular.system.entity.OperationLog;
+import cn.stylefeng.guns.sys.modular.system.entity.UserOperationLog;
 
 import java.util.Date;
 
@@ -42,6 +44,20 @@ public class LogFactory {
         operationLog.setMethod(methodName);
         operationLog.setCreateTime(new Date());
         operationLog.setSucceed(succeed.getMessage());
+        operationLog.setMessage(msg);
+        return operationLog;
+    }
+
+    /**
+     * 创建用户操作日志
+     */
+    public static UserOperationLog createUserOperationLog(Integer userLogType, Long userId,Long developerUser, String bussinessName, String msg) {
+        UserOperationLog operationLog = new UserOperationLog();
+        operationLog.setLogType(userLogType);
+        operationLog.setLogName(bussinessName);
+        operationLog.setUserId(userId);
+        operationLog.setDeveloperUser(developerUser);
+        operationLog.setCreateTime(new Date());
         operationLog.setMessage(msg);
         return operationLog;
     }

@@ -16,24 +16,36 @@
 package cn.stylefeng.guns.sys.core.constant.state;
 
 /**
- * 日志类型
+ * 用户日志类型
  *
  * @author fengshuonan
  * @Date 2017年1月22日 下午12:14:59
  */
-public enum LogType {
+public enum UserLogType {
 
-    LOGIN("登录日志"),
-    LOGIN_FAIL("登录失败日志"),
-    EXIT("退出日志"),
-    EXCEPTION("异常日志"),
-    USER("用户操作日志"),
-    BUSSINESS("业务日志");
+    //日志类型：1-应用相关；2-卡密相关；3-账号相关；4-代理相关；5-试用相关；6-数据相关；7-接口相关
+    APP(1,"应用相关"),
+    CARD(2,"卡密相关"),
+    ACCOUNT(3,"账号相关"),
+    AGENT(4,"代理相关"),
+    TRY(5,"试用相关"),
+    DATA(6,"数据相关"),
+    API(7,"接口相关");
 
+    Integer type;
     String message;
 
-    LogType(String message) {
+    UserLogType(Integer type,String message) {
+        this.type = type;
         this.message = message;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getMessage() {

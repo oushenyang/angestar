@@ -20,8 +20,10 @@ import cn.stylefeng.guns.sys.core.constant.state.LogType;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.modular.system.entity.LoginLog;
 import cn.stylefeng.guns.sys.modular.system.entity.OperationLog;
+import cn.stylefeng.guns.sys.modular.system.entity.UserOperationLog;
 import cn.stylefeng.guns.sys.modular.system.mapper.LoginLogMapper;
 import cn.stylefeng.guns.sys.modular.system.mapper.OperationLogMapper;
+import cn.stylefeng.guns.sys.modular.system.mapper.UserOperationLogMapper;
 import cn.stylefeng.roses.core.util.SpringContextHolder;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import org.slf4j.Logger;
@@ -40,6 +42,7 @@ public class LogTaskFactory {
     private static Logger logger = LoggerFactory.getLogger(LogManager.class);
     private static LoginLogMapper loginLogMapper = SpringContextHolder.getBean(LoginLogMapper.class);
     private static OperationLogMapper operationLogMapper = SpringContextHolder.getBean(OperationLogMapper.class);
+    private static UserOperationLogMapper userOperationLogMapper = SpringContextHolder.getBean(UserOperationLogMapper.class);
 
     public static TimerTask loginLog(final Long userId, final String ip) {
         return new TimerTask() {
@@ -94,6 +97,20 @@ public class LogTaskFactory {
                     operationLogMapper.insert(operationLog);
                 } catch (Exception e) {
                     logger.error("创建业务日志异常!", e);
+                }
+            }
+        };
+    }
+
+    public static TimerTask bussinessLog(final Integer userLogType, final Long userId, final Long developerUser, final String bussinessName, final String msg) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                UserOperationLog operationLog = LogFactory.createUserOperationLog(userLogType, userId,developerUser, bussinessName, msg);
+                try {
+                    userOperationLogMapper.insert(operationLog);
+                } catch (Exception e) {
+                    logger.error("创建用户操作日志异常!", e);
                 }
             }
         };

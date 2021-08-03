@@ -14,8 +14,11 @@ import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
 import cn.stylefeng.guns.sys.core.exception.apiResult.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
+import cn.stylefeng.guns.sys.core.log.LogManager;
+import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -74,6 +77,8 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 //        entity.setWebSalt(wordAndNum("",8));
 
         this.save(entity);
+        //插入日志
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),LoginContextHolder.getContext().getUserId(),LoginContextHolder.getContext().getUserId(), "新增应用", ""));
         param.setAppId(entity.getAppId());
 
         //异步调用插入
