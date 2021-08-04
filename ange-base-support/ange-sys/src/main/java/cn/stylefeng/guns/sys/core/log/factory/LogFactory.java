@@ -51,14 +51,15 @@ public class LogFactory {
     /**
      * 创建用户操作日志
      */
-    public static UserOperationLog createUserOperationLog(Integer userLogType, Long userId,Long developerUser, String bussinessName, String msg) {
+    public static UserOperationLog createUserOperationLog(Integer userLogType, Long userId,Long developerUser, String bussinessName, String shortMsg) {
         UserOperationLog operationLog = new UserOperationLog();
         operationLog.setLogType(userLogType);
         operationLog.setLogName(bussinessName);
         operationLog.setUserId(userId);
         operationLog.setDeveloperUser(developerUser);
         operationLog.setCreateTime(new Date());
-        operationLog.setMessage(msg);
+        operationLog.setShortMessage(shortMsg);
+//        operationLog.setMessage(msg);
         return operationLog;
     }
 

@@ -2,8 +2,10 @@ package cn.stylefeng.guns.modular.app.service.impl;
 
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
+import cn.stylefeng.guns.core.constant.type.BuyCardType;
 import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
@@ -14,12 +16,15 @@ import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppInfoResult;
 import  cn.stylefeng.guns.modular.app.service.AppInfoService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogMsg;
 import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
 import cn.stylefeng.guns.sys.core.exception.apiResult.AppInfoApi;
 import cn.stylefeng.guns.sys.core.exception.SystemApiException;
 import cn.stylefeng.guns.sys.core.log.LogManager;
 import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
+import cn.stylefeng.guns.sys.core.util.Contrast;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
+import cn.stylefeng.guns.sys.core.util.NumToChUtil;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -78,7 +83,9 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
         this.save(entity);
         //插入日志
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),LoginContextHolder.getContext().getUserId(),LoginContextHolder.getContext().getUserId(), "新增应用", ""));
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.APP_ADD.getLogName(),StrUtil.format(UserLogMsg.APP_ADD.getMessage(), "【"+entity.getAppName()+"】")));
         param.setAppId(entity.getAppId());
 
         //异步调用插入
@@ -109,6 +116,10 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
 
     @Override
     public void delete(AppInfoParam param){
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.APP_DEL.getLogName(), StrUtil.format(UserLogMsg.APP_DEL.getMessage(), "【"+param.getAppName()+"】")));
         //异步调用删除
         asyncService.deleteAppOthers(param.getAppId());
         //清除应用缓存
@@ -128,6 +139,10 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
                 throw new ServiceException(ADD_HEAD_ERROR);
             }
         }
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.APP_UP.getLogName(), StrUtil.format(UserLogMsg.APP_UP.getMessage(), "【"+newEntity.getAppName()+"】")));
         ToolUtil.copyProperties(newEntity, oldEntity);
         redisUtil.del(RedisType.APP_INFO.getCode() + oldEntity.getAppNum());
         this.updateById(newEntity);

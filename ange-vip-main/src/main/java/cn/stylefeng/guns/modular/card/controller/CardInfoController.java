@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
@@ -19,6 +20,10 @@ import cn.stylefeng.guns.modular.device.model.params.DeviceParam;
 import cn.stylefeng.guns.modular.device.model.result.TokenResult;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.modular.device.service.TokenService;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogMsg;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
+import cn.stylefeng.guns.sys.core.log.LogManager;
+import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.guns.sys.core.util.ip2region.IpToRegionUtil;
@@ -318,6 +323,12 @@ public class CardInfoController extends BaseController {
         cardInfoParam.setUserName(LoginContextHolder.getContext().getUserName());
         //生成批次号
         cardInfoParam.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
+        //插入日志
+        AppInfo appInfo = appInfoService.getById(cardInfoParam.getAppId());
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.CARD_ADD.getLogName(),
+                StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), "【"+appInfo.getAppName()+"】",cardInfoParam.getAddNum(),cardInfoParam.getCardTypeName())));
         List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
         return ResponseData.success(cardInfos);
     }

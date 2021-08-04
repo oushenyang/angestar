@@ -24,6 +24,7 @@ import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
 import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
+import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
 import cn.stylefeng.guns.modular.device.entity.Device;
@@ -38,11 +39,15 @@ import cn.stylefeng.guns.modular.card.model.params.CardInfoParam;
 import  cn.stylefeng.guns.modular.card.service.CardInfoService;
 import cn.stylefeng.guns.modular.card.service.CodeCardTypeService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogMsg;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
 import cn.stylefeng.guns.sys.core.exception.CommonException;
 import cn.stylefeng.guns.sys.core.exception.apiResult.ApiManageApi;
 import cn.stylefeng.guns.sys.core.exception.apiResult.CardInfoApi;
 import cn.stylefeng.guns.sys.core.exception.enums.ApiExceptionEnum;
 import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
+import cn.stylefeng.guns.sys.core.log.LogManager;
+import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 import cn.stylefeng.guns.sys.core.util.*;
 import cn.stylefeng.guns.sys.modular.system.service.ExcelService;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -194,12 +199,20 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(CardInfoParam param){
+        CardInfo oldEntity = getOldEntity(param);
         redisUtil.del(RedisType.CARD_INFO.getCode() + param.getCardCode());
         this.removeById(getKey(param));
+        //插入日志
+        AppInfo appInfo = appInfoService.getById(param.getAppId());
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                oldEntity.getCreateUser(), UserLogMsg.CARD_ONE_DEL.getLogName(), StrUtil.format(UserLogMsg.CARD_ONE_DEL.getMessage(), "【"+appInfo.getAppName()+"】","【"+oldEntity.getCardCode()+"】")));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void batchRemove(String ids){
         List<String> idList = Arrays.asList(ids.split(","));
         List<CardInfo> cardInfos = this.listByIds(idList);
@@ -537,6 +550,11 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     agentCard.getAgentPrice(),
                     deductionAmount));
         }
+        //插入日志
+        AppInfo appInfo = appInfoService.getById(agentApp.getAppId());
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                cardInfoParam.getDeveloperUserId(), UserLogMsg.CARD_ADD.getLogName(), StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), "【"+appInfo.getAppName()+"】",cardInfoParam.getAddNum(),cardType.getCardTypeName())));
         param.setCreateTime(new Date());
         param.setCreateUser(cardInfoParam.getUserId());
         agentBuyCardService.add(param);

@@ -45,6 +45,8 @@ layui.use(['form', 'formX', 'admin', 'ax', 'notice'], function () {
         data.field.hasOwnProperty('isActivation') ? '' : data.field.isActivation = 'off';
         //是否自定义时间
         data.field.isCustomTime = false;
+        var cardTypeId = $("[name='cardTypeId']").val();
+        data.field.cardTypeName = $("[name='cardTypeId']").children("[value=" + cardTypeId + "]").text();
         var ajax = new $ax(Feng.ctxPath + "/quick/agentAddItem", function (result) {
             layer.close(loading);
             Feng.success("添加成功！");

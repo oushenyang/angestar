@@ -90,6 +90,7 @@ layui.use(['table','dataGrid','admin', 'ax', 'element', 'dropdown','func'], func
             },true);
             ajax.set("appId", data.appId);
             ajax.set("appNum", data.appNum);
+            ajax.set("appName", data.appName);
             ajax.start();
         };
         Feng.confirm("是否删除?", operation);

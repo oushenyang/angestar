@@ -49,6 +49,12 @@ public class UserOperationLog implements Serializable {
     private Date createTime;
 
     /**
+     * 短消息
+     */
+    @TableField("short_message")
+    private String shortMessage;
+
+    /**
      * 消息
      */
     @TableField("message")
@@ -100,6 +106,14 @@ public class UserOperationLog implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getShortMessage() {
+        return shortMessage;
+    }
+
+    public void setShortMessage(String shortMessage) {
+        this.shortMessage = shortMessage;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -124,6 +138,7 @@ public class UserOperationLog implements Serializable {
                 ", logName='" + logName + '\'' +
                 ", userId=" + userId +
                 ", createTime=" + createTime +
+                ", shortMessage='" + shortMessage + '\'' +
                 ", message='" + message + '\'' +
                 ", developerUser=" + developerUser +
                 '}';

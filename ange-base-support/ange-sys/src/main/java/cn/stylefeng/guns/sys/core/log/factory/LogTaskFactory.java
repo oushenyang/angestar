@@ -102,11 +102,11 @@ public class LogTaskFactory {
         };
     }
 
-    public static TimerTask bussinessLog(final Integer userLogType, final Long userId, final Long developerUser, final String bussinessName, final String msg) {
+    public static TimerTask bussinessLog(final Integer userLogType, final Long userId, final Long developerUser, final String bussinessName, final String shortMsg) {
         return new TimerTask() {
             @Override
             public void run() {
-                UserOperationLog operationLog = LogFactory.createUserOperationLog(userLogType, userId,developerUser, bussinessName, msg);
+                UserOperationLog operationLog = LogFactory.createUserOperationLog(userLogType, userId,developerUser, bussinessName, shortMsg);
                 try {
                     userOperationLogMapper.insert(operationLog);
                 } catch (Exception e) {

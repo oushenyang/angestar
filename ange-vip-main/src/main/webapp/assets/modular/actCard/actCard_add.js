@@ -43,6 +43,8 @@ layui.use(['form', 'formX', 'admin', 'ax', 'notice'], function () {
         data.field.agentAppId = $("select[name=appId] option:selected").attr("data-agentAppId");
         //是否自定义时间
         data.field.isCustomTime = false;
+        var cardTypeId = $("[name='cardTypeId']").val();
+        data.field.cardTypeName = $("[name='cardTypeId']").children("[value=" + cardTypeId + "]").text();
         var ajax = new $ax(Feng.ctxPath + "/cardInfo/actAddItem", function (data) {
             notice.msg("新增卡密成功！", {icon: 1});
             //传给上个页面，刷新table用

@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.modular.app.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
@@ -13,7 +15,11 @@ import  cn.stylefeng.guns.modular.app.service.AppEditionService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisExpireTime;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogMsg;
+import cn.stylefeng.guns.sys.core.constant.state.UserLogType;
 import cn.stylefeng.guns.sys.core.exception.apiResult.ApiAppEdition;
+import cn.stylefeng.guns.sys.core.log.LogManager;
+import cn.stylefeng.guns.sys.core.log.factory.LogTaskFactory;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -53,6 +59,11 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     public void add(AppEditionParam param){
         AppEdition entity = getEntity(param);
         this.save(entity);
+        AppInfo appInfo = appInfoService.getById(entity.getAppId());
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.EDITION_ADD.getLogName(), StrUtil.format(UserLogMsg.EDITION_ADD.getMessage(), "【"+appInfo.getAppName()+"】","【"+entity.getEditionName()+"】")));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + entity.getAppId());
         //更新应用最新版本id
@@ -146,6 +157,11 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     @Transactional(rollbackFor = Exception.class)
     public void delete(AppEditionParam param){
         AppEdition oldEntity = getOldEntity(param);
+        //插入日志
+        AppInfo appInfo = appInfoService.getById(oldEntity.getAppId());
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.EDITION_DEl.getLogName(), StrUtil.format(UserLogMsg.EDITION_DEl.getMessage(),"【"+appInfo.getAppName()+"】","【"+oldEntity.getEditionName()+"】")));
         this.removeById(getKey(param));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + param.getAppId());
@@ -167,6 +183,11 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         AppEdition newEntity = getEntity(param);
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
+        //插入日志
+        AppInfo appInfo = appInfoService.getById(oldEntity.getAppId());
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+                userId, UserLogMsg.EDITION_UP.getLogName(), StrUtil.format(UserLogMsg.EDITION_UP.getMessage(), "【"+appInfo.getAppName()+"】","【"+newEntity.getEditionName()+"】")));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + oldEntity.getAppId());
         //更新应用最新版本id
