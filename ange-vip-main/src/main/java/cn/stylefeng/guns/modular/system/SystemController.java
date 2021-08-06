@@ -32,12 +32,16 @@ import cn.stylefeng.guns.modular.device.service.TokenService;
 import cn.stylefeng.guns.sys.core.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.sys.core.log.LogObjectHolder;
 import cn.stylefeng.guns.sys.core.util.DefaultImages;
+import cn.stylefeng.guns.sys.core.util.RelativeDateHandler;
 import cn.stylefeng.guns.sys.core.util.SpringUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.Notice;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
+import cn.stylefeng.guns.sys.modular.system.entity.UserOperationLog;
 import cn.stylefeng.guns.sys.modular.system.model.UploadResult;
+import cn.stylefeng.guns.sys.modular.system.model.result.UserOperationLogResult;
 import cn.stylefeng.guns.sys.modular.system.service.FileInfoService;
 import cn.stylefeng.guns.sys.modular.system.service.NoticeService;
+import cn.stylefeng.guns.sys.modular.system.service.UserOperationLogService;
 import cn.stylefeng.guns.sys.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -98,6 +102,9 @@ public class SystemController extends BaseController {
     @Autowired
     private AgentAppService agentAppService;
 
+    @Autowired
+    private UserOperationLogService userOperationLogService;
+
     /**
      * 控制台页面
      *
@@ -112,7 +119,11 @@ public class SystemController extends BaseController {
         Integer onlineNum = tokenService.onlineNum(userId);
         Integer expireCardNum = cardInfoService.expireCardNum(userId);
         Integer accountNum = accountInfoService.accountNum(userId);
-        Integer agentNum = agentAppService.agentNum(LoginContextHolder.getContext().getUserId());
+        Integer agentNum = agentAppService.agentNum(userId);
+        List<UserOperationLogResult> logList = userOperationLogService.getLogListByUserId(userId);
+        logList.forEach(userOperationLogResult -> {
+            userOperationLogResult.setCreateTimeName(RelativeDateHandler.format(userOperationLogResult.getCreateTime()));
+        });
         User user = this.userService.getById(userId);
         model.addAttribute("appNum", appNum);
         model.addAttribute("allCardNum", allCardNum);
@@ -125,6 +136,7 @@ public class SystemController extends BaseController {
         model.addAttribute("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
         model.addAttribute("avatar", DefaultImages.defaultAvatarUrl());
         model.addAttribute("user", user);
+        model.addAttribute("logList", logList);
         return "/modular/frame/console3.html";
     }
 

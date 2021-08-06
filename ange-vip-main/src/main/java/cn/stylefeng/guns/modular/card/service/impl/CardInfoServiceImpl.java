@@ -23,7 +23,6 @@ import cn.stylefeng.guns.modular.agent.service.AgentAppService;
 import cn.stylefeng.guns.modular.agent.service.AgentBuyCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentCardService;
 import cn.stylefeng.guns.modular.agent.service.AgentPowerService;
-import cn.stylefeng.guns.modular.apiManage.entity.ApiManage;
 import cn.stylefeng.guns.modular.app.entity.AppInfo;
 import cn.stylefeng.guns.modular.card.model.result.*;
 import cn.stylefeng.guns.modular.demos.service.AsyncService;
@@ -73,6 +72,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.*;
 
@@ -205,10 +205,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
         redisUtil.del(RedisType.CARD_INFO.getCode() + param.getCardCode());
         this.removeById(getKey(param));
         //插入日志
-        AppInfo appInfo = appInfoService.getById(param.getAppId());
         Long userId = LoginContextHolder.getContext().getUserId();
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                oldEntity.getCreateUser(), UserLogMsg.CARD_ONE_DEL.getLogName(), StrUtil.format(UserLogMsg.CARD_ONE_DEL.getMessage(), "【"+appInfo.getAppName()+"】","【"+oldEntity.getCardCode()+"】")));
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                oldEntity.getCreateUser(), UserLogMsg.CARD_ONE_DEL.getLogName(), StrUtil.format(UserLogMsg.CARD_ONE_DEL.getMessage(), "【"+oldEntity.getCardCode()+"】")));
     }
 
     @Override
@@ -225,6 +224,10 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
 //                appInfoService.updateById(appInfo);
 //            }
         });
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                userId, UserLogMsg.CARD_MORE_DEL.getLogName(), StrUtil.format(UserLogMsg.CARD_MORE_DEL.getMessage(), idList.size())));
         this.removeByIds(idList);
     }
 
@@ -246,6 +249,66 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             throw new ServiceException(UN_FIND_CARD);
         }
         editCardInfos(cardInfos, param);
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        String logName = null;
+        String message = null;
+        if (param.getEvent().equals("prohibition")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_PROHIBITION.getLogName();
+                message = UserLogMsg.CARD_ONE_PROHIBITION.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_PROHIBITION.getLogName();
+                message = UserLogMsg.CARD_MORE_PROHIBITION.getMessage();
+            }
+        }else if (param.getEvent().equals("unsealing")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_UNSEALING.getLogName();
+                message = UserLogMsg.CARD_ONE_UNSEALING.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_UNSEALING.getLogName();
+                message = UserLogMsg.CARD_MORE_UNSEALING.getMessage();
+            }
+        }else if (param.getEvent().equals("overtime")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_OVERTIME.getLogName();
+                message = UserLogMsg.CARD_ONE_OVERTIME.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_OVERTIME.getLogName();
+                message = UserLogMsg.CARD_MORE_OVERTIME.getMessage();
+            }
+        }else if (param.getEvent().equals("untying")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_UNTYING.getLogName();
+                message = UserLogMsg.CARD_ONE_UNTYING.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_UNTYING.getLogName();
+                message = UserLogMsg.CARD_MORE_UNTYING.getMessage();
+            }
+        }else if (param.getEvent().equals("editRemark")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_REMARK.getLogName();
+                message = UserLogMsg.CARD_ONE_REMARK.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_REMARK.getLogName();
+                message = UserLogMsg.CARD_MORE_REMARK.getMessage();
+            }
+        }else if (param.getEvent().equals("data")){
+            if (cardInfos.size()==1){
+                logName = UserLogMsg.CARD_ONE_DATA.getLogName();
+                message = UserLogMsg.CARD_ONE_DATA.getMessage();
+            }else {
+                logName = UserLogMsg.CARD_MORE_DATA.getLogName();
+                message = UserLogMsg.CARD_MORE_DATA.getMessage();
+            }
+        }
+        if (cardInfos.size()==1){
+            LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                    cardInfos.get(0).getCreateUser(), logName, StrUtil.format(message, "【"+cardInfos.get(0).getCardCode()+"】")));
+        }else {
+            LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                    cardInfos.get(0).getCreateUser(), logName, StrUtil.format(message, cardInfos.size())));
+        }
         baseMapper.BachUpdateCardInfo(cardInfos);
     }
 
@@ -551,10 +614,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     deductionAmount));
         }
         //插入日志
-        AppInfo appInfo = appInfoService.getById(agentApp.getAppId());
         Long userId = LoginContextHolder.getContext().getUserId();
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                cardInfoParam.getDeveloperUserId(), UserLogMsg.CARD_ADD.getLogName(), StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), "【"+appInfo.getAppName()+"】",cardInfoParam.getAddNum(),cardType.getCardTypeName())));
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                cardInfoParam.getDeveloperUserId(), UserLogMsg.CARD_ADD.getLogName(), StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), cardInfoParam.getAddNum(),cardType.getCardTypeName())));
         param.setCreateTime(new Date());
         param.setCreateUser(cardInfoParam.getUserId());
         agentBuyCardService.add(param);
@@ -724,6 +786,10 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                 excelService.exportExcel(cardInfoExport3s, CardInfoExport3.class,"卡密导出","report-1",response);
             }
         }
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                cardInfos.get(0).getCreateUser(), UserLogMsg.CARD_EXPORT.getLogName(), StrUtil.format(UserLogMsg.CARD_EXPORT.getMessage(), cardInfos.size())));
     }
 
     @Override
@@ -811,10 +877,15 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                 }
             }
         }
+        //插入日志
+        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                userId, UserLogMsg.CARD_IMPORT.getLogName(), StrUtil.format(UserLogMsg.CARD_IMPORT.getMessage(), idList.size())));
     }
 
     @Override
     public void customImportItem(CardInfoParam param) {
+        Long userId = LoginContextHolder.getContext().getUserId();
         if (param.getOperateFlag()==0){
             CardInfo cardInfo1 = this.getOne(new QueryWrapper<CardInfo>().eq("app_id",param.getAppId()).eq("card_code",param.getCardCode()));
             if (ObjectUtil.isNotNull(cardInfo1)){
@@ -840,6 +911,9 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
             param.setCardRemark("自定义单个卡密导入");
             CardInfo entity = getEntity(param);
             baseMapper.insert(entity);
+            //插入日志
+            LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                    userId, UserLogMsg.CARD_IMPORT.getLogName(), StrUtil.format(UserLogMsg.CARD_IMPORT.getMessage(), 1)));
         }else {
             List<String> cardStrList = Arrays.asList(param.getTxtMoreCard().split("\n"));
             if (CollectionUtil.isNotEmpty(cardStrList)){
@@ -888,6 +962,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     baseMapper.insert(cardInfo);
                     index += 1;
                 }
+                LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+                        userId, UserLogMsg.CARD_IMPORT.getLogName(), StrUtil.format(UserLogMsg.CARD_IMPORT.getMessage(), cardStrList.size())));
             }
         }
     }

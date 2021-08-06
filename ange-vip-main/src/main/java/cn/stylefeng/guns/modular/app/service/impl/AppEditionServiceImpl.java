@@ -59,11 +59,10 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     public void add(AppEditionParam param){
         AppEdition entity = getEntity(param);
         this.save(entity);
-        AppInfo appInfo = appInfoService.getById(entity.getAppId());
         //插入日志
         Long userId = LoginContextHolder.getContext().getUserId();
         LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                userId, UserLogMsg.EDITION_ADD.getLogName(), StrUtil.format(UserLogMsg.EDITION_ADD.getMessage(), "【"+appInfo.getAppName()+"】","【"+entity.getEditionName()+"】")));
+                userId, UserLogMsg.EDITION_ADD.getLogName(), StrUtil.format(UserLogMsg.EDITION_ADD.getMessage(), "【"+entity.getEditionName()+"】")));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + entity.getAppId());
         //更新应用最新版本id
@@ -158,10 +157,9 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
     public void delete(AppEditionParam param){
         AppEdition oldEntity = getOldEntity(param);
         //插入日志
-        AppInfo appInfo = appInfoService.getById(oldEntity.getAppId());
         Long userId = LoginContextHolder.getContext().getUserId();
         LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                userId, UserLogMsg.EDITION_DEl.getLogName(), StrUtil.format(UserLogMsg.EDITION_DEl.getMessage(),"【"+appInfo.getAppName()+"】","【"+oldEntity.getEditionName()+"】")));
+                userId, UserLogMsg.EDITION_DEl.getLogName(), StrUtil.format(UserLogMsg.EDITION_DEl.getMessage(),"【"+oldEntity.getEditionName()+"】")));
         this.removeById(getKey(param));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + param.getAppId());
@@ -184,10 +182,9 @@ public class AppEditionServiceImpl extends ServiceImpl<AppEditionMapper, AppEdit
         ToolUtil.copyProperties(newEntity, oldEntity);
         this.updateById(newEntity);
         //插入日志
-        AppInfo appInfo = appInfoService.getById(oldEntity.getAppId());
         Long userId = LoginContextHolder.getContext().getUserId();
         LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                userId, UserLogMsg.EDITION_UP.getLogName(), StrUtil.format(UserLogMsg.EDITION_UP.getMessage(), "【"+appInfo.getAppName()+"】","【"+newEntity.getEditionName()+"】")));
+                userId, UserLogMsg.EDITION_UP.getLogName(), StrUtil.format(UserLogMsg.EDITION_UP.getMessage(), "【"+newEntity.getEditionName()+"】")));
         //删除缓存
         redisUtil.del(RedisType.EDITION.getCode() + oldEntity.getAppId());
         //更新应用最新版本id

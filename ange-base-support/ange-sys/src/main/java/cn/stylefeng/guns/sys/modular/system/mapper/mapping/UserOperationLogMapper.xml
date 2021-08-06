@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.sys.modular.system.mapper.UserOperationLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.sys.modular.system.entity.UserOperationLog">
+        <id column="user_operation_log_id" property="userOperationLogId" />
+        <result column="log_type" property="logType" />
+        <result column="log_name" property="logName" />
+        <result column="user_id" property="userId" />
+        <result column="create_time" property="createTime" />
+        <result column="short_message" property="shortMessage" />
+        <result column="developer_user" property="developerUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        usl.user_operation_log_id AS "userOperationLogId",
+        usl.log_type AS "logType",
+        usl.log_name AS "logName",
+        usl.user_id AS "userId",
+        usl.create_time AS "createTime",
+        usl.short_message AS "shortMessage",
+        usl.developer_user AS "developerUser"
+    </sql>
+    <select id="getLogListByUserId"
+            resultType="cn.stylefeng.guns.sys.modular.system.model.result.UserOperationLogResult">
+        select
+        (select `name` from sys_user where user_id = usl.user_id) AS userName,
+        <include refid="Base_Column_List"/>
+        from user_operation_log usl
+        <where>
+            <if test="userId != null and userId !=''">
+                and usl.developer_user = #{userId}
+            </if>
+        </where>
+        order by usl.create_time DESC
+        limit 30
+    </select>
+</mapper>

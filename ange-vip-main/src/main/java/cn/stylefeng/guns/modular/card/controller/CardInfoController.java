@@ -324,11 +324,10 @@ public class CardInfoController extends BaseController {
         //生成批次号
         cardInfoParam.setBatchNo(SnowflakeUtil.getInstance().nextIdStr());
         //插入日志
-        AppInfo appInfo = appInfoService.getById(cardInfoParam.getAppId());
         Long userId = LoginContextHolder.getContext().getUserId();
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
                 userId, UserLogMsg.CARD_ADD.getLogName(),
-                StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), "【"+appInfo.getAppName()+"】",cardInfoParam.getAddNum(),cardInfoParam.getCardTypeName())));
+                StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), cardInfoParam.getAddNum(),cardInfoParam.getCardTypeName())));
         List<String> cardInfos = this.cardInfoService.add(cardInfoParam);
         return ResponseData.success(cardInfos);
     }

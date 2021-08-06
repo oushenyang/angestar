@@ -411,76 +411,25 @@
                 <div class="layui-card-body dynamic-card-body mini-bar" style="height: 220px;">
 <!--                    <div id="consoleChartsMap1" style="height: 200px;">-->
                         <ul class="layui-timeline layui-timeline-dynamic">
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">研发经理 指派了任务 陪客户吃饭
-                                        <span class="pull-right">14:30 </span></div>
-                                </div>
-                            </li>
+                            @for(log in logList) {
+                            @if(logLP.index == 1) {
                             <li class="layui-timeline-item">
                                 <i class="layui-icon layui-timeline-axis active"></i>
                                 <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">测试组长 提交了bug 代码错误
-                                        <span class="pull-right">14:00 </span></div>
+                                    <div class="layui-timeline-title">${log.userName} ${log.shortMessage}
+                                        <span class="pull-right">${log.createTimeName}</span></div>
                                 </div>
                             </li>
+                            @}else{
                             <li class="layui-timeline-item">
                                 <i class="layui-icon layui-timeline-axis"></i>
                                 <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">管理员 登录了系统
-                                        <span class="pull-right">13:30 </span></div>
+                                    <div class="layui-timeline-title">${log.userName} ${log.shortMessage}
+                                        <span class="pull-right">${log.createTimeName}</span></div>
                                 </div>
                             </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis active"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">开发一 解决了bug 代码错误
-                                        <span class="pull-right">11:30 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis active"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">测试一 创建了用例 用户登录
-                                        <span class="pull-right">11:00 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">开发二 退出了系统
-                                        <span class="pull-right">10:30 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">研发经理 指派了任务 修改大bug
-                                        <span class="pull-right">10:00 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">研发经理 指派了任务 修改小bug
-                                        <span class="pull-right">09:30 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis active"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">研发经理 指派了任务 修改小bug
-                                        <span class="pull-right">09:00 </span></div>
-                                </div>
-                            </li>
-                            <li class="layui-timeline-item">
-                                <i class="layui-icon layui-timeline-axis"></i>
-                                <div class="layui-timeline-content layui-text">
-                                    <div class="layui-timeline-title">管理员 登录了系统
-                                        <span class="pull-right">08:30 </span></div>
-                                </div>
-                            </li>
+                            @}
+                            @}
                         </ul>
 <!--                    </div>-->
                 </div>
