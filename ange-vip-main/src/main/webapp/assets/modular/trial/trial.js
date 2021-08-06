@@ -150,8 +150,8 @@ layui.use(['table', 'form','admin', 'selectApp', 'ax'], function () {
      *
      * @param obj 选择的行数据
      */
-    Trial.batchRemove = function(obj){
-        let data = table.checkStatus(obj.config.id).data;
+    Trial.batchRemove = function(){
+        let data = table.checkStatus(Trial.tableId).data;
         if(data.length === 0){
             Feng.error("未选中数据!" );
             return false;
@@ -179,8 +179,8 @@ layui.use(['table', 'form','admin', 'selectApp', 'ax'], function () {
         elem: '#' + Trial.tableId,
         url: Feng.ctxPath + '/trial/list',
         // page: true,
-        toolbar: '#' + Trial.tableId + '-toolbar',
-        defaultToolbar: ['filter'],
+        // toolbar: '#' + Trial.tableId + '-toolbar',
+        // defaultToolbar: ['filter'],
         height: "full-80",
         page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
@@ -202,6 +202,10 @@ layui.use(['table', 'form','admin', 'selectApp', 'ax'], function () {
         Trial.exportExcel();
     });
 
+    $('#batchRemove').click(function () {
+        Trial.batchRemove();
+    });
+
     // 表头工具条点击事件
     table.on('toolbar(' + Trial.tableId + ')', function(obj){
         //添加
@@ -209,8 +213,6 @@ layui.use(['table', 'form','admin', 'selectApp', 'ax'], function () {
             Trial.openAddDlg();
         } else if(obj.event === 'refresh'){
             table.reload(Trial.tableId);
-        } else if(obj.event === 'batchRemove'){
-            Trial.batchRemove(obj)
         }
     });
     // 行内工具条点击事件

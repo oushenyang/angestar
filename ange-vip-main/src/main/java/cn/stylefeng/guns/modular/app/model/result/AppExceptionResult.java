@@ -30,6 +30,11 @@ public class AppExceptionResult implements Serializable {
     private Long appId;
 
     /**
+     * 应用名称
+     */
+    private Long appName;
+
+    /**
      * 异常的标题
      */
     private String title;

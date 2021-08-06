@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'ax', 'form'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var form = layui.form;
 
     /**
      * 应用异常列表管理
@@ -18,15 +19,14 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             {type: 'checkbox'},
             {align: 'center',field: 'appId', title: '所属应用'},
-            {align: 'center',field: 'title', title: '异常的标题'},
-            {align: 'center',field: 'context', title: '异常的内容'},
+            {align: 'center',field: 'title', title: '异常标题'},
+            {align: 'center',field: 'context', title: '异常内容'},
             {align: 'center',field: 'edition', title: '版本号'},
             {align: 'center',field: 'model', title: '设备型号'},
             {align: 'center',field: 'mac', title: '机器码'},
             {align: 'center',field: 'exceptionNum', title: '异常次数'},
-            {align: 'center',field: 'createTime', title: '创建时间'},
-            {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-            {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center',field: 'updateTime', sort: true, title: '异常时间'},
+            // {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -35,7 +35,8 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppException.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appId'] = $("#appId").val();
+        queryData['edition'] = $("#edition").val();
         table.reload(AppException.tableId, {where: queryData});
     };
 
@@ -109,8 +110,8 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param obj 选择的行数据
      */
-    AppException.batchRemove = function(obj){
-        let data = table.checkStatus(obj.config.id).data;
+    AppException.batchRemove = function(){
+        let data = table.checkStatus(AppException.tableId).data;
         if(data.length === 0){
             Feng.error("未选中数据!" );
             return false;
@@ -149,6 +150,19 @@ layui.use(['table', 'admin', 'ax'], function () {
         AppException.search();
     });
 
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#edition").val("");
+        queryData['appId'] = "";
+        queryData['edition'] = "";
+        form.render();
+        table.reload(AppException.tableId, {
+            where: queryData, page: {curr: 1}
+        });
+    });
+
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         AppException.openAddDlg();
@@ -157,6 +171,10 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 导出excel
     $('#btnExp').click(function () {
         AppException.exportExcel();
+    });
+    // 批量删除点击事件
+    $('#batchRemove').click(function () {
+        AppException.batchRemove()
     });
 
     // 表头工具条点击事件

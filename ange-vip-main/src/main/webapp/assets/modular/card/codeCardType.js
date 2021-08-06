@@ -232,8 +232,6 @@ layui.use(['table', 'form', 'admin', 'ax', 'notice'], function () {
         elem: '#' + CodeCardType.tableId,
         url: Feng.ctxPath + '/codeCardType/list',
         // page: true,
-        toolbar: '#' + CodeCardType.tableId + '-toolbar',
-        defaultToolbar: ['filter'],
         height: "full-80",
         page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,

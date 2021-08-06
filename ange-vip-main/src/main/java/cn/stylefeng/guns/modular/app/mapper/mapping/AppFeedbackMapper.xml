@@ -18,15 +18,32 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        feedback_id AS "feedbackId", app_id AS "appId", context AS "context", edition AS "edition", model AS "model", mac AS "mac", links AS "links", create_time AS "createTime", update_time AS "updateTime", create_user AS "createUser"
+        aaf.feedback_id AS "feedbackId",
+        aaf.app_id AS "appId",
+        aaf.context AS "context",
+        aaf.edition AS "edition",
+        aaf.model AS "model",
+        aaf.mac AS "mac",
+        aaf.links AS "links",
+        aaf.create_time AS "createTime",
+        aaf.update_time AS "updateTime",
+        aaf.create_user AS "createUser"
     </sql>
     <select id="findListPage" resultType="cn.stylefeng.guns.modular.app.model.result.AppFeedbackResult">
         select
+        ai.app_name AS "appName",
         <include refid="Base_Column_List"/>
-        from ag_app_feedback
+        from ag_app_feedback aaf
+        LEFT JOIN ag_app_info ai ON ai.app_id = aaf.app_id
         <where>
             <if test="param.createUser != null and param.createUser !=''">
-                and create_user = #{param.createUser}
+                and aaf.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and aaf.app_id = #{param.appId}
+            </if>
+            <if test="param.edition != null and param.edition !=''">
+                and aaf.edition = #{param.edition}
             </if>
         </where>
     </select>

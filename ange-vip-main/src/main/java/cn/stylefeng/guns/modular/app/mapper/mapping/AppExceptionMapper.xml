@@ -19,16 +19,34 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        exception_id AS "exceptionId", app_id AS "appId", title AS "title", context AS "context", edition AS "edition", model AS "model", mac AS "mac", exception_num AS "exceptionNum", create_time AS "createTime", update_time AS "updateTime", create_user AS "createUser"
+        aae.exception_id AS "exceptionId",
+        aae.app_id AS "appId",
+        aae.title AS "title",
+        aae.context AS "context",
+        aae.edition AS "edition",
+        aae.model AS "model",
+        aae.mac AS "mac",
+        aae.exception_num AS "exceptionNum",
+        aae.create_time AS "createTime",
+        aae.update_time AS "updateTime",
+        aae.create_user AS "createUser"
     </sql>
 
     <select id="findListPage" resultType="cn.stylefeng.guns.modular.app.model.result.AppExceptionResult">
         select
+        ai.app_name AS "appName",
         <include refid="Base_Column_List"/>
-        from ag_app_exception
+        from ag_app_exception aae
+        LEFT JOIN ag_app_info ai ON ai.app_id = aae.app_id
         <where>
             <if test="param.createUser != null and param.createUser !=''">
-                and create_user = #{param.createUser}
+                and aae.create_user = #{param.createUser}
+            </if>
+            <if test="param.appId != null and param.appId !=''">
+                and aae.app_id = #{param.appId}
+            </if>
+            <if test="param.edition != null and param.edition !=''">
+                and aae.edition = #{param.edition}
             </if>
         </where>
     </select>

@@ -20,13 +20,13 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
      */
     AppEdition.initColumn = function () {
         return [[
-            {align: 'center', field: 'editionId', type: 'checkbox'},
+            // {align: 'center', field: 'editionId', type: 'checkbox'},
             {align: 'center', field: 'appName', title: '所属应用'},
             // {align: 'center',field: 'editionSerial', sort: true, title: '版本编号'},
-            {align: 'center', field: 'editionNum', sort: true, title: '版本号'},
-            {align: 'center', field: 'editionName', sort: true, title: '版本名称'},
-            {align: 'center', field: 'editionStatus', sort: true, title: '状态', templet: '#editionStatusTpl'},
-            {align: 'center', field: 'needUpdate', sort: true, title: '强制更新', templet: '#needUpdateTpl'},
+            {align: 'center', field: 'editionNum', title: '版本号'},
+            {align: 'center', field: 'editionName', title: '版本名称'},
+            {align: 'center', field: 'editionStatus', title: '状态', templet: '#editionStatusTpl'},
+            {align: 'center', field: 'needUpdate', title: '强制更新', templet: '#needUpdateTpl'},
             {align: 'center', field: 'createTime', sort: true, title: '创建时间'},
             // {align: 'center', field: 'remark', sort: true, title: '备注'},
             {align: 'center', toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
@@ -183,8 +183,8 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
     var tableResult = table.render({
         elem: '#' + AppEdition.tableId,
         url: Feng.ctxPath + '/appEdition/list',
-        toolbar: '#appEdition-toolbar',
-        defaultToolbar: ['filter'],
+        // toolbar: '#appEdition-toolbar',
+        // defaultToolbar: ['filter'],
         height: "full-80",
         page: {limit: 15, limits: [15, 30, 45, 60, 75, 90, 105, 120, 200]},
         cellMinWidth: 100,
@@ -203,9 +203,27 @@ layui.use(['table', 'admin', 'pearOper', 'notice', 'ax'], function () {
         AppEdition.search();
     });
 
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#editionName").val("");
+        queryData['appId'] = "";
+        queryData['editionName'] = "";
+        form.render();
+        table.reload(AppEdition.tableId, {
+            where: queryData, page: {curr: 1}
+        });
+    });
+
     // 导出excel
     $('#btnExp').click(function () {
         AppEdition.exportExcel();
+    });
+
+    // 导出excel
+    $('#btnAdd').click(function () {
+        AppEdition.openAddDlg();
     });
 
     table.on('toolbar(' + AppEdition.tableId + ')', function(obj){

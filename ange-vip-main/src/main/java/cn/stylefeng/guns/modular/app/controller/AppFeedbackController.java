@@ -3,7 +3,9 @@ package cn.stylefeng.guns.modular.app.controller;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.app.model.params.AppInfoParam;
 import cn.stylefeng.guns.modular.app.model.result.AppFeedbackResult;
+import cn.stylefeng.guns.modular.app.service.AppInfoService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import cn.stylefeng.guns.modular.app.entity.AppFeedback;
 import cn.stylefeng.guns.modular.app.model.params.AppFeedbackParam;
@@ -13,6 +15,7 @@ import cn.stylefeng.roses.kernel.model.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,6 +37,9 @@ public class AppFeedbackController extends BaseController {
     @Autowired
     private AppFeedbackService appFeedbackService;
 
+    @Autowired
+    private AppInfoService appInfoService;
+
     /**
      * 跳转到主页面
      *
@@ -41,7 +47,10 @@ public class AppFeedbackController extends BaseController {
      * @Date 2021-08-06
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+        //获取当前用户应用列表
+        List<AppInfoParam> appInfoParams = appInfoService.getAppInfoList(LoginContextHolder.getContext().getUserId());
+        model.addAttribute("appInfoParams", appInfoParams);
         return PREFIX + "/appFeedback.html";
     }
 

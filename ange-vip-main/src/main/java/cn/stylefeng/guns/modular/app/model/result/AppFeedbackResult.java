@@ -30,6 +30,11 @@ public class AppFeedbackResult implements Serializable {
     private Long appId;
 
     /**
+     * 应用名称
+     */
+    private Long appName;
+
+    /**
      * 反馈的内容
      */
     private String context;

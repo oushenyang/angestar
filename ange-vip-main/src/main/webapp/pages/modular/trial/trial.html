@@ -20,6 +20,7 @@
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
                                 <button id="btnReset" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
+                                <button id="batchRemove" class="layui-btn pear-btn-danger icon-btn" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>批量删除</button>
                             </div>
                         </div>
                     </div>
@@ -41,9 +42,5 @@
 <script type="text/html" id="tableBar">
     <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
     <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
-</script>
-
-<script type="text/html" id="trialTable-toolbar">
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>删除</button>
 </script>
 @}

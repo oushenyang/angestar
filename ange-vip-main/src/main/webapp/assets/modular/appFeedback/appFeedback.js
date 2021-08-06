@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'ax', 'form'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var form = layui.form;
 
     /**
      * 应用反馈列表管理
@@ -18,14 +19,13 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             {type: 'checkbox'},
             {align: 'center',field: 'appId',  title: '所属应用'},
-            {align: 'center',field: 'context', title: '反馈的内容'},
+            {align: 'center',field: 'context', title: '留言的内容'},
+            {align: 'center',field: 'links',  title: '联系方式'},
             {align: 'center',field: 'edition', title: '版本号'},
             {align: 'center',field: 'model', title: '设备型号'},
             {align: 'center',field: 'mac', title: '机器码'},
-            {align: 'center',field: 'links',  title: '联系方式'},
-            {align: 'center',field: 'createTime', title: '创建时间'},
-            {align: 'center',field: 'updateTime', sort: true, title: '更新时间'},
-            {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
+            {align: 'center',field: 'updateTime', sort: true, title: '留言时间'},
+            // {align: 'center',toolbar: '#tableBar', width: 120, fixed: 'right', title: '操作'}
         ]];
     };
 
@@ -34,7 +34,8 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AppFeedback.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#condition").val();
+        queryData['appId'] = $("#appId").val();
+        queryData['edition'] = $("#edition").val();
         table.reload(AppFeedback.tableId, {where: queryData});
     };
 
@@ -109,7 +110,7 @@ layui.use(['table', 'admin', 'ax'], function () {
      * @param obj 选择的行数据
      */
     AppFeedback.batchRemove = function(){
-        let data = table.checkStatus(obj.config.id).data;
+        let data = table.checkStatus(AppFeedback.tableId).data;
         if(data.length === 0){
             Feng.error("未选中数据!" );
             return false;
@@ -148,6 +149,19 @@ layui.use(['table', 'admin', 'ax'], function () {
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         AppFeedback.search();
+    });
+
+    // 重置按钮点击事件
+    $('#btnReset').click(function () {
+        var queryData = {};
+        $("#appId").val("");
+        $("#edition").val("");
+        queryData['appId'] = "";
+        queryData['edition'] = "";
+        form.render();
+        table.reload(AppFeedback.tableId, {
+            where: queryData, page: {curr: 1}
+        });
     });
 
     // 添加按钮点击事件
