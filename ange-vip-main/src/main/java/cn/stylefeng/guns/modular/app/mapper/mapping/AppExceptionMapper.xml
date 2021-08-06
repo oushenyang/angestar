@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.app.mapper.AppExceptionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.app.entity.AppException">
+        <id column="exception_id" property="exceptionId" />
+        <result column="app_id" property="appId" />
+        <result column="title" property="title" />
+        <result column="context" property="context" />
+        <result column="edition" property="edition" />
+        <result column="model" property="model" />
+        <result column="mac" property="mac" />
+        <result column="exception_num" property="exceptionNum" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user" property="createUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        exception_id AS "exceptionId", app_id AS "appId", title AS "title", context AS "context", edition AS "edition", model AS "model", mac AS "mac", exception_num AS "exceptionNum", create_time AS "createTime", update_time AS "updateTime", create_user AS "createUser"
+    </sql>
+
+    <select id="findListPage" resultType="cn.stylefeng.guns.modular.app.model.result.AppExceptionResult">
+        select
+        <include refid="Base_Column_List"/>
+        from ag_app_exception
+        <where>
+            <if test="param.createUser != null and param.createUser !=''">
+                and create_user = #{param.createUser}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+@layout("/common/_container.html",{js:["/assets/modular/appFeedback/appFeedback.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">应用反馈列表管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="condition" class="layui-input" type="text" placeholder="名称"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="fa fa-right fa-search"></i>搜索</button>
+                                <button id="btnReset" data-table="appFeedbackTable" class="layui-btn icon-btn layui-btn-primary"><i class="fa fa-right fa-refresh"></i>重置</button>
+                                <button id="batchRemove" class="layui-btn pear-btn-danger icon-btn" lay-event="batchRemove"><i class="fa fa-right fa-trash-o"></i>批量删除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="appFeedbackTable" lay-filter="appFeedbackTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    <a class="pear-btn pear-btn-primary pear-btn-sm" plain lay-event="edit">编辑</a>
+    <a class="pear-btn pear-btn-danger pear-btn-sm" plain lay-event="delete">删除</a>
+</script>
+
+<script type="text/html" id="appFeedbackTable-toolbar">
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove"><i class="fa fa-right fa-trash-o fa-fw"></i>批量删除</button>
+</script>
+@}
