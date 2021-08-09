@@ -614,8 +614,8 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     deductionAmount));
         }
         //插入日志
-        Long userId = LoginContextHolder.getContext().getUserId();
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),userId,
+//        Long userId = LoginContextHolder.getContext().getUserId();
+        LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.CARD.getType(),cardInfoParam.getUserId(),
                 cardInfoParam.getDeveloperUserId(), UserLogMsg.CARD_ADD.getLogName(), StrUtil.format(UserLogMsg.CARD_ADD.getMessage(), cardInfoParam.getAddNum(),cardType.getCardTypeName())));
         param.setCreateTime(new Date());
         param.setCreateUser(cardInfoParam.getUserId());
