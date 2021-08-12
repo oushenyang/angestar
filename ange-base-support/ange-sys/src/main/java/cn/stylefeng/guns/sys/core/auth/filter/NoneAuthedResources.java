@@ -76,6 +76,9 @@ public class NoneAuthedResources {
             //获取租户列表的接口
             "/tenantInfo/listTenants",
 
+            //第二接口
+            "/webApi/*",
+
             //获取应用信息
             "/getAppInfo/*",
 

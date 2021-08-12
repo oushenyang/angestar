@@ -53,9 +53,46 @@ layui.use(['table', 'admin', 'form', 'ax', 'func', 'notice'], function () {
             {align: 'center',field: 'apiName', title: '接口名称'},
             {align: 'center',field: 'apiCode', title: '接口编码'},
             {align: 'center',field: 'parameterNum', title: '参数数量'},
-            {align: 'center',field: 'parameterNum', title: '传参加密'},
-            {align: 'center',field: 'parameterNum', title: '返回加密'},
-            {align: 'left',field: 'callCode',  width: 360, title: '调用地址',templet: '#callCodeTpl'},
+            {align: 'center',field: 'webAlgorithmRange', title: '传参加密',templet: function (d) {
+                    if (d.webAlgorithmRange===0||d.webAlgorithmRange===1) {
+                        if (d.webAlgorithmType===0){
+                            return '<span class="layui-badge layui-badge-gray">明文</span>';
+                        }else if (d.webAlgorithmType===1){
+                            return '<span class="layui-badge layui-badge-green">DES</span>';
+                        }else if (d.webAlgorithmType===2){
+                            return '<span class="layui-badge layui-badge-green">AES</span>';
+                        }else if (d.webAlgorithmType===3){
+                            return '<span class="layui-badge layui-badge-green">DESede</span>';
+                        }else if (d.webAlgorithmType===4){
+                            return '<span class="layui-badge layui-badge-green">SM4</span>';
+                        }else if (d.webAlgorithmType===5){
+                            return '<span class="layui-badge layui-badge-green">RSA</span>';
+                        }
+                    } else {
+                        return '<span class="layui-badge layui-badge-gray">明文</span>';
+                    }
+                }
+                },
+            {align: 'center',field: 'parameterNum', title: '返回加密',templet: function (d) {
+                    if (d.webAlgorithmRange===0||d.webAlgorithmRange===2) {
+                        if (d.webAlgorithmType===0){
+                            return '<span class="layui-badge layui-badge-gray">明文</span>';
+                        }else if (d.webAlgorithmType===1){
+                            return '<span class="layui-badge layui-badge-green">DES</span>';
+                        }else if (d.webAlgorithmType===2){
+                            return '<span class="layui-badge layui-badge-green">AES</span>';
+                        }else if (d.webAlgorithmType===3){
+                            return '<span class="layui-badge layui-badge-green">DESede</span>';
+                        }else if (d.webAlgorithmType===4){
+                            return '<span class="layui-badge layui-badge-green">SM4</span>';
+                        }else if (d.webAlgorithmType===5){
+                            return '<span class="layui-badge layui-badge-green">RSA</span>';
+                        }
+                    } else {
+                        return '<span class="layui-badge layui-badge-gray">明文</span>';
+                    }
+                }},
+            {align: 'left',field: 'callCode',  width: 420, title: '调用地址',templet: '#callCodeTpl'},
             {align: 'center', toolbar: '#tableBar', width: 150, fixed: 'right', title: '操作'}
         ]];
     };

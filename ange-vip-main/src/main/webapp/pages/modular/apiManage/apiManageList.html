@@ -1,5 +1,10 @@
 @layout("/common/_container.html",{plugins:["clipboard"],js:["/assets/modular/apiManage/apiManageList.js"]}){
-
+<style>
+    /*#apiManageTable + .layui-table-view .layui-table-body tbody > tr > td > .layui-table-cell {*/
+    /*    height: auto!important;*/
+    /*    !*line-height: 88px!important;*!*/
+    /*}*/
+</style>
 <div class="layui-body-header">
     <span class="layui-body-header-title">接口管理管理</span>
 </div>
@@ -47,7 +52,7 @@
 </script>
 <script type="text/html" id="callCodeTpl">
     <button  class="callCode{{d.apiManageId}}" style="border: 0;outline: none; background-color: transparent; color: blue; font-size: 13px!important;"
-            lay-event="copy">${constants.getApiUrl()}{{d.apiCode}}/{{d.callCode}}
+             lay-event="copy">${constants.getApiUrl()}{{d.apiCode}}/{{d.callCode}}
     </button>
 </script>
 <script type="text/html" id="tableBar">

@@ -82,6 +82,24 @@ layui.use(['table', 'admin', 'ax', 'form'], function () {
     };
 
     /**
+     * 点击说明
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    ApiResult.openExplainDlg = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '说明',
+            area: '700px',
+            content: Feng.ctxPath + '/apiResult/explain?apiResultId=' + data.apiResultId,
+            end: function () {
+                admin.getTempData('formOk') && table.reload(ApiResult.tableId);
+            }
+        });
+    };
+
+    /**
      * 点击编辑
      *
      * @param data 点击按钮时候的行数据
@@ -234,6 +252,8 @@ layui.use(['table', 'admin', 'ax', 'form'], function () {
             ApiResult.openEditDlg(data);
         } else if (layEvent === 'delete') {
             ApiResult.onDeleteItem(data);
+        } else if (layEvent === 'explain') {
+            ApiResult.openExplainDlg(data);
         }
     });
 });

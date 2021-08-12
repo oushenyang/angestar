@@ -1,0 +1,58 @@
+@layout("/common/_form.html",{plugins:["ace"],bg:"bg-white",js:["/assets/modular/system/apiResult/appApiResult_explain.js"]}){
+<style>
+    .content {
+        border-color: #e6e6e6;
+        position: relative;
+        border-width: 1px;
+        border-style: solid;
+        background-color: #fff;
+        display: block;
+        width: 100%;
+        line-height: 20px;
+        padding: 6px 10px;
+        resize: vertical;
+        color: #595959;
+        min-height: 150px!important;
+        -webkit-transition: all .3s;
+        box-sizing: border-box;
+        outline: 0;
+        -webkit-appearance: none;
+        font-family: inherit;
+        font-size: inherit;
+        font-style: inherit;
+        font-weight: inherit;
+    }
+    .content:hover {
+        border-color: #D2D2D2!important;
+    }
+</style>
+<form id="apiResultForm" lay-filter="apiResultForm" class="layui-form layui-form-pane model-form">
+    <div class="layui-fluid" style="padding-top: 0px;padding-bottom: 75px;">
+        <input name="apiResultId" type="hidden"/>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">默认返回码</label>
+                <div class="layui-input-inline" >
+                    <input id="resultCode" name="resultCode" placeholder="请输入默认返回码" type="text" class="layui-input" lay-verify="required" lay-verType="tips" readonly/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">返回说明</label>
+                <div class="layui-input-inline">
+                    <input id="resultRemark" name="resultRemark" placeholder="请输入返回说明" type="text" class="layui-input" lay-verify="required" lay-verType="tips" disabled/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="margin-top: 0;">
+            <label class="layui-form-label">默认返回数据</label>
+            <div class="layui-input-block">
+                <div contentEditable="false" id="codeText" name="resultData" class="content"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group-bottom text-right">
+        <button type="reset" class="layui-btn layui-btn-primary" ew-event="closeDialog">取消</button>
+<!--        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>提交</button>-->
+    </div>
+</form>
+@}
