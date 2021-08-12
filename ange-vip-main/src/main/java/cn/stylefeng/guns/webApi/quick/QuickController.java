@@ -1,10 +1,12 @@
 package cn.stylefeng.guns.webApi.quick;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.stylefeng.guns.base.auth.context.LoginContextHolder;
 import cn.stylefeng.guns.base.auth.exception.OperationException;
+import cn.stylefeng.guns.core.constant.state.CardStatus;
 import cn.stylefeng.guns.core.constant.type.CardType;
 import cn.stylefeng.guns.modular.agent.entity.AgentApp;
 import cn.stylefeng.guns.modular.agent.model.params.AgentAppParam;
@@ -23,6 +25,8 @@ import cn.stylefeng.guns.modular.device.entity.Device;
 import cn.stylefeng.guns.modular.device.service.DeviceService;
 import cn.stylefeng.guns.sys.core.auth.util.RedisUtil;
 import cn.stylefeng.guns.sys.core.constant.state.RedisType;
+import cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum;
+import cn.stylefeng.guns.sys.core.util.CardDateUtil;
 import cn.stylefeng.guns.sys.core.util.ExportTextUtil;
 import cn.stylefeng.guns.sys.core.util.SnowflakeUtil;
 import cn.stylefeng.guns.sys.modular.system.entity.User;
@@ -38,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static cn.stylefeng.guns.sys.core.exception.enums.BizExceptionEnum.CARD_BINDED;
@@ -81,7 +86,7 @@ public class QuickController {
     @RequestMapping("/cardAdd/{appQuick}")
     public String cardAdd(@PathVariable String appQuick, Model model) {
         //获取当前用户应用
-        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick",appQuick));
+        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick", appQuick));
         model.addAttribute("appInfoResult", appInfoResult);
         List<CodeCardType> codeCardTypes = codeCardTypeService.getCardTypeByUserId(appInfoResult.getCreateUser());
         model.addAttribute("codeCardTypes", codeCardTypes);
@@ -97,7 +102,7 @@ public class QuickController {
     @RequestMapping("/cardUnBind/{appQuick}")
     public String cardUnBind(@PathVariable String appQuick, Model model) {
         //获取当前用户应用
-        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick",appQuick));
+        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick", appQuick));
         model.addAttribute("appInfoResult", appInfoResult);
         return PREFIX + "/cardInfo_unBindNew.html";
     }
@@ -111,7 +116,7 @@ public class QuickController {
     @RequestMapping("/cardSearch/{appQuick}")
     public String cardSearch(@PathVariable String appQuick, Model model) {
         //获取当前用户应用
-        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick",appQuick));
+        AppInfo appInfoResult = appInfoService.getOne(new QueryWrapper<AppInfo>().eq("app_quick", appQuick));
         model.addAttribute("appInfoResult", appInfoResult);
         return PREFIX + "/cardInfo_search.html";
     }
@@ -124,19 +129,55 @@ public class QuickController {
      */
     @RequestMapping("/cardUnBind/unBindItem")
     @ResponseBody
-    public ResponseData unBindItem(String card,Long appId) {
-        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card.trim()));
-        if (ObjectUtil.isNull(cardInfo)){
+    public ResponseData unBindItem(String card, Long appId) {
+        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id", appId).eq("card_code", card.trim()));
+        if (ObjectUtil.isNull(cardInfo)) {
             throw new OperationException(UN_FIND_CARD);
         }
         List<Device> devices = deviceService.list(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
-        if (CollectionUtil.isEmpty(devices)){
+        if (CollectionUtil.isEmpty(devices)) {
             throw new OperationException(CARD_BINDED);
+        }
+
+        AppInfo appInfo = appInfoService.getById(appId);
+        //是否扣时
+        boolean isBuckleTime = false;
+        //剩余次数
+        int surplusNum = 0;
+        //扣除时间
+        int buckleTime = 0;
+        //如果限制解绑次数且该卡密已经超过限制次数
+        if (appInfo.getCodeAfreshBindNum() > 1 && cardInfo.getUnbindNum() >= appInfo.getCodeAfreshBindNum()) {
+            throw new OperationException(BizExceptionEnum.CARD_MORE_TAN_UNBIND_NUM);
+        }
+        //如果限制解绑次数且该卡密没有超过限制次数
+        if (appInfo.getCodeAfreshBindNum() > 1 && cardInfo.getUnbindNum() < appInfo.getCodeAfreshBindNum()) {
+            isBuckleTime = true;
+            //更新卡密重绑次数
+            cardInfo.setUnbindNum(cardInfo.getUnbindNum() + 1);
+            surplusNum = appInfo.getCodeAfreshBindNum() - cardInfo.getUnbindNum();
+            buckleTime = appInfo.getCodeAfreshBindTime();
+            //更新卡密扣时
+            cardInfo.setUnbindBuckleTime(cardInfo.getUnbindBuckleTime() + appInfo.getCodeAfreshBindTime());
+            //扣时后的到期时间
+            if (appInfo.getCodeAfreshBindTime() > 0) {
+                DateTime expireTime = CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(), null, null, -appInfo.getCodeAfreshBindTime());
+                cardInfo.setExpireTime(expireTime);
+                if (expireTime.before(new Date())) {
+                    cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                }
+            }
+            cardInfoService.updateById(cardInfo);
         }
         //删除卡密缓存
         redisUtil.del(RedisType.CARD_INFO.getCode() + card.trim());
         deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
-        return ResponseData.success();
+        if (isBuckleTime){
+            return ResponseData.success(200,"解绑成功！剩余解绑次数:"+surplusNum+"本次解绑扣除时间："+buckleTime+"分钟",null);
+        }else {
+            return ResponseData.success(200,"解绑成功！",null);
+        }
+
     }
 
     /**
@@ -147,9 +188,9 @@ public class QuickController {
      */
     @RequestMapping("/cardSearch/searchItem")
     @ResponseBody
-    public ResponseData searchItem(String card,Long appId) {
-        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id",appId).eq("card_code",card.trim()));
-        if (ObjectUtil.isNull(cardInfo)){
+    public ResponseData searchItem(String card, Long appId) {
+        CardInfo cardInfo = cardInfoService.getOne(new QueryWrapper<CardInfo>().eq("app_id", appId).eq("card_code", card.trim()));
+        if (ObjectUtil.isNull(cardInfo)) {
             throw new OperationException(UN_FIND_CARD);
         }
         return ResponseData.success(cardInfo);
@@ -198,7 +239,7 @@ public class QuickController {
     @RequestMapping("/cardAdd/addExport")
     public void addExport(HttpServletResponse response, String cards) {
         List<String> cardList = Arrays.asList(cards.split(","));
-        ExportTextUtil.writeToTxt(response,cardList, String.valueOf(DateUtil.date()));
+        ExportTextUtil.writeToTxt(response, cardList, String.valueOf(DateUtil.date()));
     }
 
     /**
@@ -208,7 +249,7 @@ public class QuickController {
      * @Date 2020-04-20
      */
     @RequestMapping("/cardAdd/addResult")
-    public String addResult(Model model,String cards) {
+    public String addResult(Model model, String cards) {
         List<String> cardList = Arrays.asList(cards.split(","));
         model.addAttribute("cards", cardList);
         return PREFIX + "/cardInfo_add_result.html";
@@ -223,14 +264,14 @@ public class QuickController {
     @RequestMapping("/agentCardAdd/{agentAppQuick}")
     public String agentCardAdd(@PathVariable String agentAppQuick, Model model) {
         //获取当前用户应用
-        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>().eq("agent_app_quick",agentAppQuick));
-        if (ObjectUtil.isNull(agentApp)){
+        AgentApp agentApp = agentAppService.getOne(new QueryWrapper<AgentApp>().eq("agent_app_quick", agentAppQuick));
+        if (ObjectUtil.isNull(agentApp)) {
             return "/index.html";
         }
         AppInfo appInfo = appInfoService.getById(agentApp.getAppId());
         model.addAttribute("agentApp", agentApp);
         model.addAttribute("appInfo", appInfo);
-        List<AgentCardResult> agentCardResults =  agentCardService.findCardTypeByAppIdAndAgentAppId(agentApp.getAppId(),agentApp.getAgentAppId(), CardType.SINGLE_CARD.getCode());
+        List<AgentCardResult> agentCardResults = agentCardService.findCardTypeByAppIdAndAgentAppId(agentApp.getAppId(), agentApp.getAgentAppId(), CardType.SINGLE_CARD.getCode());
         model.addAttribute("agentCardResults", agentCardResults);
         return PREFIX + "/actCard_add.html";
     }

@@ -171,6 +171,16 @@ public class CardInfoApi implements Serializable {
     private Date addTime;
 
     /**
+     * 解绑次数
+     */
+    private Integer unbindNum;
+
+    /**
+     * 解绑扣时（分钟）
+     */
+    private Integer unbindBuckleTime;
+
+    /**
      * 创建人
      */
     private Long createUser;

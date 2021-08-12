@@ -231,6 +231,16 @@ public class CardInfoParam implements Serializable, BaseValidatingParam {
     private Integer loginNum;
 
     /**
+     * 解绑次数
+     */
+    private Integer unbindNum;
+
+    /**
+     * 解绑扣时（分钟）
+     */
+    private Integer unbindBuckleTime;
+
+    /**
      * 创建时间
      */
     private Date createTime;

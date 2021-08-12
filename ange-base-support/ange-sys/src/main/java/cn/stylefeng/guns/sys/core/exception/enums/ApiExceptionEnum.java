@@ -73,8 +73,9 @@ public enum ApiExceptionEnum implements AbstractBaseExceptionEnum {
     CARD_DATA_NO(2016, "卡密数据不存在"),
     CARD_UNBIND_SUCCESS(2017, "卡密解绑成功"),
     CARD_UNBIND_ALREADY(2018, "卡密已经解绑，不可重复操作"),
-    CARD_DISABLE_SUCCESS(2019, "卡密禁用成功"),
-    CARD_LOGOUT_SUCCESS(2020, "卡密退出登录成功"),
+    CARD_UNBIND_MORE_TAN(2019, "卡密解绑次数已超过最大限制，不可解绑"),
+    CARD_DISABLE_SUCCESS(2020, "卡密禁用成功"),
+    CARD_LOGOUT_SUCCESS(2021, "卡密退出登录成功"),
 
     /**
      * 试用相关

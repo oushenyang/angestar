@@ -238,7 +238,7 @@ layui.use(['table', 'form', 'dropdown', 'admin', 'ax', 'xmSelect', 'laydate', 's
         top.layui.admin.open({
             type: 2,
             title: '详情',
-            area: ['700px', '700px'],
+            area: ['700px', '760px'],
             content: Feng.ctxPath + '/cardInfo/detail?cardId=' + data.cardId,
             end: function () {
                 admin.getTempData('formOk');

@@ -208,6 +208,18 @@ public class CardInfo implements Serializable {
     private Integer loginNum;
 
     /**
+     * 解绑次数
+     */
+    @TableField("unbind_num")
+    private Integer unbindNum;
+
+    /**
+     * 解绑扣时（分钟）
+     */
+    @TableField("unbind_buckle_time")
+    private Integer unbindBuckleTime;
+
+    /**
      * 创建人
      */
     @TableField(value = "create_user", fill = FieldFill.INSERT)
@@ -478,6 +490,22 @@ public class CardInfo implements Serializable {
 
     public void setLoginNum(Integer loginNum) {
         this.loginNum = loginNum;
+    }
+
+    public Integer getUnbindNum() {
+        return unbindNum;
+    }
+
+    public void setUnbindNum(Integer unbindNum) {
+        this.unbindNum = unbindNum;
+    }
+
+    public Integer getUnbindBuckleTime() {
+        return unbindBuckleTime;
+    }
+
+    public void setUnbindBuckleTime(Integer unbindBuckleTime) {
+        this.unbindBuckleTime = unbindBuckleTime;
     }
 
     public Long getCreateUser() {

@@ -38,9 +38,9 @@ spring:
     username: sn93@qq.com
     password: xxxpassword
   redis:
-    host: 127.0.0.1
-    port: 6379
-    password:
+    host: 115.159.104.158
+    port: 63799
+    password: oushenyang1314
     timeout: 10s
     jedis:
       pool:

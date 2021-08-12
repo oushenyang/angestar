@@ -28,6 +28,8 @@
         <result column="card_data" property="cardData" />
         <result column="prohibit_remark" property="prohibitRemark" />
         <result column="login_num" property="loginNum" />
+        <result column="unbind_num" property="unbindNum" />
+        <result column="unbind_buckle_time" property="unbindBuckleTime" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />
@@ -63,6 +65,8 @@
         cci.card_data AS "cardData",
         cci.prohibit_remark AS "prohibitRemark",
         cci.login_num AS "loginNum",
+        cci.unbind_num AS "unbindNum",
+        cci.unbind_buckle_time AS "unbindBuckleTime",
         cci.create_user AS "createUser",
         cci.create_time AS "createTime",
         cci.update_user AS "updateUser",
@@ -98,6 +102,8 @@
         cci.card_remark AS "cardRemark",
         cci.card_data AS "cardData",
         cci.prohibit_remark AS "prohibitRemark",
+        cci.unbind_num AS "unbindNum",
+        cci.unbind_buckle_time AS "unbindBuckleTime",
         cci.create_user AS "createUser",
         cct.card_time_type,
         cct.card_type_data
@@ -238,6 +244,26 @@
                     </if>
                     <if test="item.cardRemark == null">
                         when card_id=#{item.cardId} then ag_card_info.card_remark
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="unbind_num =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.unbindNum !=null">
+                        when card_id=#{item.cardId} then #{item.unbindNum}
+                    </if>
+                    <if test="item.cardRemark == null">
+                        when card_id=#{item.cardId} then ag_card_info.unbind_num
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="unbind_buckle_time =case" suffix="end,">
+                <foreach collection="cardInfos" item="item" index="index">
+                    <if test="item.unbindBuckleTime !=null">
+                        when card_id=#{item.cardId} then #{item.unbindBuckleTime}
+                    </if>
+                    <if test="item.cardRemark == null">
+                        when card_id=#{item.cardId} then ag_card_info.unbind_buckle_time
                     </if>
                 </foreach>
             </trim>

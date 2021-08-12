@@ -32,7 +32,9 @@ layui.use(['admin', 'ax'], function () {
         $('.page.cell').removeClass('slideIn');
         $('#loadingToast').fadeIn(100);
         var ajax = new $ax(Feng.ctxPath + "/quick/cardUnBind/unBindItem", function (result) {
+            console.log(result)
             $('#loadingToast').fadeOut(100);
+            $('#js_toast .weui-toast__content').text(result.message);
             $('#js_toast').fadeIn(100);
             setTimeout(function () {
                 $('#js_toast').fadeOut(100);

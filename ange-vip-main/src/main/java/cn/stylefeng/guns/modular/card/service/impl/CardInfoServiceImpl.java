@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.card.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -433,7 +434,32 @@ public class CardInfoServiceImpl extends ServiceImpl<CardInfoMapper, CardInfo> i
                     return;
                     //解绑
                 case "untying":
-                    deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
+                    if (cardInfo.getCardStatus()==CardStatus.ACTIVATED.getCode()){
+                        AppInfo appInfo = appInfoService.getById(cardInfo.getAppId());
+                        //如果限制解绑次数且该卡密已经超过限制次数
+                        if (appInfo.getCodeAfreshBindNum()>1&&cardInfo.getUnbindNum()>=appInfo.getCodeAfreshBindNum()){
+                            throw new OperationException(BizExceptionEnum.CARD_MORE_TAN_UNBIND_NUM);
+                        }
+                        //如果限制解绑次数且该卡密没有超过限制次数
+                        if (appInfo.getCodeAfreshBindNum()>1&&cardInfo.getUnbindNum()<appInfo.getCodeAfreshBindNum()){
+                            List<Device> deviceList = deviceService.list(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
+                            if (CollectionUtil.isNotEmpty(deviceList)){
+                                //更新卡密重绑次数
+                                cardInfo.setUnbindNum(cardInfo.getUnbindNum()+1);
+                                //更新卡密扣时
+                                cardInfo.setUnbindBuckleTime(cardInfo.getUnbindBuckleTime()+appInfo.getCodeAfreshBindTime());
+                                //扣时后的到期时间
+                                if (appInfo.getCodeAfreshBindTime()>0){
+                                    DateTime expireTime = CardDateUtil.getAddExpireTime(cardInfo.getExpireTime(),null,null,-appInfo.getCodeAfreshBindTime());
+                                    cardInfo.setExpireTime(expireTime);
+                                    if (expireTime.before(new Date())){
+                                        cardInfo.setCardStatus(CardStatus.EXPIRED.getCode());
+                                    }
+                                }
+                            }
+                        }
+                        deviceService.remove(new QueryWrapper<Device>().eq("card_or_user_id", cardInfo.getCardId()));
+                    }
                     return;
                 case "editRemark":
                     cardInfo.setCardRemark(param.getCardRemark());
