@@ -115,6 +115,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(AppInfoParam param){
         //插入日志
         Long userId = LoginContextHolder.getContext().getUserId();
@@ -128,6 +129,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(AppInfoParam param){
         AppInfo oldEntity = getOldEntity(param);
         AppInfo newEntity = getEntity(param);
@@ -142,7 +144,7 @@ public class AppInfoServiceImpl extends ServiceImpl<AppInfoMapper, AppInfo> impl
         //插入日志
         Long userId = LoginContextHolder.getContext().getUserId();
         LogManager.me().executeLog(LogTaskFactory.bussinessLog(UserLogType.APP.getType(),userId,
-                userId, UserLogMsg.APP_UP.getLogName(), StrUtil.format(UserLogMsg.APP_UP.getMessage(), "【"+newEntity.getAppName()+"】")));
+                userId, UserLogMsg.APP_UP.getLogName(), StrUtil.format(UserLogMsg.APP_UP.getMessage(), "【"+oldEntity.getAppName()+"】")));
         ToolUtil.copyProperties(newEntity, oldEntity);
         redisUtil.del(RedisType.APP_INFO.getCode() + oldEntity.getAppNum());
         this.updateById(newEntity);
