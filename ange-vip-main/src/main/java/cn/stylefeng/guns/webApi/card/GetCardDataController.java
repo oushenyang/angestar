@@ -85,8 +85,8 @@ public class GetCardDataController {
                 throw new CommonException(ApiExceptionEnum.CARD_EXPIRE.getCode(),param.getTimestamp(),apiManage,false);
             }
         } else {
-            //卡密在别的设备上登录
-            throw new CommonException(ApiExceptionEnum.CARD_LOGIN_OTHER.getCode(),param.getTimestamp(),apiManage,false);
+            //卡密未登录
+            throw new CommonException(ApiExceptionEnum.CARD_NOT_LOGIN.getCode(),param.getTimestamp(),apiManage,false);
         }
         if (StringUtils.isEmpty(cardInfoApi.getCardData())){
             //卡密数据不存在

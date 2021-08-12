@@ -2,6 +2,7 @@ package cn.stylefeng.guns.webApi.dingweimao;
 
 import cn.stylefeng.guns.base.consts.ConstantsContext;
 import cn.stylefeng.guns.modular.appPower.service.AppPowerService;
+import cn.stylefeng.guns.modular.device.entity.Token;
 import cn.stylefeng.guns.sys.core.util.CreateNamePicture;
 import cn.stylefeng.guns.sys.core.util.CustomEnAndDe;
 import cn.stylefeng.guns.sys.core.util.GPS;
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>定位猫</p>
@@ -185,6 +183,35 @@ public class DingWeiMaoController {
 //            sign = deSign.substring(0,deSign.length()-8);
 //        }
 //        boolean whetherLegal = appPowerService.whetherLegalBySignAndAppCode(sign,applicationName,CustomEnAndDe.enCrypto(appName),"dingweimao172");
+
+        if (StringUtils.isNotEmpty(appName)){
+//            boolean isHave1 = false;
+            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+            //判断token是否存在
+            String finalAppName = appName;
+            boolean isHave1 = dicts.stream().filter(dict -> dict.getCode().equals(finalAppName)).findAny().isPresent();
+
+
+//            for (Dict dict : dicts){
+//                if (dict.getCode().equals(appName)){
+//                    isHave1 = true;
+//                    break;
+//                }
+//            }
+            if (ConstantsContext.getPirateOpen()&&!isHave1){
+                Map map = new HashMap<String, String>();
+                Map map1 = new HashMap<String, String>();
+                map1.put("Level",2);
+                map1.put("Content", ConstantsContext.getPirateOpenText());
+                map.put("data",map1);
+                map.put("error", 0);
+                map.put("message", "");
+                map.put("type", 0);
+                JSONObject json = new JSONObject(map);
+                return json;
+            }
+        }
+
         boolean whetherLegal = false;
         if (StringUtils.isNotEmpty(pkg)&&StringUtils.isNotEmpty(av)){
             if (pkg.equals("com.alibaba.android.rimet")&&av.equals("1.7.2")){
@@ -201,7 +228,7 @@ public class DingWeiMaoController {
                     List<String> a = new ArrayList<>();
                     Map map1 = new HashMap<String, String>();
                     map1.put("Level",2);
-                    map1.put("Content", ConstantsContext.getPirateOpenText());
+                    map1.put("Content", ConstantsContext.getPirateContact());
                     map.put("data",map1);
                     map.put("error", 0);
                     map.put("message", "");
@@ -273,7 +300,12 @@ public class DingWeiMaoController {
 //                    isHave = true;
 //                }
 //            }
-            if (ConstantsContext.getPirateOpenLocation()&&whetherLegal){
+//            boolean isHave1 = false;
+            List<Dict> dicts = dictService.listDictsByCode("DINGWEIMAOAPP");
+            //判断token是否存在
+            String finalAppName = appName;
+            boolean isHave1 = dicts.stream().filter(dict -> dict.getCode().equals(finalAppName)).findAny().isPresent();
+            if (ConstantsContext.getPirateOpenLocation()&&!isHave1){
                 Map map = new HashMap<String, String>();
                 Map map1 = new HashMap<String, String>();
                 map1.put("x", "76AE7193806A4E04F6D2EAE0D9488F7CA4B9BCBA8E0C8F97BDAB4E2FC885A74D6F43F43BE6C8C0C725414B6C5797C17D66454611D7F34EC40C1C724BA7555C6D");
@@ -311,6 +343,7 @@ public class DingWeiMaoController {
                     if (dict.getName().equals(version)){
                         aps.setW(dict.getCode());
                         aps.setT(dict.getCreateTime().getTime());
+                        break;
                     }
                 }
                 for (Dict dict : dicts1){

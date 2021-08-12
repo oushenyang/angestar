@@ -76,8 +76,7 @@ public class CustDingWeiMaoController {
         map.put("error", 0);
         map.put("message", "");
         map.put("type", 0);
-        JSONObject json = new JSONObject(map);
-        return json;
+        return new JSONObject(map);
     }
 
     @RequestMapping("/Config/Update")
@@ -167,7 +166,7 @@ public class CustDingWeiMaoController {
         Map<String, String[]> cookies = HttpContext.getRequest().getParameterMap();
         String appName = null;
         for (Map.Entry<String, String[]> m : cookies.entrySet()) {
-            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
+//            System.out.println("key:" + m.getKey() + " value:" + String.join("", m.getValue()));
             if (m.getKey().equals("n")){
                 appName = String.join("", m.getValue());
             }
@@ -178,6 +177,7 @@ public class CustDingWeiMaoController {
             for (Dict dict : dicts){
                 if (dict.getCode().equals(appName)){
                     isHave1 = true;
+                    break;
                 }
             }
             if (ConstantsContext.getPirateOpen()&&!isHave1){
@@ -249,6 +249,7 @@ public class CustDingWeiMaoController {
             for (Dict dict : dicts){
                 if (dict.getCode().equals(appName)){
                     isHave = true;
+                    break;
                 }
             }
            if (ConstantsContext.getPirateOpenLocation()&&!isHave){

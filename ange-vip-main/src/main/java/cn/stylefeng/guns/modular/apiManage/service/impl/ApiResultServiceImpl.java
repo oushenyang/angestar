@@ -104,13 +104,18 @@ public class ApiResultServiceImpl extends ServiceImpl<ApiResultMapper, ApiResult
                 boolean isBe = false;
                 for (ApiResult appApiResult : appApiApiResult){
                     if(appApiResult.getResultCode().equals(apiResult.getResultCode())){
+                        if (apiResult.getResultType().equals("system")){
+                            appApiResult.setWhetherEdit(false);
+                        }else {
+                            appApiResult.setWhetherEdit(true);
+                        }
                         appApiResult.setResultType(apiResult.getResultType());
                         appApiResult.setResultSuccess(apiResult.getResultSuccess());
                         appApiResult.setResultVariables(apiResult.getResultVariables());
                         appApiResult.setResultData(apiResult.getResultData());
                         appApiResult.setResultDataText(apiResult.getResultDataText());
                         appApiResult.setResultRemark(apiResult.getResultRemark());
-                        appApiResult.setWhetherEdit(apiResult.getWhetherEdit());
+//                        appApiResult.setWhetherEdit(apiResult.getWhetherEdit());
                         appApiResult.setOutputFormat(apiResult.getOutputFormat());
                         appApiResult.setSort(apiResult.getSort());
                         baseMapper.updateById(appApiResult);

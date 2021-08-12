@@ -156,4 +156,35 @@ public class RequestUtil {
         CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(mac)+StringUtils.trimToEmpty(timestamp));
         return new CardUnbindParam(card,mac,timestamp,sign);
     }
+
+    //卡密封禁
+    public static CardDisableParam cardDisableParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String token = commonParam.getParameterOne();
+        String card = commonParam.getParameterTwo();
+        String remark = commonParam.getParameterThree();
+        String timestamp = commonParam.getParameterFour();
+        String sign = commonParam.getParameterFive();
+        if (StringUtils.isEmpty(token)||StringUtils.isEmpty(card)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(remark)+StringUtils.trimToEmpty(timestamp));
+        return new CardDisableParam(token,card,remark,timestamp,sign);
+    }
+
+    //卡密退出登录
+    public static CardLogOutParam cardLogOutParameter(ApiManageApi apiManage, String body){
+        CommonParam commonParam = CommonUtil.requestDec(apiManage,body);
+        String token = commonParam.getParameterOne();
+        String card = commonParam.getParameterTwo();
+        String timestamp = commonParam.getParameterThree();
+        String sign = commonParam.getParameterFour();
+        if (StringUtils.isEmpty(token)||StringUtils.isEmpty(card)){
+            throw new SystemApiException(2, "必传参数存在空值","",false);
+        }
+        //校验签名
+        CommonUtil.sign(apiManage,sign,timestamp,StringUtils.trimToEmpty(token)+StringUtils.trimToEmpty(card)+StringUtils.trimToEmpty(timestamp));
+        return new CardLogOutParam(token,card,timestamp,sign);
+    }
 }

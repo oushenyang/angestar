@@ -65,6 +65,16 @@ public class AsyncService {
     }
 
     /**
+     * 删除token
+     * @param tokenId tokenId
+     */
+    @Async
+    public void delToken(Long tokenId){
+        TokenService tokenService = SpringUtil.getBean(TokenService.class);
+        tokenService.removeById(tokenId);
+    }
+
+    /**
      * 先删除在新增token
      * @param codeOpenNumLong 保留数量
      * @param cardId 卡密id

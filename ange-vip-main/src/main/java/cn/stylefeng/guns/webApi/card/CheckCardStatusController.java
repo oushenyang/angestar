@@ -106,8 +106,8 @@ public class CheckCardStatusController {
                }
            }
         }else {
-            //卡密在别的设备上登录
-            throw new CommonException(ApiExceptionEnum.CARD_LOGIN_OTHER.getCode(),param.getHoldCheck(),apiManage,false);
+            //卡密未登录
+            throw new CommonException(ApiExceptionEnum.CARD_NOT_LOGIN.getCode(),param.getHoldCheck(),apiManage,false);
         }
     }
 

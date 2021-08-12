@@ -403,6 +403,46 @@
  2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
                </pre>
                 @}
+                <!--                卡密封禁-->
+                @if(apiManage.apiCode=='cardDisable'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ 成功示例：
+
+ {
+   "code": 2018,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）
+          }
+   "msg": "卡密禁用成功",
+   "success": true
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
+                <!--                卡密退出登录-->
+                @if(apiManage.apiCode=='cardLogOut'){
+                <pre style="background-color: #f5f5f5;color: #333;border: 1px solid #ccc;">
+
+ 成功示例：
+
+ {
+   "code": 2019,
+   "data":{
+  	      "timestamp":	传入的时间戳（不传则不返回）
+          }
+   "msg": "卡密退出登录",
+   "success": true
+ }
+
+ 注意：
+ 1、如果success为false，data数据不返回
+ 2、如果该应用密匙配置设置为加密算法，返回结果为加密数据，请在自己程序中做解密处理
+               </pre>
+                @}
             </div>
         </fieldset>
     </div>

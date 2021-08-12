@@ -103,6 +103,12 @@ public class NoneAuthedResources {
             //卡密解绑
             "/cardUnbind/*",
 
+            //卡密封禁
+            "/cardDisable/*",
+
+            //卡密退出登录
+            "/cardLogOut/*",
+
             //快捷页面
             "/quick/**",
 
